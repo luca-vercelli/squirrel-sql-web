@@ -1,0 +1,34 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.sf.squirrel-sql</groupId>
+	<artifactId>squirrel-sql-web</artifactId>
+	<version>1.0</version>
+	<packaging>war</packaging>
+	<name>Database web client</name>
+	<description>WAR intended for running inside Glassfish, with Dash Material frontend</description>
+
+	<properties>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<failOnMissingWebXml>false</failOnMissingWebXml>
+		<version.squirrelsql>3.5.0</version.squirrelsql>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>net.sf.squirrel-sql</groupId>
+			<artifactId>squirrel-sql</artifactId>
+			<version>${version.squirrelsql}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>7.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+	</dependencies>
+</project>
