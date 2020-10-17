@@ -11,7 +11,7 @@ Compile with
 
     cd src/main/webapp
     npm install
-    gulp
+    gulp inject
 
 Backend: Java EE (JAXRS, EJB, CDI). Intended to be used in a real EE container (Glassfish, TomEE, JBoss, ...) not Tomcat.
 Compile with
