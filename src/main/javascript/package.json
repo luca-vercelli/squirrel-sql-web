@@ -29,6 +29,7 @@
     "require-dir": "^1.2.0"
   },
   "scripts": {
+    "build": "gulp inject && mkdir -p ../webapp && cp index.html ../webapp && cp -r main ../webapp && cp -r assets ../webapp",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "bootstrapdash",

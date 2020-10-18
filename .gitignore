@@ -11,5 +11,6 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 
 #npm
-src/main/webapp/node_modules/
-src/main/webapp/package-lock.json
+src/main/javascript/node_modules/
+src/main/javascript/package-lock.json
+src/main/webapp/
