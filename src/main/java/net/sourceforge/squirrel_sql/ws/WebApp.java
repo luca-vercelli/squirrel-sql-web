@@ -28,6 +28,7 @@ public class WebApp {
 		LoggerController.registerLoggerFactory(new SquirrelLoggerFactory(true));
 
 		swingApp = new SwingApplication();
+		swingApp.startup(); // this will also show Swing Application on the server?
 	}
 
 	public ApplicationArguments getSwingArguments() {

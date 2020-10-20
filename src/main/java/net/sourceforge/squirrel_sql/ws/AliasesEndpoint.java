@@ -3,6 +3,7 @@ package net.sourceforge.squirrel_sql.ws;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -10,11 +11,13 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 
+import net.sourceforge.squirrel_sql.client.SwingApplication;
 import net.sourceforge.squirrel_sql.client.gui.db.AliasesAndDriversManager;
 import net.sourceforge.squirrel_sql.client.gui.db.SQLAlias;
 import net.sourceforge.squirrel_sql.fw.sql.ISQLAlias;
 
 @Path("/")
+@Stateless
 public class AliasesEndpoint {
 
 	@Inject
@@ -23,7 +26,8 @@ public class AliasesEndpoint {
 	// We cannot inject the manager, as it is not an EJB
 	// Instead, we inject the WebApp and retrieve the manager
 	private AliasesAndDriversManager getManager() {
-		return webapp.getSwingApp().getAliasesAndDriversManager();
+		SwingApplication swapp = webapp.getSwingApp(); 
+		return swapp.getAliasesAndDriversManager();
 	}
 
 	@GET
