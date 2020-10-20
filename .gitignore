@@ -15,3 +15,6 @@ src/main/javascript/node_modules/
 src/main/javascript/package-lock.json
 src/main/webapp/*
 !src/main/webapp/WEB-INF/
+
+### eclipse ###
+.settings/
