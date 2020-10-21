@@ -36,6 +36,7 @@ public class AliasesEndpoint {
 		@SuppressWarnings("unchecked")
 		List<ISQLAlias> list = (List<ISQLAlias>) getManager().getAliasList();
 		long count = list.size();
+		// If 0, may raise HTTP 404
 		return new ListBean<>(list, count);
 	}
 
@@ -45,6 +46,7 @@ public class AliasesEndpoint {
 		List<ISQLAlias> items = getManager().getAliasList().stream().filter(x -> x.getName().equals(name))
 				.collect(Collectors.toList());
 		ISQLAlias object = items.isEmpty() ? null : items.get(0);
+		// If null, may raise HTTP 404
 		return new ValueBean<>(object);
 	}
 
