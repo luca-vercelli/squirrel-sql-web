@@ -11,7 +11,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 
-import net.sourceforge.squirrel_sql.client.SwingApplication;
 import net.sourceforge.squirrel_sql.client.gui.db.AliasesAndDriversManager;
 import net.sourceforge.squirrel_sql.client.gui.db.SQLAlias;
 import net.sourceforge.squirrel_sql.fw.sql.ISQLAlias;
@@ -21,13 +20,12 @@ import net.sourceforge.squirrel_sql.fw.sql.ISQLAlias;
 public class AliasesEndpoint {
 
 	@Inject
-	WebApp webapp;
+	WebApplication webapp;
 
 	// We cannot inject the manager, as it is not an EJB
-	// Instead, we inject the WebApp and retrieve the manager
+	// Instead, we inject the WebApplication and retrieve the manager
 	private AliasesAndDriversManager getManager() {
-		SwingApplication swapp = webapp.getSwingApp(); 
-		return swapp.getAliasesAndDriversManager();
+		return webapp.getAliasesAndDriversManager();
 	}
 
 	@GET
