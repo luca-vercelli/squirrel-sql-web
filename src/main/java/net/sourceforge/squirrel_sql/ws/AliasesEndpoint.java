@@ -13,6 +13,8 @@ import javax.ws.rs.Path;
 
 import net.sourceforge.squirrel_sql.client.gui.db.AliasesAndDriversManager;
 import net.sourceforge.squirrel_sql.client.gui.db.SQLAlias;
+import net.sourceforge.squirrel_sql.dto.ListBean;
+import net.sourceforge.squirrel_sql.dto.ValueBean;
 import net.sourceforge.squirrel_sql.fw.sql.ISQLAlias;
 
 @Path("/")
@@ -30,16 +32,20 @@ public class AliasesEndpoint {
 
 	@GET
 	@Path("/Aliases")
-	public List<? extends ISQLAlias> getItems() {
-		return getManager().getAliasList();
+	public ListBean<ISQLAlias> getItems() {
+		@SuppressWarnings("unchecked")
+		List<ISQLAlias> list = (List<ISQLAlias>) getManager().getAliasList();
+		long count = list.size();
+		return new ListBean<>(list, count);
 	}
 
 	@GET
 	@Path("/Aliases/{name}")
-	public ISQLAlias getItem(String name) {
+	public ValueBean<ISQLAlias> getItem(String name) {
 		List<ISQLAlias> items = getManager().getAliasList().stream().filter(x -> x.getName().equals(name))
 				.collect(Collectors.toList());
-		return items.isEmpty() ? null : items.get(0);
+		ISQLAlias object = items.isEmpty() ? null : items.get(0);
+		return new ValueBean<>(object);
 	}
 
 	@POST

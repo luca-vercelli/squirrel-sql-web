@@ -50,23 +50,25 @@ public class WebApplication extends Application {
 		initDataCache();
 	}
 
-	protected static void executeOnce() {
+	protected void executeOnce() {
 		// This code shall be executed exactly once
+
+		// why not log4j?
+		LoggerController.registerLoggerFactory(new SquirrelLoggerFactory(true));
 
 		// should be in some cfg file
 		String[] cliArgs = { "--no-splash" };
 		ApplicationArguments.initialize(cliArgs);
 		applicationArguments = ApplicationArguments.getInstance();
+		applicationArguments.validateArgs(true);
 
-		// e usare log4j?
-		LoggerController.registerLoggerFactory(new SquirrelLoggerFactory(true));
 	}
 
-	private void initPluginManager() {
+	protected void initPluginManager() {
 		pluginManager = new PluginManager(this);
 	}
 
-	public void initSessionManager() {
+	protected void initSessionManager() {
 		this.sessionManager = new SessionManager(this);
 	}
 
