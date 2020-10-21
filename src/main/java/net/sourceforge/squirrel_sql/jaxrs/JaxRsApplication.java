@@ -1,4 +1,4 @@
-package net.sourceforge.squirrel_sql.ws;
+package net.sourceforge.squirrel_sql.jaxrs;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.ApplicationPath;

@@ -45,7 +45,14 @@
 			<version>7.0</version>
 			<scope>provided</scope>
 		</dependency>
-
+		
+		<!-- We want jackson, not MOXy -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-jaxb-annotations</artifactId>
+			<version>2.9.5</version>
+		</dependency>
+		
 		<!-- Following dependencies are copied from squirrel-sql:4.1.0 artifact -->
 
 		<dependency>
