@@ -47,10 +47,11 @@
 		</dependency>
 		
 		<!-- We want jackson, not MOXy -->
+		<!--  The version should be the one of the WAS... -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.module</groupId>
 			<artifactId>jackson-module-jaxb-annotations</artifactId>
-			<version>2.9.5</version>
+			<version>2.6.0</version>
 		</dependency>
 		
 		<!-- Following dependencies are copied from squirrel-sql:4.1.0 artifact -->
