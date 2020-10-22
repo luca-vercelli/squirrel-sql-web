@@ -41,6 +41,13 @@ public class AliasesEndpoint {
 	}
 
 	@GET
+	@Path("/AliasesTest")
+	public ValueBean<ISQLAlias> getAliasTest() {
+		SQLAlias item = new SQLAlias();
+		return new ValueBean<>(item);
+	}
+
+	@GET
 	@Path("/Aliases/{name}")
 	public ValueBean<ISQLAlias> getItem(String name) {
 		List<ISQLAlias> items = getManager().getAliasList().stream().filter(x -> x.getName().equals(name))

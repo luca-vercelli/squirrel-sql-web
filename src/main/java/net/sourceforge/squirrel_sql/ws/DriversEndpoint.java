@@ -3,6 +3,7 @@ package net.sourceforge.squirrel_sql.ws;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -16,6 +17,7 @@ import net.sourceforge.squirrel_sql.dto.ValueBean;
 import net.sourceforge.squirrel_sql.fw.sql.SQLDriver;
 
 @Path("/")
+@Stateless
 public class DriversEndpoint {
 
 	@Inject
@@ -26,7 +28,6 @@ public class DriversEndpoint {
 	private AliasesAndDriversManager getManager() {
 		return webapp.getAliasesAndDriversManager();
 	}
-
 
 	@GET
 	@Path("/Drivers")

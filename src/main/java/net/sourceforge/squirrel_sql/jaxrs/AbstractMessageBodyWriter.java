@@ -73,6 +73,9 @@ public abstract class AbstractMessageBodyWriter<T> implements MessageBodyWriter<
 		AnnotationIntrospector introspector = new JaxbAnnotationIntrospector(TypeFactory.defaultInstance());
 		mapper.setAnnotationIntrospector(introspector);
 
+		// Avoid to fail if an object have no getters
+		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
 		return mapper;
 	}
 
