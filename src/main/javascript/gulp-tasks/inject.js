@@ -10,7 +10,7 @@ var merge = require('merge-stream');
 
 /* inject partials like sidebar and navbar */
 gulp.task('injectPartial', function () {
-    return gulp.src(["./*/pages/*/*.html", "./*/index.html"], {
+    return gulp.src(["./*/pages/*/*.html", "./*/*.html"], {
             base: "./"
         })
         .pipe(injectPartials())
