@@ -10,6 +10,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 
 import net.sourceforge.squirrel_sql.client.gui.db.AliasesAndDriversManager;
 import net.sourceforge.squirrel_sql.dto.ListBean;
@@ -40,7 +41,7 @@ public class DriversEndpoint {
 
 	@GET
 	@Path("/Drivers/{name}")
-	public ValueBean<SQLDriver> getItem(String name) {
+	public ValueBean<SQLDriver> getItem(@PathParam("name") String name) {
 		List<SQLDriver> items = getManager().getDriverList().stream().filter(x -> x.getName().equals(name))
 				.collect(Collectors.toList());
 		SQLDriver object = items.isEmpty() ? null : items.get(0);
