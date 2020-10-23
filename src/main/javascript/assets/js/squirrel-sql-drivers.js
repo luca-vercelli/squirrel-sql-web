@@ -93,12 +93,6 @@ function load_driver_from_form() {
     driver.url = $("#driver_url").val();
     driver.webSiteUrl = $("#driver_website_url").val();
     driver.driverClassName = $("#driver_class_name").val();
-    
-    // trigger change for Material UI
-    $("#driver_name").trigger('change');
-    $("#driver_url").trigger('change');
-    $("#driver_website_url").trigger('change');
-    $("#driver_class_name").trigger('change');
 }
 
 function update_driver_to_form() {
@@ -106,6 +100,12 @@ function update_driver_to_form() {
     $("#driver_url").val(driver.url);
     $("#driver_website_url").val(driver.webSiteUrl);
     $("#driver_class_name").val(driver.driverClassName);
+    
+    // trigger change for Material UI
+    $("#driver_name").trigger('focus');
+    $("#driver_url").trigger('focus');
+    $("#driver_website_url").trigger('focus');
+    $("#driver_class_name").trigger('focus');
 }
 
 function disable_edit(true_or_false) {
