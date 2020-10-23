@@ -58,13 +58,13 @@ public class DriversEndpoint {
 
 	@PUT
 	@Path("/Drivers/{name}")
-	public void updateItem(SQLDriver item) {
+	public void updateItem(@PathParam("name") String name, SQLDriver item) {
 		// TODO
 	}
 
 	@DELETE
 	@Path("/Drivers/{name}")
-	public void deleteItem(SQLDriver item) {
+	public void deleteItem(@PathParam("name") String name, SQLDriver item) {
 		getManager().removeDriver(item);
 		// should call saveDrivers() ?
 	}

@@ -10,6 +10,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 
 import net.sourceforge.squirrel_sql.client.gui.db.AliasesAndDriversManager;
 import net.sourceforge.squirrel_sql.client.gui.db.SQLAlias;
@@ -41,15 +42,8 @@ public class AliasesEndpoint {
 	}
 
 	@GET
-	@Path("/AliasesTest")
-	public ValueBean<ISQLAlias> getAliasTest() {
-		SQLAlias item = new SQLAlias();
-		return new ValueBean<>(item);
-	}
-
-	@GET
 	@Path("/Aliases/{name}")
-	public ValueBean<ISQLAlias> getItem(String name) {
+	public ValueBean<ISQLAlias> getItem(@PathParam("name") String name) {
 		List<ISQLAlias> items = getManager().getAliasList().stream().filter(x -> x.getName().equals(name))
 				.collect(Collectors.toList());
 		ISQLAlias object = items.isEmpty() ? null : items.get(0);
@@ -66,14 +60,20 @@ public class AliasesEndpoint {
 
 	@PUT
 	@Path("/Aliases/{name}")
-	public void updateItem(ISQLAlias item) {
+	public void updateItem(@PathParam("name") String name, ISQLAlias item) {
 		// TODO
 	}
 
 	@DELETE
 	@Path("/Aliases/{name}")
-	public void deleteItem(SQLAlias item) {
+	public void deleteItem(@PathParam("name") String name, SQLAlias item) {
 		getManager().removeAlias(item);
 		// should call saveAliases() ?
+	}
+
+	@POST
+	@Path("/Connect/{aliasName}")
+	public void connect(@PathParam("name") String name) {
+		// TODO
 	}
 }
