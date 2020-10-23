@@ -1,12 +1,23 @@
 // this url works if every page is at same depth...
 var ws_url = '../ws/';
+var ws_url_mock = '../mock/'
+var enable_mock = true;
 
 var drivers = [];
 var aliases = [];
 var sessions = [];
 
 $(document).ready(function(){
-	$.getJSON(ws_url + 'Drivers', function(response){
+	loadDrivers();
+	loadAliases();
+	// TODO load sessions
+});
+
+function loadDrivers() {
+	var url = (enable_mock) ? 
+			ws_url_mock + 'Drivers.json' :
+			ws_url + 'Drivers';
+	$.getJSON(url, function(response){
 		drivers = response.data;
 
 		var menu = $('#ui-sub-menu-drivers').find('nav');
@@ -18,9 +29,13 @@ $(document).ready(function(){
 		
 		createMenuEntry(menu, 'driver.html', 'Create new');
 	});
-	
+}
 
-	$.getJSON(ws_url + 'Aliases', function(response){
+function loadAliases() {
+	var url = (enable_mock) ? 
+			ws_url_mock + 'Aliases.json' :
+			ws_url + 'Aliases';
+	$.getJSON(url, function(response){
 		aliases = response.data;
 
 		var menu = $('#ui-sub-menu-aliases').find('nav');
@@ -33,9 +48,7 @@ $(document).ready(function(){
 		
 		createMenuEntry(menu, 'alias.html', 'Create new');
 	});
-
-	// TODO load sessions
-});
+}
 
 function createMenuEntry(menu, url, caption) {
 	var html = '<div class="mdc-list-item mdc-drawer-item" tabindex="-1">'+

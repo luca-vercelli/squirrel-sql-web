@@ -1,5 +1,7 @@
 // this url works if every page is at same depth...
 var ws_url = '../ws/';
+var ws_url_mock = '../mock/'
+var enable_mock = true;
 
 var driver = null;
 var creating = true;
@@ -8,7 +10,10 @@ $(document).ready(function(){
     var driver_name = location.href.split("driver.html?name=")[1];
     if (driver_name) {
         // Updating existing driver
-        $.getJSON(ws_url + 'Drivers/' + driver_name, function(response){
+    	var url = (enable_mock) ? 
+    			ws_url_mock + 'SingleDriver.json' :
+    			ws_url + 'Drivers/' + driver_name;
+        $.getJSON(url, function(response){
             driver = response.value;
             if (driver != null) {
                 update_driver_to_form();
@@ -89,11 +94,11 @@ function load_driver_from_form() {
     driver.webSiteUrl = $("#driver_website_url").val();
     driver.driverClassName = $("#driver_class_name").val();
     
-    // triggers
-    $("#driver_name").trigger('click');
-    $("#driver_url").trigger('click');
-    $("#driver_website_url").trigger('click');
-    $("#driver_class_name").trigger('click');
+    // trigger change for Material UI
+    $("#driver_name").trigger('change');
+    $("#driver_url").trigger('change');
+    $("#driver_website_url").trigger('change');
+    $("#driver_class_name").trigger('change');
 }
 
 function update_driver_to_form() {
