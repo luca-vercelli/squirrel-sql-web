@@ -1,0 +1,42 @@
+{
+  "value" : {
+    "name" : "My Home MySQL",
+    "valid" : true,
+    "identifier" : null,
+    "autoLogon" : false,
+    "userName" : "myself",
+    "password" : "mysecretpassword",
+    "url" : "jdbc:mysql://host1:33060/mydatabase",
+    "driverIdentifier" : null,
+    "schemaProperties" : {
+      "schemaDetails" : [ ],
+      "globalState" : 0,
+      "cacheSchemaIndependentMetaData" : false,
+      "byLikeStringExclude" : null,
+      "byLikeStringInclude" : null
+    },
+    "colorProperties" : {
+      "toolbarBackgroundColorRgbValue" : 0,
+      "overrideObjectTreeBackgroundColor" : false,
+      "objectTreeBackgroundColorRgbValue" : 0,
+      "overrideStatusBarBackgroundColor" : false,
+      "statusBarBackgroundColorRgbValue" : 0,
+      "overrideToolbarBackgroundColor" : false,
+      "overrideAliasBackgroundColor" : false,
+      "aliasBackgroundColorRgbValue" : 0
+    },
+    "connectAtStartup" : false,
+    "encryptPassword" : false,
+    "connectionProperties" : {
+      "keepAliveSleepTimeSeconds" : 120,
+      "keepAliveSqlStatement" : "",
+      "enableConnectionKeepAlive" : false
+    },
+    "aliasVersionTimeMills" : 0,
+    "useDriverProperties" : false,
+    "driverPropertiesClone" : {
+      "versioner" : { },
+      "driverProperties" : [ ]
+    }
+  }
+}
