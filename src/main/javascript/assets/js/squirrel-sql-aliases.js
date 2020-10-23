@@ -1,0 +1,147 @@
+// this url works if every page is at same depth...
+var ws_url = '../ws/';
+var ws_url_mock = '../mock/'
+var enable_mock = true;
+
+var alias = null;
+var creating = true;
+
+$(document).ready(function(){
+    var alias_name = location.href.split("alias.html?name=")[1];
+    if (alias_name) {
+        // Updating existing alias
+    	var url = (enable_mock) ? 
+    			ws_url_mock + 'SingleAlias.json' :
+    			ws_url + 'Aliases/' + alias_name;
+        $.getJSON(url, function(response){
+            alias = response.value;
+            if (alias != null) {
+                update_alias_to_form();
+                set_creating(false);
+            } else {
+                console.log("Requested alias not found!!!");
+            }
+        });
+	} else {
+        set_creating(true);
+    }
+    
+    $('#save_button').click(save_alias);
+    $("#create_button").click(create_alias);
+    $("#delete_button").click(delete_alias);
+});
+
+function create_alias() {
+    disable_edit(true);
+    load_alias_from_form();
+    
+    $.ajax({
+        type: 'POST',
+        url: ws_url + 'Aliass',
+        contentType: 'application/json',
+        data: alias,
+        success: function(data, status){
+            console.log("Data: " + data + "\nStatus: " + status);
+            disable_edit(false);
+        },
+        error: function(data, status){
+            console.log("ERROR! Data: " + data + "\nStatus: " + status);
+            disable_edit(false);
+        }
+    });
+}
+
+function save_alias() {
+    disable_edit(true);
+    load_alias_from_form();
+    
+    $.ajax({
+        type: 'PUT',
+        url: ws_url + 'Aliass/' + alias.name,
+        contentType: 'application/json',
+        data: alias,
+        success: function(data, status){
+            console.log("Data: " + data + "\nStatus: " + status);
+            disable_edit(false);
+        },
+        error: function(data, status){
+            console.log("ERROR! Data: " + data + "\nStatus: " + status);
+            disable_edit(false);
+        }
+    });
+}
+
+function delete_alias() {
+    // TODO should give some warning
+    $.ajax({
+        type: 'DELETE',
+        url: ws_url + 'Aliass/' + alias.name,
+        success: function(data, status){
+            console.log("Data: " + data + "\nStatus: " + status);
+            window.location.replace("..");
+        },
+        error: function(data, status){
+            console.log("ERROR! Data: " + data + "\nStatus: " + status);
+            disable_edit(false);
+        }
+    });
+}
+
+function load_alias_from_form() {
+    
+    alias.name = $("#alias_name").val().replace('&', '_');
+    alias.driverClassName = $("#alias_driver").val();
+    alias.url = $("#alias_url").val();
+    alias.user = $("#alias_user").val();
+    alias.password = $("#alias_password").val();
+    alias.autoLogon = $("#alias_autologon").val();
+    alias.autoConnect = $("#alias_autoconnect").val();
+    alias.someMore = $("#alias_somemore").val();
+}
+
+function update_alias_to_form() {
+    $("#alias_name").val(alias.name);
+    $("#alias_driver").val(alias.driverClassName);
+    $("#alias_url").val(alias.url);
+    $("#alias_user").val(alias.user);
+    $("#alias_password").val(alias.password);
+    $("#alias_autologon").val(alias.autoLogon);
+    $("#alias_autoconnect").val(alias.autoConnect);
+    $("#alias_somemore").val(alias.someMore);
+    
+    // trigger change for Material UI
+    $("#alias_name").trigger('focus');
+    $("#alias_driver").trigger('focus');
+    $("#alias_url").trigger('focus');
+    $("#alias_user").trigger('focus');
+    $("#alias_password").trigger('focus');
+}
+
+function disable_edit(true_or_false) {
+    
+    // we use alias name as key
+    $("#alias_name").prop('disabled', (!creating) && true_or_false);
+    $("#alias_driver").prop('disabled', true_or_false);
+    $("#alias_user").prop('disabled', true_or_false);
+    $("#alias_password").prop('disabled', true_or_false);
+    $("#alias_autologon").prop('disabled', true_or_false);
+    $("#alias_autoconnect").prop('disabled', true_or_false);
+    $("#alias_somemore").prop('disabled', true_or_false);
+    // buttons
+    $("#create_button").prop('disabled', true_or_false);
+    $("#save_button").prop('disabled', true_or_false);
+    $("#delete_button").prop('disabled', true_or_false);
+}
+
+function set_creating(true_or_false) {
+    creating = true_or_false;
+    if (creating) {
+        $("#create_button").show();
+        $("#save_button").hide();
+        $("#delete_button").hide();
+    } else {
+        $("#create_button").hide();
+        $("#save_button").show();
+        $("#delete_button").show();
+    }
+}
