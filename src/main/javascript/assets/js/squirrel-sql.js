@@ -7,10 +7,14 @@ var drivers = [];
 var aliases = [];
 var sessions = [];
 
+// functions to execute when driver have loaded
+var drivers_callbacks = [];
+
 $(document).ready(function(){
 	loadDrivers();
 	loadAliases();
 	// TODO load sessions
+    // TODO which drivers are available in classpath?
 });
 
 function loadDrivers() {
@@ -28,6 +32,10 @@ function loadDrivers() {
 		};
 		
 		createMenuEntry(menu, 'driver.html', 'Create new');
+        
+        for (i in drivers_callbacks) {
+            drivers_callbacks[i]();
+        }
 	});
 }
 
@@ -43,7 +51,6 @@ function loadAliases() {
 		for(var i in aliases) {
 			var alias = aliases[i];
 			createMenuEntry(menu, 'alias.html?name=' + alias.name, alias.name);
-			menu.append(html);
 		};
 		
 		createMenuEntry(menu, 'alias.html', 'Create new');
@@ -56,3 +63,11 @@ function createMenuEntry(menu, url, caption) {
 	menu.append(html);
 }
 
+function getDriverByIdentifier(id) {
+    for (var i in drivers) {
+        if (drivers[i].identifier.string == id) {
+            return drivers[i];
+        }
+    }
+    return null;
+}

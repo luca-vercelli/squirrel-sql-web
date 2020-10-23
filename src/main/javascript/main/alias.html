@@ -399,7 +399,7 @@
                       <i class="mdc-select__dropdown-icon"></i>
                       <div class="mdc-select__selected-text"></div>
                       <div class="mdc-select__menu mdc-menu-surface demo-width-class">
-                        <ul class="mdc-list">
+                        <ul class="mdc-list" id="ul_for_alias_driver">
                           <li class="mdc-list-item mdc-list-item--selected" data-value="" aria-selected="true">
                           </li>
                           <li class="mdc-list-item" data-value="grains">
@@ -460,7 +460,7 @@
                             <input type="checkbox" id="alias_autologon" class="mdc-switch__native-control" role="switch" checked>
                         </div>
                       </div>
-                    Auto-logon
+                    Auto logon
                     </div>
                     <div class="mdc-switch mdc-switch--checked" data-mdc-auto-init="MDCSwitch">
                       <div class="mdc-switch__track"></div>
@@ -469,17 +469,22 @@
                             <input type="checkbox" id="alias_autoconnect" class="mdc-switch__native-control" role="switch" checked>
                         </div>
                       </div>
-                    Auto-connect
+                    Connect at startup (is this meaningful on web?)
                     </div>
                     <div class="mdc-switch mdc-switch--checked" data-mdc-auto-init="MDCSwitch">
                       <div class="mdc-switch__track"></div>
                       <div class="mdc-switch__thumb-underlay">
                         <div class="mdc-switch__thumb">
-                            <input type="checkbox" id="alias_somemore" class="mdc-switch__native-control" role="switch" checked>
+                            <input type="checkbox" id="alias_encrypted" class="mdc-switch__native-control" role="switch" checked>
                         </div>
                       </div>
-                    Some more
+                    Save password encrypted
                     </div>
+                    <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12-desktop">
+                      <button class="mdc-button mdc-button--raised" id="connect_button" style="display:none">
+                        <i class="material-icons mdc-button__icon">power</i>
+                          Connect
+                      </button>
                       <button class="mdc-button mdc-button--raised" id="create_button" style="display:none">
                         <i class="material-icons mdc-button__icon">add</i>
                           Create
@@ -492,6 +497,7 @@
                         <i class="material-icons mdc-button__icon">delete</i>
                           Delete
                       </button>
+                    </div>
                     </div>
                   </div>
                 </div>

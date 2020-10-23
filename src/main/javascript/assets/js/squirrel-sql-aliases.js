@@ -7,6 +7,7 @@ var alias = null;
 var creating = true;
 
 $(document).ready(function(){
+    drivers_callbacks.push(loadMenuOptions);
     var alias_name = location.href.split("alias.html?name=")[1];
     if (alias_name) {
         // Updating existing alias
@@ -90,24 +91,24 @@ function delete_alias() {
 function load_alias_from_form() {
     
     alias.name = $("#alias_name").val().replace('&', '_');
-    alias.driverClassName = $("#alias_driver").val();
+    alias.driverIdentifier = $("#alias_driver").val();
     alias.url = $("#alias_url").val();
-    alias.user = $("#alias_user").val();
+    alias.userName = $("#alias_user").val();
     alias.password = $("#alias_password").val();
     alias.autoLogon = $("#alias_autologon").val();
-    alias.autoConnect = $("#alias_autoconnect").val();
-    alias.someMore = $("#alias_somemore").val();
+    alias.connectAtStartup = $("#alias_autoconnect").val();
+    alias.encryptPassword = $("#alias_encrypted").val();
 }
 
 function update_alias_to_form() {
     $("#alias_name").val(alias.name);
-    $("#alias_driver").val(alias.driverClassName);
+    $("#alias_driver").val(alias.driverIdentifier);
     $("#alias_url").val(alias.url);
-    $("#alias_user").val(alias.user);
+    $("#alias_user").val(alias.userName);
     $("#alias_password").val(alias.password);
     $("#alias_autologon").val(alias.autoLogon);
-    $("#alias_autoconnect").val(alias.autoConnect);
-    $("#alias_somemore").val(alias.someMore);
+    $("#alias_autoconnect").val(alias.connectAtStartup);
+    $("#alias_encrypted").val(alias.encryptPassword);
     
     // trigger change for Material UI
     $("#alias_name").trigger('focus');
@@ -137,11 +138,31 @@ function set_creating(true_or_false) {
     creating = true_or_false;
     if (creating) {
         $("#create_button").show();
+        $("#connect_button").hide();
         $("#save_button").hide();
         $("#delete_button").hide();
     } else {
         $("#create_button").hide();
+        $("#connect_button").show();
         $("#save_button").show();
         $("#delete_button").show();
     }
+}
+
+function loadMenuOptions() {
+    var select = $("#ul_for_alias_driver");
+    for(var i in drivers) {
+        var driver = drivers[i];
+        createSelectOption(select, driver.name, driver.identifier.string);
+    };
+    
+    //FIXME
+    if (alias && alias.driverIdentifier) {
+        $("#alias_driver").val(alias.driverIdentifier);
+        $("#alias_driver").trigger('change');
+    }
+}
+
+function createSelectOption(select, caption, value) {
+    select.append('<li class="mdc-list-item" data-value="'+value+'">'+caption+'</li>');
 }
