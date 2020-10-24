@@ -28,7 +28,7 @@ function loadDrivers() {
 		menu.html("");
 		for(var i in drivers) {
 			var driver = drivers[i];
-			createMenuEntry(menu, 'driver.html?name=' + driver.name, driver.name);
+			createMenuEntry(menu, 'driver.html?id=' + driver.identifier.string, driver.name);
 		};
 		
 		createMenuEntry(menu, 'driver.html', 'Create new');
@@ -50,7 +50,7 @@ function loadAliases() {
 		menu.html("");
 		for(var i in aliases) {
 			var alias = aliases[i];
-			createMenuEntry(menu, 'alias.html?name=' + alias.name, alias.name);
+			createMenuEntry(menu, 'alias.html?id=' + alias.identifier.string, alias.name);
 		};
 		
 		createMenuEntry(menu, 'alias.html', 'Create new');

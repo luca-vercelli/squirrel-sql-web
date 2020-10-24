@@ -8,12 +8,12 @@ var creating = true;
 
 $(document).ready(function(){
     drivers_callbacks.push(loadMenuOptions);
-    var alias_name = location.href.split("alias.html?name=")[1];
-    if (alias_name) {
+    var identifier = location.href.split("alias.html?id=")[1];
+    if (identifier) {
         // Updating existing alias
     	var url = (enable_mock) ? 
     			ws_url_mock + 'SingleAlias.json' :
-    			ws_url + 'Aliases/' + alias_name;
+    			ws_url + 'Aliases/' + identifier;
         $.getJSON(url, function(response){
             alias = response.value;
             if (alias != null) {
@@ -58,7 +58,7 @@ function save_alias() {
     
     $.ajax({
         type: 'PUT',
-        url: ws_url + 'Aliass/' + alias.name,
+        url: ws_url + 'Aliass/' + alias.identifier.string,
         contentType: 'application/json',
         data: alias,
         success: function(data, status){
@@ -76,7 +76,7 @@ function delete_alias() {
     // TODO should give some warning
     $.ajax({
         type: 'DELETE',
-        url: ws_url + 'Aliass/' + alias.name,
+        url: ws_url + 'Aliass/' + alias.identifier.string,
         success: function(data, status){
             console.log("Data: " + data + "\nStatus: " + status);
             window.location.replace("..");

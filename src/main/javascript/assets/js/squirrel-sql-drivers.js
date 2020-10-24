@@ -7,12 +7,12 @@ var driver = null;
 var creating = true;
 
 $(document).ready(function(){
-    var driver_name = location.href.split("driver.html?name=")[1];
-    if (driver_name) {
+    var identifier = location.href.split("driver.html?id=")[1];
+    if (identifier) {
         // Updating existing driver
     	var url = (enable_mock) ? 
     			ws_url_mock + 'SingleDriver.json' :
-    			ws_url + 'Drivers/' + driver_name;
+    			ws_url + 'Drivers/' + identifier;
         $.getJSON(url, function(response){
             driver = response.value;
             if (driver != null) {
@@ -57,7 +57,7 @@ function save_driver() {
     
     $.ajax({
         type: 'PUT',
-        url: ws_url + 'Drivers/' + driver.name,
+        url: ws_url + 'Drivers/' + driver.identifier.string,
         contentType: 'application/json',
         data: driver,
         success: function(data, status){
@@ -75,7 +75,7 @@ function delete_driver() {
     // TODO should give some warning
     $.ajax({
         type: 'DELETE',
-        url: ws_url + 'Drivers/' + driver.name,
+        url: ws_url + 'Drivers/' + driver.identifier.string,
         success: function(data, status){
             console.log("Data: " + data + "\nStatus: " + status);
             window.location.replace("..");
