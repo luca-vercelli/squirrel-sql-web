@@ -1,7 +1,6 @@
 package net.sourceforge.squirrel_sql.ws;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -16,6 +15,7 @@ import net.sourceforge.squirrel_sql.client.gui.db.AliasesAndDriversManager;
 import net.sourceforge.squirrel_sql.client.gui.db.SQLAlias;
 import net.sourceforge.squirrel_sql.dto.ListBean;
 import net.sourceforge.squirrel_sql.dto.ValueBean;
+import net.sourceforge.squirrel_sql.fw.id.UidIdentifier;
 import net.sourceforge.squirrel_sql.fw.sql.ISQLAlias;
 
 @Path("/")
@@ -42,11 +42,10 @@ public class AliasesEndpoint {
 	}
 
 	@GET
-	@Path("/Aliases/{name}")
-	public ValueBean<ISQLAlias> getItem(@PathParam("name") String name) {
-		List<ISQLAlias> items = getManager().getAliasList().stream().filter(x -> x.getName().equals(name))
-				.collect(Collectors.toList());
-		ISQLAlias object = items.isEmpty() ? null : items.get(0);
+	@Path("/Aliases/{identifier}")
+	public ValueBean<ISQLAlias> getItem(@PathParam("identifier") String stringId) {
+		UidIdentifier id = createId(stringId);
+		ISQLAlias object = getManager().getAlias(id);
 		// If null, may raise HTTP 404
 		return new ValueBean<>(object);
 	}
@@ -59,21 +58,21 @@ public class AliasesEndpoint {
 	}
 
 	@PUT
-	@Path("/Aliases/{name}")
-	public void updateItem(@PathParam("name") String name, ISQLAlias item) {
+	@Path("/Aliases/{identifier}")
+	public void updateItem(@PathParam("identifier") String stringId, ISQLAlias item) {
 		// TODO
 	}
 
 	@DELETE
-	@Path("/Aliases/{name}")
-	public void deleteItem(@PathParam("name") String name, SQLAlias item) {
+	@Path("/Aliases/{identifier}")
+	public void deleteItem(@PathParam("identifier") String stringId, SQLAlias item) {
 		getManager().removeAlias(item);
 		// should call saveAliases() ?
 	}
 
-	@POST
-	@Path("/Connect/{aliasName}")
-	public void connect(@PathParam("name") String name) {
-		// TODO
+	private UidIdentifier createId(String stringId) {
+		UidIdentifier id = new UidIdentifier();
+		id.setString(stringId);
+		return id;
 	}
 }

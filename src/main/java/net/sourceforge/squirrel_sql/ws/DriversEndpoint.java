@@ -1,7 +1,6 @@
 package net.sourceforge.squirrel_sql.ws;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -15,6 +14,8 @@ import javax.ws.rs.PathParam;
 import net.sourceforge.squirrel_sql.client.gui.db.AliasesAndDriversManager;
 import net.sourceforge.squirrel_sql.dto.ListBean;
 import net.sourceforge.squirrel_sql.dto.ValueBean;
+import net.sourceforge.squirrel_sql.fw.id.UidIdentifier;
+import net.sourceforge.squirrel_sql.fw.sql.ISQLDriver;
 import net.sourceforge.squirrel_sql.fw.sql.SQLDriver;
 
 @Path("/")
@@ -40,11 +41,10 @@ public class DriversEndpoint {
 	}
 
 	@GET
-	@Path("/Drivers/{name}")
-	public ValueBean<SQLDriver> getItem(@PathParam("name") String name) {
-		List<SQLDriver> items = getManager().getDriverList().stream().filter(x -> x.getName().equals(name))
-				.collect(Collectors.toList());
-		SQLDriver object = items.isEmpty() ? null : items.get(0);
+	@Path("/Drivers/{identifier}")
+	public ValueBean<ISQLDriver> getItem(@PathParam("identifier") String stringId) {
+		UidIdentifier id = createId(stringId);
+		ISQLDriver object = getManager().getDriver(id);
 		// If null, may raise HTTP 404
 		return new ValueBean<>(object);
 	}
@@ -57,15 +57,21 @@ public class DriversEndpoint {
 	}
 
 	@PUT
-	@Path("/Drivers/{name}")
-	public void updateItem(@PathParam("name") String name, SQLDriver item) {
+	@Path("/Drivers/{identifier}")
+	public void updateItem(@PathParam("identifier") String stringId, SQLDriver item) {
 		// TODO
 	}
 
 	@DELETE
-	@Path("/Drivers/{name}")
-	public void deleteItem(@PathParam("name") String name, SQLDriver item) {
+	@Path("/Drivers/{identifier}")
+	public void deleteItem(@PathParam("identifier") String stringId, SQLDriver item) {
 		getManager().removeDriver(item);
 		// should call saveDrivers() ?
+	}
+
+	private UidIdentifier createId(String stringId) {
+		UidIdentifier id = new UidIdentifier();
+		id.setString(stringId);
+		return id;
 	}
 }
