@@ -2,12 +2,16 @@
   "data" : [{
     "name" : "My Home MySQL",
     "valid" : true,
-    "identifier" : null,
+    "identifier" : {
+      "string" : "fuffa"
+    },
     "autoLogon" : false,
     "userName" : "myself",
     "password" : "mysecretpassword",
     "url" : "jdbc:mysql://host1:33060/mydatabase",
-    "driverIdentifier" : null,
+    "driverIdentifier" : {
+      "string" : "-52"
+    },
     "schemaProperties" : {
       "schemaDetails" : [ ],
       "globalState" : 0,
