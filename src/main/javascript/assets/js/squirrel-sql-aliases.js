@@ -30,6 +30,7 @@ $(document).ready(function(){
     $('#save_button').click(save_alias);
     $("#create_button").click(create_alias);
     $("#delete_button").click(delete_alias);
+    $("#connect_button").click(connect);
 });
 
 function create_alias() {
@@ -80,6 +81,30 @@ function delete_alias() {
         success: function(data, status){
             console.log("Data: " + data + "\nStatus: " + status);
             window.location.replace("..");
+        },
+        error: function(data, status){
+            console.log("ERROR! Data: " + data + "\nStatus: " + status);
+            disable_edit(false);
+        }
+    });
+}
+
+function connect() {
+    // FIXME user and password could not be saved into the alias
+    var url = (enable_mock) ? 
+            ws_url_mock + 'SingleSession.json' :
+            ws_url + 'Connect';
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: {
+            aliasIdentifier: alias.identifier.string,
+            userName: $("#alias_user").val(),
+            password: $("#alias_password").val()
+        },
+        success: function(data, status){
+            console.log("Data: " + data + "\nStatus: " + status);
+            window.location.replace("../Session.html?id=" + data.value.identifier.string);
         },
         error: function(data, status){
             console.log("ERROR! Data: " + data + "\nStatus: " + status);
