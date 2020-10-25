@@ -64,6 +64,15 @@ public class SessionsEndpoint {
 		return new ValueBean<>(session);
 	}
 
+	@DELETE
+	@Path("/Disconnect")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public void disconnect(@PathParam("aliasIdentifier") String identifier) {
+		UidIdentifier sessionID = createId(identifier);
+		ISession item = webapp.getSessionManager().getSession(sessionID);
+		// TODO
+	}
+
 	private UidIdentifier createId(String stringId) {
 		UidIdentifier id = new UidIdentifier();
 		id.setString(stringId);
