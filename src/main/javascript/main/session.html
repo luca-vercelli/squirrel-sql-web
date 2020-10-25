@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>SQuirreL SQL Web Client</title>
   <!-- plugins:css -->
-  <link rel="stylesheet" href="../../../assets/vendors/mdi/css/materialdesignicons.min.css">
-  <link rel="stylesheet" href="../../../assets/vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="../assets/vendors/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="../assets/vendors/css/vendor.bundle.base.css">
   <!-- endinject -->
   <!-- Plugin css for this page -->
   <!-- End plugin css for this page -->
@@ -19,10 +19,10 @@
 <body>
 <script src="../assets/js/preloader.js"></script>
   <div class="body-wrapper">
-    <!-- partial:../../../partials/_sidebar.html -->
+    <!-- partial:../partials/_sidebar.html -->
     <aside class="mdc-drawer mdc-drawer--dismissible mdc-drawer--open">
       <div class="mdc-drawer__header">
-        <a href="../../index.html" class="brand-logo">
+        <a href="index.html" class="brand-logo">
           <img src="../assets/images/logo.png" alt="logo">
         </a>
       </div>
@@ -84,37 +84,37 @@
             </div>
             <hr/>
             <div class="mdc-list-item mdc-drawer-item">
-              <a class="mdc-drawer-link" href="../../index.html">
+              <a class="mdc-drawer-link" href="index.html">
                 <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">home</i>
                 Dashboard
               </a>
             </div>
             <div class="mdc-list-item mdc-drawer-item">
-              <a class="mdc-drawer-link" href="../../pages/forms/basic-forms.html">
+              <a class="mdc-drawer-link" href="pages/forms/basic-forms.html">
                 <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">track_changes</i>
                 Forms
               </a>
             </div>
             <div class="mdc-list-item mdc-drawer-item">
-              <a class="mdc-drawer-link" href="../../pages/tables/basic-tables.html">
+              <a class="mdc-drawer-link" href="pages/tables/basic-tables.html">
                 <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">grid_on</i>
                 Tables
               </a>
             </div>
             <div class="mdc-list-item mdc-drawer-item">
-              <a class="mdc-drawer-link" href="../../pages/charts/chartjs.html">
+              <a class="mdc-drawer-link" href="pages/charts/chartjs.html">
                 <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">pie_chart_outlined</i>
                 Charts
               </a>
             </div>
             <div class="mdc-list-item mdc-drawer-item">
-              <a class="mdc-drawer-link" href="../../pages/ui-features/buttons.html">
+              <a class="mdc-drawer-link" href="pages/ui-features/buttons.html">
                 <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">home</i>
                 Buttons
               </a>
             </div>
             <div class="mdc-list-item mdc-drawer-item">
-              <a class="mdc-drawer-link" href="../../pages/ui-features/typography.html">
+              <a class="mdc-drawer-link" href="pages/ui-features/typography.html">
                 <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">home</i>
                 Typography
               </a>
@@ -128,17 +128,17 @@
               <div class="mdc-expansion-panel" id="sample-page-submenu">
                 <nav class="mdc-list mdc-drawer-submenu">
                   <div class="mdc-list-item mdc-drawer-item">
-                    <a class="mdc-drawer-link" href="../../pages/samples/blank-page.html">
+                    <a class="mdc-drawer-link" href="pages/samples/blank-page.html">
                       Blank Page
                     </a>
                   </div>
                   <div class="mdc-list-item mdc-drawer-item">
-                    <a class="mdc-drawer-link" href="../../pages/samples/login.html">
+                    <a class="mdc-drawer-link" href="pages/samples/login.html">
                       Login
                     </a>
                   </div>
                   <div class="mdc-list-item mdc-drawer-item">
-                    <a class="mdc-drawer-link" href="../../pages/samples/register.html">
+                    <a class="mdc-drawer-link" href="pages/samples/register.html">
                       Register
                     </a>
                   </div>
@@ -156,7 +156,7 @@
     </aside>
     <!-- partial -->
     <div class="main-wrapper mdc-drawer-app-content">
-      <!-- partial:../../../partials/_navbar.html -->
+      <!-- partial:../partials/_navbar.html -->
       <header class="mdc-top-app-bar">
         <div class="mdc-top-app-bar__row">
           <div class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
@@ -348,49 +348,10 @@
       <!-- partial -->
       <div class="page-wrapper mdc-toolbar-fixed-adjust">
         <main class="content-wrapper">
-          <div class="mdc-layout-grid">
-            <div class="mdc-layout-grid__inner">
-              <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-6-desktop">
-                <div class="mdc-card">
-                  <h6 class="card-title">Line chart</h6>
-                  <canvas id="lineChart"></canvas>
-                </div>
-              </div>
-              <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-6-desktop">
-                <div class="mdc-card">
-                  <h6 class="card-title">Bar chart</h6>
-                  <canvas id="barChart"></canvas>
-                </div>
-              </div>
-              <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-6-desktop">
-                <div class="mdc-card">
-                  <h6 class="card-title">Area chart</h6>
-                  <canvas id="areaChart"></canvas>
-                </div>
-              </div>
-              <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-6-desktop">
-                <div class="mdc-card">
-                  <h6 class="card-title">Doughnut chart</h6>
-                  <canvas id="doughnutChart"></canvas>
-                </div>
-              </div>
-              <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-6-desktop">
-                <div class="mdc-card">
-                  <h6 class="card-title">Pie chart</h6>
-                  <canvas id="pieChart"></canvas>
-                </div>
-              </div>
-              <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-6-desktop">
-                <div class="mdc-card">
-                  <h6 class="card-title">Scatter chart</h6>
-                  <canvas id="scatterChart"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
+          
         </main>
-        <!-- partial:../../../partials/_footer.html -->
-                                        <footer>
+        <!-- partial:../partials/_footer.html -->
+                        <footer>
           <div class="mdc-layout-grid">
             <div class="mdc-layout-grid__inner">
               <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
@@ -407,22 +368,20 @@
           </div>
         </footer>
 
-                                <!-- partial -->
+                <!-- partial -->
       </div>
     </div>
   </div>
   <!-- plugins:js -->
-  <script src="../../../assets/vendors/js/vendor.bundle.base.js"></script>
+  <script src="../assets/vendors/js/vendor.bundle.base.js"></script>
   <!-- endinject -->
   <!-- Plugin js for this page-->
-  <script src="../../../assets/vendors/chartjs/Chart.min.js"></script>
   <!-- End plugin js for this page-->
   <!-- inject:js -->
-  <script src="../../../assets/js/material.js"></script>
-  <script src="../../../assets/js/misc.js"></script>
+  <script src="../assets/js/material.js"></script>
+  <script src="../assets/js/misc.js"></script>
   <!-- endinject -->
   <!-- Custom js for this page-->
-  <script src="../../../assets/js/chartjs.js"></script>
   <!-- End custom js for this page-->
   <script src="../assets/js/squirrel-sql.js"></script>
 </body>
