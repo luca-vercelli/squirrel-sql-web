@@ -12,9 +12,9 @@
   <!-- Plugin css for this page -->
   <!-- End plugin css for this page -->
   <!-- Layout styles -->
-  <link rel="stylesheet" href="../../../assets/css/squirrelsql/style.css">
+  <link rel="stylesheet" href="/../assets/css/squirrelsql/style.css">
   <!-- End layout styles -->
-  <link rel="shortcut icon" href="../../../assets/images/favicon.ico" />
+  <link rel="shortcut icon" href="../assets/images/favicon.ico" />
 </head>
 <body>
 <script src="../assets/js/preloader.js"></script>
@@ -27,21 +27,21 @@
               <div class="stretch-card mdc-layout-grid__cell--span-4-desktop mdc-layout-grid__cell--span-1-tablet"></div>
               <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-4-desktop mdc-layout-grid__cell--span-6-tablet">
                 <div class="mdc-card">
-                  <form>
+                  <form method="post" action="j_security_check">
                     <div class="mdc-layout-grid">
                       <div class="mdc-layout-grid__inner">
                         <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
                           <div class="mdc-text-field w-100">
-                            <input class="mdc-text-field__input" id="text-field-hero-input">
+                            <input class="mdc-text-field__input" id="j_username">
                             <div class="mdc-line-ripple"></div>
-                            <label for="text-field-hero-input" class="mdc-floating-label">Username</label>
+                            <label for="j_username" class="mdc-floating-label">Username</label>
                           </div>
                         </div>
                         <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
                           <div class="mdc-text-field w-100">
-                            <input class="mdc-text-field__input" type="password" id="text-field-hero-input">
+                            <input class="mdc-text-field__input" type="password" id="j_password">
                             <div class="mdc-line-ripple"></div>
-                            <label for="text-field-hero-input" class="mdc-floating-label">Password</label>
+                            <label for="j_password" class="mdc-floating-label">Password</label>
                           </div>
                         </div>
                         <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
@@ -63,13 +63,10 @@
                             <label for="checkbox-1">Remember me</label>
                           </div>
                         </div>
-                        <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop d-flex align-items-center justify-content-end">
-                          <a href="#">Forgot Password</a>
-                        </div>
                         <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
-                          <a href="../../index.html" class="mdc-button mdc-button--raised w-100">
+                          <button class="mdc-button mdc-button--raised w-100" id="login-button">
                             Login
-                          </a>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -94,5 +91,6 @@
   <!-- endinject -->
   <!-- Custom js for this page-->
   <!-- End custom js for this page-->
+  <script src="../assets/js/login.js"></script>
 </body>
 </html>
