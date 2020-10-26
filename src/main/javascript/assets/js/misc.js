@@ -21,7 +21,16 @@
 
     //Add active class to nav-link based on url dynamically
     //Active class can be hard coded directly in html file also as required
-    var current = location.pathname.split("/").slice(-1)[0].replace(/^\/|\/$/g, '');
+    
+    // Modified by squirrel-sql
+    // Original code:
+    // var current = location.pathname.split("/").slice(-1)[0].replace(/^\/|\/$/g, '');
+    var current = location.href.split("/").splice(-1)[0];
+    if (current.endsWith('#')) {
+        current = current.substring(0, current.length-1);
+    }
+    console.log(current);
+    
     $('.mdc-drawer-item .mdc-drawer-link', sidebar).each(function () {
       var $this = $(this);
       if (current === "") {
