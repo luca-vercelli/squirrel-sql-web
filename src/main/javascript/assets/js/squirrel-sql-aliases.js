@@ -41,7 +41,7 @@ function create_alias() {
         type: 'POST',
         url: ws_url + 'Aliass',
         contentType: 'application/json',
-        data: alias,
+        data: JSON.stringify(alias),
         success: function(data, status){
             console.log("Data: " + data + "\nStatus: " + status);
             disable_edit(false);
@@ -61,7 +61,7 @@ function save_alias() {
         type: 'PUT',
         url: ws_url + 'Aliass/' + alias.identifier.string,
         contentType: 'application/json',
-        data: alias,
+        data: JSON.stringify(alias),
         success: function(data, status){
             console.log("Data: " + data + "\nStatus: " + status);
             disable_edit(false);

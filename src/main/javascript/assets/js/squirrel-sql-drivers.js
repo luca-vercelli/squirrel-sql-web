@@ -39,7 +39,7 @@ function create_driver() {
         type: 'POST',
         url: ws_url + 'Drivers',
         contentType: 'application/json',
-        data: driver,
+        data: JSON.stringify(driver),
         success: function(data, status){
             console.log("Data: " + data + "\nStatus: " + status);
             disable_edit(false);
@@ -59,7 +59,7 @@ function save_driver() {
         type: 'PUT',
         url: ws_url + 'Drivers/' + driver.identifier.string,
         contentType: 'application/json',
-        data: driver,
+        data: JSON.stringify(driver),
         success: function(data, status){
             console.log("Data: " + data + "\nStatus: " + status);
             disable_edit(false);
