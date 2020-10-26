@@ -175,7 +175,8 @@ function set_creating(true_or_false) {
 }
 
 function loadMenuOptions() {
-    var select = $("#ul_for_alias_driver");
+    var select = $("#ul-for-alias-driver");
+    $(".driver-item").remove();
     for(var i in drivers) {
         var driver = drivers[i];
         createSelectOption(select, driver.name, driver.identifier.string);
@@ -189,5 +190,5 @@ function loadMenuOptions() {
 }
 
 function createSelectOption(select, caption, value) {
-    select.append('<li class="mdc-list-item" data-value="'+value+'">'+caption+'</li>');
+    select.append('<li class="mdc-list-item driver-item" data-value="'+value+'">'+caption+'</li>');
 }
