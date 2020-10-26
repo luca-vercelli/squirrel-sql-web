@@ -104,7 +104,7 @@ function connect() {
         },
         success: function(data, status){
             console.log("Data: ", data, "Status:", status);
-            window.location.replace("../Session.html?id=" + data.value.identifier.string);
+            window.location.replace("Session.html?id=" + data.value.identifier.string);
         },
         error: function(data, status){
             console.log("Data: ", data, "Status:", status);
