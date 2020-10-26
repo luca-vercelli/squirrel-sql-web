@@ -13,7 +13,7 @@ var drivers_callbacks = [];
 $(document).ready(function(){
 	loadDrivers();
 	loadAliases();
-	// TODO load sessions
+	loadSessions();
     // TODO which drivers are available in classpath?
 });
 
@@ -54,6 +54,26 @@ function loadAliases() {
 		};
 		
 		createMenuEntry(menu, 'alias.html', 'Create new');
+	});
+}
+
+function loadSessions() {
+	var url = (enable_mock) ? 
+			ws_url_mock + 'Sessions.json' :
+			ws_url + 'Sessions';
+	$.getJSON(url, function(response){
+		sessions = response.data;
+
+		var menu = $('#ui-sub-menu-sessions').find('nav');
+		menu.html("");
+		if (sessions) {
+			for(var i in sessions) {
+				var session = sessions[i];
+				createMenuEntry(menu, 'session.html?id=' + session.identifier.string, session.title);
+			};
+		} else {
+			createMenuEntry(menu, '#', 'No open sessions.');
+		}
 	});
 }
 
