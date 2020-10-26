@@ -36,7 +36,7 @@ function create_driver() {
     load_driver_from_form();
     
     $.ajax({
-        type: 'POST',
+        type: enable_mock ? 'GET' : 'POST',
         url: ws_url + 'Drivers',
         contentType: 'application/json',
         data: JSON.stringify(driver),
@@ -56,7 +56,7 @@ function save_driver() {
     load_driver_from_form();
     
     $.ajax({
-        type: 'PUT',
+        type: enable_mock ? 'GET' : 'PUT',
         url: ws_url + 'Drivers/' + driver.identifier.string,
         contentType: 'application/json',
         data: JSON.stringify(driver),
@@ -74,7 +74,7 @@ function save_driver() {
 function delete_driver() {
     // TODO should give some warning
     $.ajax({
-        type: 'DELETE',
+        type: enable_mock ? 'GET' : 'DELETE',
         url: ws_url + 'Drivers/' + driver.identifier.string,
         success: function(data, status){
             console.log("Data: ", data, "Status:", status);

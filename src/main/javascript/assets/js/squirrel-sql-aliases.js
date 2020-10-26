@@ -38,7 +38,7 @@ function create_alias() {
     load_alias_from_form();
     
     $.ajax({
-        type: 'POST',
+        type: enable_mock ? 'GET' : 'POST',
         url: ws_url + 'Aliass',
         contentType: 'application/json',
         data: JSON.stringify(alias),
@@ -58,7 +58,7 @@ function save_alias() {
     load_alias_from_form();
     
     $.ajax({
-        type: 'PUT',
+        type: enable_mock ? 'GET' : 'PUT',
         url: ws_url + 'Aliass/' + alias.identifier.string,
         contentType: 'application/json',
         data: JSON.stringify(alias),
@@ -76,7 +76,7 @@ function save_alias() {
 function delete_alias() {
     // TODO should give some warning
     $.ajax({
-        type: 'DELETE',
+        type: enable_mock ? 'GET' : 'DELETE',
         url: ws_url + 'Aliass/' + alias.identifier.string,
         success: function(data, status){
             console.log("Data: ", data, "Status:", status);
@@ -95,7 +95,7 @@ function connect() {
             ws_url_mock + 'SingleSession.json' :
             ws_url + 'Connect';
     $.ajax({
-        type: 'POST',
+        type: enable_mock ? 'GET' : 'POST',
         url: url,
         data: {
             aliasIdentifier: alias.identifier.string,
