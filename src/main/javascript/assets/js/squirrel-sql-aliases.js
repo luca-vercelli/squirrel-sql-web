@@ -128,7 +128,6 @@ function load_alias_from_form() {
 }
 
 function update_alias_to_form() {
-    //$("#alias_name").val(alias.name);
     document.querySelector('#mdc-alias-name').MDCTextField.value = alias.name;
     document.querySelector('#mdc-alias-url').MDCTextField.value = alias.url;
     document.querySelector('#mdc-alias-user').MDCTextField.value = alias.userName;
