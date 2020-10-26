@@ -89,23 +89,17 @@ function delete_driver() {
 
 function load_driver_from_form() {
     
-    driver.name = $("#driver_name").val().replace('&', '_');
-    driver.url = $("#driver_url").val();
-    driver.webSiteUrl = $("#driver_website_url").val();
-    driver.driverClassName = $("#driver_class_name").val();
+    driver.name = document.querySelector('#mdc-driver-name').MDCTextField.value.replace('&', '_');
+    driver.url = document.querySelector('#mdc-driver-url').MDCTextField.value;
+    driver.webSiteUrl = document.querySelector('#mdc-website-url').MDCTextField.value;
+    driver.driverClassName = document.querySelector('#mdc-driver-classname').MDCTextField.value;
 }
 
 function update_driver_to_form() {
-    $("#driver_name").val(driver.name);
-    $("#driver_url").val(driver.url);
-    $("#driver_website_url").val(driver.webSiteUrl);
-    $("#driver_class_name").val(driver.driverClassName);
-    
-    // trigger change for Material UI
-    $("#driver_name").trigger('focus');
-    $("#driver_url").trigger('focus');
-    $("#driver_website_url").trigger('focus');
-    $("#driver_class_name").trigger('focus');
+    document.querySelector('#mdc-driver-name').MDCTextField.value = driver.name;
+    document.querySelector('#mdc-driver-url').MDCTextField.value = driver.url;
+    document.querySelector('#mdc-website-url').MDCTextField.value = driver.webSiteUrl;
+    document.querySelector('#mdc-driver-classname').MDCTextField.value = driver.driverClassName;
 }
 
 function disable_edit(true_or_false) {
