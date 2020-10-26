@@ -1,17 +1,21 @@
 package net.sourceforge.squirrel_sql.ws;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
+
+import org.apache.log4j.Logger;
 
 import net.sourceforge.squirrel_sql.client.gui.db.SQLAlias;
 import net.sourceforge.squirrel_sql.client.session.ISession;
@@ -27,6 +31,8 @@ public class SessionsEndpoint {
 
 	@Inject
 	WebApplication webapp;
+
+	Logger logger = Logger.getLogger(SessionsEndpoint.class);
 
 	@GET
 	@Path("/Sessions")
@@ -70,7 +76,11 @@ public class SessionsEndpoint {
 	public void disconnect(@PathParam("aliasIdentifier") String identifier) {
 		UidIdentifier sessionID = createId(identifier);
 		ISession item = webapp.getSessionManager().getSession(sessionID);
-		// TODO
+		try {
+			item.close();
+		} catch (SQLException e) {
+			logger.error("Exception while closing resource", e);
+		}
 	}
 
 	private UidIdentifier createId(String stringId) {
