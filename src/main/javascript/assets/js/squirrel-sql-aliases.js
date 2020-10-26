@@ -115,32 +115,30 @@ function connect() {
 
 function load_alias_from_form() {
     
-    alias.name = $("#alias_name").val().replace('&', '_');
-    alias.driverIdentifier = $("#alias_driver").val();
-    alias.url = $("#alias_url").val();
-    alias.userName = $("#alias_user").val();
-    alias.password = $("#alias_password").val();
-    alias.autoLogon = $("#alias_autologon").val();
-    alias.connectAtStartup = $("#alias_autoconnect").val();
-    alias.encryptPassword = $("#alias_encrypted").val();
+    alias.name = document.querySelector('#mdc-alias-name').MDCTextField.value.replace('&', '_');
+    alias.driverIdentifier = {
+            string: document.querySelector('#mdc-driver').MDCSelect.value
+        };
+    alias.url = document.querySelector('#mdc-alias-url').MDCTextField.value;
+    alias.userName = document.querySelector('#mdc-alias-user').MDCTextField.value;
+    alias.password = document.querySelector('#mdc-alias-password').MDCTextField.value;
+    alias.autoLogon = document.querySelector('#mdc-autologon').MDCSwitch.checked;
+    alias.connectAtStartup = document.querySelector('#mdc-autoconnect').MDCSwitch.checked;
+    alias.encryptPassword = document.querySelector('#mdc-encrypted').MDCSwitch.checked;
 }
 
 function update_alias_to_form() {
-    $("#alias_name").val(alias.name);
-    $("#alias_driver").val(alias.driverIdentifier);
-    $("#alias_url").val(alias.url);
-    $("#alias_user").val(alias.userName);
-    $("#alias_password").val(alias.password);
-    $("#alias_autologon").val(alias.autoLogon);
-    $("#alias_autoconnect").val(alias.connectAtStartup);
-    $("#alias_encrypted").val(alias.encryptPassword);
-    
-    // trigger change for Material UI
-    $("#alias_name").trigger('focus');
-    $("#alias_driver").trigger('focus');
-    $("#alias_url").trigger('focus');
-    $("#alias_user").trigger('focus');
-    $("#alias_password").trigger('focus');
+    //$("#alias_name").val(alias.name);
+    document.querySelector('#mdc-alias-name').MDCTextField.value = alias.name;
+    document.querySelector('#mdc-alias-url').MDCTextField.value = alias.url;
+    document.querySelector('#mdc-alias-user').MDCTextField.value = alias.userName;
+    document.querySelector('#mdc-alias-password').MDCTextField.value = alias.password;
+    // MDC switches
+    document.querySelector('#mdc-autologon').MDCSwitch.checked = alias.autoLogon;
+    document.querySelector('#mdc-autoconnect').MDCSwitch.checked = alias.connectAtStartup;
+    document.querySelector('#mdc-encrypted').MDCSwitch.checked = alias.encryptPassword;
+    // MDC select
+    document.querySelector('#mdc-driver').MDCSelect.value = alias.driverIdentifier.string;
 }
 
 function disable_edit(true_or_false) {
