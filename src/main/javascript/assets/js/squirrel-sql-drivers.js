@@ -41,11 +41,11 @@ function create_driver() {
         contentType: 'application/json',
         data: JSON.stringify(driver),
         success: function(data, status){
-            console.log("Data: " + data + "\nStatus: " + status);
+            console.log("Data: ", data, "Status:", status);
             disable_edit(false);
         },
         error: function(data, status){
-            console.log("ERROR! Data: " + data + "\nStatus: " + status);
+            console.log("Data: ", data, "Status:", status);
             disable_edit(false);
         }
     });
@@ -61,11 +61,11 @@ function save_driver() {
         contentType: 'application/json',
         data: JSON.stringify(driver),
         success: function(data, status){
-            console.log("Data: " + data + "\nStatus: " + status);
+            console.log("Data: ", data, "Status:", status);
             disable_edit(false);
         },
         error: function(data, status){
-            console.log("ERROR! Data: " + data + "\nStatus: " + status);
+            console.log("Data: ", data, "Status:", status);
             disable_edit(false);
         }
     });
@@ -77,11 +77,11 @@ function delete_driver() {
         type: 'DELETE',
         url: ws_url + 'Drivers/' + driver.identifier.string,
         success: function(data, status){
-            console.log("Data: " + data + "\nStatus: " + status);
+            console.log("Data: ", data, "Status:", status);
             window.location.replace("..");
         },
         error: function(data, status){
-            console.log("ERROR! Data: " + data + "\nStatus: " + status);
+            console.log("Data: ", data, "Status:", status);
             disable_edit(false);
         }
     });

@@ -43,11 +43,11 @@ function create_alias() {
         contentType: 'application/json',
         data: JSON.stringify(alias),
         success: function(data, status){
-            console.log("Data: " + data + "\nStatus: " + status);
+            console.log("Data: ", data, "Status:", status);
             disable_edit(false);
         },
         error: function(data, status){
-            console.log("ERROR! Data: " + data + "\nStatus: " + status);
+            console.log("Data: ", data, "Status:", status);
             disable_edit(false);
         }
     });
@@ -63,11 +63,11 @@ function save_alias() {
         contentType: 'application/json',
         data: JSON.stringify(alias),
         success: function(data, status){
-            console.log("Data: " + data + "\nStatus: " + status);
+            console.log("Data: ", data, "Status:", status);
             disable_edit(false);
         },
         error: function(data, status){
-            console.log("ERROR! Data: " + data + "\nStatus: " + status);
+            console.log("Data: ", data, "Status:", status);
             disable_edit(false);
         }
     });
@@ -79,11 +79,11 @@ function delete_alias() {
         type: 'DELETE',
         url: ws_url + 'Aliass/' + alias.identifier.string,
         success: function(data, status){
-            console.log("Data: " + data + "\nStatus: " + status);
+            console.log("Data: ", data, "Status:", status);
             window.location.replace("..");
         },
         error: function(data, status){
-            console.log("ERROR! Data: " + data + "\nStatus: " + status);
+            console.log("Data: ", data, "Status:", status);
             disable_edit(false);
         }
     });
@@ -103,11 +103,11 @@ function connect() {
             password: $("#alias_password").val()
         },
         success: function(data, status){
-            console.log("Data: " + data + "\nStatus: " + status);
+            console.log("Data: ", data, "Status:", status);
             window.location.replace("../Session.html?id=" + data.value.identifier.string);
         },
         error: function(data, status){
-            console.log("ERROR! Data: " + data + "\nStatus: " + status);
+            console.log("Data: ", data, "Status:", status);
             disable_edit(false);
         }
     });
