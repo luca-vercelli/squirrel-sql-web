@@ -1,10 +1,14 @@
 # squirrel-sql-web
 SQuirreL SQL Client - Web version
 
-STATUS: DRAFT!
+STATUS: Work in progress
 
 
-This should be a web version of the famous web client. Just an idea, so far.
+This should be a web version of the famous web client.
+
+Screenshots
+----------
+(TODO)
 
 Build
 -----
@@ -22,3 +26,15 @@ Run
 The application is intended to be run in a real EE container (Glassfish, TomEE, JBoss, ...) not Tomcat.
 
 In Glassfish, with default configuration, the app will run at address http://localhost:8080/squirrel-sql-web/
+
+
+Project roadmap
+---------------
+
+- project structure: DONE
+- drivers CRUD: Work in progress (without properties, so far)
+- aliasess CRUD: Work in progress
+- SQL window: Work in progress
+- SQL tables tree: TODO
+- Tables handling: TODO
+- Web security: TODO
