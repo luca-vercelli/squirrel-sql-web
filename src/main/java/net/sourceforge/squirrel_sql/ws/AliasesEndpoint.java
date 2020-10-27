@@ -13,6 +13,7 @@ import javax.ws.rs.PathParam;
 
 import net.sourceforge.squirrel_sql.client.gui.db.AliasesAndDriversManager;
 import net.sourceforge.squirrel_sql.client.gui.db.SQLAlias;
+import net.sourceforge.squirrel_sql.client.preferences.PreferenceType;
 import net.sourceforge.squirrel_sql.dto.ListBean;
 import net.sourceforge.squirrel_sql.dto.ValueBean;
 import net.sourceforge.squirrel_sql.fw.id.UidIdentifier;
@@ -44,17 +45,16 @@ public class AliasesEndpoint {
 	@GET
 	@Path("/Aliases/{identifier}")
 	public ValueBean<ISQLAlias> getItem(@PathParam("identifier") String stringId) {
-		UidIdentifier id = createId(stringId);
-		ISQLAlias object = getManager().getAlias(id);
+		ISQLAlias item = get(stringId);
 		// If null, may raise HTTP 404
-		return new ValueBean<>(object);
+		return new ValueBean<>(item);
 	}
 
 	@POST
 	@Path("/Aliases")
 	public void createItem(ISQLAlias item) {
 		getManager().addAlias(item);
-		// should call saveAliases() ?
+		webapp.savePreferences(PreferenceType.ALIAS_DEFINITIONS);
 	}
 
 	@PUT
@@ -65,14 +65,20 @@ public class AliasesEndpoint {
 
 	@DELETE
 	@Path("/Aliases/{identifier}")
-	public void deleteItem(@PathParam("identifier") String stringId, SQLAlias item) {
-		getManager().removeAlias(item);
-		// should call saveAliases() ?
+	public void deleteItem(@PathParam("identifier") String stringId) {
+		ISQLAlias item = get(stringId);
+		getManager().removeAlias((SQLAlias) item);
+		webapp.savePreferences(PreferenceType.ALIAS_DEFINITIONS);
 	}
 
 	private UidIdentifier createId(String stringId) {
 		UidIdentifier id = new UidIdentifier();
 		id.setString(stringId);
 		return id;
+	}
+	
+	private ISQLAlias get(String stringId) {
+		UidIdentifier id = createId(stringId);
+		return getManager().getAlias(id);
 	}
 }

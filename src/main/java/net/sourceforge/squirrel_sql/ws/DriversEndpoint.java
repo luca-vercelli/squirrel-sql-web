@@ -12,6 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
 import net.sourceforge.squirrel_sql.client.gui.db.AliasesAndDriversManager;
+import net.sourceforge.squirrel_sql.client.preferences.PreferenceType;
 import net.sourceforge.squirrel_sql.dto.ListBean;
 import net.sourceforge.squirrel_sql.dto.ValueBean;
 import net.sourceforge.squirrel_sql.fw.id.UidIdentifier;
@@ -43,17 +44,16 @@ public class DriversEndpoint {
 	@GET
 	@Path("/Drivers/{identifier}")
 	public ValueBean<ISQLDriver> getItem(@PathParam("identifier") String stringId) {
-		UidIdentifier id = createId(stringId);
-		ISQLDriver object = getManager().getDriver(id);
+		ISQLDriver item = get(stringId);
 		// If null, may raise HTTP 404
-		return new ValueBean<>(object);
+		return new ValueBean<>(item);
 	}
 
 	@POST
 	@Path("/Drivers")
 	public void createItem(SQLDriver item) {
 		getManager().addDriver(item, null);
-		// should call saveDrivers() ?
+		webapp.savePreferences(PreferenceType.DRIVER_DEFINITIONS);
 	}
 
 	@PUT
@@ -64,14 +64,20 @@ public class DriversEndpoint {
 
 	@DELETE
 	@Path("/Drivers/{identifier}")
-	public void deleteItem(@PathParam("identifier") String stringId, SQLDriver item) {
+	public void deleteItem(@PathParam("identifier") String stringId) {
+		ISQLDriver item = get(stringId);
 		getManager().removeDriver(item);
-		// should call saveDrivers() ?
+		webapp.savePreferences(PreferenceType.DRIVER_DEFINITIONS);
 	}
 
 	private UidIdentifier createId(String stringId) {
 		UidIdentifier id = new UidIdentifier();
 		id.setString(stringId);
 		return id;
+	}
+	
+	private ISQLDriver get(String stringId) {
+		UidIdentifier id = createId(stringId);
+		return getManager().getDriver(id);
 	}
 }
