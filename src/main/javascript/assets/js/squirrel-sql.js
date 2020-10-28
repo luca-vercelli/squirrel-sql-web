@@ -28,7 +28,7 @@ function loadDrivers() {
 			ws_url + 'Drivers';
 	$.getJSON(url, function(response){
 		drivers = response.data;
-
+        drivers.sort(cmpNames);
 		var menu = $('#ui-sub-menu-drivers').find('nav');
 		menu.html("");
 		for(var i in drivers) {
@@ -54,7 +54,7 @@ function loadAliases() {
 			ws_url + 'Aliases';
 	$.getJSON(url, function(response){
 		aliases = response.data;
-
+        aliases.sort(cmpNames);
 		var menu = $('#ui-sub-menu-aliases').find('nav');
 		menu.html("");
 		for(var i in aliases) {
@@ -76,7 +76,7 @@ function loadSessions() {
 			ws_url + 'Sessions';
 	$.getJSON(url, function(response){
 		sessions = response.data;
-
+        sessions.sort(cmpTitles);
 		var menu = $('#ui-sub-menu-sessions').find('nav');
 		menu.html("");
 		if (sessions) {
@@ -92,6 +92,18 @@ function loadSessions() {
 			createMenuEntry(menu, '#', 'No open sessions.');
 		}
 	});
+}
+
+function cmpNames(x, y){
+    var name1 = x.name ? x.name.toLowerCase() : '';
+    var name2 = y.name ? y.name.toLowerCase() : '';
+    return name1 < name2 ? -1 : name1 == name2 ? 0 : +1;
+}
+
+function cmpTitles(x, y){
+    var name1 = x.title ? x.title.toLowerCase() : '';
+    var name2 = y.title ? y.title.toLowerCase() : '';
+    return name1 < name2 ? -1 : name1 == name2 ? 0 : +1;
 }
 
 function createMenuEntry(menu, url, caption) {
