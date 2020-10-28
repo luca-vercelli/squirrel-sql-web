@@ -100,8 +100,8 @@ function createMenuEntry(menu, url, caption) {
     if (url.indexOf(current_href) !== -1) {
           console.log("I AM HERE");  //DEBUG
           active = ' active';
-          menu.addClass('expanded'); 
-          menu.show();
+          menu.closest('.mdc-expansion-panel').addClass('expanded');
+          menu.closest('.mdc-expansion-panel').show();
         }
     
 	var html = '<div class="mdc-list-item mdc-drawer-item" tabindex="-1">'+
