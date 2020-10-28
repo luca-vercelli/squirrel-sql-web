@@ -31,10 +31,12 @@ function loadDrivers() {
         drivers.sort(cmpNames);
 		var menu = $('#ui-sub-menu-drivers').find('nav');
 		menu.html("");
+        var checkIcon = ' <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">check</i>';
 		for(var i in drivers) {
 			var driver = drivers[i];
             if (driver.identifier != null) {
-                createMenuEntry(menu, 'driver.html?id=' + driver.identifier.string, driver.name);
+                var isChecked = driver.jdbcdriverClassLoaded ? checkIcon : ''
+                createMenuEntry(menu, 'driver.html?id=' + driver.identifier.string, driver.name + isChecked);
             } else {
                 console.log(`Skipping entry ${driver.name} with no identifier`); // should not happen
             }

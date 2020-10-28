@@ -11,6 +11,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
+import org.apache.log4j.Logger;
+
 import net.sourceforge.squirrel_sql.client.gui.db.AliasesAndDriversManager;
 import net.sourceforge.squirrel_sql.client.gui.db.SQLAlias;
 import net.sourceforge.squirrel_sql.client.preferences.PreferenceType;
@@ -25,6 +27,8 @@ public class AliasesEndpoint {
 
 	@Inject
 	WebApplication webapp;
+
+	Logger logger = Logger.getLogger(AliasesEndpoint.class);
 
 	// We cannot inject the manager, as it is not an EJB
 	// Instead, we inject the WebApplication and retrieve the manager
