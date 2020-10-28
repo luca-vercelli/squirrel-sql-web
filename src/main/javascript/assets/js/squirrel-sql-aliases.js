@@ -40,7 +40,7 @@ function createAlias() {
     
     $.ajax({
         type: enable_mock ? 'GET' : 'POST',
-        url: ws_url + 'Aliass',
+        url: ws_url + 'Aliases',
         contentType: 'application/json',
         data: JSON.stringify(alias),
         success: function(data, status){
@@ -60,7 +60,7 @@ function saveAlias() {
     
     $.ajax({
         type: enable_mock ? 'GET' : 'PUT',
-        url: ws_url + 'Aliass/' + alias.identifier.string,
+        url: ws_url + 'Aliases/' + alias.identifier.string,
         contentType: 'application/json',
         data: JSON.stringify(alias),
         success: function(data, status){
@@ -78,7 +78,7 @@ function deleteAlias() {
     // TODO should give some warning
     $.ajax({
         type: enable_mock ? 'GET' : 'DELETE',
-        url: ws_url + 'Aliass/' + alias.identifier.string,
+        url: ws_url + 'Aliases/' + alias.identifier.string,
         success: function(data, status){
             console.log("Data: ", data, "Status:", status);
             window.location.replace("..");
