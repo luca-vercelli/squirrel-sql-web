@@ -10,6 +10,11 @@ var sessions = [];
 // functions to execute when driver have loaded
 var drivers_callbacks = [];
 
+var current_href = location.href.split("/").splice(-1)[0];
+if (current_href.endsWith('#')) {
+    current_href = current_href.substring(0, current_href.length-1);
+}
+    
 $(document).ready(function(){
 	loadDrivers();
 	loadAliases();
@@ -90,8 +95,17 @@ function loadSessions() {
 }
 
 function createMenuEntry(menu, url, caption) {
+    // something like misc.js
+    var active = "";
+    if (url.indexOf(current_href) !== -1) {
+          console.log("I AM HERE");  //DEBUG
+          active = ' active';
+          menu.addClass('expanded'); 
+          menu.show();
+        }
+    
 	var html = '<div class="mdc-list-item mdc-drawer-item" tabindex="-1">'+
-    '<a class="mdc-drawer-link" href="'+url+'" tabindex="-1">'+caption+'</a></div>';
+    '<a class="mdc-drawer-link' + active +'" href="'+url+'" tabindex="-1">'+caption+'</a></div>';
 	menu.append(html);
 }
 
