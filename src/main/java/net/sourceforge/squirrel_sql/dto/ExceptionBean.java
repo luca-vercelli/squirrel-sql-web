@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response.Status;
 public class ExceptionBean {
 
 	public static class OdataExceptionErrorBean {
-		private String lang = "it";
+		private String lang = "en";
 		private String value;
 
 		public OdataExceptionErrorBean() {
