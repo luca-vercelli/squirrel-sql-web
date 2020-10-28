@@ -36,6 +36,7 @@ public class UidIdentifier implements IIdentifier, Serializable {
 		_id = new UID().toString();
 	}
 
+	@Override
 	public boolean equals(Object rhs) {
 		boolean rc = false;
 		if (rhs != null && rhs.getClass().equals(getClass())) {
@@ -44,20 +45,22 @@ public class UidIdentifier implements IIdentifier, Serializable {
 		return rc;
 	}
 
+	@Override
 	public synchronized int hashCode() {
 		return toString().hashCode();
 	}
 
+	@Override
 	public String toString() {
 		return _id;
 	}
 
-	// Only for restoring from XML etc.
+	@Override
 	public void setString(String value) {
 		_id = value;
 	}
-	
-	// required by Jackson Serialization
+
+	@Override
 	public String getString() {
 		return _id;
 	}
