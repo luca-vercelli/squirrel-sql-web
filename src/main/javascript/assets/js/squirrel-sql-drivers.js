@@ -1,7 +1,7 @@
 // this url works if every page is at same depth...
 var ws_url = '../ws/';
 var ws_url_mock = '../mock/'
-var enable_mock = true;
+var enable_mock = false;
 
 var driver = null;
 var creating = true;
@@ -26,12 +26,12 @@ $(document).ready(function(){
         set_creating(true);
     }
     
-    $('#save_button').click(save_driver);
-    $("#create_button").click(create_driver);
-    $("#delete_button").click(delete_driver);
+    $('#save_button').click(saveDriver);
+    $("#create_button").click(createDriver);
+    $("#delete_button").click(deleteDriver);
 });
 
-function create_driver() {
+function createDriver() {
     disable_edit(true);
     load_driver_from_form();
     
@@ -51,7 +51,7 @@ function create_driver() {
     });
 }
 
-function save_driver() {
+function saveDriver() {
     disable_edit(true);
     load_driver_from_form();
     
@@ -71,7 +71,7 @@ function save_driver() {
     });
 }
 
-function delete_driver() {
+function deleteDriver() {
     // TODO should give some warning
     $.ajax({
         type: enable_mock ? 'GET' : 'DELETE',
@@ -89,6 +89,7 @@ function delete_driver() {
 
 function load_driver_from_form() {
     
+    if (driver == null) driver = new Object();
     driver.name = document.querySelector('#mdc-driver-name').MDCTextField.value.replace('&', '_');
     driver.url = document.querySelector('#mdc-driver-url').MDCTextField.value;
     driver.webSiteUrl = document.querySelector('#mdc-website-url').MDCTextField.value;

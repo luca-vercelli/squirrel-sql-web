@@ -1,7 +1,7 @@
 // this url works if every page is at same depth...
 var ws_url = '../ws/';
 var ws_url_mock = '../mock/'
-var enable_mock = true;
+var enable_mock = false;
 
 var drivers = [];
 var aliases = [];
@@ -28,7 +28,11 @@ function loadDrivers() {
 		menu.html("");
 		for(var i in drivers) {
 			var driver = drivers[i];
-			createMenuEntry(menu, 'driver.html?id=' + driver.identifier.string, driver.name);
+            if (driver.identifier != null) {
+                createMenuEntry(menu, 'driver.html?id=' + driver.identifier.string, driver.name);
+            } else {
+                console.log(`Skipping entry ${driver.name} with no identifier`); // should not happen
+            }
 		};
 		
 		createMenuEntry(menu, 'driver.html', 'Create new');
@@ -50,7 +54,11 @@ function loadAliases() {
 		menu.html("");
 		for(var i in aliases) {
 			var alias = aliases[i];
-			createMenuEntry(menu, 'alias.html?id=' + alias.identifier.string, alias.name);
+            if (alias.identifier != null) {
+                createMenuEntry(menu, 'alias.html?id=' + alias.identifier.string, alias.name);
+            } else {
+                console.log(`Skipping entry ${alias.name} with no identifier`); // should not happen
+            }
 		};
 		
 		createMenuEntry(menu, 'alias.html', 'Create new');
@@ -69,7 +77,11 @@ function loadSessions() {
 		if (sessions) {
 			for(var i in sessions) {
 				var session = sessions[i];
-				createMenuEntry(menu, 'session.html?id=' + session.identifier.string, session.title);
+                if (session.identifier != null) {
+                    createMenuEntry(menu, 'session.html?id=' + session.identifier.string, session.title);
+                } else {
+                    console.log(`Skipping entry ${session.name} with no identifier`); // should not happen
+                }
 			};
 		} else {
 			createMenuEntry(menu, '#', 'No open sessions.');

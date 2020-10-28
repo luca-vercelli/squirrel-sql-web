@@ -1,7 +1,7 @@
 // this url works if every page is at same depth...
 var ws_url = '../ws/';
 var ws_url_mock = '../mock/'
-var enable_mock = true;
+var enable_mock = false;
 
 var session = null;
 

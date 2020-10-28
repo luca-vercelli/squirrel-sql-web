@@ -1,7 +1,7 @@
 // this url works if every page is at same depth...
 var ws_url = '../ws/';
 var ws_url_mock = '../mock/'
-var enable_mock = true;
+var enable_mock = false;
 
 var alias = null;
 var creating = true;
@@ -27,13 +27,14 @@ $(document).ready(function(){
         set_creating(true);
     }
     
-    $('#save_button').click(save_alias);
-    $("#create_button").click(create_alias);
-    $("#delete_button").click(delete_alias);
+    $('#save_button').click(saveAlias);
+    $("#create_button").click(createAlias);
+    $("#delete_button").click(deleteAlias);
     $("#connect_button").click(connect);
+    $('#mdc-driver').on('MDCSelect:change', changeDriverUrl);
 });
 
-function create_alias() {
+function createAlias() {
     disable_edit(true);
     load_alias_from_form();
     
@@ -53,7 +54,7 @@ function create_alias() {
     });
 }
 
-function save_alias() {
+function saveAlias() {
     disable_edit(true);
     load_alias_from_form();
     
@@ -73,7 +74,7 @@ function save_alias() {
     });
 }
 
-function delete_alias() {
+function deleteAlias() {
     // TODO should give some warning
     $.ajax({
         type: enable_mock ? 'GET' : 'DELETE',
@@ -115,6 +116,7 @@ function connect() {
 
 function load_alias_from_form() {
     
+    if (alias == null) alias = new Object();
     alias.name = document.querySelector('#mdc-alias-name').MDCTextField.value.replace('&', '_');
     alias.driverIdentifier = {
             string: document.querySelector('#mdc-driver').MDCSelect.value
@@ -171,6 +173,9 @@ function set_creating(true_or_false) {
     }
 }
 
+/**
+ * Populate drivers drop-down menu
+ */
 function loadMenuOptions() {
     var select = $("#ul-for-alias-driver");
     $(".driver-item").remove();
@@ -188,4 +193,16 @@ function loadMenuOptions() {
 
 function createSelectOption(select, caption, value) {
     select.append('<li class="mdc-list-item driver-item" data-value="'+value+'">'+caption+'</li>');
+}
+
+/**
+ * Copy driver url into alias url on the form
+ */
+function changeDriverUrl() {
+    load_alias_from_form();
+    if (alias.driverIdentifier) {
+        var driver = getDriverByIdentifier(alias.driverIdentifier.string);
+        alias.url = driver.url;
+        document.querySelector('#mdc-alias-url').MDCTextField.value = alias.url;
+    }
 }
