@@ -1,4 +1,4 @@
-package net.sourceforge.squirrel_sql.ws;
+package net.sourceforge.squirrel_sql.ws.managers;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;

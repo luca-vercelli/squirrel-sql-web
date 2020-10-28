@@ -1,4 +1,4 @@
-package net.sourceforge.squirrel_sql.ws;
+package net.sourceforge.squirrel_sql.ws.resources;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -24,6 +24,7 @@ import net.sourceforge.squirrel_sql.dto.ValueBean;
 import net.sourceforge.squirrel_sql.fw.id.UidIdentifier;
 import net.sourceforge.squirrel_sql.fw.sql.ISQLDriver;
 import net.sourceforge.squirrel_sql.fw.sql.SQLConnection;
+import net.sourceforge.squirrel_sql.ws.managers.WebApplication;
 
 @Path("/")
 @Stateless

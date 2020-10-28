@@ -1,4 +1,4 @@
-package net.sourceforge.squirrel_sql.ws;
+package net.sourceforge.squirrel_sql.ws.resources;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
