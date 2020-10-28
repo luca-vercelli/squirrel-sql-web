@@ -8,7 +8,8 @@ This should be a web version of the famous web client.
 
 Screenshots
 ----------
-(TODO)
+![Drivers](https://i.postimg.cc/9DfwVs8t/drivers.png)
+![Aliases](https://i.postimg.cc/vchxJGzZ/aliases.png)
 
 Build
 -----
@@ -31,10 +32,10 @@ In Glassfish, with default configuration, the app will run at address http://loc
 Project roadmap
 ---------------
 
-- project structure: DONE
-- drivers CRUD: Work in progress (without properties, so far)
-- aliasess CRUD: Work in progress
-- SQL window: Work in progress
-- SQL tables tree: TODO
-- Tables handling: TODO
-- Web security: TODO
+- project structure ![DONE](https://img.shields.io/badge/Status-Done-green.svg)]
+- drivers CRUD: ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg)] (without properties, so far)
+- aliasess CRUD: ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg)]
+- SQL window: ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg)]
+- SQL tables tree: ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg)]
+- Tables handling: ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg)]
+- Web security: ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg)]
