@@ -44,8 +44,10 @@ function createAlias() {
         contentType: 'application/json',
         data: JSON.stringify(alias),
         success: function(data, status){
-            console.log("Data: ", data, "Status:", status);
+            alias = data.value;
+            update_alias_to_form();
             disable_edit(false);
+            // menu is not updated, nor it is the URL
         },
         error: function(data, status){
             console.log("Data: ", data, "Status:", status);

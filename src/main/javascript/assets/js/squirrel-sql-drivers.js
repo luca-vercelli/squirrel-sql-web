@@ -41,8 +41,10 @@ function createDriver() {
         contentType: 'application/json',
         data: JSON.stringify(driver),
         success: function(data, status){
-            console.log("Data: ", data, "Status:", status);
+            driver = data.value;
+            update_driver_to_form();
             disable_edit(false);
+            // menu is not updated, nor it is the URL
         },
         error: function(data, status){
             console.log("Data: ", data, "Status:", status);
