@@ -1,6 +1,7 @@
 package net.sourceforge.squirrel_sql.ws.resources;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -16,8 +17,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
+import net.sourceforge.squirrel_sql.client.session.schemainfo.SchemaInfo;
 import net.sourceforge.squirrel_sql.dto.ListBean;
 import net.sourceforge.squirrel_sql.dto.ValueBean;
+import net.sourceforge.squirrel_sql.fw.sql.ITableInfo;
 import net.sourceforge.squirrel_sql.ws.managers.SessionsManager;
 
 @Path("/")
@@ -60,6 +63,25 @@ public class SessionsEndpoint {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public void disconnect(@FormParam("sessionId") String sessionId) {
 		manager.disconnect(sessionId);
+	}
+
+	@GET
+	@Path("/Sessions/{identifier}/SchemaInfo")
+	public ValueBean<SchemaInfo> getSchemaInfo(@PathParam("identifier") String identifier) {
+		ISession session = manager.getSessionById(identifier);
+		SchemaInfo schemaInfo = session.getSchemaInfo();
+		// If null, may raise HTTP 404
+		return new ValueBean<>(schemaInfo);
+	}
+
+	@GET
+	@Path("/Sessions/{identifier}/TableInfo")
+	public ListBean<ITableInfo> getTableInfo(@PathParam("identifier") String identifier) {
+		ISession session = manager.getSessionById(identifier);
+		ITableInfo[] tableInfo = session.getSchemaInfo().getITableInfos();
+		List<ITableInfo> tableInfoList = Arrays.asList(tableInfo);
+		// If null, may raise HTTP 404
+		return new ListBean<>(tableInfoList, (long) tableInfoList.size());
 	}
 
 }
