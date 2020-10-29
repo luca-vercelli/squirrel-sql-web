@@ -43,7 +43,7 @@ public class SessionsManager {
 	Logger logger = Logger.getLogger(SessionsEndpoint.class);
 
 	/**
-	 * If the user leave some opne sessions, close them at last
+	 * If the user leave some open sessions, close them at last
 	 */
 	@PreDestroy
 	public void preDestroy() {
@@ -87,7 +87,7 @@ public class SessionsManager {
 	public ISession connect(String aliasIdentifier, String user, String passwd) {
 		SQLAlias alias = aliasesManager.getAliasById(aliasIdentifier);
 		SQLDriver driver = driversManager.getDriverById(alias.getDriverIdentifier());
-		SQLConnection conn = aliasesManager.createConnection(alias);
+		SQLConnection conn = aliasesManager.createConnection(alias, user, passwd);
 		ISession session = webapp.getSessionManager().createSession(webapp, driver, alias, conn, user, passwd);
 		openSessions.add(session);
 		return session;

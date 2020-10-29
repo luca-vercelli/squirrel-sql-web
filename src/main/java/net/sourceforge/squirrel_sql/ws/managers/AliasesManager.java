@@ -112,10 +112,8 @@ public class AliasesManager {
 	 * @param alias
 	 * @return
 	 */
-	public SQLConnection createConnection(SQLAlias alias) {
+	public SQLConnection createConnection(SQLAlias alias, String user, String pw) {
 		SQLDriver driver = driversManager.getDriverById(alias.getDriverIdentifier());
-		String user = alias.getUserName();
-		String pw = alias.getPassword();
 		SQLDriverPropertyCollection props = null;
 		ReconnectInfo reconnectInfo = null;
 		return webapp.getSQLDriverManager().getConnection(driver, alias, user, pw, props, reconnectInfo);
