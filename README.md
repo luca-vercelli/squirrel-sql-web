@@ -32,10 +32,13 @@ In Glassfish, with default configuration, the app will run at address http://loc
 Project roadmap
 ---------------
 
-- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) project structure 
-- ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) drivers CRUD (without properties, so far)
-- ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) aliasess CRUD
+- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Project structure 
+- ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Drivers CRUD
+- ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Aliasess CRUD
+- ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Aliases properties window
 - ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) SQL window
-- ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg)SQL tables tree
-- ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Tables handling
+- ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Tables tree
+- ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Global preferences window
+- ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) New session properties window
+- ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) View SQuirreL logs window
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Web security
