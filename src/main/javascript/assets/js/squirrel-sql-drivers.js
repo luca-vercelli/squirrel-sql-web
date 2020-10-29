@@ -62,8 +62,9 @@ function saveDriver() {
         url: ws_url + 'Drivers/' + driver.identifier.string,
         contentType: 'application/json',
         data: JSON.stringify(driver),
-        success: function(data, status){
-            console.log("Data: ", data, "Status:", status);
+        success: function(data, status){){
+            driver = data.value;
+            update_driver_to_form();
             disable_edit(false);
         },
         error: function(data, status){
@@ -79,7 +80,6 @@ function deleteDriver() {
         type: enable_mock ? 'GET' : 'DELETE',
         url: ws_url + 'Drivers/' + driver.identifier.string,
         success: function(data, status){
-            console.log("Data: ", data, "Status:", status);
             window.location.replace("..");
         },
         error: function(data, status){

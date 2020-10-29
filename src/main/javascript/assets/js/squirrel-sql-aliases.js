@@ -66,7 +66,8 @@ function saveAlias() {
         contentType: 'application/json',
         data: JSON.stringify(alias),
         success: function(data, status){
-            console.log("Data: ", data, "Status:", status);
+            alias = data.value;
+            update_alias_to_form();
             disable_edit(false);
         },
         error: function(data, status){
@@ -82,7 +83,6 @@ function deleteAlias() {
         type: enable_mock ? 'GET' : 'DELETE',
         url: ws_url + 'Aliases/' + alias.identifier.string,
         success: function(data, status){
-            console.log("Data: ", data, "Status:", status);
             window.location.replace("..");
         },
         error: function(data, status){
