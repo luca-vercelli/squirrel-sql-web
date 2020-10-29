@@ -7,9 +7,13 @@ import javax.inject.Inject;
 
 import net.sourceforge.squirrel_sql.client.gui.db.SQLAlias;
 import net.sourceforge.squirrel_sql.client.preferences.PreferenceType;
+import net.sourceforge.squirrel_sql.client.session.action.reconnect.ReconnectInfo;
 import net.sourceforge.squirrel_sql.fw.id.IIdentifier;
 import net.sourceforge.squirrel_sql.fw.id.UidIdentifier;
 import net.sourceforge.squirrel_sql.fw.persist.ValidationException;
+import net.sourceforge.squirrel_sql.fw.sql.SQLConnection;
+import net.sourceforge.squirrel_sql.fw.sql.SQLDriver;
+import net.sourceforge.squirrel_sql.fw.sql.SQLDriverPropertyCollection;
 
 /**
  * Manages aliases on XML database
@@ -22,6 +26,8 @@ public class AliasesManager {
 
 	@Inject
 	WebApplication webapp;
+	@Inject
+	DriversManager driversManager;
 
 	@SuppressWarnings("unchecked")
 	public List<SQLAlias> getAliases() {
@@ -97,6 +103,22 @@ public class AliasesManager {
 		webapp.getAliasesAndDriversManager().removeAlias(item);
 		saveAllAliases();
 		return item;
+	}
+
+	/**
+	 * Create a SQLConnection (and a Connection) for the given alias
+	 * 
+	 * @param driver
+	 * @param alias
+	 * @return
+	 */
+	public SQLConnection createConnection(SQLAlias alias) {
+		SQLDriver driver = driversManager.getDriverById(alias.getDriverIdentifier());
+		String user = alias.getUserName();
+		String pw = alias.getPassword();
+		SQLDriverPropertyCollection props = null;
+		ReconnectInfo reconnectInfo = null;
+		return webapp.getSQLDriverManager().getConnection(driver, alias, user, pw, props, reconnectInfo);
 	}
 
 }

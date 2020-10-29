@@ -106,7 +106,7 @@ public class DriversManager {
 		return item;
 	}
 
-	public void searchDriversInClasspath() {
+	public void searchJDBCDriversInClasspath() {
 		List<SQLDriver> list = getDrivers();
 		for (SQLDriver driver : list) {
 			boolean loaded = driver.getDriverClassName() != null && !driver.getDriverClassName().isEmpty()

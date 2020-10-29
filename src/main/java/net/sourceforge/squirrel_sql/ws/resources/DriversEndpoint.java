@@ -66,6 +66,6 @@ public class DriversEndpoint {
 	@POST
 	@Path("/CheckAllDrivers")
 	public void checkAllDrivers() {
-		manager.searchDriversInClasspath();
+		manager.searchJDBCDriversInClasspath();
 	}
 }

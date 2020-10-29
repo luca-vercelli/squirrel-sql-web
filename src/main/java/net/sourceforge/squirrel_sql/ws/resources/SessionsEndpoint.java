@@ -1,6 +1,8 @@
 package net.sourceforge.squirrel_sql.ws.resources;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -28,11 +30,8 @@ public class SessionsEndpoint {
 	@GET
 	@Path("/Sessions")
 	public ListBean<ISession> getItems() {
-
-		// FIXME user should receive only sessions opened by his HTTP session
-		// i.e. a session bean is required
-
-		List<ISession> list = manager.getConnectedSessions();
+		Set<ISession> set = manager.getConnectedSessions();
+		List<ISession> list = new ArrayList<>(set);
 		long count = list.size();
 		// If 0, may raise HTTP 404
 		return new ListBean<>(list, count);
