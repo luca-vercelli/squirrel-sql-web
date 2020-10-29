@@ -54,6 +54,14 @@
 			<version>2.6.0</version>
 		</dependency>
 		
+		<!-- One JDBC Driver, as an example -->
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derby</artifactId>
+			<version>10.1.1.0</version>
+			<optional>true</optional>
+		</dependency>
+		
 		<!-- Following dependencies are copied from squirrel-sql:4.1.0 artifact -->
 
 		<dependency>
