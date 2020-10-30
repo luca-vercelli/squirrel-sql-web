@@ -62,7 +62,7 @@ function saveDriver() {
         url: ws_url + 'Drivers/' + driver.identifier.string,
         contentType: 'application/json',
         data: JSON.stringify(driver),
-        success: function(data, status){){
+        success: function(data, status){
             driver = data.value;
             update_driver_to_form();
             disable_edit(false);
