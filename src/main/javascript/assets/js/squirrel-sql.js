@@ -111,8 +111,7 @@ function cmpTitles(x, y){
 function createMenuEntry(menu, url, caption) {
     // something like misc.js
     var active = "";
-    if (url.indexOf(current_href) !== -1) {
-          console.log("I AM HERE");  //DEBUG
+    if (url.endsWith(current_href)) {
           active = ' active';
           menu.closest('.mdc-expansion-panel').addClass('expanded');
           menu.closest('.mdc-expansion-panel').show();
