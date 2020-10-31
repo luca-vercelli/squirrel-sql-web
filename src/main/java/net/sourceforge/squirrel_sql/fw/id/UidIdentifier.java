@@ -19,8 +19,12 @@ package net.sourceforge.squirrel_sql.fw.id;
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 import java.rmi.server.UID;
+
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.io.Serializable;
 
+@JsonTypeName("UidIdentifier")
 public class UidIdentifier implements IIdentifier, Serializable {
 	
 	private static final long serialVersionUID = -8010376070171401650L;

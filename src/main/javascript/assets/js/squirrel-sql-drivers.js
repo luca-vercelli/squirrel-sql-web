@@ -34,7 +34,7 @@ $(document).ready(function(){
 function createDriver() {
     disable_edit(true);
     load_driver_from_form();
-    
+    driver.identifier = { "type" : "UidIdentifier"};
     $.ajax({
         type: enable_mock ? 'GET' : 'POST',
         url: ws_url + 'Drivers',
