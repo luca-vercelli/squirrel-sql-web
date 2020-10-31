@@ -81,7 +81,7 @@ function loadSessions() {
         sessions.sort(cmpTitles);
 		var menu = $('#ui-sub-menu-sessions').find('nav');
 		menu.html("");
-		if (sessions) {
+		if (sessions.length > 0) {
 			for(var i in sessions) {
 				var session = sessions[i];
                 if (session.identifier != null) {
