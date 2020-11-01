@@ -62,7 +62,7 @@ function saveAlias() {
     
     $.ajax({
         type: enable_mock ? 'GET' : 'PUT',
-        url: ws_url + 'Aliases/' + alias.identifier.string,
+        url: ws_url + 'Aliases/' + alias.identifier,
         contentType: 'application/json',
         data: JSON.stringify(alias),
         success: function(data, status){
@@ -81,7 +81,7 @@ function deleteAlias() {
     // TODO should give some warning
     $.ajax({
         type: enable_mock ? 'GET' : 'DELETE',
-        url: ws_url + 'Aliases/' + alias.identifier.string,
+        url: ws_url + 'Aliases/' + alias.identifier,
         success: function(data, status){
             window.location.replace("..");
         },
@@ -101,13 +101,13 @@ function connect() {
         type: enable_mock ? 'GET' : 'POST',
         url: url,
         data: {
-            aliasIdentifier: alias.identifier.string,
+            aliasIdentifier: alias.identifier,
             userName: $("#alias_user").val(),
             password: $("#alias_password").val()
         },
         success: function(data, status){
             console.log("Data: ", data, "Status:", status);
-            window.location.replace("session.html?id=" + data.value.identifier.string);
+            window.location.replace("session.html?id=" + data.value.identifier);
         },
         error: function(data, status){
             console.log("Data: ", data, "Status:", status);

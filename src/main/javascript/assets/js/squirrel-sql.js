@@ -37,7 +37,7 @@ function loadDrivers() {
 			var driver = drivers[i];
 			if (driver.identifier != null) {
 				var isChecked = driver.jdbcdriverClassLoaded ? checkIcon : ''
-				createMenuEntry(menu, 'driver.html?id=' + driver.identifier.string, driver.name + isChecked);
+				createMenuEntry(menu, 'driver.html?id=' + driver.identifier, driver.name + isChecked);
 			} else {
 				console.log(`Skipping entry ${driver.name} with no identifier`); // should not happen
 			}
@@ -62,7 +62,7 @@ function loadAliases() {
 		for(var i in aliases) {
 			var alias = aliases[i];
 			if (alias.identifier != null) {
-				createMenuEntry(menu, 'alias.html?id=' + alias.identifier.string, alias.name);
+				createMenuEntry(menu, 'alias.html?id=' + alias.identifier, alias.name);
 			} else {
 				console.log(`Skipping entry ${alias.name} with no identifier`); // should not happen
 			}
@@ -83,7 +83,7 @@ function loadSessions() {
 			for(var i in sessions) {
 				var session = sessions[i];
 				if (session.identifier != null) {
-					createMenuEntry(menu, 'session.html?id=' + session.identifier.string, session.title);
+					createMenuEntry(menu, 'session.html?id=' + session.identifier, session.title);
 				} else {
 					console.log(`Skipping entry ${session.name} with no identifier`); // should not happen
 				}
@@ -122,7 +122,7 @@ function createMenuEntry(menu, url, caption) {
 
 function getDriverByIdentifier(id) {
 	for (var i in drivers) {
-		if (drivers[i].identifier.string == id) {
+		if (drivers[i].identifier == id) {
 			return drivers[i];
 		}
 	}

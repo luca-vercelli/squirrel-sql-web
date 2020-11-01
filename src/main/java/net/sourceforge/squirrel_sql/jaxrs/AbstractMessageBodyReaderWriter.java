@@ -1,6 +1,7 @@
 package net.sourceforge.squirrel_sql.jaxrs;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
@@ -12,23 +13,29 @@ import java.text.SimpleDateFormat;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
+
+import net.sourceforge.squirrel_sql.fw.id.IIdentifier;
 
 /**
  * JSON serializer, with Jackson
  * 
  * Differently from JAXB / MOXy, here we serialize objects, non classes
  * 
- * @author LV 2019
+ * @author LV 2019-2020
+ * 
+ * @see JacksonJsonProvider
  *
  */
-public abstract class AbstractMessageBodyWriter<T> implements MessageBodyWriter<T> {
+public abstract class AbstractMessageBodyReaderWriter<T> implements MessageBodyWriter<T>, MessageBodyReader<T> {
 
 	public final DateFormat jsf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
@@ -63,6 +70,11 @@ public abstract class AbstractMessageBodyWriter<T> implements MessageBodyWriter<
 	public ObjectMapper createObjectMapper() {
 		ObjectMapper mapper = new ObjectMapper();
 
+		SimpleModule module = new SimpleModule();
+		module.addSerializer(IIdentifier.class, new IIdentifierSerializer());
+		module.addDeserializer(IIdentifier.class, new IIdentifierDeserializer());
+		mapper.registerModule(module);
+
 		// Pretty print
 		mapper.enable(SerializationFeature.INDENT_OUTPUT);
 
@@ -77,6 +89,21 @@ public abstract class AbstractMessageBodyWriter<T> implements MessageBodyWriter<
 		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
 		return mapper;
+	}
+
+	@Override
+
+	public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
+		// Can convert any datatype to JSON
+		return MediaType.APPLICATION_JSON_TYPE.equals(mediaType);
+	}
+
+	@Override
+	public T readFrom(Class<T> type, Type genericType, Annotation[] annotations, MediaType mediaType,
+			MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
+			throws IOException, WebApplicationException {
+		ObjectMapper mapper = createObjectMapper();
+		return mapper.readValue(entityStream, type);
 	}
 
 }

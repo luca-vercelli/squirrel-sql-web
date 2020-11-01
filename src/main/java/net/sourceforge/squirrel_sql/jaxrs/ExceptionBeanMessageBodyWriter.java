@@ -8,6 +8,6 @@ import net.sourceforge.squirrel_sql.dto.ExceptionBean;
 
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
-public class ExceptionBeanMessageBodyWriter extends AbstractMessageBodyWriter<ExceptionBean> {
+public class ExceptionBeanMessageBodyWriter extends AbstractMessageBodyReaderWriter<ExceptionBean> {
 
 }

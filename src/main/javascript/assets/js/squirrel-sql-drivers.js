@@ -34,7 +34,7 @@ $(document).ready(function(){
 function createDriver() {
     disable_edit(true);
     load_driver_from_form();
-    driver.identifier = { "type" : "UidIdentifier"};
+    
     $.ajax({
         type: enable_mock ? 'GET' : 'POST',
         url: ws_url + 'Drivers',
@@ -59,7 +59,7 @@ function saveDriver() {
     
     $.ajax({
         type: enable_mock ? 'GET' : 'PUT',
-        url: ws_url + 'Drivers/' + driver.identifier.string,
+        url: ws_url + 'Drivers/' + driver.identifier,
         contentType: 'application/json',
         data: JSON.stringify(driver),
         success: function(data, status){
@@ -78,7 +78,7 @@ function deleteDriver() {
     // TODO should give some warning
     $.ajax({
         type: enable_mock ? 'GET' : 'DELETE',
-        url: ws_url + 'Drivers/' + driver.identifier.string,
+        url: ws_url + 'Drivers/' + driver.identifier,
         success: function(data, status){
             window.location.replace("..");
         },

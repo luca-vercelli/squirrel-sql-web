@@ -8,6 +8,6 @@ import net.sourceforge.squirrel_sql.dto.ListBean;
 
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
-public class ListBeanMessageBodyWriter extends AbstractMessageBodyWriter<ListBean<?>> {
+public class ListBeanMessageBodyWriter extends AbstractMessageBodyReaderWriter<ListBean<?>> {
 
 }

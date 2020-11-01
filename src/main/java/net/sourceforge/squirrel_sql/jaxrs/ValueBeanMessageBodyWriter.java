@@ -8,6 +8,6 @@ import net.sourceforge.squirrel_sql.dto.ValueBean;
 
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
-public class ValueBeanMessageBodyWriter extends AbstractMessageBodyWriter<ValueBean<?>> {
+public class ValueBeanMessageBodyWriter extends AbstractMessageBodyReaderWriter<ValueBean<?>> {
 
 }

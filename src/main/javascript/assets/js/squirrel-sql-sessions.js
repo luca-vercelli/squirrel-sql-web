@@ -31,7 +31,7 @@ function disconnect() {
     $.ajax({
         type: enable_mock ? 'GET' : 'DELETE',
         url: ws_url + 'Disconnect',
-        data: { aliasIdentifier: session.identifier.string },
+        data: { aliasIdentifier: session.identifier },
         success: function(data, status){
             console.log("Data: ", data, "Status:", status);
             window.location.replace("..");
