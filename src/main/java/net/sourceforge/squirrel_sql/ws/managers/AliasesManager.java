@@ -52,7 +52,7 @@ public class AliasesManager {
 		webapp.savePreferences(PreferenceType.ALIAS_DEFINITIONS);
 	}
 
-	public SQLAlias updateAlias(SQLAlias item, String id) throws ValidationException {
+	public SQLAlias updateAlias(final SQLAlias item, String id) throws ValidationException {
 
 		// Load old values
 		SQLAlias itemOld = getAliasById(id);
@@ -74,7 +74,7 @@ public class AliasesManager {
 		return itemOld;
 	}
 
-	public SQLAlias createNewAlias(SQLAlias item) throws ValidationException {
+	public SQLAlias createNewAlias(final SQLAlias item) throws ValidationException {
 
 		SQLAlias itemNew = new SQLAlias(new UidIdentifier());
 
@@ -91,7 +91,7 @@ public class AliasesManager {
 		itemNew.setDriverProperties(item.getDriverPropertiesClone());
 
 		// add driver to managed drivers list
-		webapp.getAliasesAndDriversManager().addAlias(item);
+		webapp.getAliasesAndDriversManager().addAlias(itemNew);
 
 		saveAllAliases();
 

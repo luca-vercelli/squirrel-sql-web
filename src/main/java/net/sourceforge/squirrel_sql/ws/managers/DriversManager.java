@@ -5,6 +5,8 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import org.apache.log4j.Logger;
+
 import net.sourceforge.squirrel_sql.client.preferences.PreferenceType;
 import net.sourceforge.squirrel_sql.fw.id.IIdentifier;
 import net.sourceforge.squirrel_sql.fw.id.UidIdentifier;
@@ -22,6 +24,8 @@ public class DriversManager {
 
 	@Inject
 	WebApplication webapp;
+
+	Logger logger = Logger.getLogger(DriversManager.class);
 
 	public List<SQLDriver> getDrivers() {
 		return webapp.getAliasesAndDriversManager().getDriverList();
@@ -56,7 +60,7 @@ public class DriversManager {
 		webapp.savePreferences(PreferenceType.DRIVER_DEFINITIONS);
 	}
 
-	public SQLDriver updateDriver(SQLDriver item, String id) throws ValidationException {
+	public SQLDriver updateDriver(final SQLDriver item, String id) throws ValidationException {
 
 		// Load old values
 		SQLDriver itemOld = getDriverById(id);
@@ -77,7 +81,7 @@ public class DriversManager {
 		return itemOld;
 	}
 
-	public SQLDriver createNewDriver(SQLDriver item) throws ValidationException {
+	public SQLDriver createNewDriver(final SQLDriver item) throws ValidationException {
 
 		SQLDriver itemNew = new SQLDriver(new UidIdentifier());
 
@@ -89,10 +93,10 @@ public class DriversManager {
 		itemNew.setWebSiteUrl(item.getWebSiteUrl());
 
 		boolean driverInClasspath = isDriverInClasspath(item.getDriverClassName());
-		item.setJDBCDriverClassLoaded(driverInClasspath);
+		itemNew.setJDBCDriverClassLoaded(driverInClasspath);
 
 		// add driver to managed drivers list
-		webapp.getAliasesAndDriversManager().addDriver(item, null);
+		webapp.getAliasesAndDriversManager().addDriver(itemNew, null);
 
 		saveAllDrivers();
 
