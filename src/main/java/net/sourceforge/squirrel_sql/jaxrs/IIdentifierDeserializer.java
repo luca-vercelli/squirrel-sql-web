@@ -21,12 +21,12 @@ public class IIdentifierDeserializer extends JsonDeserializer<IIdentifier> {
 	public IIdentifier deserialize(JsonParser jp, DeserializationContext ctxt)
 			throws IOException, JsonProcessingException {
 
-		throw new IllegalStateException();
-		/*JsonNode node = jp.getCodec().readTree(jp);
+		JsonNode node = jp.getCodec().readTree(jp);
 		String stringId = node.asText();
+
 		UidIdentifier id = new UidIdentifier();
 		id.setString(stringId);
-		return id;*/
+		return id;
 	}
 
 }
