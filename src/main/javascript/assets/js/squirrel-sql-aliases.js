@@ -141,7 +141,7 @@ function update_alias_to_form() {
     document.querySelector('#mdc-autoconnect').MDCSwitch.checked = alias.connectAtStartup;
     document.querySelector('#mdc-encrypted').MDCSwitch.checked = alias.encryptPassword;
     // MDC select
-    document.querySelector('#mdc-driver').MDCSelect.value = alias.driverIdentifier.string;
+    document.querySelector('#mdc-driver').MDCSelect.value = alias.driverIdentifier;
 }
 
 function disable_edit(true_or_false) {
@@ -183,7 +183,7 @@ function loadMenuOptions() {
     $(".driver-item").remove();
     for(var i in drivers) {
         var driver = drivers[i];
-        createSelectOption(select, driver.name, driver.identifier.string);
+        createSelectOption(select, driver.name, driver.identifier);
     };
     
     //FIXME
@@ -203,7 +203,7 @@ function createSelectOption(select, caption, value) {
 function changeDriverUrl() {
     load_alias_from_form();
     if (alias.driverIdentifier) {
-        var driver = getDriverByIdentifier(alias.driverIdentifier.string);
+        var driver = getDriverByIdentifier(alias.driverIdentifier);
         alias.url = driver.url;
         document.querySelector('#mdc-alias-url').MDCTextField.value = alias.url;
     }
