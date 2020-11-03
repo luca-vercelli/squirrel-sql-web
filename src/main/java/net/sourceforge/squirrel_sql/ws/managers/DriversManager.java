@@ -62,8 +62,11 @@ public class DriversManager {
 
 	public SQLDriver updateDriver(final SQLDriver item, String id) throws ValidationException {
 
+		logger.info("updateSQLDriver: " + item + ";" + id);
 		// Load old values
 		SQLDriver itemOld = getDriverById(id);
+
+		logger.info("itemOld: " + itemOld);
 
 		// Replace old values with new ones
 		// This may raise ValidationException if required attribute are missing
@@ -83,7 +86,9 @@ public class DriversManager {
 
 	public SQLDriver createNewDriver(final SQLDriver item) throws ValidationException {
 
+		logger.info("createNewDriver: " + item);
 		SQLDriver itemNew = new SQLDriver(new UidIdentifier());
+		logger.info("" + itemNew);
 
 		// Set values
 		// This may raise ValidationException if required attribute are missing
