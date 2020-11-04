@@ -2,26 +2,23 @@ package net.sourceforge.squirrel_sql.ws.managers;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.ejb.Stateless;
+import javax.ejb.Singleton;
+
+import org.apache.log4j.Logger;
 
 import net.sourceforge.squirrel_sql.client.Application;
 import net.sourceforge.squirrel_sql.client.ApplicationArguments;
+import net.sourceforge.squirrel_sql.client.Main;
 import net.sourceforge.squirrel_sql.client.SquirrelLoggerFactory;
-import net.sourceforge.squirrel_sql.client.plugin.IPluginManager;
-import net.sourceforge.squirrel_sql.client.plugin.PluginManager;
-import net.sourceforge.squirrel_sql.client.session.SessionManager;
+import net.sourceforge.squirrel_sql.client.session.schemainfo.SchemaInfoCacheSerializer;
 import net.sourceforge.squirrel_sql.fw.util.log.LoggerController;
 
-@Stateless
+@Singleton
 public class WebApplication extends Application {
 
 	protected static ApplicationArguments applicationArguments;
 
-	// as Application._sessionManager is private we create another one
-	protected SessionManager sessionManager;
-
-	// as Application._pluginManager is private we create another one
-	protected IPluginManager pluginManager;
+	Logger logger = Logger.getLogger(WebApplication.class);
 
 	@Override
 	public void startup() {
@@ -34,9 +31,19 @@ public class WebApplication extends Application {
 	@PostConstruct
 	public void postConstruct() {
 
-		if (applicationArguments == null) {
-			executeOnce();
-		}
+		// why not log4j?
+		LoggerController.registerLoggerFactory(new SquirrelLoggerFactory(true));
+
+		logger.info("******************APPLICATION STARTUP*****************");
+
+		// should be in some cfg file
+		String[] cliArgs = { "--no-splash" };
+		ApplicationArguments.initialize(cliArgs);
+
+		// by default, files are saved in ~/.squirrel-sql
+
+		applicationArguments = ApplicationArguments.getInstance();
+		applicationArguments.validateArgs(true);
 
 		initResourcesAndPrefs();
 		initSessionManager();
@@ -47,34 +54,33 @@ public class WebApplication extends Application {
 		initDriverManager();
 		initAppFiles();
 		// no way to access _appFiles here, and check them
+
+		logger.info("IMMEDIATE=" + getSquirrelPreferences().getSavePreferencesImmediately());
+
+		Main.setApplication(this); // some classes look at this
+		getPropsImpl(); // this is not only getter
+
 		initDataCache();
-	}
+		loadRecentFileHistory();
+		loadSQLHistory();
+		loadCellImportExportInfo();
+		loadEditWhereColsInfo();
+		loadDTProperties();
+		loadUserSpecificWikiTableConfigurations();
 
-	protected void executeOnce() {
-		// This code shall be executed exactly once
-
-		// why not log4j?
-		LoggerController.registerLoggerFactory(new SquirrelLoggerFactory(true));
-
-		// should be in some cfg file
-		String[] cliArgs = { "--no-splash" };
-		ApplicationArguments.initialize(cliArgs);
-		applicationArguments = ApplicationArguments.getInstance();
-		applicationArguments.validateArgs(true);
-
-	}
-
-	protected void initPluginManager() {
-		pluginManager = new PluginManager(this);
-	}
-
-	protected void initSessionManager() {
-		this.sessionManager = new SessionManager(this);
+		saveApplicationState(); // force file creation ?
 	}
 
 	@PreDestroy
 	public void preDestroy() {
-		// mimic this.shutdown(false) ?
+		// mimic this.shutdown()
+
+		saveApplicationState();
+		SchemaInfoCacheSerializer.waitTillStoringIsDone();
+		// cannot call closeOutputStreams()
+
+		logger.info("******************APPLICATION SHUTDOWN*****************");
+		LoggerController.shutdown();
 	}
 
 	public ApplicationArguments getApplicationArguments() {
@@ -86,12 +92,8 @@ public class WebApplication extends Application {
 	}
 
 	@Override
-	public SessionManager getSessionManager() {
-		return sessionManager;
-	}
-
-	@Override
-	public IPluginManager getPluginManager() {
-		return pluginManager;
+	public void showErrorDialog(String msg, Throwable th) {
+		logger.error(msg, th);
+		// do *not* try to open dialog boxes
 	}
 }
