@@ -38,7 +38,6 @@ function loadForm() {
         $.getJSON(url, function(response){
             alias = response.value;
             
-            //MISSING: driverPropertiesClone, valid 
             if (alias != null) {
                 update_alias_to_form();
                 set_creating(false);
@@ -148,6 +147,12 @@ function load_alias_from_form() {
 }
 
 function update_alias_to_form() {
+    // PRE: alias != null
+
+    // here is a pair of properties that server should not set
+    alias.driverPropertiesClone = undefined;
+    alias.valid = undefined;
+
     document.querySelector('#mdc-alias-name').MDCTextField.value = alias.name;
     document.querySelector('#mdc-alias-url').MDCTextField.value = alias.url;
     document.querySelector('#mdc-alias-user').MDCTextField.value = alias.userName;
