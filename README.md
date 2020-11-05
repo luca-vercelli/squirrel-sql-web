@@ -33,8 +33,8 @@ Project roadmap
 ---------------
 
 - ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Project structure 
-- ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Drivers CRUD
-- ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Aliasess CRUD
+- ![WIP](https://img.shields.io/badge/Status-Done-green.svg) Drivers CRUD
+- ![WIP](https://img.shields.io/badge/Status-Done-green.svg) Aliasess CRUD
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Aliases properties window
 - ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) SQL window
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Tables tree

@@ -7,6 +7,16 @@ var driver = null;
 var creating = true;
 
 $(document).ready(function(){
+    loadForm();
+
+    $('#save_button').click(saveDriver);
+    $("#create_button").click(createDriver);
+    $("#delete_button").click(deleteDriver);
+    $("#goto_website_button").click(gotoWebsite);
+    $("#check_drivers_button").click(checkDrivers);
+});
+
+function loadForm() {
     var identifier = location.href.split("driver.html?id=")[1];
     if (identifier) {
         // Updating existing driver
@@ -16,24 +26,20 @@ $(document).ready(function(){
         $.getJSON(url, function(response){
             driver = response.value;
             if (driver != null) {
-                update_driver_to_form();
-                set_creating(false);
+                updateDriverToForm();
+                setCreating(false);
             } else {
                 console.log("Requested driver not found!!!");
             }
         });
 	} else {
-        set_creating(true);
+        setCreating(true);
     }
-    
-    $('#save_button').click(saveDriver);
-    $("#create_button").click(createDriver);
-    $("#delete_button").click(deleteDriver);
-});
+}
 
 function createDriver() {
-    disable_edit(true);
-    load_driver_from_form();
+    disableEdit(true);
+    loadDriverFromForm();
     
     $.ajax({
         type: enable_mock ? 'GET' : 'POST',
@@ -42,21 +48,21 @@ function createDriver() {
         data: JSON.stringify(driver),
         success: function(data, status){
             driver = data.value;
-            update_driver_to_form();
-            disable_edit(false);
-            set_creating(false);
+            updateDriverToForm();
+            disableEdit(false);
+            setCreating(false);
             // menu is not updated, nor it is the URL
         },
         error: function(data, status){
             console.log("Data: ", data, "Status:", status);
-            disable_edit(false);
+            disableEdit(false);
         }
     });
 }
 
 function saveDriver() {
-    disable_edit(true);
-    load_driver_from_form();
+    disableEdit(true);
+    loadDriverFromForm();
     
     $.ajax({
         type: enable_mock ? 'GET' : 'PUT',
@@ -65,12 +71,12 @@ function saveDriver() {
         data: JSON.stringify(driver),
         success: function(data, status){
             driver = data.value;
-            update_driver_to_form();
-            disable_edit(false);
+            updateDriverToForm();
+            disableEdit(false);
         },
         error: function(data, status){
             console.log("Data: ", data, "Status:", status);
-            disable_edit(false);
+            disableEdit(false);
         }
     });
 }
@@ -85,12 +91,12 @@ function deleteDriver() {
         },
         error: function(data, status){
             console.log("Data: ", data, "Status:", status);
-            disable_edit(false);
+            disableEdit(false);
         }
     });
 }
 
-function load_driver_from_form() {
+function loadDriverFromForm() {
     
     if (driver == null) driver = new Object();
     driver.name = document.querySelector('#mdc-driver-name').MDCTextField.value.replace('&', '_');
@@ -99,14 +105,14 @@ function load_driver_from_form() {
     driver.driverClassName = document.querySelector('#mdc-driver-classname').MDCTextField.value;
 }
 
-function update_driver_to_form() {
+function updateDriverToForm() {
     document.querySelector('#mdc-driver-name').MDCTextField.value = driver.name;
     document.querySelector('#mdc-driver-url').MDCTextField.value = driver.url;
     document.querySelector('#mdc-website-url').MDCTextField.value = driver.webSiteUrl;
     document.querySelector('#mdc-driver-classname').MDCTextField.value = driver.driverClassName;
 }
 
-function disable_edit(true_or_false) {
+function disableEdit(true_or_false) {
     
     // we use driver name as key
     $("#driver_name").prop('disabled', (!creating) && true_or_false);
@@ -119,7 +125,7 @@ function disable_edit(true_or_false) {
     $("#delete_button").prop('disabled', true_or_false);
 }
 
-function set_creating(true_or_false) {
+function setCreating(true_or_false) {
     creating = true_or_false;
     if (creating) {
         $("#create_button").show();
@@ -130,4 +136,29 @@ function set_creating(true_or_false) {
         $("#save_button").show();
         $("#delete_button").show();
     }
+}
+
+function gotoWebsite() {
+    loadDriverFromForm();
+    if (driver.webSiteUrl) {
+        window.open(driver.webSiteUrl, "_blank")
+    } else {
+        // TODO disable button when needed...
+        console.log("No website provided");
+    }
+}
+
+function checkDrivers() {
+    disableEdit(true);
+    $.ajax({
+        type: enable_mock ? 'GET' : 'POST',
+        url: ws_url + 'CheckAllDrivers',
+        success: function(data, status){
+            window.location.reload();
+        },
+        error: function(data, status){
+            console.log("Data: ", data, "Status:", status);
+            disableEdit(false);
+        }
+    });
 }
