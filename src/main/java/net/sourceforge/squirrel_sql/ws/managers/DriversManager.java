@@ -12,6 +12,7 @@ import net.sourceforge.squirrel_sql.fw.id.IIdentifier;
 import net.sourceforge.squirrel_sql.fw.id.UidIdentifier;
 import net.sourceforge.squirrel_sql.fw.persist.ValidationException;
 import net.sourceforge.squirrel_sql.fw.sql.SQLDriver;
+import net.sourceforge.squirrel_sql.fw.util.NullMessageHandler;
 
 /**
  * Manages drivers on XML database
@@ -45,17 +46,6 @@ public class DriversManager {
 		return id;
 	}
 
-	public boolean isDriverInClasspath(String driverClassName) {
-		boolean driverInClasspath;
-		try {
-			Class.forName(driverClassName);
-			driverInClasspath = true;
-		} catch (ClassNotFoundException exc) {
-			driverInClasspath = false;
-		}
-		return driverInClasspath;
-	}
-
 	public synchronized void saveAllDrivers() {
 		webapp.savePreferences(PreferenceType.DRIVER_DEFINITIONS);
 	}
@@ -75,9 +65,7 @@ public class DriversManager {
 		itemOld.setUrl(item.getUrl());
 		itemOld.setWebSiteUrl(item.getWebSiteUrl());
 
-		// Check if JDBC class is in classpath
-		boolean driverInClasspath = isDriverInClasspath(item.getDriverClassName());
-		itemOld.setJDBCDriverClassLoaded(driverInClasspath);
+		searchJDBCDriverInClasspath(itemOld);
 
 		saveAllDrivers();
 
@@ -97,8 +85,7 @@ public class DriversManager {
 		itemNew.setUrl(item.getUrl());
 		itemNew.setWebSiteUrl(item.getWebSiteUrl());
 
-		boolean driverInClasspath = isDriverInClasspath(item.getDriverClassName());
-		itemNew.setJDBCDriverClassLoaded(driverInClasspath);
+		searchJDBCDriverInClasspath(itemNew);
 
 		// add driver to managed drivers list
 		webapp.getAliasesAndDriversManager().addDriver(itemNew, null);
@@ -115,12 +102,55 @@ public class DriversManager {
 		return item;
 	}
 
+	/**
+	 * Search a class in current classpath.
+	 * 
+	 * No custom classloader is used.
+	 * 
+	 * @param className
+	 * @return
+	 */
+	public Class<?> isClassInClasspath(String className) {
+		if (className == null || className.trim().isEmpty()) {
+			return null;
+		}
+		try {
+			return Class.forName(className.trim());
+		} catch (ClassNotFoundException exc) {
+			return null;
+		}
+	}
+
+	/**
+	 * Set JDBCDriverClassLoaded, JarFileName, JarFileNames driver attributes.
+	 * 
+	 * @param driver
+	 */
+	public void searchJDBCDriverInClasspath(SQLDriver driver) {
+
+		// TODO search for equivalent SquirrelSql-core method
+
+		Class<?> clazz = isClassInClasspath(driver.getDriverClassName());
+		if (clazz == null) {
+			driver.setJDBCDriverClassLoaded(false);
+			driver.setJarFileName(null);
+			driver.setJarFileNames(new String[] {});
+		} else {
+			String jar = clazz.getProtectionDomain().getCodeSource().getLocation().toString().substring(5);
+			driver.setJDBCDriverClassLoaded(true);
+			driver.setJarFileName(jar);
+			driver.setJarFileNames(new String[] { jar });
+			webapp.getAliasesAndDriversManager().refreshDriver(driver, NullMessageHandler.getInstance());
+		}
+	}
+
+	/**
+	 * Call searchJDBCDriverInClasspath() for all drivers, then save all of them
+	 */
 	public void searchJDBCDriversInClasspath() {
 		List<SQLDriver> list = getDrivers();
 		for (SQLDriver driver : list) {
-			boolean loaded = driver.getDriverClassName() != null && !driver.getDriverClassName().isEmpty()
-					&& isDriverInClasspath(driver.getDriverClassName());
-			driver.setJDBCDriverClassLoaded(loaded);
+			searchJDBCDriverInClasspath(driver);
 		}
 		saveAllDrivers();
 	}
