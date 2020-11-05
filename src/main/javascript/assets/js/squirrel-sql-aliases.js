@@ -121,9 +121,7 @@ function load_alias_from_form() {
     
     if (alias == null) alias = new Object();
     alias.name = document.querySelector('#mdc-alias-name').MDCTextField.value.replace('&', '_');
-    alias.driverIdentifier = {
-            string: document.querySelector('#mdc-driver').MDCSelect.value
-        };
+    alias.driverIdentifier = document.querySelector('#mdc-driver').MDCSelect.value;
     alias.url = document.querySelector('#mdc-alias-url').MDCTextField.value;
     alias.userName = document.querySelector('#mdc-alias-user').MDCTextField.value;
     alias.password = document.querySelector('#mdc-alias-password').MDCTextField.value;
