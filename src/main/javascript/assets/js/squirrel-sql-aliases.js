@@ -47,6 +47,7 @@ function createAlias() {
             alias = data.value;
             update_alias_to_form();
             disable_edit(false);
+            set_creating(false);
             // menu is not updated, nor it is the URL
         },
         error: function(data, status){
