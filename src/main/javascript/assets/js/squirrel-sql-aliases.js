@@ -6,8 +6,29 @@ var enable_mock = false;
 var alias = null;
 var creating = true;
 
+// pro-memoria
+// if (a) {...}
+// a = undefined/null/0/''      -> behave as false
+// a = 1/-1/'xxx'/' '/[]/{}     -> behave as true
+// (while in Python [] behaves as False)
+
 $(document).ready(function(){
-    drivers_callbacks.push(loadMenuOptions);
+    drivers_callbacks.push(loadForm);
+    
+    $('#save_button').click(saveAlias);
+    $("#create_button").click(createAlias);
+    $("#delete_button").click(deleteAlias);
+    $("#connect_button").click(connect);
+    $('#mdc-driver').on('MDCSelect:change', changeDriverUrl);
+});
+
+/**
+Load drivers menu options, then load alias
+*/
+function loadForm() {
+    
+    loadMenuOptions();
+
     var identifier = location.href.split("alias.html?id=")[1];
     if (identifier) {
         // Updating existing alias
@@ -16,6 +37,8 @@ $(document).ready(function(){
     			ws_url + 'Aliases/' + identifier;
         $.getJSON(url, function(response){
             alias = response.value;
+            
+            //MISSING: driverPropertiesClone, valid 
             if (alias != null) {
                 update_alias_to_form();
                 set_creating(false);
@@ -26,13 +49,7 @@ $(document).ready(function(){
 	} else {
         set_creating(true);
     }
-    
-    $('#save_button').click(saveAlias);
-    $("#create_button").click(createAlias);
-    $("#delete_button").click(deleteAlias);
-    $("#connect_button").click(connect);
-    $('#mdc-driver').on('MDCSelect:change', changeDriverUrl);
-});
+}
 
 function createAlias() {
     disable_edit(true);
@@ -185,10 +202,8 @@ function loadMenuOptions() {
         createSelectOption(select, driver.name, driver.identifier);
     };
     
-    //FIXME
     if (alias && alias.driverIdentifier) {
-        $("#alias_driver").val(alias.driverIdentifier);
-        $("#alias_driver").trigger('change');
+        document.querySelector('#mdc-driver').MDCSelect.value = alias.driverIdentifier;
     }
 }
 
@@ -200,10 +215,16 @@ function createSelectOption(select, caption, value) {
  * Copy driver url into alias url on the form
  */
 function changeDriverUrl() {
-    load_alias_from_form();
-    if (alias.driverIdentifier) {
-        var driver = getDriverByIdentifier(alias.driverIdentifier);
-        alias.url = driver.url;
-        document.querySelector('#mdc-alias-url').MDCTextField.value = alias.url;
+    if (alias.driverIdentifier != document.querySelector('#mdc-driver').MDCSelect.value) {
+        load_alias_from_form();
+        if (alias.driverIdentifier) {
+            var driver = getDriverByIdentifier(alias.driverIdentifier);
+            if (driver) {
+                alias.url = driver.url;
+                document.querySelector('#mdc-alias-url').MDCTextField.value = alias.url;
+            } else {
+                console.log("Driver not found: " + alias.driverIdentifier);
+            }
+        }
     }
 }
