@@ -6,6 +6,13 @@ var enable_mock = false;
 var session = null;
 
 $(document).ready(function(){
+    loadForm();
+
+    $("sql_button").click(executeQuery);
+    $("#disconnect_button").click(disconnect);
+});
+
+function loadForm() {
     var identifier = location.href.split("session.html?id=")[1];
     if (identifier) {
         // Updating existing session
@@ -14,59 +21,55 @@ $(document).ready(function(){
     			ws_url + 'Sessions/' + identifier;
         $.getJSON(url, function(response){
             session = response.value;
-            if (session != null) {
-                update_session_to_form();
+            if (session) {
+                disableEdit(false);
             } else {
                 console.log("Requested session not found!!!");
             }
         });
 	}
-    
-    $("#disconnect_button").click(disconnect);
-});
+}
 
 function disconnect() {
     // TODO should give some warning
-    disable_edit(true);
+    disableEdit(true);
     $.ajax({
-        type: enable_mock ? 'GET' : 'DELETE',
+        type: enable_mock ? 'GET' : 'POST',
         url: ws_url + 'Disconnect',
-        data: { aliasIdentifier: session.identifier },
+        data: { sessionId: session.identifier },
         success: function(data, status){
             console.log("Data: ", data, "Status:", status);
             window.location.replace("..");
         },
         error: function(data, status){
             console.log("Data: ", data, "Status:", status);
-            disable_edit(false);
+            disableEdit(false);
         }
     });
 }
 
-function load_session_from_form() {
-    
-    /*session.name = document.querySelector('#mdc-session-name').MDCTextField.value.replace('&', '_');
-    session.url = document.querySelector('#mdc-session-url').MDCTextField.value;
-    session.webSiteUrl = document.querySelector('#mdc-website-url').MDCTextField.value;
-    session.sessionClassName = document.querySelector('#mdc-session-classname').MDCTextField.value;*/
+function executeQuery() {
+    disableEdit(true);
+    console.log("Query:" + document.querySelector('#mdc-query').MDCTextField.value);
+    $.ajax({
+        type: enable_mock ? 'GET' : 'POST',
+        url: ws_url + 'ExecuteQuery',
+        data: {
+            sessionId: session.identifier,
+            query: document.querySelector('#mdc-query').MDCTextField.value
+        },
+        success: function(data, status){
+            console.log("Data: ", data, "Status:", status);
+            disableEdit(false);
+        },
+        error: function(data, status){
+            console.log("Data: ", data, "Status:", status);
+            disableEdit(false);
+        }
+    });
 }
 
-function update_session_to_form() {
-    /*document.querySelector('#mdc-session-name').MDCTextField.value = session.name;
-    document.querySelector('#mdc-session-url').MDCTextField.value = session.url;
-    document.querySelector('#mdc-website-url').MDCTextField.value = session.webSiteUrl;
-    document.querySelector('#mdc-session-classname').MDCTextField.value = session.sessionClassName;*/
-}
-
-function disable_edit(true_or_false) {
-    
-    // we use session name as key
-    /*$("#session_name").prop('disabled', (!creating) && true_or_false);
-    $("#session_url").prop('disabled', true_or_false);
-    $("#session_website_url").prop('disabled', true_or_false);
-    $("#session_class_name").prop('disabled', true_or_false);
-    // buttons
-    $("#create_button").prop('disabled', true_or_false);
-    $("#save_button").prop('disabled', true_or_false);
-    $("#delete_button").prop('disabled', true_or_false);*/
+function disableEdit(true_or_false) {    
+    $("#sql_button").prop('disabled', true_or_false);
+    $("#disconnect_button").prop('disabled', true_or_false);
 }

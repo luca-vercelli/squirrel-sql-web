@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import net.sourceforge.squirrel_sql.client.gui.db.SQLAlias;
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.fw.id.IIdentifier;
+import net.sourceforge.squirrel_sql.fw.id.IntegerIdentifier;
 import net.sourceforge.squirrel_sql.fw.id.UidIdentifier;
 import net.sourceforge.squirrel_sql.fw.sql.SQLConnection;
 import net.sourceforge.squirrel_sql.fw.sql.SQLDriver;
@@ -66,12 +67,12 @@ public class SessionsManager {
 	 */
 	public ISession getSessionById(IIdentifier id) {
 		for (ISession session : openSessions) {
-			logger.info("COMPARING SESSION ID:"+session.getIdentifier());
+			logger.info("COMPARING SESSION ID: '" + session.getIdentifier());
 			if (session.getIdentifier().equals(id)) {
 				return session;
 			}
 		}
-		logger.error("NO SESSION FOUND FOR ID:"+id);
+		logger.error("NO SESSION FOUND FOR ID:" + id);
 		return null;
 	}
 
@@ -126,9 +127,9 @@ public class SessionsManager {
 		return session;
 	}
 
-	private UidIdentifier getSessionId(String stringId) {
-		UidIdentifier id = new UidIdentifier();
-		id.setString(stringId);
+	private IntegerIdentifier getSessionId(String stringId) {
+		int intId = Integer.parseInt(stringId);
+		IntegerIdentifier id = new IntegerIdentifier(intId);
 		return id;
 	}
 }

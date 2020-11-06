@@ -62,7 +62,7 @@ public class SessionsEndpoint {
 		return new ValueBean<>(new SessionDto(session));
 	}
 
-	@DELETE
+	@POST
 	@Path("/Disconnect")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public void disconnect(@FormParam("sessionId") String sessionId) {
@@ -75,7 +75,7 @@ public class SessionsEndpoint {
 		ISession session = manager.getSessionById(identifier);
 		SchemaInfo schemaInfo = session.getSchemaInfo();
 		// If null, may raise HTTP 404
-		return new ValueBean<>(schemaInfo);
+		return new ValueBean<>(schemaInfo); //fails because of getRow
 	}
 
 	@GET
@@ -85,7 +85,7 @@ public class SessionsEndpoint {
 		ITableInfo[] tableInfo = session.getSchemaInfo().getITableInfos();
 		List<ITableInfo> tableInfoList = Arrays.asList(tableInfo);
 		// If null, may raise HTTP 404
-		return new ListBean<>(tableInfoList, (long) tableInfoList.size());
+		return new ListBean<>(tableInfoList, (long) tableInfoList.size()); //fails because of getGraphics
 	}
 
 }

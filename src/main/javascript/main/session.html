@@ -177,17 +177,26 @@
                   <div class="template-demo">
                     <div class="mdc-layout-grid__inner">
 
-                        <label class="mdc-text-field mdc-text-field--outlined mdc-text-field--textarea mdc-text-field--no-label">
-                        <span class="mdc-notched-outline">
-                            <span class="mdc-notched-outline__leading"></span>
-                            <span class="mdc-notched-outline__trailing"></span>
-                        </span>
-                        <span class="mdc-text-field__resizer">
+                        <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--textarea mdc-text-field--no-label" id="mdc-query" data-mdc-auto-init="MDCTextField" >
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                        <div class="mdc-text-field__resizer"> 
                             <textarea class="mdc-text-field__input" rows="8" cols="40" aria-label="Label"></textarea>
-                        </span>
-                        </label>
+                        </div>
+                        </div>
                     
                     </div>
+                    
+                      <button class="mdc-button mdc-button--raised filled-button--light" id="sql_button" disabled>
+                        <i class="material-icons mdc-button__icon">directions_run</i>
+                          Execute query
+                      </button>
+                      <button class="mdc-button mdc-button--raised filled-button--secondary" id="disconnect_button" disabled>
+                        <i class="material-icons mdc-button__icon">clear</i>
+                          Disconnect
+                      </button>
                   </div>
                 </div>
               </div>
