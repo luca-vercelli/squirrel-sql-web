@@ -55,10 +55,10 @@ public class WebApplication extends Application {
 		initAppFiles();
 		// no way to access _appFiles here, and check them
 
-		logger.info("IMMEDIATE=" + getSquirrelPreferences().getSavePreferencesImmediately());
+		getSquirrelPreferences().setSavePreferencesImmediately(true);
 
 		Main.setApplication(this); // some classes look at this
-		getPropsImpl(); // this is not only getter
+		getPropsImpl(); // this is not only a getter
 
 		initDataCache();
 		loadRecentFileHistory();
