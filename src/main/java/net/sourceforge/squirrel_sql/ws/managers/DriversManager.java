@@ -1,5 +1,8 @@
 package net.sourceforge.squirrel_sql.ws.managers;
 
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -130,18 +133,27 @@ public class DriversManager {
 
 		// TODO search for equivalent SquirrelSql-core method
 
+		driver.setJDBCDriverClassLoaded(false);
+		driver.setJarFileName(null);
+		driver.setJarFileNames(new String[] {});
+
 		Class<?> clazz = isClassInClasspath(driver.getDriverClassName());
 		if (clazz == null) {
-			driver.setJDBCDriverClassLoaded(false);
-			driver.setJarFileName(null);
-			driver.setJarFileNames(new String[] {});
-		} else {
-			String jar = clazz.getProtectionDomain().getCodeSource().getLocation().toString().substring(5);
-			driver.setJDBCDriverClassLoaded(true);
-			driver.setJarFileName(jar);
-			driver.setJarFileNames(new String[] { jar });
-			webapp.getAliasesAndDriversManager().refreshDriver(driver, NullMessageHandler.getInstance());
+			return;
 		}
+		URI jarURI;
+		try {
+			jarURI = clazz.getProtectionDomain().getCodeSource().getLocation().toURI();
+		} catch (URISyntaxException e) {
+			logger.error("Exception while loading JDBC driver", e);
+			return;
+		} catch (SecurityException e) {
+			logger.error("Exception while loading JDBC driver", e);
+			return;
+		}
+		String jarFilename = new File(jarURI).getAbsolutePath();
+		driver.setJarFileNames(new String[] { jarFilename });
+		webapp.getAliasesAndDriversManager().refreshDriver(driver, NullMessageHandler.getInstance());
 	}
 
 	/**
