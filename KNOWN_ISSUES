@@ -1,0 +1,6 @@
+* local Maven repository: why transitive dependencies are not loaded?
+* JAX-RS: can we fully disable MOXy ? and avoid one MessageWriter per each class?
+* JAX-RS: Why some exception are not rendered correctly? e.g. ValidationException's
+* Material Dashboard: why I cannot use icons with "_" in menu, such as account_tree ?
+* Currently we do not allow more than 1 jar per driver
+
