@@ -66,10 +66,12 @@ public class SessionsManager {
 	 */
 	public ISession getSessionById(IIdentifier id) {
 		for (ISession session : openSessions) {
+			logger.info("COMPARING SESSION ID:"+session.getIdentifier());
 			if (session.getIdentifier().equals(id)) {
 				return session;
 			}
 		}
+		logger.error("NO SESSION FOUND FOR ID:"+id);
 		return null;
 	}
 
