@@ -84,10 +84,9 @@ public class SessionsEndpoint {
 	@Path("/Sessions/{identifier}/TableInfo")
 	public ListBean<TableInfoDto> getTableInfo(@PathParam("identifier") String identifier) {
 		ISession session = manager.getSessionById(identifier);
-		ITableInfo[] tableInfo = session.getSchemaInfo().getITableInfos();
-		List<ITableInfo> tableInfoList = Arrays.asList(tableInfo);
+		ITableInfo[] tableInfos = session.getSchemaInfo().getITableInfos();
 		List<TableInfoDto> lst = new ArrayList<>();
-		for(ITableInfo t:tableInfoList ) {
+		for (ITableInfo t : tableInfos) {
 			lst.add(new TableInfoDto(t));
 		}
 		// If null, may raise HTTP 404
