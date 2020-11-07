@@ -8,7 +8,7 @@ var session = null;
 $(document).ready(function(){
     loadForm();
 
-    $("sql_button").click(executeQuery);
+    $("#sql_button").click(executeQuery);
     $("#disconnect_button").click(disconnect);
 });
 
@@ -21,6 +21,7 @@ function loadForm() {
     			ws_url + 'Sessions/' + identifier;
         $.getJSON(url, function(response){
             session = response.value;
+            console.log("DEBUG", session);
             if (session) {
                 disableEdit(false);
             } else {
@@ -33,9 +34,12 @@ function loadForm() {
 function disconnect() {
     // TODO should give some warning
     disableEdit(true);
+    var url = (enable_mock) ? 
+                ws_url_mock + 'JustGetOk' :
+                ws_url + 'Disconnect';
     $.ajax({
         type: enable_mock ? 'GET' : 'POST',
-        url: ws_url + 'Disconnect',
+        url: url,
         data: { sessionId: session.identifier },
         success: function(data, status){
             console.log("Data: ", data, "Status:", status);
@@ -50,13 +54,17 @@ function disconnect() {
 
 function executeQuery() {
     disableEdit(true);
-    console.log("Query:" + document.querySelector('#mdc-query').MDCTextField.value);
+    var query = document.querySelector('#mdc-query').MDCTextField.value;
+    console.log("Query:" + query);
+    var url = (enable_mock) ? 
+                ws_url_mock + 'ExecuteQuery.json' :
+                ws_url + 'ExecuteQuery';
     $.ajax({
         type: enable_mock ? 'GET' : 'POST',
-        url: ws_url + 'ExecuteQuery',
+        url: url,
         data: {
             sessionId: session.identifier,
-            query: document.querySelector('#mdc-query').MDCTextField.value
+            query: query
         },
         success: function(data, status){
             console.log("Data: ", data, "Status:", status);
