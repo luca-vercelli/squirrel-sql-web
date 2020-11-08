@@ -1,6 +1,9 @@
 package net.sourceforge.squirrel_sql.ws.managers;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +16,7 @@ import org.apache.log4j.Logger;
 
 import net.sourceforge.squirrel_sql.client.gui.db.SQLAlias;
 import net.sourceforge.squirrel_sql.client.session.ISession;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.SQLExecutionHandlerPublic;
 import net.sourceforge.squirrel_sql.fw.id.IIdentifier;
 import net.sourceforge.squirrel_sql.fw.id.IntegerIdentifier;
 import net.sourceforge.squirrel_sql.fw.id.UidIdentifier;
@@ -131,5 +135,17 @@ public class SessionsManager {
 		int intId = Integer.parseInt(stringId);
 		IntegerIdentifier id = new IntegerIdentifier(intId);
 		return id;
+	}
+
+	public String executeQuery(String sessionId, String query) throws SQLException {
+		ISession session = getSessionById(sessionId);
+		Connection conn = session.getSQLConnection().getConnection();
+		try (Statement stmt = conn.createStatement()) {
+			try (ResultSet rs = stmt.executeQuery(query)) {
+				SQLExecutionHandlerPublic q;
+				// and now? TODO
+				return null;
+			}
+		}
 	}
 }

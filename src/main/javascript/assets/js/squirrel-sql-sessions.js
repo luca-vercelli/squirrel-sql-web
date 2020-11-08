@@ -4,6 +4,7 @@ var ws_url_mock = '../mock/'
 var enable_mock = false;
 
 var session = null;
+var tableTree = {};
 
 $(document).ready(function(){
     loadForm();
@@ -18,7 +19,7 @@ function loadForm() {
         // Updating existing session
     	var url = (enable_mock) ? 
     			ws_url_mock + 'SingleSession.json' :
-    			ws_url + 'Sessions/' + identifier;
+    			ws_url + 'Sessions(' + identifier + ')';
         $.getJSON(url, function(response){
             session = response.value;
             console.log("DEBUG", session);
@@ -48,6 +49,25 @@ function disconnect() {
         error: function(data, status){
             console.log("Data: ", data, "Status:", status);
             disableEdit(false);
+        }
+    });
+}
+
+function getCatalogs() {
+    var url = (enable_mock) ? 
+                ws_url_mock + 'SchemaInfo.json' :
+                ws_url + 'Sessions(' + session.identifier + ')/SchemaInfo';
+    $.ajax({
+        type: 'GET',
+        url: url,
+        data: { sessionId: session.identifier },
+        success: function(data, status){
+            console.log("Data: ", data, "Status:", status);
+            var schemaInfo = data.value;
+            // ASSOCIATION CATALOGS/SCHEMAS???
+        },
+        error: function(data, status){
+            console.log("Data: ", data, "Status:", status);
         }
     });
 }

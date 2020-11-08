@@ -1,5 +1,6 @@
 package net.sourceforge.squirrel_sql.ws.resources;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,7 +48,7 @@ public class SessionsEndpoint {
 	}
 
 	@GET
-	@Path("/Sessions/{identifier}")
+	@Path("/Sessions({identifier})")
 	public ValueBean<SessionDto> getItem(@PathParam("identifier") String identifier) {
 		ISession session = manager.getSessionById(identifier);
 		// If null, may raise HTTP 404
@@ -71,9 +72,18 @@ public class SessionsEndpoint {
 		manager.disconnect(sessionId);
 	}
 
+	@POST
+	@Path("/ExecuteQuery")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public String executeQuery(@FormParam("sessionId") String sessionId, @FormParam("query") String query)
+			throws SQLException {
+		return manager.executeQuery(sessionId, query);
+	}
+
 	@GET
-	@Path("/Sessions/{identifier}/SchemaInfo")
+	@Path("/Sessions({identifier})/SchemaInfo")
 	public ValueBean<SchemaInfoDto> getSchemaInfo(@PathParam("identifier") String identifier) {
+
 		ISession session = manager.getSessionById(identifier);
 		SchemaInfo schemaInfo = session.getSchemaInfo();
 		// If null, may raise HTTP 404
@@ -81,8 +91,9 @@ public class SessionsEndpoint {
 	}
 
 	@GET
-	@Path("/Sessions/{identifier}/TableInfo")
+	@Path("/Sessions/{identifier}/SchemaInfo/TableInfo")
 	public ListBean<TableInfoDto> getTableInfo(@PathParam("identifier") String identifier) {
+
 		ISession session = manager.getSessionById(identifier);
 		ITableInfo[] tableInfos = session.getSchemaInfo().getITableInfos();
 		List<TableInfoDto> lst = new ArrayList<>();
@@ -92,5 +103,20 @@ public class SessionsEndpoint {
 		// If null, may raise HTTP 404
 		return new ListBean<>(lst, (long) lst.size());
 	}
+
+/*	@GET
+	@Path("/Sessions({identifier})/SchemaInfo/TableInfo({catalogName},{schemaName})")
+	public ListBean<TableInfoDto> getTableInfo(@PathParam("identifier") String identifier,
+			@PathParam("catalogName") String catalogName, @PathParam("schemaName") String schemaName) {
+
+		ISession session = manager.getSessionById(identifier);
+		ITableInfo[] tableInfos = session.getSchemaInfo().getITableInfos(catalogName, schemaName);
+		List<TableInfoDto> lst = new ArrayList<>();
+		for (ITableInfo t : tableInfos) {
+			lst.add(new TableInfoDto(t));
+		}
+		// If null, may raise HTTP 404
+		return new ListBean<>(lst, (long) lst.size());
+	}*/
 
 }
