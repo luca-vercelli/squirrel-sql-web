@@ -26,6 +26,7 @@ import net.sourceforge.squirrel_sql.dto.TableInfoDto;
 import net.sourceforge.squirrel_sql.dto.ValueBean;
 import net.sourceforge.squirrel_sql.fw.sql.ITableInfo;
 import net.sourceforge.squirrel_sql.ws.managers.SessionsManager;
+import net.sourceforge.squirrel_sql.ws.model.Table;
 
 @Path("/")
 @Stateless
@@ -75,9 +76,9 @@ public class SessionsEndpoint {
 	@POST
 	@Path("/ExecuteQuery")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public String executeQuery(@FormParam("sessionId") String sessionId, @FormParam("query") String query)
+	public ValueBean<Table> executeQuery(@FormParam("sessionId") String sessionId, @FormParam("query") String query)
 			throws SQLException {
-		return manager.executeQuery(sessionId, query);
+		return new ValueBean<>(manager.executeQuery(sessionId, query));
 	}
 
 	@GET
@@ -91,7 +92,7 @@ public class SessionsEndpoint {
 	}
 
 	@GET
-	@Path("/Sessions/{identifier}/SchemaInfo/TableInfo")
+	@Path("/Sessions({identifier})/SchemaInfo/TableInfo")
 	public ListBean<TableInfoDto> getTableInfo(@PathParam("identifier") String identifier) {
 
 		ISession session = manager.getSessionById(identifier);
