@@ -34,7 +34,7 @@ public class AliasesEndpoint {
 	}
 
 	@GET
-	@Path("/Aliases/{identifier}")
+	@Path("/Aliases({identifier})")
 	public ValueBean<SQLAlias> getItem(@PathParam("identifier") String stringId) {
 		SQLAlias item = manager.getAliasById(stringId);
 		// If null, may raise HTTP 404
@@ -49,7 +49,7 @@ public class AliasesEndpoint {
 	}
 
 	@PUT
-	@Path("/Aliases/{identifier}")
+	@Path("/Aliases({identifier})")
 	public ValueBean<SQLAlias> updateItem(@PathParam("identifier") String stringId, SQLAlias item)
 			throws ValidationException {
 		item = manager.updateAlias(item, stringId);
@@ -57,7 +57,7 @@ public class AliasesEndpoint {
 	}
 
 	@DELETE
-	@Path("/Aliases/{identifier}")
+	@Path("/Aliases({identifier})")
 	public void deleteItem(@PathParam("identifier") String stringId) {
 		manager.removeAlias(stringId);
 	}

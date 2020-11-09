@@ -35,7 +35,7 @@ public class DriversEndpoint {
 	}
 
 	@GET
-	@Path("/Drivers/{identifier}")
+	@Path("/Drivers({identifier})")
 	public ValueBean<ISQLDriver> getItem(@PathParam("identifier") String stringId) {
 		ISQLDriver item = manager.getDriverById(stringId);
 		// If null, may raise HTTP 404
@@ -50,7 +50,7 @@ public class DriversEndpoint {
 	}
 
 	@PUT
-	@Path("/Drivers/{identifier}")
+	@Path("/Drivers({identifier})")
 	public ValueBean<SQLDriver> updateItem(@PathParam("identifier") String stringId, SQLDriver item)
 			throws ValidationException {
 		item = manager.updateDriver(item, stringId);
@@ -58,7 +58,7 @@ public class DriversEndpoint {
 	}
 
 	@DELETE
-	@Path("/Drivers/{identifier}")
+	@Path("/Drivers({identifier})")
 	public void deleteItem(@PathParam("identifier") String stringId) {
 		manager.removeDriver(stringId);
 	}

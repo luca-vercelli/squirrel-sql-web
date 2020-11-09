@@ -22,7 +22,7 @@ function loadForm() {
         // Updating existing driver
     	var url = (enable_mock) ? 
     			ws_url_mock + 'SingleDriver.json' :
-    			ws_url + 'Drivers/' + identifier;
+    			ws_url + `Drivers(${identifier})`;
         $.getJSON(url, function(response){
             driver = response.value;
             if (driver != null) {
@@ -66,7 +66,7 @@ function saveDriver() {
     
     $.ajax({
         type: enable_mock ? 'GET' : 'PUT',
-        url: ws_url + 'Drivers/' + driver.identifier,
+        url: ws_url + `Drivers(${driver.identifier})`,
         contentType: 'application/json',
         data: JSON.stringify(driver),
         success: function(data, status){
@@ -85,7 +85,7 @@ function deleteDriver() {
     // TODO should give some warning
     $.ajax({
         type: enable_mock ? 'GET' : 'DELETE',
-        url: ws_url + 'Drivers/' + driver.identifier,
+        url: ws_url + `Drivers(${driver.identifier})`,
         success: function(data, status){
             window.location.replace("..");
         },

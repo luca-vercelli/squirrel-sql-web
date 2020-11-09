@@ -34,7 +34,7 @@ function loadForm() {
         // Updating existing alias
     	var url = (enable_mock) ? 
     			ws_url_mock + 'SingleAlias.json' :
-    			ws_url + 'Aliases/' + identifier;
+    			ws_url + `Aliases(${identifier})`;
         $.getJSON(url, function(response){
             alias = response.value;
             
@@ -79,7 +79,7 @@ function saveAlias() {
     
     $.ajax({
         type: enable_mock ? 'GET' : 'PUT',
-        url: ws_url + 'Aliases/' + alias.identifier,
+        url: ws_url + `Aliases(${alias.identifier})`,
         contentType: 'application/json',
         data: JSON.stringify(alias),
         success: function(data, status){
@@ -98,7 +98,7 @@ function deleteAlias() {
     // TODO should give some warning
     $.ajax({
         type: enable_mock ? 'GET' : 'DELETE',
-        url: ws_url + 'Aliases/' + alias.identifier,
+        url: ws_url + `Aliases(${alias.identifier})`,
         success: function(data, status){
             window.location.replace("..");
         },

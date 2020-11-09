@@ -19,7 +19,7 @@ function loadForm() {
         // Updating existing session
     	var url = (enable_mock) ? 
     			ws_url_mock + 'SingleSession.json' :
-    			ws_url + 'Sessions(' + identifier + ')';
+    			ws_url + `Sessions(${identifier})`;
         $.getJSON(url, function(response){
             session = response.value;
             console.log("DEBUG", session);
@@ -56,7 +56,7 @@ function disconnect() {
 function getCatalogs() {
     var url = (enable_mock) ? 
                 ws_url_mock + 'SchemaInfo.json' :
-                ws_url + 'Sessions(' + session.identifier + ')/SchemaInfo';
+                ws_url + `Sessions(${session.identifier})/SchemaInfo`;
     $.ajax({
         type: 'GET',
         url: url,
