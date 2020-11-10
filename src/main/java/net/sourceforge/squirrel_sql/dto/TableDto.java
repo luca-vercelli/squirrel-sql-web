@@ -1,4 +1,4 @@
-package net.sourceforge.squirrel_sql.ws.model;
+package net.sourceforge.squirrel_sql.dto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
  * @author lv 2020
  *
  */
-public class Table {
+public class TableDto {
 	private String[] columnHeaders;
 	private List<Object[]> rows = new ArrayList<>();
 

@@ -12,8 +12,8 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
+import net.sourceforge.squirrel_sql.dto.TableDto;
 import net.sourceforge.squirrel_sql.fw.util.StringUtilities;
-import net.sourceforge.squirrel_sql.ws.model.Table;
 
 /**
  * Manages statements execution.
@@ -36,7 +36,7 @@ public class SqlTabManager {
 	// SQLResultExecuterPanel -> SQLExecutionHandler -> SQLExecuterTask
 	// and the Runnable is executed within a ThreadPool
 	// We don't need such a mess
-	public Table executeQuery(String sessionId, String query) throws SQLException {
+	public TableDto executeQuery(String sessionId, String query) throws SQLException {
 		ISession session = sessionsManager.getSessionById(sessionId);
 
 		query = StringUtilities.cleanString(query);
@@ -57,8 +57,8 @@ public class SqlTabManager {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Table rs2table(ResultSet rs) throws SQLException {
-		Table t = new Table();
+	public TableDto rs2table(ResultSet rs) throws SQLException {
+		TableDto t = new TableDto();
 
 		// Metadata
 		ResultSetMetaData md = rs.getMetaData();

@@ -10,9 +10,9 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 
+import net.sourceforge.squirrel_sql.dto.TableDto;
 import net.sourceforge.squirrel_sql.dto.ValueBean;
 import net.sourceforge.squirrel_sql.ws.managers.SqlTabManager;
-import net.sourceforge.squirrel_sql.ws.model.Table;
 
 @Path("/")
 @Stateless
@@ -24,7 +24,7 @@ public class SqlTabEndpoint {
 	@POST
 	@Path("/ExecuteQuery")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public ValueBean<Table> executeQuery(@FormParam("sessionId") String sessionId, @FormParam("query") String query)
+	public ValueBean<TableDto> executeQuery(@FormParam("sessionId") String sessionId, @FormParam("query") String query)
 			throws SQLException {
 		return new ValueBean<>(manager.executeQuery(sessionId, query));
 	}
