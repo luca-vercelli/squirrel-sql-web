@@ -22,11 +22,10 @@ function loadForm() {
     			ws_url + `Sessions(${identifier})`;
         $.getJSON(url, function(response){
             session = response.value;
-            console.log("DEBUG", session);
             if (session) {
                 disableEdit(false);
             } else {
-                console.log("Requested session not found!!!");
+                showMessage(data, "error");
             }
         });
 	}
@@ -43,11 +42,10 @@ function disconnect() {
         url: url,
         data: { sessionId: session.identifier },
         success: function(data, status){
-            console.log("Data: ", data, "Status:", status);
             window.location.replace("..");
         },
         error: function(data, status){
-            console.log("Data: ", data, "Status:", status);
+            showAjaxError(data);
             disableEdit(false);
         }
     });
@@ -67,7 +65,7 @@ function getCatalogs() {
             // ASSOCIATION CATALOGS/SCHEMAS???
         },
         error: function(data, status){
-            console.log("Data: ", data, "Status:", status);
+            showAjaxError(data);
         }
     });
 }
@@ -91,7 +89,7 @@ function executeQuery() {
             disableEdit(false);
         },
         error: function(data, status){
-            console.log("Data: ", data, "Status:", status);
+            showAjaxError(data);
             disableEdit(false);
         }
     });

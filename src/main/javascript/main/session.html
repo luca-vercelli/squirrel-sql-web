@@ -176,7 +176,7 @@
                   <h6 class="card-title">Open session</h6>
                   <div class="template-demo">
                     <div class="mdc-layout-grid__inner">
-                      <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
+                      <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12-desktop">
                         <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--textarea mdc-text-field--no-label" id="mdc-query" data-mdc-auto-init="MDCTextField" >
                         <div class="mdc-notched-outline">
                             <div class="mdc-notched-outline__leading"></div>
@@ -197,6 +197,19 @@
                         <i class="material-icons mdc-button__icon">clear</i>
                           Disconnect
                       </button>
+
+                    <!-- partial:../partials/_messages.html -->
+                    <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12-desktop message-error" id="message-div" style="display:none">
+    <!-- home-made error text area -->
+    <span>
+        <i class='material-icons mdc-list-item__start-detail mdc-drawer-item-icon' aria-hidden='true' id="message-icon">done</i>
+        <span id="message-span">
+            This is an error
+        </span>
+    </span>
+</div>
+                    <!-- partial -->
+
                   </div>
                 </div>
               </div>
@@ -204,7 +217,7 @@
           </div>
         </main>
         <!-- partial:../partials/_footer.html -->
-        <footer>
+                <footer>
           <div class="mdc-layout-grid">
             <div class="mdc-layout-grid__inner">
               <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
@@ -221,7 +234,7 @@
           </div>
         </footer>
 
-<!-- partial -->
+        <!-- partial -->
       </div>
     </div>
   </div>
