@@ -26,6 +26,6 @@ public class SqlTabEndpoint {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public ValueBean<TableDto> executeQuery(@FormParam("sessionId") String sessionId, @FormParam("query") String query)
 			throws SQLException {
-		return new ValueBean<>(manager.executeQuery(sessionId, query));
+		return new ValueBean<>(manager.executeSqlCommand(sessionId, query));
 	}
 }

@@ -36,7 +36,18 @@ public class SqlTabManager {
 	// SQLResultExecuterPanel -> SQLExecutionHandler -> SQLExecuterTask
 	// and the Runnable is executed within a ThreadPool
 	// We don't need such a mess
-	public TableDto executeQuery(String sessionId, String query) throws SQLException {
+
+	/**
+	 * Execute every kind of query (SELECT, UPDATE, CREATE TABLE, ...).
+	 * 
+	 * Execute only single queries, not multiple queries.
+	 * 
+	 * @param sessionId
+	 * @param query
+	 * @return a TableDto in case of SELECT, null otherwise
+	 * @throws SQLException
+	 */
+	public TableDto executeSqlCommand(String sessionId, String query) throws SQLException {
 		ISession session = sessionsManager.getSessionById(sessionId);
 
 		query = StringUtilities.cleanString(query);
@@ -44,8 +55,13 @@ public class SqlTabManager {
 
 		Connection conn = session.getSQLConnection().getConnection();
 		try (Statement stmt = conn.createStatement()) {
-			try (ResultSet rs = stmt.executeQuery(query)) {
-				return rs2table(rs);
+			boolean returnResultSet = stmt.execute(query);
+			if (returnResultSet) {
+				try (ResultSet rs = stmt.getResultSet()) {
+					return rs2table(rs);
+				}
+			} else {
+				return null;
 			}
 		}
 	}
