@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.annotation.PreDestroy;
 import javax.ejb.Stateful;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
@@ -22,13 +23,14 @@ import net.sourceforge.squirrel_sql.ws.resources.SessionsEndpoint;
 /**
  * Manages HTTP Sessions.
  * 
- * This bean is Stateful: it keeps only the sessions opened by the current HTTP
- * session.
+ * This bean is Stateful and SessionScoped: it keeps only the sessions opened by
+ * the current HTTP session.
  * 
  * @author lv 2020
  *
  */
 @Stateful
+@SessionScoped
 public class SessionsManager {
 
 	@Inject

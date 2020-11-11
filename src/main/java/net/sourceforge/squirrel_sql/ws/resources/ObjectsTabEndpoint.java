@@ -10,8 +10,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeModel;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeNode;
 import net.sourceforge.squirrel_sql.client.session.schemainfo.SchemaInfo;
 import net.sourceforge.squirrel_sql.dto.ListBean;
+import net.sourceforge.squirrel_sql.dto.ObjectTreeNodeDto;
 import net.sourceforge.squirrel_sql.dto.SchemaInfoDto;
 import net.sourceforge.squirrel_sql.dto.TableInfoDto;
 import net.sourceforge.squirrel_sql.dto.ValueBean;
@@ -52,18 +55,12 @@ public class ObjectsTabEndpoint {
 		return new ListBean<>(lst, (long) lst.size());
 	}
 
-/*	@GET
-	@Path("/Sessions({identifier})/SchemaInfo/TableInfo({catalogName},{schemaName})")
-	public ListBean<TableInfoDto> getTableInfo(@PathParam("identifier") String identifier,
-			@PathParam("catalogName") String catalogName, @PathParam("schemaName") String schemaName) {
-
+	@GET
+	@Path("/Sessions({identifier})/Tree")
+	public ValueBean<ObjectTreeNodeDto> getTree(@PathParam("identifier") String identifier) {
 		ISession session = sessionsManager.getSessionById(identifier);
-		ITableInfo[] tableInfos = session.getSchemaInfo().getITableInfos(catalogName, schemaName);
-		List<TableInfoDto> lst = new ArrayList<>();
-		for (ITableInfo t : tableInfos) {
-			lst.add(new TableInfoDto(t));
-		}
-		// If null, may raise HTTP 404
-		return new ListBean<>(lst, (long) lst.size());
-	}*/
+		ObjectTreeModel model = new ObjectTreeModel(session);
+		ObjectTreeNode root = (ObjectTreeNode) model.getRoot();
+		return new ValueBean<>(new ObjectTreeNodeDto(root));
+	}
 }
