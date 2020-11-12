@@ -1,7 +1,3 @@
-// this url works if every page is at same depth...
-var ws_url = '../ws/';
-var ws_url_mock = '../mock/'
-var enable_mock = false;
 
 var drivers = [];
 var aliases = [];
@@ -26,6 +22,7 @@ $(document).ready(function(){
 * Load drivers, and also perform security redirect
 */
 function loadDrivers() {
+    
 	var url = (enable_mock) ? 
 			ws_url_mock + 'Drivers.json' :
 			ws_url + 'Drivers';
