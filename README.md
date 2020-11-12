@@ -37,8 +37,21 @@ Project roadmap
 - ![WIP](https://img.shields.io/badge/Status-Done-green.svg) Aliasess CRUD
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Aliases properties window
 - ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) SQL window
-- ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Tables tree
+- ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Tables tree
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Global preferences window
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) New session properties window
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) View SQuirreL logs window
-- ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Web security
+- ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Web security
+
+
+Authentication
+--------------
+Default username is `admin` with password `admin`. Users can be configured inside `~/.squirrel-sql/Users.xml`.
+
+Run mock
+--------
+You can run in mock mode with NodeJS instead of Glassfish:
+
+1. Set `enable_mock = true` in file `login.js`
+2. `cd src/main/javascript`
+3. `gulp serve`
