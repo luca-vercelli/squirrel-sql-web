@@ -17,15 +17,14 @@ $(document).ready(function(){
 function login() {
     if (enable_mock) {
         window.location.replace("index.html");
+        return;
     }
 
-    var url = enable_mock ? 
-                ws_url + 'JustGetOk' :
-                ws_url + 'Login';
+    var url = ws_url + 'Login';
     $.ajax({
         url: url,
         dataType: 'json',
-        type: 'POST',
+        type: enable_mock ? 'GET' : 'POST',
         data: {
             username: document.querySelector('#username').MDCTextField.value,
             password: document.querySelector('#password').MDCTextField.value
@@ -48,11 +47,11 @@ function login() {
 function logout() {
 
     var url = enable_mock ? 
-                ws_url + 'JustGetOk' :
+                ws_url + 'JustGetOk.json' :
                 ws_url + 'Logout';
     $.ajax({
         url: url,
-        type: 'POST',
+        type: enable_mock ? 'GET' : 'POST',
         success: function(response){
             window.location.replace("login.html");
         },
@@ -71,7 +70,6 @@ function loadUser() {
         dataType: "json",
         success: function(response){
             user = response.value;
-            console.log("USER:", user);
             $('.user-info .name').html(user.surname + ' ' + user.name);
             $('.user-info .email').html(user.email);
         },
