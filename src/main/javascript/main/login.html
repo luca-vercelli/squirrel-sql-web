@@ -12,7 +12,7 @@
   <!-- Plugin css for this page -->
   <!-- End plugin css for this page -->
   <!-- Layout styles -->
-  <link rel="stylesheet" href="/../assets/css/squirrelsql/style.css">
+  <link rel="stylesheet" href="../assets/css/squirrelsql/style.css">
   <!-- End layout styles -->
   <link rel="shortcut icon" href="../assets/images/favicon.ico" />
 </head>
@@ -27,19 +27,18 @@
               <div class="stretch-card mdc-layout-grid__cell--span-4-desktop mdc-layout-grid__cell--span-1-tablet"></div>
               <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-4-desktop mdc-layout-grid__cell--span-6-tablet">
                 <div class="mdc-card">
-                  <form method="post" action="j_security_check">
                     <div class="mdc-layout-grid">
                       <div class="mdc-layout-grid__inner">
                         <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
-                          <div class="mdc-text-field w-100">
-                            <input class="mdc-text-field__input" id="j_username">
+                          <div class="mdc-text-field w-100" id="username" data-mdc-auto-init="MDCTextField" >
+                            <input class="mdc-text-field__input">
                             <div class="mdc-line-ripple"></div>
-                            <label for="j_username" class="mdc-floating-label">Username</label>
+                            <label for="username" class="mdc-floating-label">Username</label>
                           </div>
                         </div>
                         <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
-                          <div class="mdc-text-field w-100">
-                            <input class="mdc-text-field__input" type="password" id="j_password">
+                          <div class="mdc-text-field w-100" id="password" data-mdc-auto-init="MDCTextField" >
+                            <input class="mdc-text-field__input" type="password">
                             <div class="mdc-line-ripple"></div>
                             <label for="j_password" class="mdc-floating-label">Password</label>
                           </div>
@@ -70,7 +69,6 @@
                         </div>
                       </div>
                     </div>
-                  </form>
                 </div>
               </div>
               <div class="stretch-card mdc-layout-grid__cell--span-4-desktop mdc-layout-grid__cell--span-1-tablet"></div>

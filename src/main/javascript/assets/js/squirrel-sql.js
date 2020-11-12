@@ -22,31 +22,44 @@ $(document).ready(function(){
 	// TODO which drivers are available in classpath?
 });
 
+/**
+* Load drivers, and also perform security redirect
+*/
 function loadDrivers() {
 	var url = (enable_mock) ? 
 			ws_url_mock + 'Drivers.json' :
 			ws_url + 'Drivers';
-	$.getJSON(url, function(response){
-		drivers = response.data;
-		drivers.sort(cmpNames);
-		var menu = $('#ui-sub-menu-drivers').find('nav');
-		menu.html("");
-		createMenuEntry(menu, 'driver.html', 'Create new');
-		var checkIcon = ' <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">check</i>';
-		for(var i in drivers) {
-			var driver = drivers[i];
-			if (driver.identifier != null) {
-				var isChecked = driver.jdbcdriverClassLoaded ? checkIcon : ''
-				createMenuEntry(menu, 'driver.html?id=' + driver.identifier, driver.name + isChecked);
-			} else {
-				console.log(`Skipping entry ${driver.name} with no identifier`); // should not happen
-			}
-		};
-		
-		for (i in drivers_callbacks) {
-			drivers_callbacks[i]();
-		}
-	});
+	$.ajax({
+        url: url,
+        dataType: "json",
+        success: function(response){
+            drivers = response.data;
+            drivers.sort(cmpNames);
+            var menu = $('#ui-sub-menu-drivers').find('nav');
+            menu.html("");
+            createMenuEntry(menu, 'driver.html', 'Create new');
+            var checkIcon = ' <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">check</i>';
+            for(var i in drivers) {
+                var driver = drivers[i];
+                if (driver.identifier != null) {
+                    var isChecked = driver.jdbcdriverClassLoaded ? checkIcon : ''
+                    createMenuEntry(menu, 'driver.html?id=' + driver.identifier, driver.name + isChecked);
+                } else {
+                    console.log(`Skipping entry ${driver.name} with no identifier`); // should not happen
+                }
+            };
+            
+            for (i in drivers_callbacks) {
+                drivers_callbacks[i]();
+            }
+        },
+        error: function(a,b,c){
+            console.log(a, b, c);
+            if (a.status == 403) {
+                window.location.replace("login.html");
+            }
+        }
+    });
 }
 
 function loadAliases() {

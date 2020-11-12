@@ -1,7 +1,6 @@
 package net.sourceforge.squirrel_sql.ws.managers;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,31 +18,37 @@ import net.sourceforge.squirrel_sql.ws.model.User;
 @Stateless
 public class UsersManager {
 
+	private File usersFile;
+
 	@Inject
 	WebApplication webapp;
 
 	Logger logger = Logger.getLogger(UsersManager.class);
 
 	@PostConstruct
-	public void init() throws IOException {
-		if (!getUsersFile().exists()) {
+	public void init() {
+		logger.info("UsersManager::init");
+		usersFile = new File(webapp.getAppFiles().getUserSettingsDirectory(), "Users.xml");
+		if (!usersFile.exists()) {
 			createDefaultUsersFile();
 		}
 	}
 
 	/**
-	 * Get full Users.xml location. This should be inside ApplicationFiles.
+	 * Get full Users.xml location. This should better be inside ApplicationFiles.
 	 * 
 	 * @return
 	 */
 	public File getUsersFile() {
-		return new File(webapp.getAppFiles().getUserSettingsDirectory(), "Users.xml");
+		return usersFile;
 	}
 
 	/**
 	 * Write (or rewrite) a Users.xml containg a single default user.
 	 */
 	protected void createDefaultUsersFile() {
+		logger.info("UsersManager::createDefaultUsersFile");
+
 		// cfr. code from AliasListHolder
 		User u = new User();
 		u.setUsername("admin");
@@ -56,6 +61,8 @@ public class UsersManager {
 		list.add(u);
 
 		saveList(list, getUsersFile());
+
+		logger.info("UsersManager::createDefaultUsersFile END");
 	}
 
 	/**
@@ -67,9 +74,11 @@ public class UsersManager {
 	protected void saveList(List<User> list, File file) {
 		// cfr. code from AliasListHolder
 		try {
+			logger.info("UsersManager::saveList");
 			XMLBeanWriter xmlBeanWriter = new XMLBeanWriter();
 			xmlBeanWriter.addIteratorToRoot(list.iterator());
 			xmlBeanWriter.save(file);
+			logger.info("UsersManager::saveList END");
 		} catch (Exception e) {
 			logger.error(e);
 			throw Utilities.wrapRuntime(e);
@@ -111,6 +120,8 @@ public class UsersManager {
 	 * @return User, or null if not found
 	 */
 	public User authenticate(String username, String password) {
+
+		logger.info("UsersManager::authenticate");
 
 		List<User> list = readList(getUsersFile());
 
