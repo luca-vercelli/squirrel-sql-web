@@ -72,38 +72,6 @@ function getCatalogs() {
     });
 }
 
-function executeQuery() {
-    disableEdit(true);
-    hideMessages();
-    var query = document.querySelector('#mdc-query').MDCTextField.value;
-    console.log("Query:" + query);
-    var url = (enable_mock) ? 
-                ws_url_mock + 'ExecuteQuery.json' :
-                ws_url + 'ExecuteQuery';
-    $.ajax({
-        type: enable_mock ? 'GET' : 'POST',
-        url: url,
-        data: {
-            sessionId: session.identifier,
-            query: query
-        },
-        success: function(data, status){
-            console.log("Data: ", data, "Status:", status);
-            if (data.value == null) {
-                // not a SELECT
-                showMessage("Success.", "success");
-            } else {
-                // TODO: render table
-            }
-            disableEdit(false);
-        },
-        error: function(response, status){
-            showAjaxError(response);
-            disableEdit(false);
-        }
-    });
-}
-
 function disableEdit(true_or_false) {    
     $("#sql_button").prop('disabled', true_or_false);
     $("#disconnect_button").prop('disabled', true_or_false);
