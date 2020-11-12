@@ -1,10 +1,10 @@
 # squirrel-sql-web
 SQuirreL SQL Client - Web version
 
-STATUS: Work in progress
+![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg)
 
+This is a web version of the famous web client.
 
-This should be a web version of the famous web client.
 
 Screenshots
 ----------
