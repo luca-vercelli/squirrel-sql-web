@@ -72,7 +72,8 @@ function loadUser() {
         success: function(response){
             user = response.value;
             console.log("USER:", user);
-            // TODO fill data on page
+            $('.user-info .name').html(user.surname + ' ' + user.name);
+            $('.user-info .email').html(user.email);
         },
         error: function(response){
             if (response.status == 403) {
