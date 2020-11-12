@@ -29,7 +29,7 @@ function loadForm() {
     if (identifier) {
         // Updating existing alias
     	var url = (enable_mock) ? 
-    			ws_url_mock + 'SingleAlias.json' :
+    			ws_url + 'SingleAlias.json' :
     			ws_url + `Aliases(${identifier})`;
         $.getJSON(url, function(response){
             alias = response.value;
@@ -108,7 +108,7 @@ function deleteAlias() {
 function connect() {
     // FIXME user and password could not be saved into the alias
     var url = (enable_mock) ? 
-            ws_url_mock + 'SingleSession.json' :
+            ws_url + 'SingleSession.json' :
             ws_url + 'Connect';
     $.ajax({
         type: enable_mock ? 'GET' : 'POST',

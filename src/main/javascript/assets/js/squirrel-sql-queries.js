@@ -6,7 +6,7 @@ function executeQuery() {
     var query = document.querySelector('#mdc-query').MDCTextField.value;
     console.log("Query:" + query);
     var url = (enable_mock) ? 
-                ws_url_mock + 'ExecuteQuery.json' :
+                ws_url + 'ExecuteQuery.json' :
                 ws_url + 'ExecuteQuery';
     $.ajax({
         type: enable_mock ? 'GET' : 'POST',

@@ -14,7 +14,7 @@ function loadForm() {
     if (identifier) {
         // Updating existing session
     	var url = (enable_mock) ? 
-    			ws_url_mock + 'SingleSession.json' :
+    			ws_url + 'SingleSession.json' :
     			ws_url + `Sessions(${identifier})`;
         $.getJSON(url, function(response){
             session = response.value;
@@ -34,7 +34,7 @@ function disconnect() {
     // TODO should give some warning
     disableEdit(true);
     var url = (enable_mock) ? 
-                ws_url_mock + 'JustGetOk' :
+                ws_url + 'JustGetOk' :
                 ws_url + 'Disconnect';
     $.ajax({
         type: enable_mock ? 'GET' : 'POST',
@@ -52,7 +52,7 @@ function disconnect() {
 
 function getCatalogs() {
     var url = (enable_mock) ? 
-                ws_url_mock + 'SchemaInfo.json' :
+                ws_url + 'SchemaInfo.json' :
                 ws_url + `Sessions(${session.identifier})/SchemaInfo`;
     $.ajax({
         type: 'GET',

@@ -18,18 +18,12 @@ $(document).ready(function(){
 	// TODO which drivers are available in classpath?
 });
 
-/**
-* Load drivers, and also perform security redirect
-*/
 function loadDrivers() {
     
 	var url = (enable_mock) ? 
-			ws_url_mock + 'Drivers.json' :
+			ws_url + 'Drivers.json' :
 			ws_url + 'Drivers';
-	$.ajax({
-        url: url,
-        dataType: "json",
-        success: function(response){
+	$.getJSON(url, function(response){
             drivers = response.data;
             drivers.sort(cmpNames);
             var menu = $('#ui-sub-menu-drivers').find('nav');
@@ -49,19 +43,12 @@ function loadDrivers() {
             for (i in drivers_callbacks) {
                 drivers_callbacks[i]();
             }
-        },
-        error: function(a,b,c){
-            console.log(a, b, c);
-            if (a.status == 403) {
-                window.location.replace("login.html");
-            }
-        }
-    });
+        });
 }
 
 function loadAliases() {
 	var url = (enable_mock) ? 
-			ws_url_mock + 'Aliases.json' :
+			ws_url + 'Aliases.json' :
 			ws_url + 'Aliases';
 	$.getJSON(url, function(response){
 		aliases = response.data;
@@ -82,7 +69,7 @@ function loadAliases() {
 
 function loadSessions() {
 	var url = (enable_mock) ? 
-			ws_url_mock + 'Sessions.json' :
+			ws_url + 'Sessions.json' :
 			ws_url + 'Sessions';
 	$.getJSON(url, function(response){
 		sessions = response.data;

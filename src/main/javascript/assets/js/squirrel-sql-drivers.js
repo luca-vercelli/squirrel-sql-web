@@ -17,7 +17,7 @@ function loadForm() {
     if (identifier) {
         // Updating existing driver
     	var url = (enable_mock) ? 
-    			ws_url_mock + 'SingleDriver.json' :
+    			ws_url + 'SingleDriver.json' :
     			ws_url + `Drivers(${identifier})`;
         $.getJSON(url, function(response){
             driver = response.value;

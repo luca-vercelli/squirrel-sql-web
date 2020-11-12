@@ -1,0 +1,9 @@
+{
+  value: {
+    username: 'admin',
+    surname: 'John',
+    name: 'Doe',
+    email: 'john.doe@example.com',
+    roles: ['admin']
+  }
+}

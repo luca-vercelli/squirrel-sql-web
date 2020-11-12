@@ -1,7 +1,6 @@
 
-var ws_url = '../ws/';
-var ws_url_mock = '../mock/'
 var enable_mock = true;
+var ws_url = enable_mock ? '../mock/' : '../ws/';
 
 var user = null;
 
@@ -20,8 +19,11 @@ function login() {
         window.location.replace("index.html");
     }
 
+    var url = enable_mock ? 
+                ws_url + 'JustGetOk' :
+                ws_url + 'Login';
     $.ajax({
-        url: ws_url + 'Login',
+        url: url,
         dataType: 'json',
         type: 'POST',
         data: {
@@ -44,8 +46,12 @@ function login() {
 }
 
 function logout() {
+
+    var url = enable_mock ? 
+                ws_url + 'JustGetOk' :
+                ws_url + 'Logout';
     $.ajax({
-        url: ws_url + 'Login',
+        url: url,
         type: 'POST',
         success: function(response){
             window.location.replace("login.html");
@@ -58,7 +64,7 @@ function logout() {
 
 function loadUser() {
     var url = (enable_mock) ? 
-            ws_url_mock + 'CurrentUser.json' :
+            ws_url + 'CurrentUser.json' :
             ws_url + 'CurrentUser';
     $.ajax({
         url: url,
