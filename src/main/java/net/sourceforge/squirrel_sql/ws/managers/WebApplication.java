@@ -53,7 +53,6 @@ public class WebApplication extends Application {
 		}
 		initDriverManager();
 		initAppFiles();
-		// no way to access _appFiles here, and check them
 
 		getSquirrelPreferences().setSavePreferencesImmediately(true);
 
