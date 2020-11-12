@@ -50,7 +50,7 @@ Default username is `admin` with password `admin`. Users can be configured insid
 
 Run mock
 --------
-You can run in mock mode with NodeJS instead of Glassfish:
+For frontend development, we can run in mock mode with NodeJS instead of Glassfish:
 
 1. Set `enable_mock = true` in file `login.js`
 2. `cd src/main/javascript`
