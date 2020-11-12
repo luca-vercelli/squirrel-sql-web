@@ -28,7 +28,9 @@ function loadForm() {
                 showMessage(data, "error");
             }
         });
-	}
+	} else {
+        showMessage("Bad request: no session identifier given", "error");
+    }
 }
 
 function disconnect() {
@@ -44,8 +46,8 @@ function disconnect() {
         success: function(data, status){
             window.location.replace("..");
         },
-        error: function(data, status){
-            showAjaxError(data);
+        error: function(response, status){
+            showAjaxError(response);
             disableEdit(false);
         }
     });
@@ -64,14 +66,15 @@ function getCatalogs() {
             var schemaInfo = data.value;
             // ASSOCIATION CATALOGS/SCHEMAS???
         },
-        error: function(data, status){
-            showAjaxError(data);
+        error: function(response, status){
+            showAjaxError(response);
         }
     });
 }
 
 function executeQuery() {
     disableEdit(true);
+    hideMessages();
     var query = document.querySelector('#mdc-query').MDCTextField.value;
     console.log("Query:" + query);
     var url = (enable_mock) ? 
@@ -86,10 +89,16 @@ function executeQuery() {
         },
         success: function(data, status){
             console.log("Data: ", data, "Status:", status);
+            if (data.value == null) {
+                // not a SELECT
+                showMessage("Success.", "success");
+            } else {
+                // TODO: render table
+            }
             disableEdit(false);
         },
-        error: function(data, status){
-            showAjaxError(data);
+        error: function(response, status){
+            showAjaxError(response);
             disableEdit(false);
         }
     });
