@@ -23,6 +23,7 @@ function loadForm() {
         $.getJSON(url, function(response){
             session = response.value;
             if (session) {
+                $('#session-title').html(session.title);
                 disableEdit(false);
             } else {
                 showMessage(data, "error");
