@@ -1,5 +1,5 @@
 
-var enable_mock = true;
+var enable_mock = false;
 var ws_url = enable_mock ? '../mock/' : '../ws/';
 
 var user = null;

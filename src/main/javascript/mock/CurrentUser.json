@@ -1,9 +1,10 @@
 {
-  "value": {
-    "username": "admin",
-    "surname": "John",
-    "name": "Doe",
-    "email": "john.doe@example.com",
-    "roles": ["admin"]
+  "value" : {
+    "username" : "admin",
+    "name" : "Doe",
+    "surname" : "John",
+    "email" : "john.doe@example.com",
+    "password" : "admin",
+    "roles" : [ "admin" ]
   }
 }

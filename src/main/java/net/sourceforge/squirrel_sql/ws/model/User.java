@@ -1,7 +1,6 @@
 package net.sourceforge.squirrel_sql.ws.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class User {
 
@@ -9,8 +8,8 @@ public class User {
 	private String name;
 	private String surname;
 	private String email;
-	private String password;
-	private List<String> roles = new ArrayList<>();
+	private String password; // XmlWriter does not support char[]
+	private String[] roles; // XmlWriter does not support List's
 
 	public String getUsername() {
 		return username;
@@ -36,6 +35,7 @@ public class User {
 		this.surname = surname;
 	}
 
+	@JsonIgnore
 	public String getEmail() {
 		return email;
 	}
@@ -52,11 +52,11 @@ public class User {
 		this.password = password;
 	}
 
-	public List<String> getRoles() {
+	public String[] getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<String> roles) {
+	public void setRoles(String[] roles) {
 		this.roles = roles;
 	}
 }

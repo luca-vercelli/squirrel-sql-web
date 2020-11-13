@@ -10,7 +10,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 
-//@Provider
+@Provider
 public class AuthFilter implements ContainerRequestFilter {
 
 	@Context
@@ -20,8 +20,8 @@ public class AuthFilter implements ContainerRequestFilter {
 
 	@Override
 	public void filter(ContainerRequestContext context) throws IOException {
-
-		if (request.getSession().getAttribute(USER_SESSION_ATTRIBUTE) == null) {
+		if (!context.getUriInfo().getPath().endsWith("Login")
+				&& request.getSession().getAttribute(USER_SESSION_ATTRIBUTE) == null) {
 			throw new WebApplicationException("User not authenticated", Status.FORBIDDEN);
 		}
 	}
