@@ -21,7 +21,7 @@ import net.sourceforge.squirrel_sql.ws.model.User;
 /**
  * Authentication endpoint for token-based (JWT) security.
  * 
- * @author lv 2017
+ * @author lv 2017-2020
  */
 @Stateless
 @Path("/")

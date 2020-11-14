@@ -11,7 +11,7 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import javax.ejb.Stateless;
+import javax.ejb.Singleton;
 
 import org.apache.log4j.Logger;
 
@@ -29,16 +29,19 @@ import net.sourceforge.squirrel_sql.ws.resources.SessionsEndpoint;
  * a secret key is stored in a "server.key" file. You can use
  * generateSecretKey(). Currently implemented through JJWT.
  * 
- * @author lv 2017
+ * This is a @Singleton, in order to prevent that different server keys ever
+ * exist during application running.
+ * 
+ * @author lv 2017-2020
  */
 // TODO use keystore instead of file
-@Stateless
+@Singleton
 public class TokensManager {
 
 	/**
 	 * The server private key used for signing and encoding messages.
 	 */
-	public Key serverKey = null;
+	private Key serverKey = null;
 
 	/**
 	 * Token validity in ms
@@ -124,7 +127,7 @@ public class TokensManager {
 
 		try {
 			jws = Jwts.parser().setSigningKey(serverKey).parseClaimsJws(token);
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			return null;
 		}
 
@@ -147,18 +150,12 @@ public class TokensManager {
 	 * @see https://stackoverflow.com/questions/11410770
 	 */
 	public Key generateSecretKey() {
-		String filename = SECRET_FILENAME;
+		File f = new File(SECRET_FILENAME).getAbsoluteFile();
 		Key key = MacProvider.generateKey();
-		FileOutputStream fos;
+		logger.info("Writing server key to " + f.getPath());
 		try {
-			File f = new File(filename).getAbsoluteFile();
-			logger.info("Writing server key to " + f.getPath());
-			fos = new FileOutputStream(f, false);
-
-			try {
+			try (FileOutputStream fos = new FileOutputStream(f, false)) {
 				fos.write(key.getEncoded());
-			} finally {
-				fos.close();
 			}
 			return key;
 
@@ -175,10 +172,8 @@ public class TokensManager {
 	 * @see https://stackoverflow.com/questions/11410770
 	 */
 	public SecretKey loadSecretKey() {
-		String filename = SECRET_FILENAME;
-		byte[] keyBytes;
 		try {
-			keyBytes = Files.readAllBytes(Paths.get(filename));
+			byte[] keyBytes = Files.readAllBytes(Paths.get(SECRET_FILENAME));
 			return new SecretKeySpec(keyBytes, "SHA-512");
 		} catch (IOException e) {
 			logger.error("Error loading secret key from " + SECRET_FILENAME, e);
