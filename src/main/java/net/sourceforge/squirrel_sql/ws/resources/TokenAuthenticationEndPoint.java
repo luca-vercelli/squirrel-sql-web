@@ -9,6 +9,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
 
@@ -20,8 +21,7 @@ import net.sourceforge.squirrel_sql.ws.model.User;
 /**
  * Authentication endpoint for token-based (JWT) security.
  * 
- * @author Luca Vercelli
- *
+ * @author lv 2017
  */
 @Stateless
 @Path("/")
@@ -76,20 +76,20 @@ public class TokenAuthenticationEndPoint {
 
 		if (username == null || username.isEmpty()) {
 			// FIXME what's the best error code?
-			throw new WebApplicationException("Missing credentials", 104);
+			throw new WebApplicationException("Missing credentials", Status.UNAUTHORIZED);
 		}
 
 		User user = usersManager.authenticate(username, password);
 
 		if (user == null) {
 			// FIXME what's the best error code?
-			throw new WebApplicationException("Invalid credentials", 104);
+			throw new WebApplicationException("Invalid credentials", Status.UNAUTHORIZED);
 		}
 
 		// At last, user is authenticated
 		logger.info("User authenticated: " + user);
 
-		return tokensManager.issueToken(username);
+		return tokensManager.issueToken(user);
 	}
 
 	public static class Credentials {

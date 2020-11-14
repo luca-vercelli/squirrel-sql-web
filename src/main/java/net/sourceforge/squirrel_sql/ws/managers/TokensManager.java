@@ -21,12 +21,15 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.crypto.MacProvider;
 import net.sourceforge.squirrel_sql.fw.util.Utilities;
+import net.sourceforge.squirrel_sql.ws.model.User;
 import net.sourceforge.squirrel_sql.ws.resources.SessionsEndpoint;
 
 /**
  * Manager (EJB) for token-based (JWT) authentications. This class require that
  * a secret key is stored in a "server.key" file. You can use
  * generateSecretKey(). Currently implemented through JJWT.
+ * 
+ * @author lv 2017
  */
 // TODO use keystore instead of file
 @Stateless
@@ -61,12 +64,16 @@ public class TokensManager {
 	 * 
 	 * @see https://github.com/jwtk/jjwt
 	 */
-	public String issueToken(String userId) {
+	public String issueToken(User user) {
 
 		Date now = new Date();
 
 		String compactJwts = Jwts.builder() //
-				.setSubject(userId) //
+				.setSubject(user.getUsername()) //
+				.claim("name", user.getName()) //
+				.claim("surname", user.getSurname()) //
+				.claim("email", user.getEmail()) //
+				.claim("roles", user.getRoles()) //
 				.setIssuedAt(now) //
 				.setExpiration(new Date(now.getTime() + DELAY)) //
 				.signWith(SignatureAlgorithm.HS512, serverKey) //
@@ -82,7 +89,7 @@ public class TokensManager {
 	 * @param token
 	 * @return true if token is valid
 	 */
-	public boolean validateToken(String token, String callerIP) {
+	public boolean validateToken(String token) {
 
 		Jws<Claims> jws;
 
@@ -101,6 +108,34 @@ public class TokensManager {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Create User object using token claims.
+	 * 
+	 * Do not check if token is valid or not.
+	 * 
+	 * @param token
+	 * @return null if given string is not a token
+	 */
+	public User fromToken(String token) {
+
+		Jws<Claims> jws;
+
+		try {
+			jws = Jwts.parser().setSigningKey(serverKey).parseClaimsJws(token);
+		} catch (Exception e) {
+			return null;
+		}
+
+		Claims claims = jws.getBody();
+		User user = new User();
+		user.setUsername(claims.getSubject());
+		user.setName((String) claims.get("name"));
+		user.setSurname((String) claims.get("surname"));
+		user.setEmail((String) claims.get("email"));
+		user.setRoles((String[]) claims.get("roles"));
+		return user;
 	}
 
 	/**
@@ -134,6 +169,8 @@ public class TokensManager {
 	}
 
 	/**
+	 * Load secret key from server file
+	 * 
 	 * @throws IOException
 	 * @see https://stackoverflow.com/questions/11410770
 	 */
