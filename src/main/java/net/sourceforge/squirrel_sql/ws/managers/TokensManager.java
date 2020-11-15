@@ -12,6 +12,9 @@ import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.ejb.Singleton;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.HttpHeaders;
 
 import org.apache.log4j.Logger;
 
@@ -22,7 +25,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.crypto.MacProvider;
 import net.sourceforge.squirrel_sql.fw.util.Utilities;
 import net.sourceforge.squirrel_sql.ws.model.User;
-import net.sourceforge.squirrel_sql.ws.resources.SessionsEndpoint;
 
 /**
  * Manager (EJB) for token-based (JWT) authentications. This class require that
@@ -47,10 +49,11 @@ public class TokensManager {
 	 * Token validity in ms
 	 */
 	public static final long DELAY = 24 * 3600 * 1000; // 1 day
-
 	public final static String SECRET_FILENAME = "server.key";
+	public static final String AUTHENTICATION_SCHEME = "Bearer "; // JWT
+	public static final int AUTHENTICATION_SCHEME_LEN = AUTHENTICATION_SCHEME.length();
 
-	Logger logger = Logger.getLogger(SessionsEndpoint.class);
+	Logger logger = Logger.getLogger(TokensManager.class);
 
 	@PostConstruct
 	public void postConstructEJB() {
@@ -86,7 +89,7 @@ public class TokensManager {
 	}
 
 	/**
-	 * Check if it was issued by the server and if it's not expired.
+	 * Check if token was issued by the server and if it's not expired.
 	 * 
 	 * @see https://github.com/jwtk/jjwt
 	 * @param token
@@ -114,14 +117,14 @@ public class TokensManager {
 	}
 
 	/**
-	 * Create User object using token claims.
+	 * Return subject, i.e.e username, contained in token.
 	 * 
 	 * Do not check if token is valid or not.
 	 * 
 	 * @param token
 	 * @return null if given string is not a token
 	 */
-	public User fromToken(String token) {
+	public String getSubject(String token) {
 
 		Jws<Claims> jws;
 
@@ -132,13 +135,8 @@ public class TokensManager {
 		}
 
 		Claims claims = jws.getBody();
-		User user = new User();
-		user.setUsername(claims.getSubject());
-		user.setName((String) claims.get("name"));
-		user.setSurname((String) claims.get("surname"));
-		user.setEmail((String) claims.get("email"));
-		user.setRoles((String[]) claims.get("roles"));
-		return user;
+
+		return claims.getSubject();
 	}
 
 	/**
@@ -179,5 +177,60 @@ public class TokensManager {
 			logger.error("Error loading secret key from " + SECRET_FILENAME, e);
 			throw Utilities.wrapRuntime(e);
 		}
+	}
+
+	/**
+	 * Search for the "Authorization: Bearer xxx" header, and extract the token xxx.
+	 * 
+	 * Authentication scheme comparison must be case-insensitive
+	 * 
+	 * @param request
+	 * @return token
+	 * @throws IllegalArgumentException if not found
+	 */
+	public String extractTokenFromRequest(HttpServletRequest request) {
+
+		// Get the Authorization header from the request
+		String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+		return extractTokenFromAuthorizationHeader(authorizationHeader);
+	}
+
+	/**
+	 * Search for the "Authorization: Bearer xxx" header, and extract the token xxx.
+	 * 
+	 * Authentication scheme comparison must be case-insensitive
+	 * 
+	 * @param context
+	 * @return token
+	 * @throws IllegalArgumentException if not found
+	 */
+	public String extractTokenFromContext(ContainerRequestContext context) {
+
+		// Get the Authorization header from the context
+		String authorizationHeader = context.getHeaderString(HttpHeaders.AUTHORIZATION);
+
+		return extractTokenFromAuthorizationHeader(authorizationHeader);
+	}
+
+	protected String extractTokenFromAuthorizationHeader(String authorizationHeader) {
+
+		if (authorizationHeader == null || authorizationHeader.isEmpty()) {
+			throw new IllegalArgumentException("Missing Authorization header");
+		}
+
+		// Check if Authorization type is JWT
+		// @see https://stackoverflow.com/a/19154150/5116356
+		if (!authorizationHeader.regionMatches(true, 0, AUTHENTICATION_SCHEME, 0, AUTHENTICATION_SCHEME_LEN)) {
+			throw new IllegalArgumentException("Unexpected Authorization schema");
+		}
+
+		// Extract the token from the Authorization header
+		String token = authorizationHeader.substring(AUTHENTICATION_SCHEME.length()).trim();
+		if (token.isEmpty()) {
+			throw new IllegalArgumentException("Unexpected empty token");
+		}
+
+		return token;
 	}
 }

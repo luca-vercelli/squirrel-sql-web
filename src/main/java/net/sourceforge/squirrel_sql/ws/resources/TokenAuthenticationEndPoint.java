@@ -2,12 +2,17 @@ package net.sourceforge.squirrel_sql.ws.resources;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 
@@ -33,6 +38,8 @@ public class TokenAuthenticationEndPoint {
 	UsersManager usersManager;
 	@Inject
 	TokensManager tokensManager;
+	@Context
+	HttpServletResponse response;
 
 	/**
 	 * Plain-test authentication point.
@@ -47,7 +54,7 @@ public class TokenAuthenticationEndPoint {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String authenticate(@FormParam("username") String username, @FormParam("password") String password) {
 
-		return internalGetToken(username, password);
+		return internalAuthenticate(username, password);
 	}
 
 	/**
@@ -62,8 +69,22 @@ public class TokenAuthenticationEndPoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public ValueBean<String> authenticate(Credentials credentials) {
 
-		String token = internalGetToken(credentials.getUsername(), credentials.getPassword());
+		String token = internalAuthenticate(credentials.getUsername(), credentials.getPassword());
 		return new ValueBean<>(token);
+	}
+
+	/**
+	 * Return the user that the Authorization token was issued for.
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@GET
+	@Path("/CurrentUser")
+	public ValueBean<User> getCurrentUser(@Context HttpServletRequest request) {
+		String token = tokensManager.extractTokenFromRequest(request);
+		User user = usersManager.findByUsername(tokensManager.getSubject(token));
+		return new ValueBean<>(user);
 	}
 
 	/**
@@ -72,17 +93,17 @@ public class TokenAuthenticationEndPoint {
 	 * @param credentials
 	 * @return
 	 */
-	private String internalGetToken(String username, String password) {
+	private String internalAuthenticate(String username, String password) {
 
 		if (username == null || username.isEmpty()) {
-			// FIXME what's the best error code?
+			response.setHeader(HttpHeaders.WWW_AUTHENTICATE, TokensManager.AUTHENTICATION_SCHEME);
 			throw new WebApplicationException("Missing credentials", Status.UNAUTHORIZED);
 		}
 
-		User user = usersManager.authenticate(username, password);
+		User user = usersManager.findByUsernamePassword(username, password);
 
 		if (user == null) {
-			// FIXME what's the best error code?
+			response.setHeader(HttpHeaders.WWW_AUTHENTICATE, TokensManager.AUTHENTICATION_SCHEME);
 			throw new WebApplicationException("Invalid credentials", Status.UNAUTHORIZED);
 		}
 
@@ -92,6 +113,9 @@ public class TokenAuthenticationEndPoint {
 		return tokensManager.issueToken(user);
 	}
 
+	/**
+	 * This bean can be used from frontend for JSON authentication
+	 */
 	public static class Credentials {
 		private String username;
 		private String password;
