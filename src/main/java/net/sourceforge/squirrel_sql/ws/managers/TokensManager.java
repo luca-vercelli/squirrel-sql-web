@@ -24,6 +24,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.crypto.MacProvider;
 import net.sourceforge.squirrel_sql.fw.util.Utilities;
+import net.sourceforge.squirrel_sql.ws.exceptions.AuthorizationException;
 import net.sourceforge.squirrel_sql.ws.model.User;
 
 /**
@@ -93,16 +94,17 @@ public class TokensManager {
 	 * 
 	 * @see https://github.com/jwtk/jjwt
 	 * @param token
-	 * @return true if token is valid
+	 * @return parsed jws token
+	 * @throws AuthorizationException if token is malformed or expired
 	 */
-	public boolean validateToken(String token) {
+	public Jws<Claims> validateToken(String token) throws AuthorizationException {
 
 		Jws<Claims> jws;
 
 		try {
 			jws = Jwts.parser().setSigningKey(serverKey).parseClaimsJws(token);
 		} catch (Exception e) {
-			return false;
+			throw new AuthorizationException("Unrecognized token");
 		}
 
 		// OK, we can trust this JWT (well, JWS). What about its content?
@@ -110,10 +112,10 @@ public class TokensManager {
 		Claims claims = jws.getBody();
 
 		if (claims.getExpiration() != null && claims.getExpiration().before(new Date())) {
-			return false;
+			throw new AuthorizationException("Token expired");
 		}
 
-		return true;
+		return jws;
 	}
 
 	/**
@@ -186,9 +188,9 @@ public class TokensManager {
 	 * 
 	 * @param request
 	 * @return token
-	 * @throws IllegalArgumentException if not found
+	 * @throws AuthorizationException if not found
 	 */
-	public String extractTokenFromRequest(HttpServletRequest request) {
+	public String extractTokenFromRequest(HttpServletRequest request) throws AuthorizationException {
 
 		// Get the Authorization header from the request
 		String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -203,9 +205,9 @@ public class TokensManager {
 	 * 
 	 * @param context
 	 * @return token
-	 * @throws IllegalArgumentException if not found
+	 * @throws AuthorizationException if not found
 	 */
-	public String extractTokenFromContext(ContainerRequestContext context) {
+	public String extractTokenFromContext(ContainerRequestContext context) throws AuthorizationException {
 
 		// Get the Authorization header from the context
 		String authorizationHeader = context.getHeaderString(HttpHeaders.AUTHORIZATION);
@@ -213,22 +215,22 @@ public class TokensManager {
 		return extractTokenFromAuthorizationHeader(authorizationHeader);
 	}
 
-	protected String extractTokenFromAuthorizationHeader(String authorizationHeader) {
+	protected String extractTokenFromAuthorizationHeader(String authorizationHeader) throws AuthorizationException {
 
 		if (authorizationHeader == null || authorizationHeader.isEmpty()) {
-			throw new IllegalArgumentException("Missing Authorization header");
+			throw new AuthorizationException("Missing Authorization header");
 		}
 
 		// Check if Authorization type is JWT
 		// @see https://stackoverflow.com/a/19154150/5116356
 		if (!authorizationHeader.regionMatches(true, 0, AUTHENTICATION_SCHEME, 0, AUTHENTICATION_SCHEME_LEN)) {
-			throw new IllegalArgumentException("Unexpected Authorization schema");
+			throw new AuthorizationException("Unexpected Authorization schema");
 		}
 
 		// Extract the token from the Authorization header
 		String token = authorizationHeader.substring(AUTHENTICATION_SCHEME.length()).trim();
 		if (token.isEmpty()) {
-			throw new IllegalArgumentException("Unexpected empty token");
+			throw new AuthorizationException("Unexpected empty token");
 		}
 
 		return token;

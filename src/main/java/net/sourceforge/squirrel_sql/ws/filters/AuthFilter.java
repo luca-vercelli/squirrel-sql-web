@@ -13,6 +13,7 @@ import javax.ws.rs.ext.Provider;
 
 import org.apache.log4j.Logger;
 
+import net.sourceforge.squirrel_sql.ws.exceptions.AuthorizationException;
 import net.sourceforge.squirrel_sql.ws.managers.TokensManager;
 
 @Provider
@@ -37,15 +38,17 @@ public class AuthFilter implements ContainerRequestFilter {
 		try {
 			// Get the Authorization header from the request context
 			token = tokensManager.extractTokenFromContext(context);
-		} catch (IllegalArgumentException e) {
+		} catch (AuthorizationException e) {
 			response.setHeader(HttpHeaders.WWW_AUTHENTICATE, TokensManager.AUTHENTICATION_SCHEME);
 			throw new WebApplicationException(e.getMessage(), Status.UNAUTHORIZED);
 		}
 
-		// Check if token is valid
-		if (!tokensManager.validateToken(token)) {
+		try {
+			// Check if token is valid
+			tokensManager.validateToken(token);
+		} catch (AuthorizationException e) {
 			response.setHeader(HttpHeaders.WWW_AUTHENTICATE, TokensManager.AUTHENTICATION_SCHEME);
-			throw new WebApplicationException("Invalid authorization token", Status.UNAUTHORIZED);
+			throw new WebApplicationException(e.getMessage(), Status.UNAUTHORIZED);
 		}
 	}
 }

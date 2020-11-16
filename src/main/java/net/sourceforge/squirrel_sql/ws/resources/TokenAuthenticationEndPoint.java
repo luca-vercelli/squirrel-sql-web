@@ -19,6 +19,7 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.log4j.Logger;
 
 import net.sourceforge.squirrel_sql.dto.ValueBean;
+import net.sourceforge.squirrel_sql.ws.exceptions.AuthorizationException;
 import net.sourceforge.squirrel_sql.ws.managers.TokensManager;
 import net.sourceforge.squirrel_sql.ws.managers.UsersManager;
 import net.sourceforge.squirrel_sql.ws.model.User;
@@ -78,10 +79,12 @@ public class TokenAuthenticationEndPoint {
 	 * 
 	 * @param request
 	 * @return
+	 * @throws AuthorizationException if token is invalid (this should not happen,
+	 *                                if filter is cconfigured properly)
 	 */
 	@GET
 	@Path("/CurrentUser")
-	public ValueBean<User> getCurrentUser(@Context HttpServletRequest request) {
+	public ValueBean<User> getCurrentUser(@Context HttpServletRequest request) throws AuthorizationException {
 		String token = tokensManager.extractTokenFromRequest(request);
 		User user = usersManager.findByUsername(tokensManager.getSubject(token));
 		return new ValueBean<>(user);
