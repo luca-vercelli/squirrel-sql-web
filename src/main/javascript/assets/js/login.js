@@ -20,16 +20,21 @@ function login() {
         return;
     }
 
-    var url = ws_url + 'Login';
+    localStorage.removeItem('authToken');
+
+    var url = ws_url + 'Authenticate';
     $.ajax({
         url: url,
-        dataType: 'json',
         type: enable_mock ? 'GET' : 'POST',
         data: {
             username: document.querySelector('#username').MDCTextField.value,
             password: document.querySelector('#password').MDCTextField.value
         },
         success: function(response){
+            var token = response;
+            // we store the token in localStorage, because this is not a Single Page App
+            // is this safe?
+            localStorage.setItem('authToken', token);
             window.location.replace("index.html");
         },
         error: function(response){
@@ -45,20 +50,8 @@ function login() {
 }
 
 function logout() {
-
-    var url = enable_mock ? 
-                ws_url + 'JustGetOk.json' :
-                ws_url + 'Logout';
-    $.ajax({
-        url: url,
-        type: enable_mock ? 'GET' : 'POST',
-        success: function(response){
-            window.location.replace("login.html");
-        },
-        error: function(response){
-            window.location.replace("login.html");
-        }
-    });
+    localStorage.removeItem('authToken');
+    window.location.replace("login.html");
 }
 
 function loadUser() {
@@ -68,6 +61,9 @@ function loadUser() {
     $.ajax({
         url: url,
         dataType: "json",
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+        },
         success: function(response){
             user = response.value;
             $('.user-info .name').html(user.surname + ' ' + user.name);

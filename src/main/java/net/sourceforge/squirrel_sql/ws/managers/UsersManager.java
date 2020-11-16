@@ -122,7 +122,7 @@ public class UsersManager {
 	 */
 	public User findByUsernamePassword(String username, String password) {
 		User u = findByUsername(username);
-		if (u.getPassword().equals(password)) { // FIXME passwords should be encrypted
+		if (u != null && u.getPassword() != null && u.getPassword().equals(password)) {
 			return u;
 		} else {
 			// not found

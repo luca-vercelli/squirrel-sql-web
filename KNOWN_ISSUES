@@ -2,6 +2,7 @@ MAJOR:
 * UI: the "autologon" property is currently useless, we may add a "connect" button inside the menu
 * UI: the "connect at startup" property is currently useless, we may connect sessions when a new user logs in
 * Currently we do not allow more than 1 jar per driver, and the user cannot change it
+* User passwords should be encrypted
 
 MINOR:
 * local Maven repository: why transitive dependencies are not loaded?

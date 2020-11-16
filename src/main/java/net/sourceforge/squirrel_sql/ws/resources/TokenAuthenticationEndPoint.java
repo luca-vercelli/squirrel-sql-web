@@ -49,7 +49,7 @@ public class TokenAuthenticationEndPoint {
 	 * @return
 	 */
 	@POST
-	@Path("authenticate")
+	@Path("Authenticate")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_PLAIN)
 	public String authenticate(@FormParam("username") String username, @FormParam("password") String password) {
@@ -64,7 +64,7 @@ public class TokenAuthenticationEndPoint {
 	 * @return
 	 */
 	@POST
-	@Path("authenticate")
+	@Path("Authenticate")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public ValueBean<String> authenticate(Credentials credentials) {

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
@@ -30,6 +31,9 @@ public class ObjectsTabEndpoint {
 	SessionsManager sessionsManager;
 	@Inject
 	ObjectsTabManager manager;
+
+	// JSUT FOR TEST, this a single static model
+	static ObjectTreeModel model;
 
 	@GET
 	@Path("/Sessions({identifier})/SchemaInfo")
@@ -56,11 +60,27 @@ public class ObjectsTabEndpoint {
 	}
 
 	@GET
-	@Path("/Sessions({identifier})/Tree")
-	public ValueBean<ObjectTreeNodeDto> getTree(@PathParam("identifier") String identifier) {
+	@Path("/Sessions({sessionIdentifier})/Tree")
+	public ValueBean<ObjectTreeNodeDto> getTree(@PathParam("sessionIdentifier") String identifier) {
 		ISession session = sessionsManager.getSessionById(identifier);
-		ObjectTreeModel model = new ObjectTreeModel(session);
-		ObjectTreeNode root = (ObjectTreeNode) model.getRoot();
-		return new ValueBean<>(new ObjectTreeNodeDto(root));
+
+		// @see ObjectTree
+
+		if (model == null) {
+			model = new ObjectTreeModel(session);
+		}
+
+		return new ValueBean<>(new ObjectTreeNodeDto((ObjectTreeNode) model.getRoot()));
+	}
+
+	@POST
+	@Path("/Sessions({sessionIdentifier})/Expand({xpath})")
+	public ValueBean<ObjectTreeNodeDto> expandTree(@PathParam("sessionIdentifier") String identifier,@PathParam("xpath") String xpath) {
+		ISession session = sessionsManager.getSessionById(identifier);
+
+		// @see ObjectTree::expandNode
+		// @see ObjectTreeModel::constructor::run for expanders
+		
+		return new ValueBean<>(new ObjectTreeNodeDto((ObjectTreeNode) model.getRoot()));
 	}
 }

@@ -1,5 +1,6 @@
 package net.sourceforge.squirrel_sql.ws.filters;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.WebApplicationException;
@@ -10,9 +11,12 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 
+import org.apache.log4j.Logger;
+
 import net.sourceforge.squirrel_sql.ws.managers.TokensManager;
 
 @Provider
+@Stateless
 public class AuthFilter implements ContainerRequestFilter {
 
 	@Inject
@@ -20,8 +24,14 @@ public class AuthFilter implements ContainerRequestFilter {
 	@Context
 	HttpServletResponse response;
 
+	Logger logger = Logger.getLogger(AuthFilter.class);
+
 	@Override
 	public void filter(ContainerRequestContext context) {
+
+		if (context.getUriInfo().getPath().equals("Authenticate")) {
+			return;
+		}
 
 		String token;
 		try {

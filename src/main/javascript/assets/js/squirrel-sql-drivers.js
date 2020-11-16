@@ -16,19 +16,26 @@ function loadForm() {
     var identifier = location.href.split("driver.html?id=")[1];
     if (identifier) {
         // Updating existing driver
-    	var url = (enable_mock) ? 
-    			ws_url + 'SingleDriver.json' :
-    			ws_url + `Drivers(${identifier})`;
-        $.getJSON(url, function(response){
-            driver = response.value;
-            if (driver != null) {
-                updateDriverToForm();
-                setCreating(false);
-            } else {
-                console.log("Requested driver not found!!!");
+        var url = (enable_mock) ? 
+                ws_url + 'SingleDriver.json' :
+                ws_url + `Drivers(${identifier})`;
+        $.ajax({
+            url: url,
+            dataType: "json",
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+            },
+            success: function(response){
+                driver = response.value;
+                if (driver != null) {
+                    updateDriverToForm();
+                    setCreating(false);
+                } else {
+                    console.log("Requested driver not found!!!");
+                }
             }
         });
-	} else {
+    } else {
         setCreating(true);
     }
 }
@@ -42,6 +49,9 @@ function createDriver() {
         url: ws_url + 'Drivers',
         contentType: 'application/json',
         data: JSON.stringify(driver),
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+        },
         success: function(data, status){
             driver = data.value;
             updateDriverToForm();
@@ -65,6 +75,9 @@ function saveDriver() {
         url: ws_url + `Drivers(${driver.identifier})`,
         contentType: 'application/json',
         data: JSON.stringify(driver),
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+        },
         success: function(data, status){
             driver = data.value;
             updateDriverToForm();
@@ -82,6 +95,9 @@ function deleteDriver() {
     $.ajax({
         type: enable_mock ? 'GET' : 'DELETE',
         url: ws_url + `Drivers(${driver.identifier})`,
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+        },
         success: function(data, status){
             window.location.replace("..");
         },

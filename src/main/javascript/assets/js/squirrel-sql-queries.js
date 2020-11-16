@@ -15,6 +15,9 @@ function executeQuery() {
             sessionId: session.identifier,
             query: query
         },
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+        },
         success: function(data, status){
             if (data.value == null) {
                 // not a SELECT
