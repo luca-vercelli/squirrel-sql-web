@@ -28,20 +28,27 @@ function loadForm() {
     var identifier = location.href.split("alias.html?id=")[1];
     if (identifier) {
         // Updating existing alias
-    	var url = (enable_mock) ? 
-    			ws_url + 'SingleAlias.json' :
-    			ws_url + `Aliases(${identifier})`;
-        $.getJSON(url, function(response){
-            alias = response.value;
-            
-            if (alias != null) {
-                update_alias_to_form();
-                set_creating(false);
-            } else {
-                console.log("Requested alias not found!!!");
+        var url = (enable_mock) ? 
+                ws_url + 'SingleAlias.json' :
+                ws_url + `Aliases(${identifier})`;
+        $.ajax({
+            url: url,
+            dataType: "json",
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+            },
+            success: function(response){
+                alias = response.value;
+                
+                if (alias != null) {
+                    update_alias_to_form();
+                    set_creating(false);
+                } else {
+                    console.log("Requested alias not found!!!");
+                }
             }
         });
-	} else {
+    } else {
         set_creating(true);
     }
 }
@@ -55,6 +62,9 @@ function createAlias() {
         url: ws_url + 'Aliases',
         contentType: 'application/json',
         data: JSON.stringify(alias),
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+        },
         success: function(data, status){
             alias = data.value;
             update_alias_to_form();
@@ -78,6 +88,9 @@ function saveAlias() {
         url: ws_url + `Aliases(${alias.identifier})`,
         contentType: 'application/json',
         data: JSON.stringify(alias),
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+        },
         success: function(data, status){
             alias = data.value;
             update_alias_to_form();
@@ -95,6 +108,9 @@ function deleteAlias() {
     $.ajax({
         type: enable_mock ? 'GET' : 'DELETE',
         url: ws_url + `Aliases(${alias.identifier})`,
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+        },
         success: function(data, status){
             window.location.replace("..");
         },
@@ -117,6 +133,9 @@ function connect() {
             aliasIdentifier: alias.identifier,
             userName: $("#alias_user").val(),
             password: $("#alias_password").val()
+        },
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('authToken')
         },
         success: function(data, status){
             console.log("Data: ", data, "Status:", status);

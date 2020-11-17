@@ -2,20 +2,17 @@ package net.sourceforge.squirrel_sql.ws.managers;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
 import net.sourceforge.squirrel_sql.fw.util.Utilities;
 import net.sourceforge.squirrel_sql.fw.xml.XMLBeanReader;
 import net.sourceforge.squirrel_sql.fw.xml.XMLBeanWriter;
-import net.sourceforge.squirrel_sql.ws.filters.AuthFilter;
 import net.sourceforge.squirrel_sql.ws.model.User;
 
 /**
@@ -123,12 +120,27 @@ public class UsersManager {
 	 * @param password
 	 * @return User, or null if not found
 	 */
-	public User authenticate(String username, String password) {
+	public User findByUsernamePassword(String username, String password) {
+		User u = findByUsername(username);
+		if (u != null && u.getPassword() != null && u.getPassword().equals(password)) {
+			return u;
+		} else {
+			// not found
+			return null;
+		}
+	}
+
+	/**
+	 * Search for use on Users.xml file.
+	 * 
+	 * @param username
+	 * @return User, or null if not found
+	 */
+	public User findByUsername(String username) {
 
 		List<User> list = readList(getUsersFile());
-
 		for (User u : list) {
-			if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
+			if (u.getUsername().equals(username)) {
 				list.clear();
 				return u;
 			}
@@ -136,26 +148,5 @@ public class UsersManager {
 
 		// not found
 		return null;
-	}
-
-	/**
-	 * Set User into HTTP Session
-	 */
-	public void setLoggedUser(User user, HttpServletRequest request) {
-		request.getSession().setAttribute(AuthFilter.USER_SESSION_ATTRIBUTE, user);
-	}
-
-	/**
-	 * Get User form HTTP Session
-	 */
-	public User getLoggedUser(HttpServletRequest request) {
-		return (User) request.getSession().getAttribute(AuthFilter.USER_SESSION_ATTRIBUTE);
-	}
-
-	/**
-	 * Remove User form HTTP Session, if any
-	 */
-	public void clearLoggedUser(HttpServletRequest request) {
-		request.getSession().removeAttribute(AuthFilter.USER_SESSION_ATTRIBUTE);
 	}
 }
