@@ -49,9 +49,30 @@ function login() {
     });
 }
 
-function logout() {
-    localStorage.removeItem('authToken');
-    window.location.replace("login.html");
+function logout() {    
+    if (!session || !session.identifier) {
+        localStorage.removeItem('authToken');
+        window.location.replace("login.html");
+        return;
+    }
+    
+    var url = ws_url + `Sessions(${session.identifier})/DisconnectAll`;
+    $.ajax({
+        url: url,
+        type: enable_mock ? 'GET' : 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+        },
+        success: function(response){
+            localStorage.removeItem('authToken');
+            window.location.replace("login.html");
+        },
+        error: function(response){
+            console.log(response);
+            localStorage.removeItem('authToken');
+            window.location.replace("login.html");
+        }
+    });
 }
 
 function loadUser() {
@@ -70,7 +91,7 @@ function loadUser() {
             $('.user-info .email').html(user.email);
         },
         error: function(response){
-            if (response.status == 403) {
+            if (response.status == 401 || response.status == 403){
                 window.location.replace("login.html");
             } else {
                 console.log(response);
