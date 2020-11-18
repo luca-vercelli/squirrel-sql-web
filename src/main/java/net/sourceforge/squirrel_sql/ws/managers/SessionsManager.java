@@ -68,7 +68,7 @@ public class SessionsManager {
 	}
 
 	/**
-	 * Return all SQL sessions opened in current HTTP session
+	 * Return all SQL sessions opened with current JWT token
 	 * 
 	 * @param token Authentication JWT token
 	 */
@@ -78,8 +78,8 @@ public class SessionsManager {
 	}
 
 	/**
-	 * Return the SQL session with given identifier, <i>if</i> it was opened in
-	 * current HTTP session
+	 * Return the SQL session with given identifier, <i>if</i> it was opened with
+	 * current JWT token
 	 * 
 	 * @param token Authentication JWT token
 	 */
@@ -95,8 +95,8 @@ public class SessionsManager {
 	}
 
 	/**
-	 * Return the SQL session with given identifier, <i>if</i> it was opened in
-	 * current HTTP session
+	 * Return the SQL session with given identifier, <i>if</i> it was opened with
+	 * current JWT token
 	 * 
 	 * @param token Authentication JWT token
 	 */
