@@ -8,12 +8,15 @@ import java.sql.Statement;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Context;
 
 import org.apache.log4j.Logger;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.dto.TableDto;
 import net.sourceforge.squirrel_sql.fw.util.StringUtilities;
+import net.sourceforge.squirrel_sql.ws.exceptions.AuthorizationException;
 
 /**
  * Manages statements execution.
@@ -28,8 +31,25 @@ public class SqlTabManager {
 	WebApplication webapp;
 	@Inject
 	SessionsManager sessionsManager;
+	@Inject
+	TokensManager tokensManager;
+	@Context
+	HttpServletRequest request;
 
 	Logger logger = Logger.getLogger(SqlTabManager.class);
+
+	/**
+	 * Return token in current Request.
+	 * 
+	 * @return
+	 */
+	protected String getCurrentToken() {
+		try {
+			return tokensManager.extractTokenFromRequest(request);
+		} catch (AuthorizationException e) {
+			throw new IllegalStateException("Error retrieving token. This should not happen.", e);
+		}
+	}
 
 	// In SQuirreLSQL Core, the SQLExecuterTask is reached through the chain:
 	// Session -> SessionPanel -> MainPanel -> SQLPanel.runCurrentExecuter() ->
@@ -48,7 +68,7 @@ public class SqlTabManager {
 	 * @throws SQLException
 	 */
 	public TableDto executeSqlCommand(String sessionId, String query) throws SQLException {
-		ISession session = sessionsManager.getSessionById(sessionId);
+		ISession session = sessionsManager.getSessionById(sessionId, getCurrentToken());
 
 		query = StringUtilities.cleanString(query);
 		logger.info("Running query: " + query);
