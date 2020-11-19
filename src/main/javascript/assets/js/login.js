@@ -12,6 +12,12 @@ $(document).ready(function(){
 
     $('#login-button').on('click', login);
     $('#logout-button').on('click', logout);
+    $('.form-login').on('keypress', function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){
+            login();
+        }
+    });
 });
 
 function login() {
