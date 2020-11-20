@@ -12,6 +12,12 @@ $(document).ready(function(){
 
     $('#login-button').on('click', login);
     $('#logout-button').on('click', logout);
+    $('.form-login').on('keypress', function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){
+            login();
+        }
+    });
 });
 
 function login() {
@@ -50,13 +56,12 @@ function login() {
 }
 
 function logout() {    
-    if (!session || !session.identifier) {
-        localStorage.removeItem('authToken');
+    if (enable_mock) {
         window.location.replace("login.html");
         return;
     }
     
-    var url = ws_url + `Sessions(${session.identifier})/DisconnectAll`;
+    var url = ws_url + `DisconnectAllSessions`;
     $.ajax({
         url: url,
         type: enable_mock ? 'GET' : 'POST',
