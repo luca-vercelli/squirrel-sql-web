@@ -7,6 +7,7 @@ $(document).ready(function(){
 
     $("#sql_button").click(executeQuery);
     $("#disconnect_button").click(disconnect);
+    $("#download_button").click(downloadSql);
 });
 
 function loadForm() {
@@ -89,4 +90,5 @@ function getCatalogs() {
 function disableEdit(true_or_false) {    
     $("#sql_button").prop('disabled', true_or_false);
     $("#disconnect_button").prop('disabled', true_or_false);
+    $("#download_button").prop('disabled', true_or_false);
 }
