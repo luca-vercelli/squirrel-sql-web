@@ -13,7 +13,7 @@ $(document).ready(function(){
 });
 
 function loadForm() {
-    var identifier = location.href.split("driver.html?id=")[1];
+    var identifier = location.href.split('#')[0].split("driver.html?id=")[1];
     if (identifier) {
         // Updating existing driver
         var url = (enable_mock) ? 

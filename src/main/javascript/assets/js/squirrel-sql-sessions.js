@@ -10,7 +10,7 @@ $(document).ready(function(){
 });
 
 function loadForm() {
-    var identifier = location.href.split("session.html?id=")[1];
+    var identifier = location.href.split('#')[0].split("session.html?id=")[1];
     if (identifier) {
         // Updating existing session
         var url = (enable_mock) ? 
