@@ -30,7 +30,7 @@ public class AuthFilter implements ContainerRequestFilter {
 	@Override
 	public void filter(ContainerRequestContext context) {
 
-		if (context.getUriInfo().getPath().equals("Authenticate")) {
+		if (context.getUriInfo().getPath().equals("Authenticate") || tokensManager.isDebugMode()) {
 			return;
 		}
 
