@@ -27,5 +27,6 @@ public class SqlTabEndpoint {
 	public ValueBean<TableDto> executeQuery(@FormParam("sessionId") String sessionId, @FormParam("query") String query)
 			throws SQLException {
 		return new ValueBean<>(manager.executeSqlCommand(sessionId, query));
+		// FIXME gives HTTP error 500
 	}
 }
