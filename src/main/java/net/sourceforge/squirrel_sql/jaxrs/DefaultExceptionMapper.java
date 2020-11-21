@@ -13,9 +13,9 @@ import org.slf4j.LoggerFactory;
 import net.sourceforge.squirrel_sql.dto.ExceptionBean;
 
 @Provider
-public class DefaultExceptionHandler implements ExceptionMapper<Exception> {
+public class DefaultExceptionMapper implements ExceptionMapper<Exception> {
 
-	static final Logger logger = LoggerFactory.getLogger(DefaultExceptionHandler.class);
+	static final Logger logger = LoggerFactory.getLogger(DefaultExceptionMapper.class);
 
 	@Override
 	public Response toResponse(Exception e) {
