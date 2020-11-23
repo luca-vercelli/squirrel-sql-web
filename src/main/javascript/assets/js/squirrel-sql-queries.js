@@ -75,3 +75,21 @@ function renderRow(row, tbody) {
         td.html(row[j]);
     }
 }
+
+/**
+* @see https://stackoverflow.com/a/18197341/5116356
+*/
+function download(filename, text) {
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+  element.style.display = 'none';
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
+}
+
+function downloadSql() {
+	var sql = document.querySelector('#mdc-query').MDCTextField.value;
+	download("Query.sql", sql);
+}

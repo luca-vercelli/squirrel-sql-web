@@ -82,6 +82,7 @@ public class SessionsManager {
 	 * current JWT token
 	 * 
 	 * @param token Authentication JWT token
+	 * @return null if not found
 	 */
 	public ISession getSessionById(IIdentifier id, String token) {
 		for (ISession session : getOpenSessions(token)) {
@@ -99,6 +100,7 @@ public class SessionsManager {
 	 * current JWT token
 	 * 
 	 * @param token Authentication JWT token
+	 * @return null if not found
 	 */
 	public ISession getSessionById(String id, String token) {
 		return getSessionById(getSessionId(id), token);
@@ -124,13 +126,18 @@ public class SessionsManager {
 
 	/**
 	 * Disconnect an existing SQL session, <i>if</i> it was opened with current JWT
-	 * token, and also the relative SQLConnection if needed
+	 * token, and also the relative SQLConnection if needed.
+	 * 
+	 * If session does not exist, do nothing.
 	 * 
 	 * @param sessionId
 	 * @param token     Authentication JWT token
 	 */
 	public void disconnect(String sessionId, String token) {
 		ISession session = getSessionById(sessionId, token);
+		if (session == null) {
+			return; // ok, it was closed
+		}
 		internalDisconnect(session);
 		openSessionsRemove(session, token);
 	}

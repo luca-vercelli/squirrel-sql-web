@@ -7,10 +7,11 @@ $(document).ready(function(){
 
     $("#sql_button").click(executeQuery);
     $("#disconnect_button").click(disconnect);
+    $("#download_button").click(downloadSql);
 });
 
 function loadForm() {
-    var identifier = location.href.split("session.html?id=")[1];
+    var identifier = location.href.split('#')[0].split("session.html?id=")[1];
     if (identifier) {
         // Updating existing session
         var url = (enable_mock) ? 
@@ -89,4 +90,5 @@ function getCatalogs() {
 function disableEdit(true_or_false) {    
     $("#sql_button").prop('disabled', true_or_false);
     $("#disconnect_button").prop('disabled', true_or_false);
+    $("#download_button").prop('disabled', true_or_false);
 }

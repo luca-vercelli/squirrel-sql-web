@@ -54,6 +54,12 @@ public class TokensManager {
 	public static final String AUTHENTICATION_SCHEME = "Bearer "; // JWT
 	public static final int AUTHENTICATION_SCHEME_LEN = AUTHENTICATION_SCHEME.length();
 
+	/**
+	 * In debug mode all there are no JWT tokens, and we assume 1 only connected
+	 * user
+	 */
+	private boolean debugMode = false;
+
 	Logger logger = Logger.getLogger(TokensManager.class);
 
 	@PostConstruct
@@ -192,6 +198,10 @@ public class TokensManager {
 	 */
 	public String extractTokenFromRequest(HttpServletRequest request) throws AuthorizationException {
 
+		if (debugMode) {
+			return "*";
+		}
+
 		// Get the Authorization header from the request
 		String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
@@ -234,5 +244,13 @@ public class TokensManager {
 		}
 
 		return token;
+	}
+
+	public boolean isDebugMode() {
+		return debugMode;
+	}
+
+	public void setDebugMode(boolean debugMode) {
+		this.debugMode = debugMode;
 	}
 }

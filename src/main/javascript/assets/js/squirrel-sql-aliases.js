@@ -25,7 +25,7 @@ function loadForm() {
     
     loadMenuOptions();
 
-    var identifier = location.href.split("alias.html?id=")[1];
+    var identifier = location.href.split('#')[0].split("alias.html?id=")[1];
     if (identifier) {
         // Updating existing alias
         var url = (enable_mock) ? 

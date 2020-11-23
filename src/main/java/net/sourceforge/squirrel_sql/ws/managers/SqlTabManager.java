@@ -69,6 +69,9 @@ public class SqlTabManager {
 	 */
 	public TableDto executeSqlCommand(String sessionId, String query) throws SQLException {
 		ISession session = sessionsManager.getSessionById(sessionId, getCurrentToken());
+		if (session == null) {
+			throw new IllegalArgumentException("Session does not exist, or it has been closed.");
+		}
 
 		query = StringUtilities.cleanString(query);
 		logger.info("Running query: " + query);

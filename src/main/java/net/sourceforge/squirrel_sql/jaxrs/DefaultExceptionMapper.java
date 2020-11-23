@@ -13,9 +13,9 @@ import org.slf4j.LoggerFactory;
 import net.sourceforge.squirrel_sql.dto.ExceptionBean;
 
 @Provider
-public class DefaultExceptionHandler implements ExceptionMapper<Exception> {
+public class DefaultExceptionMapper implements ExceptionMapper<Exception> {
 
-	static final Logger logger = LoggerFactory.getLogger(DefaultExceptionHandler.class);
+	static final Logger logger = LoggerFactory.getLogger(DefaultExceptionMapper.class);
 
 	@Override
 	public Response toResponse(Exception e) {
@@ -27,8 +27,8 @@ public class DefaultExceptionHandler implements ExceptionMapper<Exception> {
 			logger.error("Internal server error:", e);
 		}
 
-		ExceptionBean excBean = new ExceptionBean(excContent.getHttpCode(), excContent.getMessage());
-		return Response.status(excContent.getHttpCode()) //
+		ExceptionBean excBean = new ExceptionBean(excContent.getHttpStatus(), excContent.getMessage());
+		return Response.status(excContent.getHttpStatus()) //
 				.entity(excBean)//
 				.type(MediaType.APPLICATION_JSON)//
 				.build();
@@ -65,55 +65,34 @@ public class DefaultExceptionHandler implements ExceptionMapper<Exception> {
 		if (e instanceof WebApplicationException) {
 			// don't print stack trace, if client issue
 			// Unluckily, some library prints it anyway.
-			ret.httpCode = ((WebApplicationException) e).getResponse().getStatus();
-
-			if (ret.httpCode == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
-				ret.shouldBeLogged = true;
-			}
-			ret.message = Status.fromStatusCode(ret.httpCode).getReasonPhrase();
-			if (e.getMessage() != null)
-				ret.message += " - " + e.getMessage();
-
+			ret.httpStatus = Status.fromStatusCode(((WebApplicationException) e).getResponse().getStatus());
 		} else if (e instanceof IllegalArgumentException) {
-			ret.httpCode = Status.BAD_REQUEST.getStatusCode();
-			ret.message = e.getMessage();
-
+			ret.httpStatus = Status.BAD_REQUEST;
 		} else {
-			ret.shouldBeLogged = true;
-			ret.httpCode = Status.INTERNAL_SERVER_ERROR.getStatusCode();
-			ret.message = e.getMessage() != null ? e.getMessage() : Status.INTERNAL_SERVER_ERROR.getReasonPhrase();
+			ret.httpStatus = Status.INTERNAL_SERVER_ERROR;
 		}
+
+		ret.message = (e.getMessage() != null) ? e.getMessage() : ret.httpStatus.getReasonPhrase();
+		ret.shouldBeLogged = (ret.httpStatus == Status.INTERNAL_SERVER_ERROR);
 
 		return ret;
 	}
 
 	public static class ExceptionContent {
-		private int httpCode;
+		private Status httpStatus;
 		private String message;
 		private boolean shouldBeLogged = false;
 
-		public int getHttpCode() {
-			return httpCode;
-		}
-
-		public void setHttpCode(int httpCode) {
-			this.httpCode = httpCode;
+		public Status getHttpStatus() {
+			return httpStatus;
 		}
 
 		public String getMessage() {
 			return message;
 		}
 
-		public void setMessage(String message) {
-			this.message = message;
-		}
-
 		public boolean shouldBeLogged() {
 			return shouldBeLogged;
-		}
-
-		public void setShouldBeLogged(boolean shouldBeLogged) {
-			this.shouldBeLogged = shouldBeLogged;
 		}
 	}
 }
