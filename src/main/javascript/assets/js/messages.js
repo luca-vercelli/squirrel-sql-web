@@ -24,7 +24,14 @@ function showMessage(message, level) {
 
 function showAjaxError(response) {
     console.log(response);
-    showMessage(response.responseJSON.error.value, "error");
+    if (response && response.responseJSON && response.responseJSON.error) {
+    	// well-formed OData Exception bean
+    	showMessage(response.responseJSON.error.value, "error");
+    } else if (response && response.responseText) {
+    	showMessage(response.responseText, "error");
+    } else {
+    	showMessage("Generic error", "error");
+    }
 }
 
 function hideMessages() {

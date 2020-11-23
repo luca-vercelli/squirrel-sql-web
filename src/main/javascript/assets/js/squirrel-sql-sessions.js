@@ -29,9 +29,12 @@ function loadForm() {
                     $('#session-title').html(session.title);
                     disableEdit(false);
                 } else {
-                    showMessage(data, "error");
+                    showMessage(response, "error");
                 }
-            }
+            },
+        error: function(response, status){
+            showAjaxError(response);
+        }
         });
     } else {
         showMessage("Bad request: no session identifier given", "error");
