@@ -1,19 +1,21 @@
 package net.sourceforge.squirrel_sql.ws.resources;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeModel;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeNode;
 import net.sourceforge.squirrel_sql.client.session.schemainfo.SchemaInfo;
 import net.sourceforge.squirrel_sql.dto.ListBean;
@@ -53,9 +55,6 @@ public class ObjectsTabEndpoint {
 		}
 	}
 
-	// JSUT FOR TEST, this a single static model
-	static ObjectTreeModel model;
-
 	@GET
 	@Path("/Sessions({identifier})/SchemaInfo")
 	public ValueBean<SchemaInfoDto> getSchemaInfo(@PathParam("identifier") String identifier) {
@@ -81,28 +80,24 @@ public class ObjectsTabEndpoint {
 	}
 
 	@GET
-	@Path("/Sessions({sessionIdentifier})/Tree")
-	public ValueBean<ObjectTreeNodeDto> getTree(@PathParam("sessionIdentifier") String identifier) {
+	@Path("/Sessions({sessionIdentifier})/RootNode")
+	public ValueBean<ObjectTreeNodeDto> getRootNode(@PathParam("sessionIdentifier") String identifier)
+			throws SQLException {
 		ISession session = sessionsManager.getSessionById(identifier, getCurrentToken());
-
-		// @see ObjectTree
-
-		if (model == null) {
-			model = new ObjectTreeModel(session);
-		}
-
-		return new ValueBean<>(new ObjectTreeNodeDto((ObjectTreeNode) model.getRoot()));
+		ObjectTreeNode rootNode = manager.createExpandedRootNode(session);
+		ObjectTreeNodeDto rootNodeDto = manager.convert(rootNode);
+		return new ValueBean<>(rootNodeDto);
 	}
 
 	@POST
-	@Path("/Sessions({sessionIdentifier})/Expand({xpath})")
-	public ValueBean<ObjectTreeNodeDto> expandTree(@PathParam("sessionIdentifier") String identifier,
-			@PathParam("xpath") String xpath) {
+	@Path("/Sessions({sessionIdentifier})/ExpandNode")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ListBean<ObjectTreeNodeDto> expandNode(@PathParam("sessionIdentifier") String identifier,
+			ObjectTreeNodeDto parentNodeDto) throws SQLException {
 		ISession session = sessionsManager.getSessionById(identifier, getCurrentToken());
-
-		// @see ObjectTree::expandNode
-		// @see ObjectTreeModel::constructor::run for expanders
-
-		return new ValueBean<>(new ObjectTreeNodeDto((ObjectTreeNode) model.getRoot()));
+		// TODO
+		ObjectTreeNode node = manager.convert(parentNodeDto, session);
+		List<ObjectTreeNode> list = manager.expandNode(node);
+		return new ListBean<>(manager.convert(list), (long) list.size());
 	}
 }
