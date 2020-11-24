@@ -1,0 +1,99 @@
+{
+  "value" : {
+    "children" : [ {
+      "children" : [ ],
+      "catalog" : null,
+      "qualifiedName" : "\"APP\"",
+      "schemaName" : null,
+      "simpleName" : "APP",
+      "objectTypeI18n" : "Schema",
+      "objectType" : "SCHEMA"
+    }, {
+      "children" : [ ],
+      "catalog" : null,
+      "qualifiedName" : "\"NULLID\"",
+      "schemaName" : null,
+      "simpleName" : "NULLID",
+      "objectTypeI18n" : "Schema",
+      "objectType" : "SCHEMA"
+    }, {
+      "children" : [ ],
+      "catalog" : null,
+      "qualifiedName" : "\"SQLJ\"",
+      "schemaName" : null,
+      "simpleName" : "SQLJ",
+      "objectTypeI18n" : "Schema",
+      "objectType" : "SCHEMA"
+    }, {
+      "children" : [ ],
+      "catalog" : null,
+      "qualifiedName" : "\"SYS\"",
+      "schemaName" : null,
+      "simpleName" : "SYS",
+      "objectTypeI18n" : "Schema",
+      "objectType" : "SCHEMA"
+    }, {
+      "children" : [ ],
+      "catalog" : null,
+      "qualifiedName" : "\"SYSCAT\"",
+      "schemaName" : null,
+      "simpleName" : "SYSCAT",
+      "objectTypeI18n" : "Schema",
+      "objectType" : "SCHEMA"
+    }, {
+      "children" : [ ],
+      "catalog" : null,
+      "qualifiedName" : "\"SYSCS_DIAG\"",
+      "schemaName" : null,
+      "simpleName" : "SYSCS_DIAG",
+      "objectTypeI18n" : "Schema",
+      "objectType" : "SCHEMA"
+    }, {
+      "children" : [ ],
+      "catalog" : null,
+      "qualifiedName" : "\"SYSCS_UTIL\"",
+      "schemaName" : null,
+      "simpleName" : "SYSCS_UTIL",
+      "objectTypeI18n" : "Schema",
+      "objectType" : "SCHEMA"
+    }, {
+      "children" : [ ],
+      "catalog" : null,
+      "qualifiedName" : "\"SYSFUN\"",
+      "schemaName" : null,
+      "simpleName" : "SYSFUN",
+      "objectTypeI18n" : "Schema",
+      "objectType" : "SCHEMA"
+    }, {
+      "children" : [ ],
+      "catalog" : null,
+      "qualifiedName" : "\"SYSIBM\"",
+      "schemaName" : null,
+      "simpleName" : "SYSIBM",
+      "objectTypeI18n" : "Schema",
+      "objectType" : "SCHEMA"
+    }, {
+      "children" : [ ],
+      "catalog" : null,
+      "qualifiedName" : "\"SYSPROC\"",
+      "schemaName" : null,
+      "simpleName" : "SYSPROC",
+      "objectTypeI18n" : "Schema",
+      "objectType" : "SCHEMA"
+    }, {
+      "children" : [ ],
+      "catalog" : null,
+      "qualifiedName" : "\"SYSSTAT\"",
+      "schemaName" : null,
+      "simpleName" : "SYSSTAT",
+      "objectTypeI18n" : "Schema",
+      "objectType" : "SCHEMA"
+    } ],
+    "catalog" : null,
+    "qualifiedName" : "\"database1\"",
+    "schemaName" : null,
+    "simpleName" : "database1",
+    "objectTypeI18n" : "Database",
+    "objectType" : "SESSION"
+  }
+}
