@@ -84,8 +84,8 @@ public class ObjectsTabEndpoint {
 	public ValueBean<ObjectTreeNodeDto> getRootNode(@PathParam("sessionIdentifier") String identifier)
 			throws SQLException {
 		ISession session = sessionsManager.getSessionById(identifier, getCurrentToken());
-		ObjectTreeNode rootNode = manager.createExpandedRootNode(session);
-		ObjectTreeNodeDto rootNodeDto = manager.convert(rootNode);
+		ObjectTreeNode rootNode = manager.createAndExpandRootNode(session);
+		ObjectTreeNodeDto rootNodeDto = manager.node2Dto(rootNode);
 		return new ValueBean<>(rootNodeDto);
 	}
 
@@ -96,8 +96,8 @@ public class ObjectsTabEndpoint {
 			ObjectTreeNodeDto parentNodeDto) throws SQLException {
 		ISession session = sessionsManager.getSessionById(identifier, getCurrentToken());
 		// TODO
-		ObjectTreeNode node = manager.convert(parentNodeDto, session);
+		ObjectTreeNode node = manager.dto2Node(parentNodeDto, session);
 		List<ObjectTreeNode> list = manager.expandNode(node);
-		return new ListBean<>(manager.convert(list), (long) list.size());
+		return new ListBean<>(manager.node2Dto(list), (long) list.size());
 	}
 }

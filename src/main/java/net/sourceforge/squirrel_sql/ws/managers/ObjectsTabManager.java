@@ -2,6 +2,7 @@ package net.sourceforge.squirrel_sql.ws.managers;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,9 @@ import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.INodeExpander;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeNode;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expanders.DatabaseExpander;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expanders.ProcedureTypeExpander;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expanders.TableTypeExpander;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expanders.UDTTypeExpander;
 import net.sourceforge.squirrel_sql.dto.ObjectTreeNodeDto;
 import net.sourceforge.squirrel_sql.fw.sql.DatabaseObjectInfo;
 import net.sourceforge.squirrel_sql.fw.sql.DatabaseObjectType;
@@ -49,11 +53,14 @@ public class ObjectsTabManager {
 		databaseObjectTypes.put("SCHEMA", DatabaseObjectType.SCHEMA);
 		databaseObjectTypes.put("TABLE", DatabaseObjectType.TABLE);
 		databaseObjectTypes.put("DATATYPE", DatabaseObjectType.DATATYPE);
+		databaseObjectTypes.put("TABLETYPE", DatabaseObjectType.TABLE_TYPE_DBO);
 		databaseObjectTypes.put("TABLE", DatabaseObjectType.TABLE);
 		databaseObjectTypes.put("INDEX", DatabaseObjectType.INDEX);
 		databaseObjectTypes.put("SEQUENCE", DatabaseObjectType.SEQUENCE);
+		databaseObjectTypes.put("PROCTYPE", DatabaseObjectType.PROC_TYPE_DBO);
 		databaseObjectTypes.put("FUNCTION", DatabaseObjectType.FUNCTION);
 		databaseObjectTypes.put("PROCEDURE", DatabaseObjectType.PROCEDURE);
+		databaseObjectTypes.put("UDTTYPE", DatabaseObjectType.UDT_TYPE_DBO);
 		databaseObjectTypes.put("OTHER", DatabaseObjectType.OTHER);
 		for (Entry<String, DatabaseObjectType> entry : databaseObjectTypes.entrySet()) {
 			inverseDatabaseObjectTypes.put(entry.getValue(), entry.getKey());
@@ -64,7 +71,7 @@ public class ObjectsTabManager {
 	 * Convert a ObjectTreeNode into a ObjectTreeNodeDto. Recursively with all
 	 * children.
 	 */
-	public ObjectTreeNodeDto convert(ObjectTreeNode node) {
+	public ObjectTreeNodeDto node2Dto(ObjectTreeNode node) {
 		ObjectTreeNodeDto dto = new ObjectTreeNodeDto();
 		IDatabaseObjectInfo info = node.getDatabaseObjectInfo();
 		dto.setCatalog(info.getCatalogName());
@@ -74,15 +81,19 @@ public class ObjectsTabManager {
 		dto.setObjectTypeI18n(info.getDatabaseObjectType().getName());
 		dto.setObjectType(inverseDatabaseObjectTypes.get(info.getDatabaseObjectType()));
 		for (int i = 0; i < node.getChildCount(); ++i) {
-			dto.getChildren().add(convert((ObjectTreeNode) node.getChildAt(i)));
+			dto.getChildren().add(node2Dto((ObjectTreeNode) node.getChildAt(i)));
 		}
 		return dto;
 	}
 
-	public List<ObjectTreeNodeDto> convert(List<ObjectTreeNode> list) {
+	/**
+	 * Convert a list of ObjectTreeNode into a list of ObjectTreeNodeDto.
+	 * Recursively with all children.
+	 */
+	public List<ObjectTreeNodeDto> node2Dto(List<ObjectTreeNode> list) {
 		List<ObjectTreeNodeDto> listDto = new ArrayList<>();
 		for (ObjectTreeNode obj : list) {
-			listDto.add(convert(obj));
+			listDto.add(node2Dto(obj));
 		}
 		return listDto;
 	}
@@ -91,20 +102,24 @@ public class ObjectsTabManager {
 	 * Convert a ObjectTreeNodeDto into a ObjectTreeNode. Recursively with all
 	 * children.
 	 */
-	public ObjectTreeNode convert(ObjectTreeNodeDto dto, ISession session) {
+	public ObjectTreeNode dto2Node(ObjectTreeNodeDto dto, ISession session) {
 		DatabaseObjectInfo info = new DatabaseObjectInfo(dto.getCatalog(), dto.getSchemaName(), dto.getSimpleName(),
 				databaseObjectTypes.get(dto.getObjectType()), session.getMetaData());
 		ObjectTreeNode node = new ObjectTreeNode(session, info);
 		for (ObjectTreeNodeDto child : dto.getChildren()) {
-			node.add(convert(child, session));
+			node.add(dto2Node(child, session));
 		}
 		return node;
 	}
 
-	public List<ObjectTreeNode> convert(List<ObjectTreeNodeDto> listDto, ISession session) {
+	/**
+	 * Convert a list of ObjectTreeNodeDto into a list of ObjectTreeNode.
+	 * Recursively with all children.
+	 */
+	public List<ObjectTreeNode> dto2Node(List<ObjectTreeNodeDto> listDto, ISession session) {
 		List<ObjectTreeNode> list = new ArrayList<>();
 		for (ObjectTreeNodeDto dto : listDto) {
-			list.add(convert(dto, session));
+			list.add(dto2Node(dto, session));
 		}
 		return list;
 	}
@@ -124,11 +139,6 @@ public class ObjectsTabManager {
 		return node;
 	}
 
-	public List<ObjectTreeNode> expandSessionNode(ISession session) throws SQLException {
-		ObjectTreeNode node = createRootNode(session);
-		return expandDatabaseNode(node);
-	}
-
 	/**
 	 * Create a ObjectTreeNode of type SESSION, then fill all its first level
 	 * children
@@ -137,9 +147,9 @@ public class ObjectsTabManager {
 	 * @return
 	 * @throws SQLException
 	 */
-	public ObjectTreeNode createExpandedRootNode(ISession session) throws SQLException {
+	public ObjectTreeNode createAndExpandRootNode(ISession session) throws SQLException {
 		ObjectTreeNode rootNode = createRootNode(session);
-		List<ObjectTreeNode> children = expandDatabaseNode(rootNode);
+		List<ObjectTreeNode> children = expandNode(rootNode);
 		for (ObjectTreeNode child : children) {
 			rootNode.add(child);
 		}
@@ -147,15 +157,24 @@ public class ObjectsTabManager {
 	}
 
 	/**
-	 * Expand given node, assuming it is of type SESSION, or CATALOG, or SCHEMA
+	 * Create a new INodeExpander suitable for given DatabaseObjectType
 	 * 
-	 * @param node
+	 * @param type
+	 * @param session
 	 * @return
-	 * @throws SQLException
 	 */
-	protected List<ObjectTreeNode> expandDatabaseNode(ObjectTreeNode node) throws SQLException {
-		INodeExpander expander = new DatabaseExpander(node.getSession());
-		return expander.createChildren(node.getSession(), node);
+	public INodeExpander getExpanderForType(DatabaseObjectType type, ISession session) {
+		if (type == DatabaseObjectType.SESSION || type == DatabaseObjectType.CATALOG
+				|| type == DatabaseObjectType.SCHEMA) {
+			return new DatabaseExpander(session);
+		} else if (type == DatabaseObjectType.TABLE_TYPE_DBO) {
+			return new TableTypeExpander();
+		} else if (type == DatabaseObjectType.PROC_TYPE_DBO) {
+			return new ProcedureTypeExpander();
+		} else if (type == DatabaseObjectType.UDT_TYPE_DBO) {
+			return new UDTTypeExpander();
+		}
+		return null;
 	}
 
 	/**
@@ -167,12 +186,11 @@ public class ObjectsTabManager {
 	 */
 	public List<ObjectTreeNode> expandNode(ObjectTreeNode node) throws SQLException {
 		DatabaseObjectType type = node.getDatabaseObjectType();
-		if (type == DatabaseObjectType.SESSION || type == DatabaseObjectType.CATALOG
-				|| type == DatabaseObjectType.SCHEMA) {
-			return expandDatabaseNode(node);
+		INodeExpander expander = getExpanderForType(type, node.getSession());
+		if (expander == null) {
+			return Collections.emptyList();
 		}
-		// TODO
-		return null;
+		return expander.createChildren(node.getSession(), node);
 	}
 
 }
