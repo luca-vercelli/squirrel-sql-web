@@ -41,7 +41,7 @@ Project roadmap
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Global preferences window
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) New session properties window
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) View SQuirreL logs window
-- ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Web security
+- ![WIP](https://img.shields.io/badge/Status-Done-green.svg) Web security
 
 
 Authentication

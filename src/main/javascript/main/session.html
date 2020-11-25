@@ -174,9 +174,9 @@
               <div class="mdc-layout-grid__cell--span-12">
                 <div class="mdc-card">
                   <h6 class="card-title" id="session-title">Open session</h6>
-                  <div class="template-demo">
+                  <div class="template-demo mdc-tab-wrapper">
                   
-                    <div class="mdc-tab-bar" role="tablist">
+                    <div class="mdc-tab-bar" role="tablist"">
                       <div class="mdc-tab-scroller">
                         <div class="mdc-tab-scroller__scroll-area">
                           <div class="mdc-tab-scroller__scroll-content">
@@ -205,19 +205,22 @@
                       </div>
                     </div>
                   
-                    <div class="mdc-layout-grid__inner">
-                      <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12-desktop">
-                        <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--textarea mdc-text-field--no-label" id="mdc-query" data-mdc-auto-init="MDCTextField" >
-                        <div class="mdc-notched-outline">
-                            <div class="mdc-notched-outline__leading"></div>
-                            <div class="mdc-notched-outline__trailing"></div>
+                    <div class="content content--active" id="objects-tab">This is the Objects TAB</div>
+                    
+                    <div class="content">
+                        <div class="mdc-layout-grid__inner">
+                          <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12-desktop">
+                            <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--textarea mdc-text-field--no-label" id="mdc-query" data-mdc-auto-init="MDCTextField" >
+                            <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                            </div>
+                            <div class="mdc-text-field__resizer"> 
+                                <textarea class="mdc-text-field__input" rows="8" cols="40" aria-label="Label" placeholder="Type SQL command here"></textarea>
+                            </div>
+                            </div>
+                          </div>
                         </div>
-                        <div class="mdc-text-field__resizer"> 
-                            <textarea class="mdc-text-field__input" rows="8" cols="40" aria-label="Label"></textarea>
-                        </div>
-                        </div>
-                      </div>
-                    </div>
                     
                       <button class="mdc-button mdc-button--raised filled-button--light" id="sql_button" disabled>
                         <i class="material-icons mdc-button__icon">directions_run</i>
@@ -231,6 +234,7 @@
                         <i class="material-icons mdc-button__icon">save</i>
                           Download SQL
                       </button>
+                    </div>
 
                     <!-- partial:../partials/_messages.html -->
 <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12-desktop message-error" id="message-div" style="display:none">
@@ -432,6 +436,7 @@
   <script src="../assets/js/squirrel-sql.js"></script>
   <script src="../assets/js/squirrel-sql-sessions.js"></script>
   <script src="../assets/js/squirrel-sql-queries.js"></script>
+  <script src="../assets/js/squirrel-sql-objects.js"></script>
   <!-- End custom js for this page-->
 </body>
 </html>
