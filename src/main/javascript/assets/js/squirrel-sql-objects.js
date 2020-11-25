@@ -1,4 +1,5 @@
 var objectsTree = null;
+var nodes = {};
 
 $(document).ready(function(){
     loadObjectsTree();
@@ -28,18 +29,30 @@ function loadObjectsTree() {
 }
 
 function displayObjectsTree() {
+    console.log(objectsTree);
     $('#objects-tab').html('');
-    _displayObjectsTree(objectsTree, $('#objects-tab'));
+    _displayObjectsTree(objectsTree, $('#objects-tab'), '');
 }
 
-function _displayObjectsTree(node, parentDiv) {
-    var childDiv = $(`<div id="${node.simpleName}><span>${node.simpleName}</span></div>`).appendTo(parentDiv);
+function _displayObjectsTree(node, parentDiv, parentPath) {
+    var path = parentPath + '/' + node.simpleName
+    nodes[path] = node;
+    var s = `<div id="${node.simpleName}" class="objects-tree-node" data-object-type="${node.objectType}" data-object-path="${path}"><span>${node.simpleName}</span></div>`;
+    var childDiv = $(s).appendTo(parentDiv);
     for (var i in node.children) {
-        _displayObjectsTree(node.children[i], childDiv);
+        _displayObjectsTree(node.children[i], childDiv, path);
     }
 }
 
-function expandTreeNode(node) {
+function expandTreeNode(htmlElm) {
+    var elm = $(htmlElm);
+    var type = elm.attr('data-object-type');
+    var path = elm.attr('data-object-path');
+    var node = nodes[path];
+    _expandTreeNode(node)
+}
+
+function _expandTreeNode(node) {
     var url = (enable_mock) ? 
                 ws_url + 'ExpandNode.json' :
                 ws_url + `Session(${session.identifier})/ExpandNode`;
