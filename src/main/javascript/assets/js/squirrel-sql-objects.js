@@ -3,7 +3,7 @@ var nodes = {};
 
 $(document).ready(function(){
     loadObjectsTree();
-    $(document).on('click', '.content', expandTreeNode);
+    $(document).on('click', '.content', toggleTreeNode);
 });
 
 function loadObjectsTree() {
@@ -12,7 +12,7 @@ function loadObjectsTree() {
     hideMessages();
     var url = (enable_mock) ? 
                 ws_url + 'RootNode.json' :
-                ws_url + `Session(${session.identifier})/RootNode`;
+                ws_url + `Session(${sessionId})/RootNode`;
     $.ajax({
         type: 'GET',
         url: url,
@@ -21,6 +21,7 @@ function loadObjectsTree() {
         },
         success: function(data, status){
             objectsTree = data.value;
+            objectsTree.expanded = true;
             displayObjectsTree()
         },
         error: function(response, status){
@@ -29,8 +30,10 @@ function loadObjectsTree() {
     });
 }
 
+/**
+ * (Re)draw whole objects tree
+ */
 function displayObjectsTree() {
-    console.log(objectsTree);
     $('#objects-tab').html('');
     _displayObjectsTree(objectsTree, $('#objects-tab'), '');
 }
@@ -40,18 +43,29 @@ function _displayObjectsTree(node, parentDiv, parentPath) {
     nodes[path] = node;
     var s = `<div id="${node.simpleName}" class="objects-tree-node" data-object-path="${path}"><span>${node.simpleName} (${node.objectType})</span></div>`;
     var childDiv = $(s).appendTo(parentDiv);
-    for (var i in node.children) {
-        _displayObjectsTree(node.children[i], childDiv, path);
+    if (node.expanded) {
+        for (var i in node.children) {
+            _displayObjectsTree(node.children[i], childDiv, path);
+        }
     }
 }
 
-function expandTreeNode(evt) {
+/**
+ * Toggle expansion of a single node
+ */
+function toggleTreeNode(evt) {
     var elm = $(evt.target).closest('div .objects-tree-node');
     var path = elm.attr('data-object-path');
     var node = nodes[path];
     
     // TODO change behaviour according to node.objectType
-    _expandTreeNode(node)
+    
+    if (node.expanded === undefined) {
+        _expandTreeNode(node);
+    } else {
+        node.expanded = !node.expanded;
+        displayObjectsTree();
+    }
 }
 
 function _expandTreeNode(node) {
@@ -67,6 +81,7 @@ function _expandTreeNode(node) {
         },
         success: function(data, status){
             node.children = data.data;
+            node.expanded = true;
             displayObjectsTree();
         },
         error: function(response, status){
