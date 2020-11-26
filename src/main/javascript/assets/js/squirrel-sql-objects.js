@@ -38,17 +38,19 @@ function displayObjectsTree() {
 function _displayObjectsTree(node, parentDiv, parentPath) {
     var path = parentPath + '/' + node.simpleName
     nodes[path] = node;
-    var s = `<div id="${node.simpleName}" class="objects-tree-node" data-object-path="${path}"><span>${node.simpleName}</span></div>`;
+    var s = `<div id="${node.simpleName}" class="objects-tree-node" data-object-path="${path}"><span>${node.simpleName} (${node.objectType})</span></div>`;
     var childDiv = $(s).appendTo(parentDiv);
     for (var i in node.children) {
         _displayObjectsTree(node.children[i], childDiv, path);
     }
 }
 
-function expandTreeNode(htmlElm) {
-    var elm = $(htmlElm);
+function expandTreeNode(evt) {
+    var elm = $(evt.target).closest('div .objects-tree-node');
     var path = elm.attr('data-object-path');
     var node = nodes[path];
+    
+    // TODO change behaviour according to node.objectType
     _expandTreeNode(node)
 }
 
@@ -64,7 +66,7 @@ function _expandTreeNode(node) {
             'Authorization': 'Bearer ' + localStorage.getItem('authToken')
         },
         success: function(data, status){
-            node.childrens = data.data;
+            node.children = data.data;
             displayObjectsTree();
         },
         error: function(response, status){
