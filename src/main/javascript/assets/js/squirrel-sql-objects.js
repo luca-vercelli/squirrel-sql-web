@@ -3,6 +3,7 @@ var nodes = {};
 
 $(document).ready(function(){
     loadObjectsTree();
+    $(document).on('click', '.content', expandTreeNode);
 });
 
 function loadObjectsTree() {
@@ -37,7 +38,7 @@ function displayObjectsTree() {
 function _displayObjectsTree(node, parentDiv, parentPath) {
     var path = parentPath + '/' + node.simpleName
     nodes[path] = node;
-    var s = `<div id="${node.simpleName}" class="objects-tree-node" data-object-type="${node.objectType}" data-object-path="${path}"><span>${node.simpleName}</span></div>`;
+    var s = `<div id="${node.simpleName}" class="objects-tree-node" data-object-path="${path}"><span>${node.simpleName}</span></div>`;
     var childDiv = $(s).appendTo(parentDiv);
     for (var i in node.children) {
         _displayObjectsTree(node.children[i], childDiv, path);
@@ -46,7 +47,6 @@ function _displayObjectsTree(node, parentDiv, parentPath) {
 
 function expandTreeNode(htmlElm) {
     var elm = $(htmlElm);
-    var type = elm.attr('data-object-type');
     var path = elm.attr('data-object-path');
     var node = nodes[path];
     _expandTreeNode(node)
