@@ -3,6 +3,7 @@ package net.sourceforge.squirrel_sql.ws.managers;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
+import javax.ejb.Startup;
 
 import org.apache.log4j.Logger;
 
@@ -11,9 +12,11 @@ import net.sourceforge.squirrel_sql.client.ApplicationArguments;
 import net.sourceforge.squirrel_sql.client.Main;
 import net.sourceforge.squirrel_sql.client.SquirrelLoggerFactory;
 import net.sourceforge.squirrel_sql.client.session.schemainfo.SchemaInfoCacheSerializer;
+import net.sourceforge.squirrel_sql.fw.sql.DatabaseObjectType;
 import net.sourceforge.squirrel_sql.fw.util.log.LoggerController;
 
 @Singleton
+@Startup
 public class WebApplication extends Application {
 
 	protected static ApplicationArguments applicationArguments;
@@ -68,6 +71,8 @@ public class WebApplication extends Application {
 		loadUserSpecificWikiTableConfigurations();
 
 		saveApplicationState(); // force file creation ?
+
+		DatabaseObjectType.initialize();
 	}
 
 	@PreDestroy

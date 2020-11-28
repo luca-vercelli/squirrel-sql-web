@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -46,24 +45,31 @@ public class ObjectsTabManager {
 	protected Map<String, DatabaseObjectType> databaseObjectTypes = new HashMap<>();
 	protected Map<DatabaseObjectType, String> inverseDatabaseObjectTypes = new HashMap<>();
 
-	@PostConstruct
-	protected void init() {
-		databaseObjectTypes.put("SESSION", DatabaseObjectType.SESSION);
-		databaseObjectTypes.put("CATALOG", DatabaseObjectType.CATALOG);
-		databaseObjectTypes.put("SCHEMA", DatabaseObjectType.SCHEMA);
-		databaseObjectTypes.put("TABLE", DatabaseObjectType.TABLE);
-		databaseObjectTypes.put("DATATYPE", DatabaseObjectType.DATATYPE);
-		databaseObjectTypes.put("TABLETYPE", DatabaseObjectType.TABLE_TYPE_DBO);
-		databaseObjectTypes.put("TABLE", DatabaseObjectType.TABLE);
-		databaseObjectTypes.put("INDEX", DatabaseObjectType.INDEX);
-		databaseObjectTypes.put("SEQUENCE", DatabaseObjectType.SEQUENCE);
-		databaseObjectTypes.put("PROCTYPE", DatabaseObjectType.PROC_TYPE_DBO);
-		databaseObjectTypes.put("FUNCTION", DatabaseObjectType.FUNCTION);
-		databaseObjectTypes.put("PROCEDURE", DatabaseObjectType.PROCEDURE);
-		databaseObjectTypes.put("UDTTYPE", DatabaseObjectType.UDT_TYPE_DBO);
-		databaseObjectTypes.put("OTHER", DatabaseObjectType.OTHER);
-		for (Entry<String, DatabaseObjectType> entry : databaseObjectTypes.entrySet()) {
-			inverseDatabaseObjectTypes.put(entry.getValue(), entry.getKey());
+	private boolean initialized = false;
+
+	public void initialize() {
+		// Cannot put this in @PostConstruct
+		// because at that time DatabaseObjectType.* is not initialized
+
+		if (!initialized) {
+			databaseObjectTypes.put("SESSION", DatabaseObjectType.SESSION);
+			databaseObjectTypes.put("CATALOG", DatabaseObjectType.CATALOG);
+			databaseObjectTypes.put("SCHEMA", DatabaseObjectType.SCHEMA);
+			databaseObjectTypes.put("TABLE", DatabaseObjectType.TABLE);
+			databaseObjectTypes.put("DATATYPE", DatabaseObjectType.DATATYPE);
+			databaseObjectTypes.put("TABLETYPE", DatabaseObjectType.TABLE_TYPE_DBO);
+			databaseObjectTypes.put("TABLE", DatabaseObjectType.TABLE);
+			databaseObjectTypes.put("INDEX", DatabaseObjectType.INDEX);
+			databaseObjectTypes.put("SEQUENCE", DatabaseObjectType.SEQUENCE);
+			databaseObjectTypes.put("PROCTYPE", DatabaseObjectType.PROC_TYPE_DBO);
+			databaseObjectTypes.put("FUNCTION", DatabaseObjectType.FUNCTION);
+			databaseObjectTypes.put("PROCEDURE", DatabaseObjectType.PROCEDURE);
+			databaseObjectTypes.put("UDTTYPE", DatabaseObjectType.UDT_TYPE_DBO);
+			databaseObjectTypes.put("OTHER", DatabaseObjectType.OTHER);
+			for (Entry<String, DatabaseObjectType> entry : databaseObjectTypes.entrySet()) {
+				inverseDatabaseObjectTypes.put(entry.getValue(), entry.getKey());
+			}
+			initialized = true;
 		}
 	}
 
@@ -72,6 +78,7 @@ public class ObjectsTabManager {
 	 * children.
 	 */
 	public ObjectTreeNodeDto node2Dto(ObjectTreeNode node) {
+		initialize();
 		ObjectTreeNodeDto dto = new ObjectTreeNodeDto();
 		IDatabaseObjectInfo info = node.getDatabaseObjectInfo();
 		dto.setCatalog(info.getCatalogName());
@@ -91,6 +98,7 @@ public class ObjectsTabManager {
 	 * Recursively with all children.
 	 */
 	public List<ObjectTreeNodeDto> node2Dto(List<ObjectTreeNode> list) {
+		initialize();
 		List<ObjectTreeNodeDto> listDto = new ArrayList<>();
 		for (ObjectTreeNode obj : list) {
 			listDto.add(node2Dto(obj));
