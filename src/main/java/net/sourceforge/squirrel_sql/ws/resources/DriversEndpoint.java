@@ -29,9 +29,8 @@ public class DriversEndpoint {
 	@Path("/Drivers")
 	public ListBean<SQLDriver> getItems() {
 		List<SQLDriver> list = manager.getDrivers();
-		long count = list.size();
 		// If 0, may raise HTTP 404
-		return new ListBean<>(list, count);
+		return new ListBean<>(list);
 	}
 
 	@GET

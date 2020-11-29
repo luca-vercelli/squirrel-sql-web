@@ -28,9 +28,8 @@ public class AliasesEndpoint {
 	@Path("/Aliases")
 	public ListBean<SQLAlias> getItems() {
 		List<SQLAlias> list = manager.getAliases();
-		long count = list.size();
 		// If 0, may raise HTTP 404
-		return new ListBean<>(list, count);
+		return new ListBean<>(list);
 	}
 
 	@GET

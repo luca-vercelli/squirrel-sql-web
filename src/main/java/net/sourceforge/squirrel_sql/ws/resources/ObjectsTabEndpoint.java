@@ -76,7 +76,7 @@ public class ObjectsTabEndpoint {
 			lst.add(new TableInfoDto(t));
 		}
 		// If null, may raise HTTP 404
-		return new ListBean<>(lst, (long) lst.size());
+		return new ListBean<>(lst);
 	}
 
 	@GET
@@ -97,6 +97,6 @@ public class ObjectsTabEndpoint {
 		ISession session = sessionsManager.getSessionById(identifier, getCurrentToken());
 		ObjectTreeNode node = manager.dto2Node(parentNodeDto, session);
 		List<ObjectTreeNode> list = manager.expandNode(node);
-		return new ListBean<>(manager.node2Dto(list), (long) list.size());
+		return new ListBean<>(manager.node2Dto(list));
 	}
 }

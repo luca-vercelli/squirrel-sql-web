@@ -56,9 +56,8 @@ public class SessionsEndpoint {
 		for (ISession session : set) {
 			list.add(new SessionDto(session));
 		}
-		long count = list.size();
 		// If 0, may raise HTTP 404
-		return new ListBean<>(list, count);
+		return new ListBean<>(list);
 	}
 
 	@GET

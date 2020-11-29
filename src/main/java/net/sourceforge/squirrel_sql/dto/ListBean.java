@@ -21,6 +21,10 @@ public class ListBean<T> {
 		this.count = totalCount;
 	}
 
+	public ListBean(List<T> data) {
+		this(data, (long) data.size());
+	}
+
 	public List<T> getData() {
 		return data;
 	}
