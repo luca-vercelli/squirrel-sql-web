@@ -84,7 +84,7 @@ function loadAliases() {
 function loadSessions() {
      var url = (enable_mock) ? 
                ws_url + 'Sessions.json' :
-               ws_url + 'Sessions';
+               ws_url + 'Session';
      $.ajax({
         url: url,
         dataType: "json",

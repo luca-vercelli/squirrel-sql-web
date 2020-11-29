@@ -49,7 +49,7 @@ public class SessionsEndpoint {
 	}
 
 	@GET
-	@Path("/Sessions")
+	@Path("/Session")
 	public ListBean<SessionDto> getItems() {
 		Set<ISession> set = manager.getOpenSessions(getCurrentToken());
 		List<SessionDto> list = new ArrayList<>();
