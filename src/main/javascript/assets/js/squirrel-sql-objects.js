@@ -75,6 +75,7 @@ function _expandTreeNode(node) {
     $.ajax({
         type: enable_mock ? 'GET' : 'POST',
         url: url,
+        contentType: 'application/json',
         data: JSON.stringify(node),
         headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('authToken')
