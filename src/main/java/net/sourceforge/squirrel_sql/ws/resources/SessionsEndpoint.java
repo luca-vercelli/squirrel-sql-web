@@ -62,7 +62,7 @@ public class SessionsEndpoint {
 	}
 
 	@GET
-	@Path("/Sessions({identifier})")
+	@Path("/Session({identifier})")
 	public ValueBean<SessionDto> getItem(@PathParam("identifier") String identifier) {
 		ISession session = manager.getSessionById(identifier, getCurrentToken());
 		// If null, may raise HTTP 404
