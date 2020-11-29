@@ -95,7 +95,6 @@ public class ObjectsTabEndpoint {
 	public ListBean<ObjectTreeNodeDto> expandNode(@PathParam("sessionIdentifier") String identifier,
 			ObjectTreeNodeDto parentNodeDto) throws SQLException {
 		ISession session = sessionsManager.getSessionById(identifier, getCurrentToken());
-		// TODO
 		ObjectTreeNode node = manager.dto2Node(parentNodeDto, session);
 		List<ObjectTreeNode> list = manager.expandNode(node);
 		return new ListBean<>(manager.node2Dto(list), (long) list.size());
