@@ -1,91 +1,52 @@
 {
   "data" : [ {
-      "children" : [ ],
-      "catalog" : null,
-      "qualifiedName" : "\"APP\"",
-      "schemaName" : null,
-      "simpleName" : "APP",
-      "objectTypeI18n" : "Schema",
-      "objectType" : "SCHEMA"
-    }, {
-      "children" : [ ],
-      "catalog" : null,
-      "qualifiedName" : "\"NULLID\"",
-      "schemaName" : null,
-      "simpleName" : "NULLID",
-      "objectTypeI18n" : "Schema",
-      "objectType" : "SCHEMA"
-    }, {
-      "children" : [ ],
-      "catalog" : null,
-      "qualifiedName" : "\"SQLJ\"",
-      "schemaName" : null,
-      "simpleName" : "SQLJ",
-      "objectTypeI18n" : "Schema",
-      "objectType" : "SCHEMA"
-    }, {
-      "children" : [ ],
-      "catalog" : null,
-      "qualifiedName" : "\"SYS\"",
-      "schemaName" : null,
-      "simpleName" : "SYS",
-      "objectTypeI18n" : "Schema",
-      "objectType" : "SCHEMA"
-    }, {
-      "children" : [ ],
-      "catalog" : null,
-      "qualifiedName" : "\"SYSCAT\"",
-      "schemaName" : null,
-      "simpleName" : "SYSCAT",
-      "objectTypeI18n" : "Schema",
-      "objectType" : "SCHEMA"
-    }, {
-      "children" : [ ],
-      "catalog" : null,
-      "qualifiedName" : "\"SYSCS_DIAG\"",
-      "schemaName" : null,
-      "simpleName" : "SYSCS_DIAG",
-      "objectTypeI18n" : "Schema",
-      "objectType" : "SCHEMA"
-    }, {
-      "children" : [ ],
-      "catalog" : null,
-      "qualifiedName" : "\"SYSCS_UTIL\"",
-      "schemaName" : null,
-      "simpleName" : "SYSCS_UTIL",
-      "objectTypeI18n" : "Schema",
-      "objectType" : "SCHEMA"
-    }, {
-      "children" : [ ],
-      "catalog" : null,
-      "qualifiedName" : "\"SYSFUN\"",
-      "schemaName" : null,
-      "simpleName" : "SYSFUN",
-      "objectTypeI18n" : "Schema",
-      "objectType" : "SCHEMA"
-    }, {
-      "children" : [ ],
-      "catalog" : null,
-      "qualifiedName" : "\"SYSIBM\"",
-      "schemaName" : null,
-      "simpleName" : "SYSIBM",
-      "objectTypeI18n" : "Schema",
-      "objectType" : "SCHEMA"
-    }, {
-      "children" : [ ],
-      "catalog" : null,
-      "qualifiedName" : "\"SYSPROC\"",
-      "schemaName" : null,
-      "simpleName" : "SYSPROC",
-      "objectTypeI18n" : "Schema",
-      "objectType" : "SCHEMA"
-    }, {
-      "children" : [ ],
-      "catalog" : null,
-      "qualifiedName" : "\"SYSSTAT\"",
-      "schemaName" : null,
-      "simpleName" : "SYSSTAT",
-      "objectTypeI18n" : "Schema",
-      "objectType" : "SCHEMA"
-    } ]
+    "children" : [ ],
+    "catalog" : null,
+    "qualifiedName" : "\"APP\".\"SYNONYM\"",
+    "schemaName" : "APP",
+    "simpleName" : "SYNONYM",
+    "objectTypeI18n" : "Table Type",
+    "objectType" : "TABLETYPE"
+  }, {
+    "children" : [ ],
+    "catalog" : null,
+    "qualifiedName" : "\"APP\".\"SYSTEM TABLE\"",
+    "schemaName" : "APP",
+    "simpleName" : "SYSTEM TABLE",
+    "objectTypeI18n" : "Table Type",
+    "objectType" : "TABLETYPE"
+  }, {
+    "children" : [ ],
+    "catalog" : null,
+    "qualifiedName" : "\"APP\".\"TABLE\"",
+    "schemaName" : "APP",
+    "simpleName" : "TABLE",
+    "objectTypeI18n" : "Table Type",
+    "objectType" : "TABLETYPE"
+  }, {
+    "children" : [ ],
+    "catalog" : null,
+    "qualifiedName" : "\"APP\".\"VIEW\"",
+    "schemaName" : "APP",
+    "simpleName" : "VIEW",
+    "objectTypeI18n" : "Table Type",
+    "objectType" : "TABLETYPE"
+  }, {
+    "children" : [ ],
+    "catalog" : null,
+    "qualifiedName" : "\"APP\".\"PROCEDURE\"",
+    "schemaName" : "APP",
+    "simpleName" : "PROCEDURE",
+    "objectTypeI18n" : "Stored Procedure Type",
+    "objectType" : "PROCTYPE"
+  }, {
+    "children" : [ ],
+    "catalog" : null,
+    "qualifiedName" : "\"APP\".\"UDT\"",
+    "schemaName" : "APP",
+    "simpleName" : "UDT",
+    "objectTypeI18n" : "UDT Type",
+    "objectType" : "UDTTYPE"
+  } ],
+  "count" : 6
 }
