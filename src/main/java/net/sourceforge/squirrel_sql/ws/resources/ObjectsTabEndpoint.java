@@ -56,7 +56,7 @@ public class ObjectsTabEndpoint {
 	}
 
 	@GET
-	@Path("/Sessions({identifier})/SchemaInfo")
+	@Path("/Session({identifier})/SchemaInfo")
 	public ValueBean<SchemaInfoDto> getSchemaInfo(@PathParam("identifier") String identifier) {
 
 		ISession session = sessionsManager.getSessionById(identifier, getCurrentToken());
@@ -66,7 +66,7 @@ public class ObjectsTabEndpoint {
 	}
 
 	@GET
-	@Path("/Sessions({identifier})/SchemaInfo/TableInfo")
+	@Path("/Session({identifier})/SchemaInfo/TableInfo")
 	public ListBean<TableInfoDto> getTableInfo(@PathParam("identifier") String identifier) {
 
 		ISession session = sessionsManager.getSessionById(identifier, getCurrentToken());
@@ -80,7 +80,7 @@ public class ObjectsTabEndpoint {
 	}
 
 	@GET
-	@Path("/Sessions({sessionIdentifier})/RootNode")
+	@Path("/Session({sessionIdentifier})/RootNode")
 	public ValueBean<ObjectTreeNodeDto> getRootNode(@PathParam("sessionIdentifier") String identifier)
 			throws SQLException {
 		ISession session = sessionsManager.getSessionById(identifier, getCurrentToken());
@@ -90,7 +90,7 @@ public class ObjectsTabEndpoint {
 	}
 
 	@POST
-	@Path("/Sessions({sessionIdentifier})/ExpandNode")
+	@Path("/Session({sessionIdentifier})/ExpandNode")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ListBean<ObjectTreeNodeDto> expandNode(@PathParam("sessionIdentifier") String identifier,
 			ObjectTreeNodeDto parentNodeDto) throws SQLException {
