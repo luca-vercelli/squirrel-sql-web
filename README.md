@@ -28,6 +28,7 @@ The application is intended to be run in a real EE container (Glassfish, TomEE, 
 
 In Glassfish, with default configuration, the app will run at address http://localhost:8080/squirrel-sql-web/
 
+We are using Glassfish 4.1.2 with MOXy patch described [here](https://github.com/eclipse-ee4j/glassfish/issues/21440#issuecomment-422056135)
 
 Project roadmap
 ---------------
