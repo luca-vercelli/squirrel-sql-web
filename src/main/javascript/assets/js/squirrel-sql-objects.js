@@ -4,9 +4,14 @@ var nodes = {};
 $(document).ready(function(){
     loadObjectsTree();
     $(document).on('click', '.content', toggleTreeNode);
+    $("#refresh_button").on('click', loadObjectsTree);
 });
 
+/**
+* (Re)load root node of the tree
+*/
 function loadObjectsTree() {
+    objectsTree = null;
     var sessionId = location.href.split('#')[0].split("session.html?id=")[1];
     // session.identifier is not ready yet
     hideMessages();
@@ -34,14 +39,14 @@ function loadObjectsTree() {
  * (Re)draw whole objects tree
  */
 function displayObjectsTree() {
-    $('#objects-tab').html('');
-    _displayObjectsTree(objectsTree, $('#objects-tab'), '');
+    $('#objects-tree').html('');
+    _displayObjectsTree(objectsTree, $('#objects-tree'), '');
 }
 
 function _displayObjectsTree(node, parentDiv, parentPath) {
     var path = parentPath + '/' + node.simpleName
     nodes[path] = node;
-    var icon = node.expanded ? "remove" : "add";
+    var icon = (node.objectType == null || node.objectType == "TABLE") ? "" : node.expanded ? "remove" : "add";
     var s = `<div id="${node.simpleName}" class="objects-tree-node" data-object-path="${path}"><span class="material-icons" aria-hidden="true">${icon}</span><span>${node.simpleName}</span></div>`;
     var childDiv = $(s).appendTo(parentDiv);
     if (node.expanded) {
@@ -59,6 +64,7 @@ function toggleTreeNode(evt) {
     var path = elm.attr('data-object-path');
     var node = nodes[path];
     
+    if (node.objectType == null || node.objectType == "TABLE") return;
     // TODO change behaviour according to node.objectType
     
     if (node.expanded === undefined) {
