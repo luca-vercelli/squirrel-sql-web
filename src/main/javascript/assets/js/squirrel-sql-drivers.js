@@ -165,6 +165,9 @@ function checkDrivers() {
     $.ajax({
         type: enable_mock ? 'GET' : 'POST',
         url: ws_url + 'CheckAllDrivers',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+        },
         success: function(data, status){
             window.location.reload();
         },
