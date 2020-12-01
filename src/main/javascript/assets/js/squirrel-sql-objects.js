@@ -41,7 +41,8 @@ function displayObjectsTree() {
 function _displayObjectsTree(node, parentDiv, parentPath) {
     var path = parentPath + '/' + node.simpleName
     nodes[path] = node;
-    var s = `<div id="${node.simpleName}" class="objects-tree-node" data-object-path="${path}"><span>${node.simpleName} (${node.objectType})</span></div>`;
+    var icon = node.expanded ? "remove" : "add";
+    var s = `<div id="${node.simpleName}" class="objects-tree-node" data-object-path="${path}"><span class="material-icons" aria-hidden="true">${icon}</span><span>${node.simpleName}</span></div>`;
     var childDiv = $(s).appendTo(parentDiv);
     if (node.expanded) {
         for (var i in node.children) {
