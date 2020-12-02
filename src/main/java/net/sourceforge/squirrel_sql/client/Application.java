@@ -110,7 +110,7 @@ public class Application implements IApplication {
 	private int _jdbcDebugType = 0;
 	private ApplicationFiles _appFiles = null;
 	private EditWhereCols editWhereCols = new EditWhereCols();
-	private List<ApplicationListener> _listeners = new ArrayList();
+	private List<ApplicationListener> _listeners = new ArrayList<>();
 	private IShutdownTimer _shutdownTimer = new ShutdownTimer();
 	private MultipleWindowsHandler _multipleWindowsHandler = new MultipleWindowsHandler(this);
 	private RecentFilesManager _recentFilesManager = new RecentFilesManager();
@@ -603,7 +603,7 @@ public class Application implements IApplication {
 		try {
 			XMLBeanReader doc = new XMLBeanReader();
 			doc.load(new ApplicationFiles().getUserSQLHistoryFile());
-			Iterator it = doc.iterator();
+			Iterator<Object> it = doc.iterator();
 			if (it.hasNext()) {
 				this._sqlHistory = ((SQLHistory) it.next());
 			}
@@ -627,7 +627,7 @@ public class Application implements IApplication {
 		try {
 			XMLBeanReader doc = new XMLBeanReader();
 			doc.load(new ApplicationFiles().getUserSpecificWikiConfigurationsFile());
-			Iterator it = doc.iterator();
+			Iterator<Object> it = doc.iterator();
 			if (it.hasNext()) {
 				WikiTableConfigurationStorage data = (WikiTableConfigurationStorage) it.next();
 				this.wikiTableConfigFactory.replaceUserSpecificConfigurations(data.configurationsAsList());
@@ -679,7 +679,7 @@ public class Application implements IApplication {
 		try {
 			XMLBeanReader doc = new XMLBeanReader();
 			doc.load(new ApplicationFiles().getCellImportExportSelectionsFile());
-			Iterator it = doc.iterator();
+			Iterator<Object> it = doc.iterator();
 			if (it.hasNext()) {
 				saverInstance = (CellImportExportInfoSaver) it.next();
 			}
@@ -705,7 +705,7 @@ public class Application implements IApplication {
 		try {
 			XMLBeanReader doc = new XMLBeanReader();
 			doc.load(new ApplicationFiles().getEditWhereColsFile());
-			Iterator it = doc.iterator();
+			Iterator<Object> it = doc.iterator();
 			if (it.hasNext()) {
 				this.editWhereCols = ((EditWhereCols) it.next());
 			}
