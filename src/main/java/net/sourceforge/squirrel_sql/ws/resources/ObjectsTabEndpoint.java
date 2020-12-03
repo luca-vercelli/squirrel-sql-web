@@ -12,6 +12,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -21,6 +22,7 @@ import net.sourceforge.squirrel_sql.client.session.schemainfo.SchemaInfo;
 import net.sourceforge.squirrel_sql.dto.ListBean;
 import net.sourceforge.squirrel_sql.dto.ObjectTreeNodeDto;
 import net.sourceforge.squirrel_sql.dto.SchemaInfoDto;
+import net.sourceforge.squirrel_sql.dto.TableDto;
 import net.sourceforge.squirrel_sql.dto.TableInfoDto;
 import net.sourceforge.squirrel_sql.dto.ValueBean;
 import net.sourceforge.squirrel_sql.fw.sql.ITableInfo;
@@ -98,5 +100,35 @@ public class ObjectsTabEndpoint {
 		ObjectTreeNode node = manager.dto2Node(parentNodeDto, session);
 		List<ObjectTreeNode> list = manager.expandNode(node);
 		return new ListBean<>(manager.node2Dto(list));
+	}
+
+	@GET
+	@Path("/Session({sessionId})/TableContent")
+	public ValueBean<TableDto> tableContent(@PathParam("sessionId") String identifier,
+			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+			@QueryParam("table") String table) throws SQLException {
+
+		// TODO
+		return null;
+	}
+
+	@GET
+	@Path("/Session({sessionId})/TableRowCount")
+	public ValueBean<TableDto> tableRowCount(@PathParam("sessionId") String identifier,
+			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+			@QueryParam("table") String table) throws SQLException {
+
+		// TODO
+		return null;
+	}
+
+	@GET
+	@Path("/Session({sessionId})/TablePk")
+	public ValueBean<TableDto> tablePk(@PathParam("sessionId") String identifier,
+			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+			@QueryParam("table") String table) throws SQLException {
+
+		// TODO
+		return null;
 	}
 }

@@ -41,12 +41,11 @@ function _commonLoadDetails(endpoint) {
     disableEdit(true);
     var url = (enable_mock) ? 
                 ws_url + 'ExecuteQuery.json' :
-                ws_url + endpoint;
+                ws_url + `Session(${sessionId})/${endpoint}`;
     $.ajax({
         type: enable_mock ? 'GET' : 'POST',
         url: url,
         data: {
-            sessionId: sessionId,
             catalog: catalog,
             schemaName: schema,
             tableName: table
@@ -55,12 +54,7 @@ function _commonLoadDetails(endpoint) {
             'Authorization': 'Bearer ' + localStorage.getItem('authToken')
         },
         success: function(data, status){
-            if (data.value == null) {
-                // not a SELECT
-                showMessage("Success.", "success");
-            } else {
-                renderTable(data.value)
-            }
+            renderTable(data.value);
             disableEdit(false);
         },
         error: function(response, status){
