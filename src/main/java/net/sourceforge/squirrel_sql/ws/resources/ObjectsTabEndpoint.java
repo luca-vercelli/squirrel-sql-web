@@ -58,20 +58,20 @@ public class ObjectsTabEndpoint {
 	}
 
 	@GET
-	@Path("/Session({identifier})/SchemaInfo")
-	public ValueBean<SchemaInfoDto> getSchemaInfo(@PathParam("identifier") String identifier) {
+	@Path("/Session({sessionId})/SchemaInfo")
+	public ValueBean<SchemaInfoDto> getSchemaInfo(@PathParam("sessionId") String sessionId) {
 
-		ISession session = sessionsManager.getSessionById(identifier, getCurrentToken());
+		ISession session = sessionsManager.getSessionById(sessionId, getCurrentToken());
 		SchemaInfo schemaInfo = session.getSchemaInfo();
 		// If null, may raise HTTP 404
 		return new ValueBean<>(new SchemaInfoDto(schemaInfo));
 	}
 
 	@GET
-	@Path("/Session({identifier})/SchemaInfo/TableInfo")
-	public ListBean<TableInfoDto> getTableInfo(@PathParam("identifier") String identifier) {
+	@Path("/Session({sessionId})/SchemaInfo/TableInfo")
+	public ListBean<TableInfoDto> getTableInfo(@PathParam("sessionId") String sessionId) {
 
-		ISession session = sessionsManager.getSessionById(identifier, getCurrentToken());
+		ISession session = sessionsManager.getSessionById(sessionId, getCurrentToken());
 		ITableInfo[] tableInfos = session.getSchemaInfo().getITableInfos();
 		List<TableInfoDto> lst = new ArrayList<>();
 		for (ITableInfo t : tableInfos) {
@@ -82,21 +82,21 @@ public class ObjectsTabEndpoint {
 	}
 
 	@GET
-	@Path("/Session({sessionIdentifier})/RootNode")
-	public ValueBean<ObjectTreeNodeDto> getRootNode(@PathParam("sessionIdentifier") String identifier)
+	@Path("/Session({sessionId})/RootNode")
+	public ValueBean<ObjectTreeNodeDto> getRootNode(@PathParam("sessionId") String sessionId)
 			throws SQLException {
-		ISession session = sessionsManager.getSessionById(identifier, getCurrentToken());
+		ISession session = sessionsManager.getSessionById(sessionId, getCurrentToken());
 		ObjectTreeNode rootNode = manager.createAndExpandRootNode(session);
 		ObjectTreeNodeDto rootNodeDto = manager.node2Dto(rootNode);
 		return new ValueBean<>(rootNodeDto);
 	}
 
 	@POST
-	@Path("/Session({sessionIdentifier})/ExpandNode")
+	@Path("/Session({sessionId})/ExpandNode")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public ListBean<ObjectTreeNodeDto> expandNode(@PathParam("sessionIdentifier") String identifier,
+	public ListBean<ObjectTreeNodeDto> expandNode(@PathParam("sessionId") String sessionId,
 			ObjectTreeNodeDto parentNodeDto) throws SQLException {
-		ISession session = sessionsManager.getSessionById(identifier, getCurrentToken());
+		ISession session = sessionsManager.getSessionById(sessionId, getCurrentToken());
 		ObjectTreeNode node = manager.dto2Node(parentNodeDto, session);
 		List<ObjectTreeNode> list = manager.expandNode(node);
 		return new ListBean<>(manager.node2Dto(list));
@@ -104,7 +104,7 @@ public class ObjectsTabEndpoint {
 
 	@GET
 	@Path("/Session({sessionId})/TableContent")
-	public ValueBean<TableDto> tableContent(@PathParam("sessionId") String identifier,
+	public ValueBean<TableDto> tableContent(@PathParam("sessionId") String sessionId,
 			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
 			@QueryParam("table") String table) throws SQLException {
 
@@ -114,7 +114,7 @@ public class ObjectsTabEndpoint {
 
 	@GET
 	@Path("/Session({sessionId})/TableRowCount")
-	public ValueBean<TableDto> tableRowCount(@PathParam("sessionId") String identifier,
+	public ValueBean<TableDto> tableRowCount(@PathParam("sessionId") String sessionId,
 			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
 			@QueryParam("table") String table) throws SQLException {
 
@@ -124,7 +124,7 @@ public class ObjectsTabEndpoint {
 
 	@GET
 	@Path("/Session({sessionId})/TablePk")
-	public ValueBean<TableDto> tablePk(@PathParam("sessionId") String identifier,
+	public ValueBean<TableDto> tablePk(@PathParam("sessionId") String sessionId,
 			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
 			@QueryParam("table") String table) throws SQLException {
 
