@@ -64,9 +64,17 @@ function toggleTreeNode(evt) {
     var path = elm.attr('data-object-path');
     var node = nodes[path];
     
-    if (node.objectType == null || node.objectType == "TABLE") return;
-    // TODO change behaviour according to node.objectType
-    
+    if (node.objectType == null || node.objectType == "TABLE" || node.objectType == "VIEW") {
+        var newUrl = location.href.split('#')[0].split("session.html")[0];
+        newUrl += `table.html?sessionId=${session.identifier}&catalog=${node.catalog}&schema=${node.schemaName}&table=${node.simpleName}`;
+        window.open(newUrl, '_blank');
+        return;
+    }
+    //TODO handle procedures, triggers, udts, ...
+    if (node.objectType == null) {
+        return;
+    }
+
     if (node.expanded === undefined) {
         _expandTreeNode(node);
     } else {
