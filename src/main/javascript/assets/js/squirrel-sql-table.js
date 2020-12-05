@@ -2,7 +2,8 @@
 var sessionId = null;
 var catalog = null;
 var schema = null;
-var table = null;
+var tableType = null;
+var tableName = null;
 
 $(document).ready(function(){
     loadParams();
@@ -18,8 +19,8 @@ function loadParams() {
         eval(pieces[0] + "='" + pieces[1] + "'");
     }
     
-    if (sessionId && table) {
-        $('#table-title').html(table);
+    if (sessionId && tableName) {
+        $('#table-title').html(tableName);
     } else {
         showMessage("Bad request: missing parameters", "error");
     }
@@ -43,12 +44,13 @@ function _commonLoadDetails(endpoint) {
                 ws_url + 'ExecuteQuery.json' :
                 ws_url + `Session(${sessionId})/${endpoint}`;
     $.ajax({
-        type: enable_mock ? 'GET' : 'POST',
+        type: 'GET',
         url: url,
         data: {
             catalog: catalog,
-            schemaName: schema,
-            tableName: table
+            schema: schema,
+            tableName: tableName,
+            tableType: tableType
         },
         headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('authToken')

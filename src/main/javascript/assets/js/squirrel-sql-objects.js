@@ -66,7 +66,7 @@ function toggleTreeNode(evt) {
     
     if (node.objectType == null || node.objectType == "TABLE" || node.objectType == "VIEW") {
         var newUrl = location.href.split('#')[0].split("session.html")[0];
-        newUrl += `table.html?sessionId=${session.identifier}&catalog=${node.catalog}&schema=${node.schemaName}&table=${node.simpleName}`;
+        newUrl += `table.html?sessionId=${session.identifier}&catalog=${node.catalog}&schema=${node.schemaName}&tableName=${node.simpleName}&tableType=${node.objectType}`;
         window.open(newUrl, '_blank');
         return;
     }
