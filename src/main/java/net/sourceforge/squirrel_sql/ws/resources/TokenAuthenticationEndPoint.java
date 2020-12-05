@@ -95,6 +95,7 @@ public class TokenAuthenticationEndPoint {
 			user.setName("John");
 			user.setSurname("Doe");
 			user.setEmail("johndoe@example.com");
+			user.setRoles(new String[] { "admin" });
 		}
 		return new ValueBean<>(user);
 	}
