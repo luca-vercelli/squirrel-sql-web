@@ -6,14 +6,12 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
@@ -22,46 +20,29 @@ import net.sourceforge.squirrel_sql.client.session.schemainfo.SchemaInfo;
 import net.sourceforge.squirrel_sql.dto.ListBean;
 import net.sourceforge.squirrel_sql.dto.ObjectTreeNodeDto;
 import net.sourceforge.squirrel_sql.dto.SchemaInfoDto;
-import net.sourceforge.squirrel_sql.dto.TableDto;
 import net.sourceforge.squirrel_sql.dto.TableInfoDto;
 import net.sourceforge.squirrel_sql.dto.ValueBean;
+import net.sourceforge.squirrel_sql.fw.datasetviewer.DataSetException;
+import net.sourceforge.squirrel_sql.fw.datasetviewer.IDataSet;
 import net.sourceforge.squirrel_sql.fw.sql.ITableInfo;
 import net.sourceforge.squirrel_sql.ws.exceptions.AuthorizationException;
 import net.sourceforge.squirrel_sql.ws.managers.ObjectsTabManager;
 import net.sourceforge.squirrel_sql.ws.managers.SessionsManager;
-import net.sourceforge.squirrel_sql.ws.managers.TokensManager;
 
 @Path("/")
 @Stateless
 public class ObjectsTabEndpoint {
 
 	@Inject
-	SessionsManager sessionsManager;
-	@Inject
 	ObjectsTabManager manager;
 	@Inject
-	TokensManager tokensManager;
-	@Context
-	HttpServletRequest request;
-
-	/**
-	 * Return token in current Request.
-	 * 
-	 * @return
-	 */
-	protected String getCurrentToken() {
-		try {
-			return tokensManager.extractTokenFromRequest(request);
-		} catch (AuthorizationException e) {
-			throw new IllegalStateException("Error retrieving token. This should not happen.", e);
-		}
-	}
+	SessionsManager sessionsManager;
 
 	@GET
 	@Path("/Session({sessionId})/SchemaInfo")
-	public ValueBean<SchemaInfoDto> getSchemaInfo(@PathParam("sessionId") String sessionId) {
-
-		ISession session = sessionsManager.getSessionById(sessionId, getCurrentToken());
+	public ValueBean<SchemaInfoDto> getSchemaInfo(@PathParam("sessionId") String sessionId)
+			throws AuthorizationException {
+		ISession session = sessionsManager.getSessionById(sessionId);
 		SchemaInfo schemaInfo = session.getSchemaInfo();
 		// If null, may raise HTTP 404
 		return new ValueBean<>(new SchemaInfoDto(schemaInfo));
@@ -69,9 +50,8 @@ public class ObjectsTabEndpoint {
 
 	@GET
 	@Path("/Session({sessionId})/SchemaInfo/TableInfo")
-	public ListBean<TableInfoDto> getTableInfo(@PathParam("sessionId") String sessionId) {
-
-		ISession session = sessionsManager.getSessionById(sessionId, getCurrentToken());
+	public ListBean<TableInfoDto> getTableInfo(@PathParam("sessionId") String sessionId) throws AuthorizationException {
+		ISession session = sessionsManager.getSessionById(sessionId);
 		ITableInfo[] tableInfos = session.getSchemaInfo().getITableInfos();
 		List<TableInfoDto> lst = new ArrayList<>();
 		for (ITableInfo t : tableInfos) {
@@ -84,8 +64,8 @@ public class ObjectsTabEndpoint {
 	@GET
 	@Path("/Session({sessionId})/RootNode")
 	public ValueBean<ObjectTreeNodeDto> getRootNode(@PathParam("sessionId") String sessionId)
-			throws SQLException {
-		ISession session = sessionsManager.getSessionById(sessionId, getCurrentToken());
+			throws SQLException, AuthorizationException {
+		ISession session = sessionsManager.getSessionById(sessionId);
 		ObjectTreeNode rootNode = manager.createAndExpandRootNode(session);
 		ObjectTreeNodeDto rootNodeDto = manager.node2Dto(rootNode);
 		return new ValueBean<>(rootNodeDto);
@@ -95,8 +75,8 @@ public class ObjectsTabEndpoint {
 	@Path("/Session({sessionId})/ExpandNode")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ListBean<ObjectTreeNodeDto> expandNode(@PathParam("sessionId") String sessionId,
-			ObjectTreeNodeDto parentNodeDto) throws SQLException {
-		ISession session = sessionsManager.getSessionById(sessionId, getCurrentToken());
+			ObjectTreeNodeDto parentNodeDto) throws SQLException, AuthorizationException {
+		ISession session = sessionsManager.getSessionById(sessionId);
 		ObjectTreeNode node = manager.dto2Node(parentNodeDto, session);
 		List<ObjectTreeNode> list = manager.expandNode(node);
 		return new ListBean<>(manager.node2Dto(list));
@@ -104,31 +84,33 @@ public class ObjectsTabEndpoint {
 
 	@GET
 	@Path("/Session({sessionId})/TableContent")
-	public ValueBean<TableDto> tableContent(@PathParam("sessionId") String sessionId,
+	public ValueBean<IDataSet> tableContent(@PathParam("sessionId") String sessionId,
 			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
-			@QueryParam("table") String table) throws SQLException {
-
-		// TODO
-		return null;
+			@QueryParam("tableName") String tableName, @QueryParam("tableType") String tableType)
+			throws DataSetException, AuthorizationException {
+		ISession session = sessionsManager.getSessionById(sessionId);
+		IDataSet tableDto = manager.getTableContent(session, catalog, schema, tableName, tableType);
+		return new ValueBean<>(tableDto);
 	}
 
 	@GET
 	@Path("/Session({sessionId})/TableRowCount")
-	public ValueBean<TableDto> tableRowCount(@PathParam("sessionId") String sessionId,
+	public ValueBean<IDataSet> tableRowCount(@PathParam("sessionId") String sessionId,
 			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
-			@QueryParam("table") String table) throws SQLException {
-
-		// TODO
-		return null;
+			@QueryParam("tableName") String tableName, @QueryParam("tableType") String tableType)
+			throws DataSetException, AuthorizationException {
+		ISession session = sessionsManager.getSessionById(sessionId);
+		IDataSet tableDto = manager.getTableRowCount(session, catalog, schema, tableName, tableType);
+		return new ValueBean<>(tableDto);
 	}
 
 	@GET
 	@Path("/Session({sessionId})/TablePk")
-	public ValueBean<TableDto> tablePk(@PathParam("sessionId") String sessionId,
-			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
-			@QueryParam("table") String table) throws SQLException {
-
-		// TODO
-		return null;
+	public ValueBean<IDataSet> tablePk(@PathParam("sessionId") String sessionId, @QueryParam("catalog") String catalog,
+			@QueryParam("schema") String schema, @QueryParam("tableName") String tableName,
+			@QueryParam("tableType") String tableType) throws DataSetException, AuthorizationException {
+		ISession session = sessionsManager.getSessionById(sessionId);
+		IDataSet tableDto = manager.getTablePk(session, catalog, schema, tableName, tableType);
+		return new ValueBean<>(tableDto);
 	}
 }

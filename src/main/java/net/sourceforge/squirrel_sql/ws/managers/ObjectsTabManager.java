@@ -20,10 +20,16 @@ import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expander
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expanders.ProcedureTypeExpander;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expanders.TableTypeExpander;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expanders.UDTTypeExpander;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ContentsTab;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.PrimaryKeyTab;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.RowCountTab;
 import net.sourceforge.squirrel_sql.dto.ObjectTreeNodeDto;
+import net.sourceforge.squirrel_sql.fw.datasetviewer.DataSetException;
+import net.sourceforge.squirrel_sql.fw.datasetviewer.IDataSet;
 import net.sourceforge.squirrel_sql.fw.sql.DatabaseObjectInfo;
 import net.sourceforge.squirrel_sql.fw.sql.DatabaseObjectType;
 import net.sourceforge.squirrel_sql.fw.sql.IDatabaseObjectInfo;
+import net.sourceforge.squirrel_sql.fw.sql.TableInfo;
 import net.sourceforge.squirrel_sql.ws.resources.SessionsEndpoint;
 
 /**
@@ -216,4 +222,94 @@ public class ObjectsTabManager {
 		return expander.createChildren(node.getSession(), node);
 	}
 
+	/**
+	 * Return SELECT * FROM given table
+	 * 
+	 * @return
+	 * @throws DataSetException
+	 */
+	public IDataSet getTableContent(ISession session, String catalog, String schema, String table, String type)
+			throws DataSetException {
+
+		// One can also think to take a ObjectTreeNode as input
+
+		TableInfo info = new TableInfo(catalog, schema, table, type, null, session.getMetaData());
+
+		ContentsExecuter tab = new ContentsExecuter(session);
+		tab.setTableInfo(info);
+		IDataSet result = tab.createDataSet();
+		return result;
+	}
+
+	/**
+	 * Return SELECT COUNT(*) FROM given table
+	 * 
+	 * @return
+	 * @throws DataSetException
+	 */
+	public IDataSet getTableRowCount(ISession session, String catalog, String schema, String table, String type)
+			throws DataSetException {
+
+		// One can also think to take a ObjectTreeNode as input
+
+		TableInfo info = new TableInfo(catalog, schema, table, type, null, session.getMetaData());
+
+		RowCountExecuter tab = new RowCountExecuter(session);
+		tab.setTableInfo(info);
+		IDataSet result = tab.createDataSet();
+		return result;
+	}
+
+	/**
+	 * Return primary keys of given table
+	 * 
+	 * @return
+	 * @throws DataSetException
+	 */
+	public IDataSet getTablePk(ISession session, String catalog, String schema, String table, String type)
+			throws DataSetException {
+
+		// One can also think to take a ObjectTreeNode as input
+
+		TableInfo info = new TableInfo(catalog, schema, table, type, null, session.getMetaData());
+
+		PrimaryKeyExecuter tab = new PrimaryKeyExecuter(session);
+		tab.setTableInfo(info);
+		IDataSet result = tab.createDataSet();
+		return result;
+	}
+
+	private static class ContentsExecuter extends ContentsTab {
+		public ContentsExecuter(ISession session) {
+			super(null);
+			super.setSession(session);
+		}
+
+		@Override
+		public IDataSet createDataSet() throws DataSetException {
+			return super.createDataSet();
+		}
+	}
+
+	private static class RowCountExecuter extends RowCountTab {
+		public RowCountExecuter(ISession session) {
+			super.setSession(session);
+		}
+
+		@Override
+		public IDataSet createDataSet() throws DataSetException {
+			return super.createDataSet();
+		}
+	}
+
+	private static class PrimaryKeyExecuter extends PrimaryKeyTab {
+		public PrimaryKeyExecuter(ISession session) {
+			super.setSession(session);
+		}
+
+		@Override
+		public IDataSet createDataSet() throws DataSetException {
+			return super.createDataSet();
+		}
+	}
 }
