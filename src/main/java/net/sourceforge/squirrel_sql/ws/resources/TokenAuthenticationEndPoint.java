@@ -85,8 +85,17 @@ public class TokenAuthenticationEndPoint {
 	@GET
 	@Path("/CurrentUser")
 	public ValueBean<User> getCurrentUser(@Context HttpServletRequest request) throws AuthorizationException {
-		String token = tokensManager.extractTokenFromRequest(request);
-		User user = usersManager.findByUsername(tokensManager.getSubject(token));
+		User user;
+		if (!tokensManager.isDebugMode()) {
+			String token = tokensManager.extractTokenFromRequest(request);
+			user = usersManager.findByUsername(tokensManager.getSubject(token));
+		} else {
+			user = new User();
+			user.setUsername("admin");
+			user.setName("John");
+			user.setSurname("Doe");
+			user.setEmail("johndoe@example.com");
+		}
 		return new ValueBean<>(user);
 	}
 
