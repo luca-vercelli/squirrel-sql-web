@@ -56,7 +56,7 @@ function _commonLoadDetails(endpoint) {
             'Authorization': 'Bearer ' + localStorage.getItem('authToken')
         },
         success: function(data, status){
-            renderTable(data.value);
+            renderDataSet(data.value);
             disableEdit(false);
         },
         error: function(response, status){

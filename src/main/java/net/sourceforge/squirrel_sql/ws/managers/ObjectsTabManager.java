@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.INodeExpander;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeNode;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreePanel;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expanders.DatabaseExpander;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expanders.ProcedureTypeExpander;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expanders.TableTypeExpander;
@@ -235,7 +236,7 @@ public class ObjectsTabManager {
 
 		TableInfo info = new TableInfo(catalog, schema, table, type, null, session.getMetaData());
 
-		ContentsExecuter tab = new ContentsExecuter(session);
+		ContentsTabPublic tab = new ContentsTabPublic(session);
 		tab.setTableInfo(info);
 		IDataSet result = tab.createDataSet();
 		return result;
@@ -254,7 +255,7 @@ public class ObjectsTabManager {
 
 		TableInfo info = new TableInfo(catalog, schema, table, type, null, session.getMetaData());
 
-		RowCountExecuter tab = new RowCountExecuter(session);
+		RowCountTabPublic tab = new RowCountTabPublic(session);
 		tab.setTableInfo(info);
 		IDataSet result = tab.createDataSet();
 		return result;
@@ -273,15 +274,16 @@ public class ObjectsTabManager {
 
 		TableInfo info = new TableInfo(catalog, schema, table, type, null, session.getMetaData());
 
-		PrimaryKeyExecuter tab = new PrimaryKeyExecuter(session);
+		PrimaryKeyTabPublic tab = new PrimaryKeyTabPublic(session);
 		tab.setTableInfo(info);
 		IDataSet result = tab.createDataSet();
 		return result;
 	}
 
-	private static class ContentsExecuter extends ContentsTab {
-		public ContentsExecuter(ISession session) {
-			super(null);
+	private static class ContentsTabPublic extends ContentsTab {
+		//FIXME this is stupid, we should not use ObjectTreePanel's at all
+		public ContentsTabPublic(ISession session) {
+			super(new ObjectTreePanel(session, null));
 			super.setSession(session);
 		}
 
@@ -291,8 +293,8 @@ public class ObjectsTabManager {
 		}
 	}
 
-	private static class RowCountExecuter extends RowCountTab {
-		public RowCountExecuter(ISession session) {
+	private static class RowCountTabPublic extends RowCountTab {
+		public RowCountTabPublic(ISession session) {
 			super.setSession(session);
 		}
 
@@ -302,8 +304,8 @@ public class ObjectsTabManager {
 		}
 	}
 
-	private static class PrimaryKeyExecuter extends PrimaryKeyTab {
-		public PrimaryKeyExecuter(ISession session) {
+	private static class PrimaryKeyTabPublic extends PrimaryKeyTab {
+		public PrimaryKeyTabPublic(ISession session) {
 			super.setSession(session);
 		}
 

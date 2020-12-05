@@ -60,6 +60,33 @@ function renderTable(table) {
     showResults();
 }
 
+function renderDataSet(ds) {
+    console.log("IDataSet: ", ds);
+
+    // TODO should know data type, so we could add class="text-left" to text fields
+
+    var thead = $('#resultsPanel').find("thead");
+    thead.html("");
+    renderColumnHeadersDataSet(ds.dataSetDefinition.columnDefinitions, thead);
+
+    var tbody = $('#resultsPanel').find("tbody");
+    tbody.html("");
+    for (i in ds.allDataForReadOnly) {
+        renderRow(ds.allDataForReadOnly[i], tbody);
+    }
+    
+    showResults();
+}
+
+function renderColumnHeadersDataSet(columnDefinitions, thead) {
+    var tr = $("<tr/>").appendTo(thead);
+    for (j in columnDefinitions) {
+        var th = $("<th/>").appendTo(tr);
+        th.html(columnDefinitions[j].columnHeading);
+        // TODO add type description
+    }
+}
+
 function renderColumnHeaders(columnHeaders, thead) {
     var tr = $("<tr/>").appendTo(thead);
     for (j in columnHeaders) {
