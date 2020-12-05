@@ -19,6 +19,7 @@ import net.sourceforge.squirrel_sql.fw.id.IIdentifier;
 import net.sourceforge.squirrel_sql.fw.id.IntegerIdentifier;
 import net.sourceforge.squirrel_sql.fw.sql.SQLConnection;
 import net.sourceforge.squirrel_sql.fw.sql.SQLDriver;
+import net.sourceforge.squirrel_sql.ws.exceptions.AuthorizationException;
 import net.sourceforge.squirrel_sql.ws.resources.SessionsEndpoint;
 
 /**
@@ -38,6 +39,8 @@ public class SessionsManager {
 	AliasesManager aliasesManager;
 	@Inject
 	DriversManager driversManager;
+	@Inject
+	TokensManager tokensManager;
 
 	/**
 	 * A map of all open sessions, grouped by login token
@@ -97,13 +100,24 @@ public class SessionsManager {
 
 	/**
 	 * Return the SQL session with given identifier, <i>if</i> it was opened with
-	 * current JWT token
+	 * given JWT token
 	 * 
 	 * @param token Authentication JWT token
 	 * @return null if not found
 	 */
 	public ISession getSessionById(String id, String token) {
 		return getSessionById(getSessionId(id), token);
+	}
+
+	/**
+	 * Return the SQL session with given identifier, <i>if</i> it was opened with
+	 * current JWT token
+	 * 
+	 * @return null if not found
+	 * @throws AuthorizationException
+	 */
+	public ISession getSessionById(String id) throws AuthorizationException {
+		return getSessionById(getSessionId(id), tokensManager.getCurrentToken());
 	}
 
 	/**

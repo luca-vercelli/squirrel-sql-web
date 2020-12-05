@@ -14,6 +14,7 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.ejb.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 
 import org.apache.log4j.Logger;
@@ -40,6 +41,8 @@ import net.sourceforge.squirrel_sql.ws.model.User;
 // TODO use keystore instead of file
 @Singleton
 public class TokensManager {
+	@Context
+	HttpServletRequest request;
 
 	/**
 	 * The server private key used for signing and encoding messages.
@@ -244,6 +247,16 @@ public class TokensManager {
 		}
 
 		return token;
+	}
+
+	/**
+	 * Return JWT token in current Request.
+	 * 
+	 * @return
+	 * @throws AuthorizationException
+	 */
+	public String getCurrentToken() throws AuthorizationException {
+		return extractTokenFromRequest(request);
 	}
 
 	public boolean isDebugMode() {
