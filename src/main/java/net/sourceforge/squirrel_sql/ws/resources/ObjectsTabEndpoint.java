@@ -88,9 +88,12 @@ public class ObjectsTabEndpoint {
 			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
 			@QueryParam("tableName") String tableName, @QueryParam("tableType") String tableType)
 			throws DataSetException, AuthorizationException {
+
+		// FIXME what about row limits?
+
 		ISession session = sessionsManager.getSessionById(sessionId);
-		IDataSet tableDto = manager.getTableContent(session, catalog, schema, tableName, tableType);
-		return new ValueBean<>(tableDto);
+		IDataSet dataset = manager.getTableContent(session, catalog, schema, tableName, tableType);
+		return new ValueBean<>(dataset);
 	}
 
 	@GET
@@ -100,8 +103,8 @@ public class ObjectsTabEndpoint {
 			@QueryParam("tableName") String tableName, @QueryParam("tableType") String tableType)
 			throws DataSetException, AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		IDataSet tableDto = manager.getTableRowCount(session, catalog, schema, tableName, tableType);
-		return new ValueBean<>(tableDto);
+		IDataSet dataset = manager.getTableRowCount(session, catalog, schema, tableName, tableType);
+		return new ValueBean<>(dataset);
 	}
 
 	@GET
@@ -110,7 +113,40 @@ public class ObjectsTabEndpoint {
 			@QueryParam("schema") String schema, @QueryParam("tableName") String tableName,
 			@QueryParam("tableType") String tableType) throws DataSetException, AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		IDataSet tableDto = manager.getTablePk(session, catalog, schema, tableName, tableType);
-		return new ValueBean<>(tableDto);
+		IDataSet dataset = manager.getTablePk(session, catalog, schema, tableName, tableType);
+		return new ValueBean<>(dataset);
+	}
+
+	@GET
+	@Path("/Session({sessionId})/TableColumns")
+	public ValueBean<IDataSet> tableColumns(@PathParam("sessionId") String sessionId,
+			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+			@QueryParam("tableName") String tableName, @QueryParam("tableType") String tableType)
+			throws DataSetException, AuthorizationException {
+		ISession session = sessionsManager.getSessionById(sessionId);
+		IDataSet dataset = manager.getTableColumns(session, catalog, schema, tableName, tableType);
+		return new ValueBean<>(dataset);
+	}
+
+	@GET
+	@Path("/Session({sessionId})/TableIndexes")
+	public ValueBean<IDataSet> tableIndexes(@PathParam("sessionId") String sessionId,
+			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+			@QueryParam("tableName") String tableName, @QueryParam("tableType") String tableType)
+			throws DataSetException, AuthorizationException {
+		ISession session = sessionsManager.getSessionById(sessionId);
+		IDataSet dataset = manager.getTableIndexes(session, catalog, schema, tableName, tableType);
+		return new ValueBean<>(dataset);
+	}
+
+	@GET
+	@Path("/Session({sessionId})/TablePrivileges")
+	public ValueBean<IDataSet> tablePrivileges(@PathParam("sessionId") String sessionId,
+			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+			@QueryParam("tableName") String tableName, @QueryParam("tableType") String tableType)
+			throws DataSetException, AuthorizationException {
+		ISession session = sessionsManager.getSessionById(sessionId);
+		IDataSet dataset = manager.getTablePrivileges(session, catalog, schema, tableName, tableType);
+		return new ValueBean<>(dataset);
 	}
 }

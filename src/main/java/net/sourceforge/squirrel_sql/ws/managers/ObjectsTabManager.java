@@ -21,9 +21,13 @@ import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expander
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expanders.ProcedureTypeExpander;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expanders.TableTypeExpander;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expanders.UDTTypeExpander;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ColumnsTab;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ContentsTab;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ITableTab;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.IndexesTab;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.PrimaryKeyTab;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.RowCountTab;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.TablePriviligesTab;
 import net.sourceforge.squirrel_sql.dto.ObjectTreeNodeDto;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.DataSetException;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.IDataSet;
@@ -235,8 +239,7 @@ public class ObjectsTabManager {
 		// One can also think to take a ObjectTreeNode as input
 
 		TableInfo info = new TableInfo(catalog, schema, table, type, null, session.getMetaData());
-
-		ContentsTabPublic tab = new ContentsTabPublic(session);
+		ITableTabPublic tab = new ContentsTabPublic(session);
 		tab.setTableInfo(info);
 		IDataSet result = tab.createDataSet();
 		return result;
@@ -254,8 +257,8 @@ public class ObjectsTabManager {
 		// One can also think to take a ObjectTreeNode as input
 
 		TableInfo info = new TableInfo(catalog, schema, table, type, null, session.getMetaData());
-
-		RowCountTabPublic tab = new RowCountTabPublic(session);
+		ITableTabPublic tab = new RowCountTabPublic();
+		tab.setSession(session);
 		tab.setTableInfo(info);
 		IDataSet result = tab.createDataSet();
 		return result;
@@ -273,15 +276,81 @@ public class ObjectsTabManager {
 		// One can also think to take a ObjectTreeNode as input
 
 		TableInfo info = new TableInfo(catalog, schema, table, type, null, session.getMetaData());
-
-		PrimaryKeyTabPublic tab = new PrimaryKeyTabPublic(session);
+		ITableTabPublic tab = new PrimaryKeyTabPublic();
+		tab.setSession(session);
 		tab.setTableInfo(info);
 		IDataSet result = tab.createDataSet();
 		return result;
 	}
 
-	private static class ContentsTabPublic extends ContentsTab {
-		//FIXME this is stupid, we should not use ObjectTreePanel's at all
+	/**
+	 * Return columns definitions of given table
+	 * 
+	 * @return
+	 * @throws DataSetException
+	 */
+	public IDataSet getTableColumns(ISession session, String catalog, String schema, String table, String type)
+			throws DataSetException {
+
+		// One can also think to take a ObjectTreeNode as input
+
+		TableInfo info = new TableInfo(catalog, schema, table, type, null, session.getMetaData());
+		ITableTabPublic tab = new ColumnsTabPublic();
+		tab.setSession(session);
+		tab.setTableInfo(info);
+		IDataSet result = tab.createDataSet();
+		return result;
+	}
+
+	/**
+	 * Return indexes of given table
+	 * 
+	 * @return
+	 * @throws DataSetException
+	 */
+	public IDataSet getTableIndexes(ISession session, String catalog, String schema, String table, String type)
+			throws DataSetException {
+
+		// One can also think to take a ObjectTreeNode as input
+
+		TableInfo info = new TableInfo(catalog, schema, table, type, null, session.getMetaData());
+		ITableTabPublic tab = new IndexesTabPublic();
+		tab.setSession(session);
+		tab.setTableInfo(info);
+		IDataSet result = tab.createDataSet();
+		return result;
+	}
+
+	/**
+	 * Return privileges on given table
+	 * 
+	 * @return
+	 * @throws DataSetException
+	 */
+	public IDataSet getTablePrivileges(ISession session, String catalog, String schema, String table, String type)
+			throws DataSetException {
+
+		// One can also think to take a ObjectTreeNode as input
+
+		TableInfo info = new TableInfo(catalog, schema, table, type, null, session.getMetaData());
+		ITableTabPublic tab = new TablePriviligesTabPublic();
+		tab.setSession(session);
+		tab.setTableInfo(info);
+		IDataSet result = tab.createDataSet();
+		return result;
+	}
+
+	/**
+	 * An ITableTab with public access to underlying createDataSet() method
+	 * 
+	 * @author lv 2020
+	 */
+	public static interface ITableTabPublic extends ITableTab {
+		public IDataSet createDataSet() throws DataSetException;
+	}
+
+	private static class ContentsTabPublic extends ContentsTab implements ITableTabPublic {
+		// FIXME this does not work, we cannot use ObjectTreePanel's at all
 		public ContentsTabPublic(ISession session) {
 			super(new ObjectTreePanel(session, null));
 			super.setSession(session);
@@ -293,22 +362,35 @@ public class ObjectsTabManager {
 		}
 	}
 
-	private static class RowCountTabPublic extends RowCountTab {
-		public RowCountTabPublic(ISession session) {
-			super.setSession(session);
-		}
-
+	private static class RowCountTabPublic extends RowCountTab implements ITableTabPublic {
 		@Override
 		public IDataSet createDataSet() throws DataSetException {
 			return super.createDataSet();
 		}
 	}
 
-	private static class PrimaryKeyTabPublic extends PrimaryKeyTab {
-		public PrimaryKeyTabPublic(ISession session) {
-			super.setSession(session);
+	private static class PrimaryKeyTabPublic extends PrimaryKeyTab implements ITableTabPublic {
+		@Override
+		public IDataSet createDataSet() throws DataSetException {
+			return super.createDataSet();
 		}
+	}
 
+	private static class ColumnsTabPublic extends ColumnsTab implements ITableTabPublic {
+		@Override
+		public IDataSet createDataSet() throws DataSetException {
+			return super.createDataSet();
+		}
+	}
+
+	private static class IndexesTabPublic extends IndexesTab implements ITableTabPublic {
+		@Override
+		public IDataSet createDataSet() throws DataSetException {
+			return super.createDataSet();
+		}
+	}
+
+	private static class TablePriviligesTabPublic extends TablePriviligesTab implements ITableTabPublic {
 		@Override
 		public IDataSet createDataSet() throws DataSetException {
 			return super.createDataSet();
