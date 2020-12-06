@@ -16,22 +16,21 @@ import org.apache.log4j.Logger;
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.INodeExpander;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeNode;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreePanel;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expanders.DatabaseExpander;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expanders.ProcedureTypeExpander;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expanders.TableTypeExpander;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expanders.UDTTypeExpander;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ColumnsTab;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ContentsTab;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ExportedKeysTab;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ITableTab;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ImportedKeysTab;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.IndexesTab;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.PrimaryKeyTab;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.RowCountTab;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.RowIDTab;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.TablePriviligesTab;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.VersionColumnsTab;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ColumnsTabPublic;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ContentsTabPublic;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ExportedKeysTabPublic;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ITableTabPublic;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ImportedKeysTabPublic;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.IndexesTabPublic;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.PrimaryKeyTabPublic;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.RowCountTabPublic;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.RowIDTabPublic;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.TablePriviligesTabPublic;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.VersionColumnsTabPublic;
 import net.sourceforge.squirrel_sql.dto.ObjectTreeNodeDto;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.DataSetException;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.IDataSet;
@@ -351,90 +350,5 @@ public class ObjectsTabManager {
 		tab.setTableInfo(info);
 		IDataSet result = tab.createDataSet();
 		return result;
-	}
-
-	/**
-	 * An ITableTab with public access to underlying createDataSet() method
-	 * 
-	 * @author lv 2020
-	 */
-	public static interface ITableTabPublic extends ITableTab {
-		public IDataSet createDataSet() throws DataSetException;
-	}
-
-	private static class ContentsTabPublic extends ContentsTab implements ITableTabPublic {
-		// FIXME this does not work, we cannot use ObjectTreePanel's at all
-		public ContentsTabPublic(ISession session) {
-			super(new ObjectTreePanel(session, null));
-			super.setSession(session);
-		}
-
-		@Override
-		public IDataSet createDataSet() throws DataSetException {
-			return super.createDataSet();
-		}
-	}
-
-	private static class RowCountTabPublic extends RowCountTab implements ITableTabPublic {
-		@Override
-		public IDataSet createDataSet() throws DataSetException {
-			return super.createDataSet();
-		}
-	}
-
-	private static class PrimaryKeyTabPublic extends PrimaryKeyTab implements ITableTabPublic {
-		@Override
-		public IDataSet createDataSet() throws DataSetException {
-			return super.createDataSet();
-		}
-	}
-
-	private static class ColumnsTabPublic extends ColumnsTab implements ITableTabPublic {
-		@Override
-		public IDataSet createDataSet() throws DataSetException {
-			return super.createDataSet();
-		}
-	}
-
-	private static class IndexesTabPublic extends IndexesTab implements ITableTabPublic {
-		@Override
-		public IDataSet createDataSet() throws DataSetException {
-			return super.createDataSet();
-		}
-	}
-
-	private static class TablePriviligesTabPublic extends TablePriviligesTab implements ITableTabPublic {
-		@Override
-		public IDataSet createDataSet() throws DataSetException {
-			return super.createDataSet();
-		}
-	}
-
-	private static class ExportedKeysTabPublic extends ExportedKeysTab implements ITableTabPublic {
-		@Override
-		public IDataSet createDataSet() throws DataSetException {
-			return super.createDataSet();
-		}
-	}
-
-	private static class ImportedKeysTabPublic extends ImportedKeysTab implements ITableTabPublic {
-		@Override
-		public IDataSet createDataSet() throws DataSetException {
-			return super.createDataSet();
-		}
-	}
-
-	private static class RowIDTabPublic extends RowIDTab implements ITableTabPublic {
-		@Override
-		public IDataSet createDataSet() throws DataSetException {
-			return super.createDataSet();
-		}
-	}
-
-	private static class VersionColumnsTabPublic extends VersionColumnsTab implements ITableTabPublic {
-		@Override
-		public IDataSet createDataSet() throws DataSetException {
-			return super.createDataSet();
-		}
 	}
 }
