@@ -7,12 +7,7 @@ var tableName = null;
 
 $(document).ready(function(){
     loadParams();
-    $("#table_content_button").on('click', loadTableContent);
-    $("#row_count_button").on('click', loadTableRowCount);
-    $("#table_pk_button").on('click', loadTablePk);
-    $("#table_columns_button").on('click', loadTableColumns);
-    $("#table_indexes_button").on('click', loadTableIndexes);
-    $("#table_privileges_button").on('click', loadTablePrivileges);
+    $(".table_button").on('click', loadDetails);
 });
 
 function loadParams() {
@@ -29,32 +24,9 @@ function loadParams() {
     }
 }
 
-function loadTableContent() {
-    _commonLoadDetails("TableContent");
-}
-
-function loadTableRowCount() {
-    _commonLoadDetails("TableRowCount");
-}
-
-function loadTablePk() {
-    _commonLoadDetails("TablePk");
-}
-
-function loadTableColumns() {
-    _commonLoadDetails("TableColumns");
-}
-
-function loadTableIndexes() {
-    _commonLoadDetails("TableIndexes");
-}
-
-function loadTablePrivileges() {
-    _commonLoadDetails("TablePrivileges");
-}
-
-function _commonLoadDetails(endpoint) {
+function loadDetails() {
     disableEdit(true);
+    var endpoint = $(this).attr('data-target-endpoint');
     var url = (enable_mock) ? 
                 ws_url + 'ExecuteQuery.json' :
                 ws_url + `Session(${sessionId})/${endpoint}`;
