@@ -235,14 +235,7 @@ public class ObjectsTabManager {
 	 */
 	public IDataSet getTableContent(ISession session, String catalog, String schema, String table, String type)
 			throws DataSetException {
-
-		// One can also think to take a ObjectTreeNode as input
-
-		TableInfo info = new TableInfo(catalog, schema, table, type, null, session.getMetaData());
-		ITableTabPublic tab = new ContentsTabPublic(session);
-		tab.setTableInfo(info);
-		IDataSet result = tab.createDataSet();
-		return result;
+		return commonGetDataSet(session, catalog, schema, table, type, new ContentsTabPublic(session));
 	}
 
 	/**
@@ -253,15 +246,7 @@ public class ObjectsTabManager {
 	 */
 	public IDataSet getTableRowCount(ISession session, String catalog, String schema, String table, String type)
 			throws DataSetException {
-
-		// One can also think to take a ObjectTreeNode as input
-
-		TableInfo info = new TableInfo(catalog, schema, table, type, null, session.getMetaData());
-		ITableTabPublic tab = new RowCountTabPublic();
-		tab.setSession(session);
-		tab.setTableInfo(info);
-		IDataSet result = tab.createDataSet();
-		return result;
+		return commonGetDataSet(session, catalog, schema, table, type, new RowCountTabPublic());
 	}
 
 	/**
@@ -272,15 +257,7 @@ public class ObjectsTabManager {
 	 */
 	public IDataSet getTablePk(ISession session, String catalog, String schema, String table, String type)
 			throws DataSetException {
-
-		// One can also think to take a ObjectTreeNode as input
-
-		TableInfo info = new TableInfo(catalog, schema, table, type, null, session.getMetaData());
-		ITableTabPublic tab = new PrimaryKeyTabPublic();
-		tab.setSession(session);
-		tab.setTableInfo(info);
-		IDataSet result = tab.createDataSet();
-		return result;
+		return commonGetDataSet(session, catalog, schema, table, type, new PrimaryKeyTabPublic());
 	}
 
 	/**
@@ -291,15 +268,7 @@ public class ObjectsTabManager {
 	 */
 	public IDataSet getTableColumns(ISession session, String catalog, String schema, String table, String type)
 			throws DataSetException {
-
-		// One can also think to take a ObjectTreeNode as input
-
-		TableInfo info = new TableInfo(catalog, schema, table, type, null, session.getMetaData());
-		ITableTabPublic tab = new ColumnsTabPublic();
-		tab.setSession(session);
-		tab.setTableInfo(info);
-		IDataSet result = tab.createDataSet();
-		return result;
+		return commonGetDataSet(session, catalog, schema, table, type, new ColumnsTabPublic());
 	}
 
 	/**
@@ -310,15 +279,7 @@ public class ObjectsTabManager {
 	 */
 	public IDataSet getTableIndexes(ISession session, String catalog, String schema, String table, String type)
 			throws DataSetException {
-
-		// One can also think to take a ObjectTreeNode as input
-
-		TableInfo info = new TableInfo(catalog, schema, table, type, null, session.getMetaData());
-		ITableTabPublic tab = new IndexesTabPublic();
-		tab.setSession(session);
-		tab.setTableInfo(info);
-		IDataSet result = tab.createDataSet();
-		return result;
+		return commonGetDataSet(session, catalog, schema, table, type, new IndexesTabPublic());
 	}
 
 	/**
@@ -329,11 +290,15 @@ public class ObjectsTabManager {
 	 */
 	public IDataSet getTablePrivileges(ISession session, String catalog, String schema, String table, String type)
 			throws DataSetException {
+		return commonGetDataSet(session, catalog, schema, table, type, new TablePriviligesTabPublic());
+	}
+
+	private IDataSet commonGetDataSet(ISession session, String catalog, String schema, String table, String type,
+			ITableTabPublic tab) throws DataSetException {
 
 		// One can also think to take a ObjectTreeNode as input
 
 		TableInfo info = new TableInfo(catalog, schema, table, type, null, session.getMetaData());
-		ITableTabPublic tab = new TablePriviligesTabPublic();
 		tab.setSession(session);
 		tab.setTableInfo(info);
 		IDataSet result = tab.createDataSet();
