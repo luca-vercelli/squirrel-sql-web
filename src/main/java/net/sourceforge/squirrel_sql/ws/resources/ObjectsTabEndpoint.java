@@ -149,4 +149,48 @@ public class ObjectsTabEndpoint {
 		IDataSet dataset = manager.getTablePrivileges(session, catalog, schema, tableName, tableType);
 		return new ValueBean<>(dataset);
 	}
+
+	@GET
+	@Path("/Session({sessionId})/TableImportedFk")
+	public ValueBean<IDataSet> tableImportedFk(@PathParam("sessionId") String sessionId,
+			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+			@QueryParam("tableName") String tableName, @QueryParam("tableType") String tableType)
+			throws DataSetException, AuthorizationException {
+		ISession session = sessionsManager.getSessionById(sessionId);
+		IDataSet dataset = manager.getTableImportedFk(session, catalog, schema, tableName, tableType);
+		return new ValueBean<>(dataset);
+	}
+
+	@GET
+	@Path("/Session({sessionId})/TableExportedFk")
+	public ValueBean<IDataSet> tableExportedFk(@PathParam("sessionId") String sessionId,
+			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+			@QueryParam("tableName") String tableName, @QueryParam("tableType") String tableType)
+			throws DataSetException, AuthorizationException {
+		ISession session = sessionsManager.getSessionById(sessionId);
+		IDataSet dataset = manager.getTableExportedFk(session, catalog, schema, tableName, tableType);
+		return new ValueBean<>(dataset);
+	}
+
+	@GET
+	@Path("/Session({sessionId})/TableRowId")
+	public ValueBean<IDataSet> tableRowId(@PathParam("sessionId") String sessionId,
+			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+			@QueryParam("tableName") String tableName, @QueryParam("tableType") String tableType)
+			throws DataSetException, AuthorizationException {
+		ISession session = sessionsManager.getSessionById(sessionId);
+		IDataSet dataset = manager.getTableRowID(session, catalog, schema, tableName, tableType);
+		return new ValueBean<>(dataset);
+	}
+
+	@GET
+	@Path("/Session({sessionId})/TableVersionColumns")
+	public ValueBean<IDataSet> tableVersionColumns(@PathParam("sessionId") String sessionId,
+			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+			@QueryParam("tableName") String tableName, @QueryParam("tableType") String tableType)
+			throws DataSetException, AuthorizationException {
+		ISession session = sessionsManager.getSessionById(sessionId);
+		IDataSet dataset = manager.getTableVersionColumns(session, catalog, schema, tableName, tableType);
+		return new ValueBean<>(dataset);
+	}
 }

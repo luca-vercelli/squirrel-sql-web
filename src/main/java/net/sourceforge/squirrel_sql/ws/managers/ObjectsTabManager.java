@@ -23,11 +23,15 @@ import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expander
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expanders.UDTTypeExpander;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ColumnsTab;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ContentsTab;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ExportedKeysTab;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ITableTab;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ImportedKeysTab;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.IndexesTab;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.PrimaryKeyTab;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.RowCountTab;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.RowIDTab;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.TablePriviligesTab;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.VersionColumnsTab;
 import net.sourceforge.squirrel_sql.dto.ObjectTreeNodeDto;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.DataSetException;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.IDataSet;
@@ -293,6 +297,50 @@ public class ObjectsTabManager {
 		return commonGetDataSet(session, catalog, schema, table, type, new TablePriviligesTabPublic());
 	}
 
+	/**
+	 * Return imported keys for given table
+	 * 
+	 * @return
+	 * @throws DataSetException
+	 */
+	public IDataSet getTableImportedFk(ISession session, String catalog, String schema, String table, String type)
+			throws DataSetException {
+		return commonGetDataSet(session, catalog, schema, table, type, new ImportedKeysTabPublic());
+	}
+
+	/**
+	 * Return exported keys for given table
+	 * 
+	 * @return
+	 * @throws DataSetException
+	 */
+	public IDataSet getTableExportedFk(ISession session, String catalog, String schema, String table, String type)
+			throws DataSetException {
+		return commonGetDataSet(session, catalog, schema, table, type, new ExportedKeysTabPublic());
+	}
+
+	/**
+	 * Return what???
+	 * 
+	 * @return
+	 * @throws DataSetException
+	 */
+	public IDataSet getTableRowID(ISession session, String catalog, String schema, String table, String type)
+			throws DataSetException {
+		return commonGetDataSet(session, catalog, schema, table, type, new RowIDTabPublic());
+	}
+
+	/**
+	 * Return what???
+	 * 
+	 * @return
+	 * @throws DataSetException
+	 */
+	public IDataSet getTableVersionColumns(ISession session, String catalog, String schema, String table, String type)
+			throws DataSetException {
+		return commonGetDataSet(session, catalog, schema, table, type, new VersionColumnsTabPublic());
+	}
+
 	private IDataSet commonGetDataSet(ISession session, String catalog, String schema, String table, String type,
 			ITableTabPublic tab) throws DataSetException {
 
@@ -356,6 +404,34 @@ public class ObjectsTabManager {
 	}
 
 	private static class TablePriviligesTabPublic extends TablePriviligesTab implements ITableTabPublic {
+		@Override
+		public IDataSet createDataSet() throws DataSetException {
+			return super.createDataSet();
+		}
+	}
+
+	private static class ExportedKeysTabPublic extends ExportedKeysTab implements ITableTabPublic {
+		@Override
+		public IDataSet createDataSet() throws DataSetException {
+			return super.createDataSet();
+		}
+	}
+
+	private static class ImportedKeysTabPublic extends ImportedKeysTab implements ITableTabPublic {
+		@Override
+		public IDataSet createDataSet() throws DataSetException {
+			return super.createDataSet();
+		}
+	}
+
+	private static class RowIDTabPublic extends RowIDTab implements ITableTabPublic {
+		@Override
+		public IDataSet createDataSet() throws DataSetException {
+			return super.createDataSet();
+		}
+	}
+
+	private static class VersionColumnsTabPublic extends VersionColumnsTab implements ITableTabPublic {
 		@Override
 		public IDataSet createDataSet() throws DataSetException {
 			return super.createDataSet();
