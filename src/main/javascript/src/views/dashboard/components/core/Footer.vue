@@ -48,20 +48,12 @@
     data: () => ({
       links: [
         {
-          href: '#',
-          text: 'Creative Tim',
+          href: 'https://github.com/luca-vercelli/squirrel-sql-web/tree/vuejs',
+          text: 'GitHub',
         },
         {
-          href: '#',
-          text: 'About Us',
-        },
-        {
-          href: '#',
-          text: 'Blog',
-        },
-        {
-          href: '#',
-          text: 'Licenses',
+          href: 'https://github.com/luca-vercelli/squirrel-sql-web/blob/vuejs/LICENSE',
+          text: 'License',
         },
       ],
     }),

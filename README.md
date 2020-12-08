@@ -17,7 +17,7 @@ You need at least Java (>=8), Maven, nodejs, gulp. Compile all with
 
     mvn package
 
-Frontend: Material Dash https://github.com/BootstrapDash/Material-Admin
+Frontend: Vuetify Material Dashboard https://www.creative-tim.com/product/vuetify-material-dashboard
 
 Backend: Java EE (JAXRS, EJB, CDI).
 
@@ -55,4 +55,4 @@ For frontend development, we can run in mock mode with NodeJS instead of Glassfi
 
 1. Set `enable_mock = true` in file `login.js`
 2. `cd src/main/javascript`
-3. `gulp serve`
+3. `npm start`
