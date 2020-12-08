@@ -102,6 +102,16 @@
           to: '/',
         },
         {
+          icon: 'mdi-android',
+          title: 'aliases',
+          to: '/aliases',
+        },
+        {
+          icon: 'mdi-android',
+          title: 'drivers',
+          to: '/drivers',
+        },
+        {
           icon: 'mdi-account',
           title: 'user',
           to: '/pages/user',
@@ -120,11 +130,6 @@
           title: 'icons',
           icon: 'mdi-chart-bubble',
           to: '/components/icons',
-        },
-        {
-          title: 'google',
-          icon: 'mdi-map-marker',
-          to: '/maps/google-maps',
         },
         {
           title: 'notifications',

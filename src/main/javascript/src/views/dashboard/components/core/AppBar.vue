@@ -48,7 +48,6 @@
       origin="top right"
       transition="scale-transition"
     >
-
       <v-list
         :tile="false"
         nav
