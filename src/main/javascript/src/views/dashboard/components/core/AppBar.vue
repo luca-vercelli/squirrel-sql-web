@@ -30,27 +30,6 @@
 
     <v-spacer />
 
-    <v-text-field
-      :label="$t('search')"
-      color="secondary"
-      hide-details
-      style="max-width: 165px;"
-    >
-      <template
-        v-if="$vuetify.breakpoint.mdAndUp"
-        v-slot:append-outer
-      >
-        <v-btn
-          class="mt-n2"
-          elevation="1"
-          fab
-          small
-        >
-          <v-icon>mdi-magnify</v-icon>
-        </v-btn>
-      </template>
-    </v-text-field>
-
     <div class="mx-3" />
 
     <v-btn
@@ -69,27 +48,6 @@
       origin="top right"
       transition="scale-transition"
     >
-      <template v-slot:activator="{ attrs, on }">
-        <v-btn
-          class="ml-2"
-          min-width="0"
-          text
-          v-bind="attrs"
-          v-on="on"
-        >
-          <v-badge
-            color="red"
-            overlap
-            bordered
-          >
-            <template v-slot:badge>
-              <span>5</span>
-            </template>
-
-            <v-icon>mdi-bell</v-icon>
-          </v-badge>
-        </v-btn>
-      </template>
 
       <v-list
         :tile="false"
