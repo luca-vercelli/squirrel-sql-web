@@ -102,12 +102,12 @@
           to: '/',
         },
         {
-          icon: 'mdi-android',
+          icon: 'mdi-connection',
           title: 'aliases',
           to: '/aliases',
         },
         {
-          icon: 'mdi-android',
+          icon: 'mdi-chip',
           title: 'drivers',
           to: '/drivers',
         },

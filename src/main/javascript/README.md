@@ -8,8 +8,12 @@ Template is taken from:
 
 Use Vue-js+Material+Vuetify
 
-Run with npm start
+Run with `npm start`, on port 8080 (why not 4200?)
 
-Menu structure is defined in Drawer.vue
+Menu structure is defined in `Drawer.vue`
 
+i18n labels are in `src/locales` folder
 
+Router paths definition in `router.js`
+
+Available icons here: https://materialdesignicons.com/
