@@ -4,14 +4,9 @@
     fluid
     tag="section"
   >
-    <base-v-component
-      heading="Simple Tables"
-      link="components/simple-tables"
-    />
-
     <base-material-card
       icon="mdi-clipboard-text"
-      title="Simple Table"
+      title="Drivers"
       class="px-5 py-3"
     >
       <v-simple-table>
@@ -20,7 +15,7 @@
             <th class="primary--text">
               Name
             </th>
-            <th class="primary--text">
+            <th class="text-right primary--text">
               Actions
             </th>
           </tr>
@@ -29,21 +24,39 @@
         <tbody>
           <tr
             v-for="driver in drivers"
-            :key="driver.identifier"
+            :key="driver.identifier.string"
           >
             <td>{{ driver.name }}</td>
-            <td>
-              <button class="v-btn v-size--default secondary">
-                Connect
+            <td class="text-right">
+              <button
+                class="v-btn v-size--default success"
+                title="Edit"
+                @click="editDriver"
+              >
+                <i
+                  aria-hidden="true"
+                  class="v-icon notranslate mdi mdi-pencil theme--dark"
+                />
               </button> &nbsp;
-              <button class="v-btn v-size--default secondary">
-                Edit
+              <button
+                class="v-btn v-size--default success"
+                title="Clone"
+                @click="cloneDriver"
+              >
+                <i
+                  aria-hidden="true"
+                  class="v-icon notranslate mdi mdi-content-copy theme--dark"
+                />
               </button> &nbsp;
-              <button class="v-btn v-size--default secondary">
-                Clone
-              </button> &nbsp;
-              <button class="v-btn v-size--default error">
-                Delete
+              <button
+                class="v-btn v-size--default error"
+                title="Delete"
+                @click="deleteDriver"
+              >
+                <i
+                  aria-hidden="true"
+                  class="v-icon notranslate mdi mdi-delete theme--dark"
+                />
               </button>
             </td>
           </tr>
@@ -69,16 +82,6 @@
       wsUrl: function () {
         return this.enableMock ? process.env.BASE_URL + 'mock/Drivers.json' : '../ws/Drivers'
       },
-      /* driversComputed: function () {
-        return this.drivers
-      }, */
-    },
-
-    watch: {
-      drivers: function (val) {
-        console.log('here')
-        this.driversComputed = val
-      },
     },
 
     created: function () {
@@ -98,7 +101,6 @@
           success: function (response) {
             that.drivers = response.data
             that.drivers.sort(that.cmpNames)
-            console.log('loaded drivers: ', that.drivers)
           },
         })
       },
@@ -106,6 +108,12 @@
         var name1 = x.name ? x.name.toLowerCase() : ''
         var name2 = y.name ? y.name.toLowerCase() : ''
         return name1 < name2 ? -1 : name1 > name2 ? +1 : 0
+      },
+      editDriver: function () {
+      },
+      cloneDriver: function () {
+      },
+      deleteDriver: function () {
       },
     },
   }
