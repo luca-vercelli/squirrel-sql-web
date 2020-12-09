@@ -1,0 +1,165 @@
+{
+  "data" : [ {
+    "schemaName" : "SYS",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYS\".\"SYSALIASES\"",
+    "simpleName" : "SYSALIASES",
+    "type" : "SYSTEM TABLE"
+  }, {
+    "schemaName" : "SYS",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYS\".\"SYSCHECKS\"",
+    "simpleName" : "SYSCHECKS",
+    "type" : "SYSTEM TABLE"
+  }, {
+    "schemaName" : "SYS",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYS\".\"SYSCOLPERMS\"",
+    "simpleName" : "SYSCOLPERMS",
+    "type" : "SYSTEM TABLE"
+  }, {
+    "schemaName" : "SYS",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYS\".\"SYSCOLUMNS\"",
+    "simpleName" : "SYSCOLUMNS",
+    "type" : "SYSTEM TABLE"
+  }, {
+    "schemaName" : "SYS",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYS\".\"SYSCONGLOMERATES\"",
+    "simpleName" : "SYSCONGLOMERATES",
+    "type" : "SYSTEM TABLE"
+  }, {
+    "schemaName" : "SYS",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYS\".\"SYSCONSTRAINTS\"",
+    "simpleName" : "SYSCONSTRAINTS",
+    "type" : "SYSTEM TABLE"
+  }, {
+    "schemaName" : "SYS",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYS\".\"SYSDEPENDS\"",
+    "simpleName" : "SYSDEPENDS",
+    "type" : "SYSTEM TABLE"
+  }, {
+    "schemaName" : "SYSIBM",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYSIBM\".\"SYSDUMMY1\"",
+    "simpleName" : "SYSDUMMY1",
+    "type" : "SYSTEM TABLE"
+  }, {
+    "schemaName" : "SYS",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYS\".\"SYSFILES\"",
+    "simpleName" : "SYSFILES",
+    "type" : "SYSTEM TABLE"
+  }, {
+    "schemaName" : "SYS",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYS\".\"SYSFOREIGNKEYS\"",
+    "simpleName" : "SYSFOREIGNKEYS",
+    "type" : "SYSTEM TABLE"
+  }, {
+    "schemaName" : "SYS",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYS\".\"SYSKEYS\"",
+    "simpleName" : "SYSKEYS",
+    "type" : "SYSTEM TABLE"
+  }, {
+    "schemaName" : "SYS",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYS\".\"SYSPERMS\"",
+    "simpleName" : "SYSPERMS",
+    "type" : "SYSTEM TABLE"
+  }, {
+    "schemaName" : "SYS",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYS\".\"SYSROLES\"",
+    "simpleName" : "SYSROLES",
+    "type" : "SYSTEM TABLE"
+  }, {
+    "schemaName" : "SYS",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYS\".\"SYSROUTINEPERMS\"",
+    "simpleName" : "SYSROUTINEPERMS",
+    "type" : "SYSTEM TABLE"
+  }, {
+    "schemaName" : "SYS",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYS\".\"SYSSCHEMAS\"",
+    "simpleName" : "SYSSCHEMAS",
+    "type" : "SYSTEM TABLE"
+  }, {
+    "schemaName" : "SYS",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYS\".\"SYSSEQUENCES\"",
+    "simpleName" : "SYSSEQUENCES",
+    "type" : "SYSTEM TABLE"
+  }, {
+    "schemaName" : "SYS",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYS\".\"SYSSTATEMENTS\"",
+    "simpleName" : "SYSSTATEMENTS",
+    "type" : "SYSTEM TABLE"
+  }, {
+    "schemaName" : "SYS",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYS\".\"SYSSTATISTICS\"",
+    "simpleName" : "SYSSTATISTICS",
+    "type" : "SYSTEM TABLE"
+  }, {
+    "schemaName" : "SYS",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYS\".\"SYSTABLEPERMS\"",
+    "simpleName" : "SYSTABLEPERMS",
+    "type" : "SYSTEM TABLE"
+  }, {
+    "schemaName" : "SYS",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYS\".\"SYSTABLES\"",
+    "simpleName" : "SYSTABLES",
+    "type" : "SYSTEM TABLE"
+  }, {
+    "schemaName" : "SYS",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYS\".\"SYSTRIGGERS\"",
+    "simpleName" : "SYSTRIGGERS",
+    "type" : "SYSTEM TABLE"
+  }, {
+    "schemaName" : "SYS",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYS\".\"SYSUSERS\"",
+    "simpleName" : "SYSUSERS",
+    "type" : "SYSTEM TABLE"
+  }, {
+    "schemaName" : "SYS",
+    "catalogName" : "",
+    "remarks" : "",
+    "qualifiedName" : "\"SYS\".\"SYSVIEWS\"",
+    "simpleName" : "SYSVIEWS",
+    "type" : "SYSTEM TABLE"
+  } ],
+  "count" : 23
+}

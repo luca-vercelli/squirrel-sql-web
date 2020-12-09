@@ -1,0 +1,15 @@
+{
+  "value" : {
+    "name" : "LucidDB",
+    "identifier" : {
+      "string" : "-52"
+    },
+    "driverClassName" : "org.luciddb.jdbc.LucidDbClientDriver",
+    "jdbcdriverClassLoaded" : false,
+    "jarFileNameWrappers" : [ ],
+    "url" : "jdbc:luciddb:http://<server>[:<8034>]",
+    "webSiteUrl" : "http://www.luciddb.org",
+    "jarFileName" : "",
+    "jarFileNames" : [ ]
+  }
+}
