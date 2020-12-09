@@ -28,16 +28,16 @@
           >
             <td>{{ driver.name }}</td>
             <td class="text-right">
-              <button
+              <router-link
                 class="v-btn v-size--default success"
                 title="Edit"
-                @click="editDriver"
+                to="/driver"
               >
                 <i
                   aria-hidden="true"
                   class="v-icon notranslate mdi mdi-pencil theme--dark"
                 />
-              </button> &nbsp;
+              </router-link> &nbsp;
               <button
                 class="v-btn v-size--default success"
                 title="Clone"

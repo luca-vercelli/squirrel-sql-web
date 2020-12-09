@@ -50,9 +50,14 @@ export default new Router({
           component: () => import('@/views/dashboard/pages/Aliases'),
         },
         {
-          name: 'Driver',
+          name: 'Drivers',
           path: 'drivers',
           component: () => import('@/views/dashboard/pages/Drivers'),
+        },
+        {
+          name: 'Driver',
+          path: 'driver',
+          component: () => import('@/views/dashboard/pages/Driver'),
         },
       ],
     },
