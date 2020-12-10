@@ -64,17 +64,46 @@
                   class="v-icon notranslate mdi mdi-content-copy theme--dark"
                 />
               </v-btn> &nbsp;
-              <v-btn
-                color="error"
-                class="mr-4"
-                title="Delete"
-                @click="deleteDriver"
+
+              <v-dialog
+                v-model="showDeleteDialog"
+                persistent
+                max-width="290"
               >
-                <i
-                  aria-hidden="true"
-                  class="v-icon notranslate mdi mdi-delete theme--dark"
-                />
-              </v-btn>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    color="error"
+                    title="Delete"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <i
+                      aria-hidden="true"
+                      class="v-icon notranslate mdi mdi-delete theme--dark"
+                    />
+                  </v-btn>
+                </template>
+                <v-card>
+                  <v-card-title class="headline">
+                    Delete driver?
+                  </v-card-title>
+                  <v-card-text>This operation cannot be undone.</v-card-text>
+                  <v-card-actions>
+                    <v-spacer />
+                    <v-btn
+                      color="error"
+                      @click="deleteDriver(alias); showDeleteDialog = false"
+                    >
+                      OK
+                    </v-btn>
+                    <v-btn
+                      @click="showDeleteDialog = false"
+                    >
+                      Undo
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
             </td>
           </tr>
         </tbody>
@@ -92,6 +121,7 @@
       return {
         drivers: [],
         enableMock: true,
+        showDeleteDialog: false,
       }
     },
 
@@ -127,8 +157,20 @@
         return name1 < name2 ? -1 : name1 > name2 ? +1 : 0
       },
       deleteDriver: function () {
-        // TODO
-        alert('TODO')
+        var that = this
+        $.ajax({
+          type: this.enableMock ? 'GET' : 'DELETE',
+          url: this.enableMock ? process.env.BASE_URL + 'mock/Drivers.json' : `../ws/Drivers'(${this.driver.identifier})`,
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+          },
+          success: function (data, status) {
+            that.loadDrivers()
+          },
+          error: function (data, status) {
+            console.log('Data:', data, 'Status:', status)
+          },
+        })
       },
     },
   }

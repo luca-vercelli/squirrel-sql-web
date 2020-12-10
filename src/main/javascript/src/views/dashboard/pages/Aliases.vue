@@ -61,17 +61,46 @@
                   class="v-icon notranslate mdi mdi-content-copy theme--dark"
                 />
               </v-btn> &nbsp;
-              <v-btn
-                color="error"
-                class="mr-4"
-                title="Delete"
-                @click="deleteAlias"
+
+              <v-dialog
+                v-model="showDeleteDialog"
+                persistent
+                max-width="290"
               >
-                <i
-                  aria-hidden="true"
-                  class="v-icon notranslate mdi mdi-delete theme--dark"
-                />
-              </v-btn>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    color="error"
+                    title="Delete"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <i
+                      aria-hidden="true"
+                      class="v-icon notranslate mdi mdi-delete theme--dark"
+                    />
+                  </v-btn>
+                </template>
+                <v-card>
+                  <v-card-title class="headline">
+                    Delete alias?
+                  </v-card-title>
+                  <v-card-text>This operation cannot be undone.</v-card-text>
+                  <v-card-actions>
+                    <v-spacer />
+                    <v-btn
+                      color="error"
+                      @click="deleteAlias(alias); showDeleteDialog = false"
+                    >
+                      OK
+                    </v-btn>
+                    <v-btn
+                      @click="showDeleteDialog = false"
+                    >
+                      Undo
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
             </td>
           </tr>
         </tbody>
@@ -89,6 +118,7 @@
       return {
         aliases: [],
         enableMock: true,
+        showDeleteDialog: false,
       }
     },
 
@@ -104,10 +134,9 @@
 
     methods: {
       loadAliases: function () {
-        var url = this.wsUrl
         var that = this
         $.ajax({
-          url: url,
+          url: this.wsUrl,
           dataType: 'json',
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
@@ -127,7 +156,20 @@
         alert('TODO')
       },
       deleteAlias: function () {
-        alert('TODO')
+        var that = this
+        $.ajax({
+          type: this.enableMock ? 'GET' : 'DELETE',
+          url: this.enableMock ? process.env.BASE_URL + 'mock/Aliases.json' : `../ws/Aliases'(${this.alias.identifier})`,
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+          },
+          success: function (data, status) {
+            that.loadAliases()
+          },
+          error: function (data, status) {
+            console.log('Data:', data, 'Status:', status)
+          },
+        })
       },
     },
   }
