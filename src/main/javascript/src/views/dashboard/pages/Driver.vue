@@ -9,7 +9,49 @@
       title="Drivers"
       class="px-5 py-3"
     >
-      QUI CI VA UN FORM
+      <v-form
+        ref="form"
+        v-model="valid"
+        lazy-validation
+      >
+        <v-text-field
+          v-model="driver.name"
+          :counter="10"
+          :rules="nameRules"
+          label="Name"
+          required
+        />
+
+        <v-text-field
+          v-model="driver.url"
+          :rules="nameRules"
+          label="Example URL"
+          required
+        />
+
+        <v-text-field
+          v-model="driver.webSiteUrl"
+          :rules="nameRules"
+          label="Website URL"
+          required
+        />
+
+        <v-text-field
+          v-model="driver.driverClassName"
+          :rules="nameRules"
+          label="Driver class name"
+          required
+        />
+      </v-form>
+
+      <v-btn
+        :disabled="!valid"
+        color="success"
+        class="mr-4"
+        @click="validate"
+      >
+        {{ buttonCaption }}
+      </v-btn>
     </base-material-card>
   </v-container>
 </template>
@@ -32,7 +74,7 @@
 
     data () {
       return {
-        driver: null,
+        driver: {},
         enableMock: true,
       }
     },
@@ -41,15 +83,17 @@
       wsUrl: function () {
         return this.enableMock ? process.env.BASE_URL + 'mock/SingleDriver.json' : '../ws/Drivers(' + this.identifier + ')'
       },
+      buttonCaption: function () {
+        return this.driver.identifier.string ? 'Save' : 'Create'
+      },
     },
 
     created: function () {
-      console.log('HERE', this.$route.params.identifier, this.$route.params.origIdentifier)
       this.loadDriver(this.$route.params.identifier || this.$route.params.origIdentifier, this.$route.params.origIdentifier)
     },
 
     methods: {
-      loadDriver: function (identifier, clone) {
+      loadDriver: function (identifier, boolClone) {
         var url = this.enableMock ? process.env.BASE_URL + 'mock/SingleDriver.json' : '../ws/Drivers(' + identifier + ')'
         var that = this
         $.ajax({
@@ -60,8 +104,8 @@
           },
           success: function (response) {
             that.driver = response.value
-            if (clone) {
-              this.driver.identifier = {}
+            if (boolClone) {
+              that.driver.identifier = {}
             }
           },
         })
