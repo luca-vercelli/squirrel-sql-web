@@ -24,6 +24,10 @@
         type: String,
         default: '',
       },
+      origIdentifier: {
+        type: String,
+        default: '',
+      },
     },
 
     data () {
@@ -40,12 +44,13 @@
     },
 
     created: function () {
-      this.loadDriver()
+      console.log('HERE', this.$route.params.identifier, this.$route.params.origIdentifier)
+      this.loadDriver(this.$route.params.identifier || this.$route.params.origIdentifier, this.$route.params.origIdentifier)
     },
 
     methods: {
-      loadDriver: function () {
-        var url = this.wsUrl
+      loadDriver: function (identifier, clone) {
+        var url = this.enableMock ? process.env.BASE_URL + 'mock/SingleDriver.json' : '../ws/Drivers(' + identifier + ')'
         var that = this
         $.ajax({
           url: url,
@@ -55,6 +60,9 @@
           },
           success: function (response) {
             that.driver = response.value
+            if (clone) {
+              this.driver.identifier = {}
+            }
           },
         })
       },

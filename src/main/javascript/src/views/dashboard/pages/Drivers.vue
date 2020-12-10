@@ -9,6 +9,19 @@
       title="Drivers"
       class="px-5 py-3"
     >
+      <div class="text-right">
+        <router-link
+          class="v-btn v-size--default success"
+          title="Create new driver"
+          to="/new-driver"
+        >
+          <i
+            aria-hidden="true"
+            class="v-icon notranslate mdi mdi-plus-box theme--dark"
+          />
+        </router-link> &nbsp;
+      </div>
+
       <v-simple-table>
         <thead>
           <tr>
@@ -31,23 +44,23 @@
               <router-link
                 class="v-btn v-size--default success"
                 title="Edit"
-                to="/driver"
+                :to="'/driver/' + driver.identifier.string"
               >
                 <i
                   aria-hidden="true"
                   class="v-icon notranslate mdi mdi-pencil theme--dark"
                 />
               </router-link> &nbsp;
-              <button
+              <router-link
                 class="v-btn v-size--default success"
                 title="Clone"
-                @click="cloneDriver"
+                :to="'/clone-driver/' + driver.identifier.string"
               >
                 <i
                   aria-hidden="true"
                   class="v-icon notranslate mdi mdi-content-copy theme--dark"
                 />
-              </button> &nbsp;
+              </router-link> &nbsp;
               <button
                 class="v-btn v-size--default error"
                 title="Delete"
@@ -109,11 +122,9 @@
         var name2 = y.name ? y.name.toLowerCase() : ''
         return name1 < name2 ? -1 : name1 > name2 ? +1 : 0
       },
-      editDriver: function () {
-      },
-      cloneDriver: function () {
-      },
       deleteDriver: function () {
+        // TODO
+        alert('TODO')
       },
     },
   }

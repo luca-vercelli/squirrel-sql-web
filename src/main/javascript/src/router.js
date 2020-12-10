@@ -44,11 +44,7 @@ export default new Router({
           path: 'tables/regular-tables',
           component: () => import('@/views/dashboard/tables/RegularTables'),
         },
-        {
-          name: 'Alias',
-          path: 'aliases',
-          component: () => import('@/views/dashboard/pages/Aliases'),
-        },
+        // Drivers
         {
           name: 'Drivers',
           path: 'drivers',
@@ -56,8 +52,24 @@ export default new Router({
         },
         {
           name: 'Driver',
-          path: 'driver',
+          path: 'new-driver',
           component: () => import('@/views/dashboard/pages/Driver'),
+        },
+        {
+          name: 'Driver',
+          path: 'driver/:identifier',
+          component: () => import('@/views/dashboard/pages/Driver'),
+        },
+        {
+          name: 'Driver',
+          path: 'clone-driver/:origIdentifier',
+          component: () => import('@/views/dashboard/pages/Driver'),
+        },
+        // Aliases
+        {
+          name: 'Alias',
+          path: 'aliases',
+          component: () => import('@/views/dashboard/pages/Aliases'),
         },
       ],
     },
