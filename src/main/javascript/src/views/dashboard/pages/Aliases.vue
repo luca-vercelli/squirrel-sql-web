@@ -61,51 +61,49 @@
                   class="v-icon notranslate mdi mdi-content-copy theme--dark"
                 />
               </v-btn> &nbsp;
-
-              <v-dialog
-                v-model="showDeleteDialog"
-                persistent
-                max-width="290"
+              <v-btn
+                color="error"
+                class="mr-4"
+                title="Delete"
+                @click="deletingIdentifier = alias.identifier.string; showDeleteDialog = true"
               >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    color="error"
-                    title="Delete"
-                    v-bind="attrs"
-                    v-on="on"
-                  >
-                    <i
-                      aria-hidden="true"
-                      class="v-icon notranslate mdi mdi-delete theme--dark"
-                    />
-                  </v-btn>
-                </template>
-                <v-card>
-                  <v-card-title class="headline">
-                    Delete alias?
-                  </v-card-title>
-                  <v-card-text>This operation cannot be undone.</v-card-text>
-                  <v-card-actions>
-                    <v-spacer />
-                    <v-btn
-                      color="error"
-                      @click="deleteAlias(alias); showDeleteDialog = false"
-                    >
-                      OK
-                    </v-btn>
-                    <v-btn
-                      @click="showDeleteDialog = false"
-                    >
-                      Undo
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
+                <i
+                  aria-hidden="true"
+                  class="v-icon notranslate mdi mdi-delete theme--dark"
+                />
+              </v-btn>
             </td>
           </tr>
         </tbody>
       </v-simple-table>
     </base-material-card>
+
+    <v-dialog
+      v-model="showDeleteDialog"
+      persistent
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Delete alias?
+        </v-card-title>
+        <v-card-text>This operation cannot be undone.</v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="error"
+            @click="deleteAlias(); showDeleteDialog = false"
+          >
+            OK
+          </v-btn>
+          <v-btn
+            @click="showDeleteDialog = false"
+          >
+            Undo
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -119,6 +117,7 @@
         aliases: [],
         enableMock: true,
         showDeleteDialog: false,
+        deletingIdentifier: null,
       }
     },
 
@@ -159,15 +158,17 @@
         var that = this
         $.ajax({
           type: this.enableMock ? 'GET' : 'DELETE',
-          url: this.enableMock ? process.env.BASE_URL + 'mock/Aliases.json' : `../ws/Aliases'(${this.alias.identifier})`,
+          url: this.enableMock ? process.env.BASE_URL + 'mock/JustGetOk' : `../ws/Aliases'(${this.deletingIdentifier})`,
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (data, status) {
             that.loadAliases()
+            that.deletingIdentifier = null
           },
           error: function (data, status) {
             console.log('Data:', data, 'Status:', status)
+            that.deletingIdentifier = null
           },
         })
       },
