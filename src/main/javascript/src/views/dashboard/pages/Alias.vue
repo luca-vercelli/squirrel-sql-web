@@ -21,24 +21,41 @@
         />
 
         <v-text-field
-          v-model="alias.url"
-          label="Example URL"
+          v-model="alias.driverIdentifier.string"
+          label="Choose driver..."
           required
         />
 
         <v-text-field
-          v-model="alias.webSiteUrl"
-          label="Website URL"
+          v-model="alias.userName"
+          label="Username"
           class="md-4"
           required
         />
 
         <v-text-field
-          v-model="alias.aliasClassName"
-          label="Driver class name"
+          v-model="alias.password"
+          label="Password"
           required
         />
+
+        <v-switch
+          v-model="alias.autoLogon"
+          label="Auto logon"
+        ></v-switch>
+
+        <v-switch
+          v-model="alias.autoConnect"
+          label="Connect at startup (?)"
+        ></v-switch>
+
+        <v-switch
+          v-model="alias.encryptPassword"
+          label="Encrypt password"
+        ></v-switch>
       </v-form>
+
+      Switch autologon (default true), Switch autoconnect (default false), Switch encrypt password (default false)<br />
 
       <v-btn
         v-if="creating"

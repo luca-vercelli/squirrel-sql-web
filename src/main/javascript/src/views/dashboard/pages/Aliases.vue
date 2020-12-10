@@ -9,6 +9,20 @@
       title="Aliases"
       class="px-5 py-3"
     >
+      <div class="text-right">
+        <v-btn
+          color="success"
+          class="mr-4"
+          title="Create new alias"
+          to="/new-alias"
+        >
+          <i
+            aria-hidden="true"
+            class="v-icon notranslate mdi mdi-pencil theme--dark"
+          />
+        </v-btn>
+      </div>
+
       <v-simple-table>
         <thead>
           <tr>
