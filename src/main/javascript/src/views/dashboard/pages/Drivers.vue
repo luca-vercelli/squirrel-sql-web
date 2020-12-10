@@ -10,16 +10,17 @@
       class="px-5 py-3"
     >
       <div class="text-right">
-        <router-link
-          class="v-btn v-size--default success"
+        <v-btn
+          color="success"
+          class="mr-4"
           title="Create new driver"
           to="/new-driver"
         >
           <i
             aria-hidden="true"
-            class="v-icon notranslate mdi mdi-plus-box theme--dark"
+            class="v-icon notranslate mdi mdi-pencil theme--dark"
           />
-        </router-link> &nbsp;
+        </v-btn>
       </div>
 
       <v-simple-table>
@@ -41,8 +42,9 @@
           >
             <td>{{ driver.name }}</td>
             <td class="text-right">
-              <router-link
-                class="v-btn v-size--default success"
+              <v-btn
+                color="success"
+                class="mr-4"
                 title="Edit"
                 :to="'/driver/' + driver.identifier.string"
               >
@@ -50,9 +52,10 @@
                   aria-hidden="true"
                   class="v-icon notranslate mdi mdi-pencil theme--dark"
                 />
-              </router-link> &nbsp;
-              <router-link
-                class="v-btn v-size--default success"
+              </v-btn> &nbsp;
+              <v-btn
+                color="success"
+                class="mr-4"
                 title="Clone"
                 :to="'/clone-driver/' + driver.identifier.string"
               >
@@ -60,9 +63,10 @@
                   aria-hidden="true"
                   class="v-icon notranslate mdi mdi-content-copy theme--dark"
                 />
-              </router-link> &nbsp;
-              <button
-                class="v-btn v-size--default error"
+              </v-btn> &nbsp;
+              <v-btn
+                color="error"
+                class="mr-4"
                 title="Delete"
                 @click="deleteDriver"
               >
@@ -70,7 +74,7 @@
                   aria-hidden="true"
                   class="v-icon notranslate mdi mdi-delete theme--dark"
                 />
-              </button>
+              </v-btn>
             </td>
           </tr>
         </tbody>
