@@ -16,29 +16,25 @@
       >
         <v-text-field
           v-model="driver.name"
-          :counter="10"
-          :rules="nameRules"
           label="Name"
           required
         />
 
         <v-text-field
           v-model="driver.url"
-          :rules="nameRules"
           label="Example URL"
           required
         />
 
         <v-text-field
+          class="md-4"
           v-model="driver.webSiteUrl"
-          :rules="nameRules"
           label="Website URL"
           required
         />
 
         <v-text-field
           v-model="driver.driverClassName"
-          :rules="nameRules"
           label="Driver class name"
           required
         />
@@ -47,10 +43,26 @@
       <v-btn
         :disabled="!valid"
         color="success"
-        class="mr-4"
         @click="validate"
       >
+        <i
+          aria-hidden="true"
+          class="v-icon notranslate mdi mdi-content-save theme--dark"
+        />
         {{ buttonCaption }}
+      </v-btn>
+      <v-btn
+        color="success"
+        class="mr-4"
+        :disabled="driver.webSiteUrl==''"
+        target="_blank"
+        :href="driver.webSiteUrl"
+      >
+        <i
+          aria-hidden="true"
+          class="v-icon notranslate mdi mdi-call-made theme--dark"
+        />
+        Visit website
       </v-btn>
     </base-material-card>
   </v-container>
@@ -76,6 +88,7 @@
       return {
         driver: {},
         enableMock: true,
+        valid: true,
       }
     },
 
@@ -84,11 +97,12 @@
         return this.enableMock ? process.env.BASE_URL + 'mock/SingleDriver.json' : '../ws/Drivers(' + this.identifier + ')'
       },
       buttonCaption: function () {
-        return this.driver.identifier.string ? 'Save' : 'Create'
+        return this.driver && this.driver.identifier && this.driver.identifier.string ? 'Save' : 'Create'
       },
     },
 
     created: function () {
+      console.log('HERE')
       this.loadDriver(this.$route.params.identifier || this.$route.params.origIdentifier, this.$route.params.origIdentifier)
     },
 
@@ -109,6 +123,9 @@
             }
           },
         })
+      },
+      validate: function () {
+        this.$refs.form.validate()
       },
     },
   }
