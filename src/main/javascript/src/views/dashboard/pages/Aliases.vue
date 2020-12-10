@@ -28,38 +28,42 @@
           >
             <td>{{ alias.name }}</td>
             <td class="text-right">
-              <button
-                class="v-btn v-size--default success"
-                title="Edit"
+              <v-btn
+                color="success"
+                class="mr-4"
+                title="Delete"
                 @click="connect"
               >
                 <i
                   aria-hidden="true"
                   class="v-icon notranslate mdi mdi-connection theme--dark"
                 />
-              </button> &nbsp;
-              <button
-                class="v-btn v-size--default success"
+              </v-btn> &nbsp;
+              <v-btn
+                color="success"
+                class="mr-4"
                 title="Edit"
-                @click="editAlias"
+                :to="'/alias/' + alias.identifier.string"
               >
                 <i
                   aria-hidden="true"
                   class="v-icon notranslate mdi mdi-pencil theme--dark"
                 />
-              </button> &nbsp;
-              <button
-                class="v-btn v-size--default success"
+              </v-btn> &nbsp;
+              <v-btn
+                color="success"
+                class="mr-4"
                 title="Clone"
-                @click="cloneAlias"
+                :to="'/clone-alias/' + alias.identifier.string"
               >
                 <i
                   aria-hidden="true"
                   class="v-icon notranslate mdi mdi-content-copy theme--dark"
                 />
-              </button> &nbsp;
-              <button
-                class="v-btn v-size--default error"
+              </v-btn> &nbsp;
+              <v-btn
+                color="error"
+                class="mr-4"
                 title="Delete"
                 @click="deleteAlias"
               >
@@ -67,7 +71,7 @@
                   aria-hidden="true"
                   class="v-icon notranslate mdi mdi-delete theme--dark"
                 />
-              </button>
+              </v-btn>
             </td>
           </tr>
         </tbody>
@@ -95,11 +99,11 @@
     },
 
     created: function () {
-      this.loadDrivers()
+      this.loadAliases()
     },
 
     methods: {
-      loadDrivers: function () {
+      loadAliases: function () {
         var url = this.wsUrl
         var that = this
         $.ajax({
@@ -120,12 +124,10 @@
         return name1 < name2 ? -1 : name1 > name2 ? +1 : 0
       },
       connect: function () {
-      },
-      editAlias: function () {
-      },
-      cloneAlias: function () {
+        alert('TODO')
       },
       deleteAlias: function () {
+        alert('TODO')
       },
     },
   }

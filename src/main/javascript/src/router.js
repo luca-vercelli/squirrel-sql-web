@@ -67,9 +67,24 @@ export default new Router({
         },
         // Aliases
         {
-          name: 'Alias',
+          name: 'Aliases',
           path: 'aliases',
           component: () => import('@/views/dashboard/pages/Aliases'),
+        },
+        {
+          name: 'Alias',
+          path: 'new-alias',
+          component: () => import('@/views/dashboard/pages/Alias'),
+        },
+        {
+          name: 'Alias',
+          path: 'alias/:identifier',
+          component: () => import('@/views/dashboard/pages/Alias'),
+        },
+        {
+          name: 'Alias',
+          path: 'clone-alias/:origIdentifier',
+          component: () => import('@/views/dashboard/pages/Alias'),
         },
       ],
     },
