@@ -46,7 +46,7 @@
                 color="success"
                 class="mr-4"
                 title="Delete"
-                @click="connect"
+                @click="connectOrDialog(alias)"
               >
                 <i
                   aria-hidden="true"
@@ -118,6 +118,45 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog
+      v-model="showConnectDialog"
+      persistent
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Connect
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-text-field
+              v-model="connectUserName"
+              label="Username"
+            />
+            <v-text-field
+              v-model="connectPassword"
+              type="password"
+              label="Password"
+            />
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="error"
+            @click="connect(); showConnectDialog = false"
+          >
+            OK
+          </v-btn>
+          <v-btn
+            @click="showConnectDialog = false"
+          >
+            Undo
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -131,7 +170,11 @@
         aliases: [],
         enableMock: true,
         showDeleteDialog: false,
+        showConnectDialog: false,
         deletingIdentifier: null,
+        connectingIdentifier: null,
+        connectUserName: null,
+        connectPassword: null,
       }
     },
 
@@ -165,8 +208,37 @@
         var name2 = y.name ? y.name.toLowerCase() : ''
         return name1 < name2 ? -1 : name1 > name2 ? +1 : 0
       },
+      connectOrDialog: function (alias) {
+        this.connectingIdentifier = alias.identifier.string
+        this.connectUserName = alias.userName
+        this.connectPassword = alias.password
+        if (alias.autoLogon) {
+          this.connect()
+        } else {
+          this.showConnectDialog = true
+        }
+      },
       connect: function () {
-        alert('TODO')
+        var that = this
+        $.ajax({
+          type: this.enableMock ? 'GET' : 'POST',
+          url: this.enableMock ? process.env.BASE_URL + 'mock/SingleSession.json' : '../ws/Connect',
+          data: {
+            aliasIdentifier: this.connectingIdentifier,
+            userName: this.connectUserName,
+            password: this.connectPassword,
+          },
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+          },
+          success: function (data, status) {
+            console.log('Data:', data, 'Status:', status)
+            that.$router.push('/session/' + data.value.identifier)
+          },
+          error: function (data, status) {
+            console.log('Data:', data, 'Status:', status)
+          },
+        })
       },
       deleteAlias: function () {
         var that = this

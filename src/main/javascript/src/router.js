@@ -51,7 +51,7 @@ export default new Router({
           component: () => import('@/views/dashboard/pages/Drivers'),
         },
         {
-          name: 'Driver',
+          name: 'New Driver',
           path: 'new-driver',
           component: () => import('@/views/dashboard/pages/Driver'),
         },
@@ -61,7 +61,7 @@ export default new Router({
           component: () => import('@/views/dashboard/pages/Driver'),
         },
         {
-          name: 'Driver',
+          name: 'Clone Driver',
           path: 'clone-driver/:origIdentifier',
           component: () => import('@/views/dashboard/pages/Driver'),
         },
@@ -72,7 +72,7 @@ export default new Router({
           component: () => import('@/views/dashboard/pages/Aliases'),
         },
         {
-          name: 'Alias',
+          name: 'New Alias',
           path: 'new-alias',
           component: () => import('@/views/dashboard/pages/Alias'),
         },
@@ -82,9 +82,15 @@ export default new Router({
           component: () => import('@/views/dashboard/pages/Alias'),
         },
         {
-          name: 'Alias',
+          name: 'Clone Alias',
           path: 'clone-alias/:origIdentifier',
           component: () => import('@/views/dashboard/pages/Alias'),
+        },
+        // Sessions
+        {
+          name: 'Session',
+          path: 'session/:identifier',
+          component: () => import('@/views/dashboard/pages/Session'),
         },
       ],
     },

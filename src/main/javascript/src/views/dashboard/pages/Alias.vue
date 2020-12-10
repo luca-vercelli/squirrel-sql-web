@@ -42,17 +42,17 @@
         <v-switch
           v-model="alias.autoLogon"
           label="Auto logon"
-        ></v-switch>
+        />
 
         <v-switch
           v-model="alias.autoConnect"
           label="Connect at startup (?)"
-        ></v-switch>
+        />
 
         <v-switch
           v-model="alias.encryptPassword"
           label="Encrypt password"
-        ></v-switch>
+        />
       </v-form>
 
       Switch autologon (default true), Switch autoconnect (default false), Switch encrypt password (default false)<br />
