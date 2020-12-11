@@ -55,8 +55,6 @@
         />
       </v-form>
 
-      Switch autologon (default true), Switch autoconnect (default false), Switch encrypt password (default false)<br />
-
       <v-btn
         v-if="creating"
         :disabled="!valid"
@@ -117,11 +115,14 @@
 
     data () {
       return {
-        alias: {},
+        alias: {
+          driverIdentifier: {},
+        },
         enableMock: true,
         valid: true,
         editEnabled: false,
         creating: true,
+        drivers: [],
       }
     },
 
@@ -132,12 +133,28 @@
     },
 
     created: function () {
+      this.loadDrivers()
       if (this.$route.params.identifier || this.$route.params.origIdentifier) {
         this.loadAlias(this.$route.params.identifier || this.$route.params.origIdentifier, this.$route.params.origIdentifier)
       }
     },
 
     methods: {
+      loadDrivers: function () {
+        var url = this.wsUrl
+        var that = this
+        $.ajax({
+          url: url,
+          dataType: 'json',
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+          },
+          success: function (response) {
+            that.drivers = response.data
+            that.drivers.sort(that.cmpNames)
+          },
+        })
+      },
       loadAlias: function (identifier, boolClone) {
         this.editEnabled = false
         this.alias = {}
