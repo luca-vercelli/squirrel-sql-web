@@ -112,6 +112,11 @@
           to: '/drivers',
         },
         {
+          icon: 'mdi-connection',
+          title: 'open sessions',
+          to: '/sessions',
+        },
+        {
           icon: 'mdi-account',
           title: 'user',
           to: '/pages/user',

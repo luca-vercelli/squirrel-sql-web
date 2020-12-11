@@ -88,6 +88,11 @@ export default new Router({
         },
         // Sessions
         {
+          name: 'Open sessions',
+          path: 'sessions',
+          component: () => import('@/views/dashboard/pages/Sessions'),
+        },
+        {
           name: 'Session',
           path: 'session/:identifier',
           component: () => import('@/views/dashboard/pages/Session'),
