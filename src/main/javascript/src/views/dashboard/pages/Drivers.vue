@@ -18,7 +18,7 @@
         >
           <i
             aria-hidden="true"
-            class="v-icon notranslate mdi mdi-pencil theme--dark"
+            class="v-icon notranslate mdi mdi-plus-box theme--dark"
           />
         </v-btn>
       </div>
