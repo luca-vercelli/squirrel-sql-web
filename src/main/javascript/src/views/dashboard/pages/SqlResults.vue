@@ -7,55 +7,25 @@
     <v-simple-table>
       <thead>
         <tr>
-          <th class="primary--text">
-            Name
-          </th>
-          <th class="text-right primary--text">
-            Actions
+          <th
+            v-for="column in dataSet.columnHeaders"
+            class="primary--text"
+            >
+            {{ column.title }}
           </th>
         </tr>
       </thead>
 
       <tbody>
         <tr
-          v-for="driver in drivers"
-          :key="driver.identifier.string"
+          v-for="row in dataSet.allRowsForReadOnly"
+          :key="row.index"
         >
-          <td>{{ driver.name }}</td>
-          <td class="text-right">
-            <v-btn
-              color="success"
-              class="mr-4"
-              title="Edit"
-              :to="'/driver/' + driver.identifier.string"
-            >
-              <i
-                aria-hidden="true"
-                class="v-icon notranslate mdi mdi-pencil theme--dark"
-              />
-            </v-btn> &nbsp;
-            <v-btn
-              color="success"
-              class="mr-4"
-              title="Clone"
-              :to="'/clone-driver/' + driver.identifier.string"
-            >
-              <i
-                aria-hidden="true"
-                class="v-icon notranslate mdi mdi-content-copy theme--dark"
-              />
-            </v-btn> &nbsp;
-            <v-btn
-              color="error"
-              class="mr-4"
-              title="Delete"
-              @click="deletingIdentifier = driver.identifier.string; showDeleteDialog = true"
-            >
-              <i
-                aria-hidden="true"
-                class="v-icon notranslate mdi mdi-delete theme--dark"
-              />
-            </v-btn>
+          <td
+            v-for="column in row"
+            :key="column.index"
+          >
+            {{ column }}
           </td>
         </tr>
       </tbody>
@@ -68,7 +38,7 @@
     name: 'SqlResults',
 
     props: {
-      session: {
+      dataSet: {
         type: Object,
         default: Object,
       },
@@ -76,7 +46,6 @@
 
     data () {
       return {
-        enableMock: true,
       }
     },
 

@@ -19,6 +19,7 @@
       />
 
       <v-btn
+        :disabled="!query"
         color="success"
         visible="false"
         @click="executeQuery"
@@ -134,8 +135,8 @@
       },
       executeQuery: function () {
         this.editEnabled = false
+        this.results = null
         // TODO hideMessages();
-        // TODO hideResults();
         var that = this
         $.ajax({
           url: this.enableMock ? process.env.BASE_URL + 'mock/ExecuteQuery.json' : '../ws/ExecuteQuery',
