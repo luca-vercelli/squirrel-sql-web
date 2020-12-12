@@ -38,6 +38,7 @@
                   md="4"
                 >
                   <v-text-field
+                    v-model="user.username"
                     class="purple-input"
                     label="User Name"
                   />
@@ -48,6 +49,7 @@
                   md="4"
                 >
                   <v-text-field
+                    v-model="user.email"
                     label="Email Address"
                     class="purple-input"
                   />
@@ -58,6 +60,7 @@
                   md="6"
                 >
                   <v-text-field
+                    v-model="user.name"
                     label="First Name"
                     class="purple-input"
                   />
@@ -68,6 +71,7 @@
                   md="6"
                 >
                   <v-text-field
+                    v-model="user.surname"
                     label="Last Name"
                     class="purple-input"
                   />
@@ -172,7 +176,45 @@
 </template>
 
 <script>
+  var $ = require('jquery')
   export default {
-    //
+    name: 'UserProfile',
+
+    data () {
+      return {
+        user: {},
+        enableMock: true,
+        editEnabled: false,
+      }
+    },
+
+    created: function () {
+      this.loadUser()
+    },
+
+    methods: {
+      loadUser: function () {
+        this.editEnabled = false
+        this.session = {}
+        var url = this.enableMock ? process.env.BASE_URL + 'mock/CurrentUser.json' : '../ws/CurrentUser'
+        var that = this
+        $.ajax({
+          url: url,
+          dataType: 'json',
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+          },
+          success: function (response) {
+            console.log('response:', response)
+            that.user = response.value
+            that.editEnabled = true
+          },
+          error: function (data, status) {
+            console.log('Data:', data, 'Status:', status)
+            that.editEnabled = true
+          },
+        })
+      },
+    },
   }
 </script>
