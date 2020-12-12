@@ -8,9 +8,10 @@
       <thead>
         <tr>
           <th
-            v-for="column in dataSet.columnHeaders"
+            v-for="(column, index) in dataSet.columnHeaders"
+            :key="index"
             class="primary--text"
-            >
+          >
             {{ column.title }}
           </th>
         </tr>
@@ -18,12 +19,12 @@
 
       <tbody>
         <tr
-          v-for="row in dataSet.allRowsForReadOnly"
-          :key="row.index"
+          v-for="(row, rowIndex) in dataSet.allRowsForReadOnly"
+          :key="rowIndex"
         >
           <td
-            v-for="column in row"
-            :key="column.index"
+            v-for="(column, colIndex) in row"
+            :key="colIndex"
           >
             {{ column }}
           </td>
