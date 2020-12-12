@@ -35,7 +35,7 @@
 <script>
   var $ = require('jquery')
   export default {
-    name: 'Aliases',
+    name: 'Sessions',
 
     data () {
       return {
