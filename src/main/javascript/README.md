@@ -10,7 +10,7 @@ Use Vue-js+Material+Vuetify
 
 Run with `npm start`, on port 8080 (why not 4200?)
 
-Menu structure is defined in `Drawer.vue`
+Menu structure is defined in `Drawer.vue`. Page layout in `Index.vue`.
 
 i18n labels are in `src/locales` folder
 
