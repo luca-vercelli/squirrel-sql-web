@@ -17,12 +17,6 @@ export default new Router({
           path: '',
           component: () => import('@/views/dashboard/Dashboard'),
         },
-        // Login
-        {
-          name: 'Login',
-          path: '/login',
-          component: () => import('@/views/dashboard/Login'),
-        },
         // Pages
         {
           name: 'User Profile',
