@@ -9,32 +9,32 @@
       title="Aliases"
       class="px-5 py-3"
     >
-    <v-form
-      ref="form"
-      v-model="valid"
-      lazy-validation
-    >
-      <v-text-field
-        v-model="username"
-        label="Username"
-        required
-      />
+      <v-form
+        ref="form"
+        v-model="valid"
+        lazy-validation
+      >
+        <v-text-field
+          v-model="username"
+          label="Username"
+          required
+        />
 
-      <v-text-field
-        v-model="password"
-        label="Password"
-        required
-      />
-    </v-form>
+        <v-text-field
+          v-model="password"
+          label="Password"
+          required
+        />
+      </v-form>
 
-    <v-btn
-      :disabled="!valid"
-      color="success"
-      @click="login"
-    >
-      Login
-    </v-btn>
-  </base-material-card>
+      <v-btn
+        :disabled="!valid"
+        color="success"
+        @click="login"
+      >
+        Login
+      </v-btn>
+    </base-material-card>
   </v-container>
 </template>
 
@@ -58,15 +58,11 @@
 
     methods: {
       login: function () {
-        if (this.enableMock) {
-          this.$router.push('/')
-          return
-        }
         localStorage.removeItem('authToken')
         var that = this
         $.ajax({
-          url: '../ws/Authenticate',
-          type: 'POST',
+          url: this.enableMock ? process.env.BASE_URL + 'mock/SingleDriver.json' : '../ws/Authenticate',
+          type: this.enableMock ? 'GET' : 'POST',
           data: {
             username: this.username,
             password: this.password,
@@ -76,7 +72,7 @@
             // we store the token in localStorage, because this is not a Single Page App
             // is this safe?
             localStorage.setItem('authToken', token)
-            that.$router.push('/')
+            that.$emit('authenticated')
           },
           error: function (response) {
             // TODO pretty print
