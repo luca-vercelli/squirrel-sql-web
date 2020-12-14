@@ -1,5 +1,37 @@
 <template>
-  <sql-query :session-identifier="session.identifier" />
+  <v-card>
+    <v-tabs
+      v-model="tab"
+      center-active
+    >
+      <v-tab
+        v-for="item in items"
+        :key="item.tab"
+      >
+        {{ item.tab }}
+      </v-tab>
+    </v-tabs>
+
+    <v-tabs-items v-model="tab">
+      <v-tab-item
+        v-for="item in items"
+        :key="item.tab"
+      >
+        <v-card flat>
+          <v-card-text v-if="item.type=='objects'">
+            THIS IS A TREE
+          </v-card-text>
+          <sql-query
+            v-if="item.type=='query'"
+            :session-identifier="session.identifier"
+          />
+          <v-card-text v-if="item.type=='table'">
+            THIS IS A TABLE
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+    </v-tabs-items>
+  </v-card>
 </template>
 
 <script>
@@ -23,6 +55,13 @@
         session: {},
         enableMock: true,
         editEnabled: false,
+        tab: null,
+        items: [
+          { tab: 'Objects tree', type: 'objects' },
+          { tab: 'SQL Query (1)', type: 'query' },
+          { tab: 'GOOFY', type: 'table' },
+          { tab: 'MICKEY', type: 'table' },
+        ],
       }
     },
 
