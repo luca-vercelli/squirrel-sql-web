@@ -18,9 +18,10 @@
         :key="item.tab"
       >
         <v-card flat>
-          <v-card-text v-if="item.type=='objects'">
-            THIS IS A TREE
-          </v-card-text>
+          <objects-tree
+            v-if="item.type=='objects'"
+            :session-identifier="session.identifier"
+          />
           <sql-query
             v-if="item.type=='query'"
             :session-identifier="session.identifier"
@@ -41,6 +42,7 @@
 
     components: {
       SqlQuery: () => import('./SqlQuery'),
+      ObjectsTree: () => import('./ObjectsTree'),
     },
 
     props: {
