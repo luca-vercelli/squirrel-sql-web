@@ -183,7 +183,7 @@
     data () {
       return {
         user: {},
-        enableMock: true,
+        enableMock: process.env.VUE_APP_MOCK === 'true',
         editEnabled: false,
       }
     },

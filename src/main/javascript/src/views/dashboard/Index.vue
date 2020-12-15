@@ -28,7 +28,7 @@
 
     data: () => ({
       expandOnHover: false,
-      enableMock: true,
+      enableMock: process.env.VUE_APP_MOCK === 'true',
       authenticated: false,
     }),
 

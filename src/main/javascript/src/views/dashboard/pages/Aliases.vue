@@ -168,7 +168,7 @@
     data () {
       return {
         aliases: [],
-        enableMock: true,
+        enableMock: process.env.VUE_APP_MOCK === 'true',
         showDeleteDialog: false,
         showConnectDialog: false,
         deletingIdentifier: null,

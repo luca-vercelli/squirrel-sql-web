@@ -30,7 +30,7 @@
 
     data () {
       return {
-        enableMock: true,
+        enableMock: process.env.VUE_APP_MOCK === 'true',
         editEnabled: false,
         tableName: '',
       }

@@ -59,7 +59,7 @@
     data () {
       return {
         session: {},
-        enableMock: true,
+        enableMock: process.env.VUE_APP_MOCK === 'true',
         editEnabled: false,
         tab: null,
         items: [

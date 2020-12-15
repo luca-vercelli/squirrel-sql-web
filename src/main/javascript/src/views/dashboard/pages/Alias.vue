@@ -118,7 +118,7 @@
         alias: {
           driverIdentifier: {},
         },
-        enableMock: true,
+        enableMock: process.env.VUE_APP_MOCK === 'true',
         valid: true,
         editEnabled: false,
         creating: true,

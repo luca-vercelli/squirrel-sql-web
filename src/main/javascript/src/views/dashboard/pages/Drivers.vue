@@ -74,7 +74,7 @@
                   aria-hidden="true"
                   class="v-icon notranslate mdi mdi-delete theme--dark"
                 />
-                </v-btn>
+              </v-btn>
             </td>
           </tr>
         </tbody>
@@ -118,7 +118,7 @@
     data () {
       return {
         drivers: [],
-        enableMock: true,
+        enableMock: process.env.VUE_APP_MOCK === 'true',
         showDeleteDialog: false,
         deletingIdentifier: null,
       }

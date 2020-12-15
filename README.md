@@ -13,7 +13,7 @@ Screenshots
 
 Build
 -----
-You need at least Java (>=8), Maven, nodejs, gulp. Compile all with
+You need at least Java (>=8), Maven, nodejs. Compile all with
 
     mvn package
 
@@ -53,6 +53,6 @@ Run mock
 --------
 For frontend development, we can run in mock mode with NodeJS instead of Glassfish:
 
-1. Set `enable_mock = true` in file `login.js`
+1. Set `VUE_APP_MOCK=true` in file `.env` or `.env.local`
 2. `cd src/main/javascript`
 3. `npm start`

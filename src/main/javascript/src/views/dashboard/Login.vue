@@ -47,7 +47,7 @@
     },
 
     data: () => ({
-      enableMock: true,
+      enableMock: process.env.VUE_APP_MOCK === 'true',
       username: '',
       password: '',
       valid: true,
