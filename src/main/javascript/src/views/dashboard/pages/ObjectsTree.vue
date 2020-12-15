@@ -11,10 +11,13 @@
     >
       <template>
         <v-treeview
+          activatable
+          :active.sync="selectedNodes"
           :items="[rootNode]"
           item-key="simpleName"
           :open="openNodes"
           :load-children="loadChildren"
+          @update:active="clickTreeNode"
         />
       </template>
     </base-material-card>
@@ -39,11 +42,23 @@
         editEnabled: false,
         rootNode: {}, // id, name, children
         nodes: {},
+        selectedNodes: [], // the
         openNodes: [],
+        allNodes: {},
       }
     },
 
-    computed: {},
+    computed: {
+      selected () {
+        if (!this.selectedNodes.length) return undefined
+        const id = this.selectedNodes[0]
+        return this.nodes[id]
+      },
+    },
+
+    watch: {
+      selected: 'clickLeafNode',
+    },
 
     created: function () {
       this.loadRootNode()
@@ -53,7 +68,6 @@
       loadRootNode: function () {
         this.editEnabled = false
         this.objectsTree = null
-        this.nodes = {}
         // TODO hideMessages();
         var that = this
         $.ajax({
@@ -66,10 +80,9 @@
             var rootNode = data.value
             that.addTreeViewNodeProperties(rootNode)
             if (rootNode.children) {
-              rootNode.children.forEach(x => that.addTreeViewNodeProperties(x))
+              that.addTreeViewNodePropertiesAll(rootNode.children)
             }
             that.rootNode = rootNode
-            console.log(rootNode)
             that.openNodes.push(that.rootNode.simpleName)
           },
           error: function (response, status) {
@@ -81,15 +94,21 @@
       addTreeViewNodeProperties: function (node) {
         node.id = node.simpleName
         node.name = node.simpleName
+        this.allNodes[node.simpleName] = node
       },
       addTreeViewNodePropertiesAll: function (nodes) {
-        nodes.forEach(x => this.addTreeViewNodeProperties(x))
+        var that = this
+        nodes.forEach(x => that.addTreeViewNodeProperties(x))
+        return nodes
+      },
+      removeUnwantedChildren: function (nodes) {
+        nodes.forEach(node => { if (node.objectType == null || node.objectType === 'TABLE' || node.objectType === 'VIEW') node.children = undefined })
         return nodes
       },
       async loadChildren (node) {
-        console.log('aaa', node, this)
-        const url = this.enableMock ? process.env.BASE_URL + 'mock/ExpandNode.json' : `../ws/Session(${this.sessionIdentifier})/ExpandNode`
+        console.log('loadChildren', node, this)
         var that = this
+        const url = this.enableMock ? process.env.BASE_URL + 'mock/ExpandNode.json' : `../ws/Session(${this.sessionIdentifier})/ExpandNode`
         return fetch(url, {
           method: this.enableMock ? 'GET' : 'POST',
           cache: 'no-cache',
@@ -102,8 +121,21 @@
           .then(response => response.json())
           .then(json => json.data)
           .then(nodes => that.addTreeViewNodePropertiesAll(nodes))
+          .then(nodes => that.removeUnwantedChildren(nodes))
           .then(nodes => (node.children.push(...nodes)))
           .catch(err => console.warn(err))
+      },
+      clickTreeNode: function (simpleName) {
+        var node = this.allNodes[simpleName]
+        console.log('clickTreeNode', node)
+        if (node.objectType == null || node.objectType === 'TABLE' || node.objectType === 'VIEW') {
+          console.log('node.objectType=', node.objectType)
+          this.$emit('open-table', node)
+        }
+        // TODO other types of nodes
+      },
+      alert: function (msg) {
+        alert(msg)
       },
     },
   }

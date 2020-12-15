@@ -21,7 +21,7 @@
           <objects-tree
             v-if="item.type=='objects'"
             :session-identifier="session.identifier"
-            @open-table="addTable(event)"
+            @open-table="addTableTab"
           />
           <sql-query
             v-if="item.type=='query'"
@@ -31,6 +31,7 @@
             v-if="item.type=='table'"
             :session-identifier="session.identifier"
           />
+          <!-- TODO should add some kind of "close" button -->
         </v-card>
       </v-tab-item>
     </v-tabs-items>
@@ -142,9 +143,10 @@
           },
         })
       },
-      addTableTab: function (tableName) {
-        console.log('event:', tableName)
-        this.items.push({ tab: tableName, type: 'table' })
+      addTableTab: function (node) {
+        console.log('event:', node)
+        this.items.push({ tab: node.simpleName, type: 'table' })
+        this.tab = node.simpleName
       },
     },
   }
