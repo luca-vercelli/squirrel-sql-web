@@ -21,6 +21,7 @@
           <objects-tree
             v-if="item.type=='objects'"
             :session-identifier="session.identifier"
+            @open-table="addTable(event)"
           />
           <sql-query
             v-if="item.type=='query'"
@@ -62,7 +63,7 @@
         tab: null,
         items: [
           { tab: 'Objects tree', type: 'objects' },
-          { tab: 'SQL Query (1)', type: 'query' },
+          { tab: 'SQL Query', type: 'query' },
           { tab: 'GOOFY', type: 'table' },
           { tab: 'MICKEY', type: 'table' },
         ],
@@ -140,6 +141,10 @@
             // TODO showAjaxError(response);
           },
         })
+      },
+      addTableTab: function (tableName) {
+        console.log('event:', tableName)
+        this.items.push({ tab: tableName, type: 'table' })
       },
     },
   }
