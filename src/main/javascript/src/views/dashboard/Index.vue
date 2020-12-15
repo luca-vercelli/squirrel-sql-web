@@ -33,7 +33,6 @@
     }),
 
     created: function () {
-      console.log('authToken:', localStorage.getItem('authToken'))
       if (!localStorage.getItem('authToken')) {
         this.authenticated = false
       } else {
@@ -61,7 +60,7 @@
             localStorage.removeItem('authToken')
             that.authenticated = false
             if (response.status !== 401 && response.status !== 403) {
-              console.log('Error during authentication', response) // TODO show msg
+              console.log('Error during authentication', response)
             }
           },
         })

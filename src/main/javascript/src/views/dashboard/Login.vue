@@ -43,18 +43,12 @@
   export default {
     name: 'LoginForm',
 
-    components: {
-    },
-
     data: () => ({
       enableMock: process.env.VUE_APP_MOCK === 'true',
       username: '',
       password: '',
       valid: true,
     }),
-
-    created: function () {
-    },
 
     methods: {
       login: function () {
@@ -70,7 +64,6 @@
           },
           success: function (response) {
             var token = response
-            console.log('DEBUG', response)
             // we store the token in localStorage, because this is not a Single Page App
             // is this safe?
             localStorage.setItem('authToken', token)
