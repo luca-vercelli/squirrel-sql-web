@@ -65,8 +65,6 @@
         items: [
           { tab: 'Objects tree', type: 'objects' },
           { tab: 'SQL Query', type: 'query' },
-          { tab: 'GOOFY', type: 'table' },
-          { tab: 'MICKEY', type: 'table' },
         ],
       }
     },
@@ -145,8 +143,9 @@
       },
       addTableTab: function (node) {
         console.log('event:', node)
-        this.items.push({ tab: node.simpleName, type: 'table' })
-        this.tab = node.simpleName
+        var tab = { tab: node.simpleName, type: 'table' }
+        this.items.push(tab)
+        this.tab = this.items.length - 1
       },
     },
   }
