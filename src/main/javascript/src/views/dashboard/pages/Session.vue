@@ -30,6 +30,7 @@
           <table-tab
             v-if="item.type=='table'"
             :session-identifier="session.identifier"
+            :table-node="item.node"
           />
           <!-- TODO should add some kind of "close" button -->
         </v-card>
@@ -143,7 +144,7 @@
       },
       addTableTab: function (node) {
         console.log('event:', node)
-        var tab = { tab: node.simpleName, type: 'table' }
+        var tab = { tab: node.simpleName, type: 'table', node: node }
         this.items.push(tab)
         this.tab = this.items.length - 1
       },
