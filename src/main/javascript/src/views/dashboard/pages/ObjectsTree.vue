@@ -106,7 +106,6 @@
         return nodes
       },
       async loadChildren (node) {
-        console.log('loadChildren', node, this)
         var that = this
         const url = this.enableMock ? process.env.BASE_URL + 'mock/ExpandNode.json' : `../ws/Session(${this.sessionIdentifier})/ExpandNode`
         return fetch(url, {
@@ -127,10 +126,10 @@
       },
       clickTreeNode: function (simpleName) {
         var node = this.allNodes[simpleName]
-        console.log('clickTreeNode', node)
-        if (node.objectType == null || node.objectType === 'TABLE' || node.objectType === 'VIEW') {
-          console.log('node.objectType=', node.objectType)
+        if (node.objectType === 'TABLE' || node.objectType === 'VIEW') {
           this.$emit('open-table', node)
+        } else if (node.objectType !== 'SESSION' && node.objectType !== 'CATALOG' && node.objectType !== 'SCHEMA') {
+          console.log('Unsupported object type:' + node.objectType)
         }
         // TODO other types of nodes
       },
