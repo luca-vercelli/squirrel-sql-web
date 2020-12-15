@@ -12,7 +12,7 @@ Run with `npm start`, on port 8080 (why not 4200?)
 
 Menu structure is defined in `Drawer.vue`. Page layout in `Index.vue`.
 
-i18n labels are in `src/locales` folder
+i18n labels are in `src/locales` folder, and default language is configured in `.env`
 
 Router paths definition in `router.js`
 
