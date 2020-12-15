@@ -33,6 +33,7 @@
     }),
 
     created: function () {
+      console.log('authToken:', localStorage.getItem('authToken'))
       if (!localStorage.getItem('authToken')) {
         this.authenticated = false
       } else {
@@ -53,14 +54,13 @@
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (response) {
-            console.log('Authentication successful')
+            console.log('Pre-authentication successful')
+            that.authenticated = true
           },
           error: function (response) {
             localStorage.removeItem('authToken')
             this.authenticated = false
-            if (response.status === 401 || response.status === 403) {
-              that.$router.push('/login')
-            } else {
+            if (response.status !== 401 && response.status !== 403) {
               console.log('Error during authentication', response) // TODO show msg
             }
           },

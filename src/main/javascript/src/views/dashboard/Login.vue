@@ -61,7 +61,8 @@
         localStorage.removeItem('authToken')
         var that = this
         $.ajax({
-          url: this.enableMock ? process.env.BASE_URL + 'mock/SingleDriver.json' : '../ws/Authenticate',
+          url: this.enableMock ? process.env.BASE_URL + 'mock/Authenticate' : '../ws/Authenticate',
+          accepts: 'text/plain',
           type: this.enableMock ? 'GET' : 'POST',
           data: {
             username: this.username,
@@ -69,6 +70,7 @@
           },
           success: function (response) {
             var token = response
+            console.log('DEBUG', response)
             // we store the token in localStorage, because this is not a Single Page App
             // is this safe?
             localStorage.setItem('authToken', token)
