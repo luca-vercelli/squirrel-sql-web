@@ -59,7 +59,7 @@
           },
           error: function (response) {
             localStorage.removeItem('authToken')
-            this.authenticated = false
+            that.authenticated = false
             if (response.status !== 401 && response.status !== 403) {
               console.log('Error during authentication', response) // TODO show msg
             }
