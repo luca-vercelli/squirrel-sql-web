@@ -26,9 +26,10 @@
             v-if="item.type=='query'"
             :session-identifier="session.identifier"
           />
-          <v-card-text v-if="item.type=='table'">
-            THIS IS A TABLE
-          </v-card-text>
+          <table-tab
+            v-if="item.type=='table'"
+            :session-identifier="session.identifier"
+          />
         </v-card>
       </v-tab-item>
     </v-tabs-items>
@@ -43,6 +44,7 @@
     components: {
       SqlQuery: () => import('./SqlQuery'),
       ObjectsTree: () => import('./ObjectsTree'),
+      TableTab: () => import('./Table'),
     },
 
     props: {
