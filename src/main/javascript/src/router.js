@@ -11,12 +11,6 @@ export default new Router({
       path: '/',
       component: () => import('@/views/dashboard/Index'),
       children: [
-        // Dashboard
-        {
-          name: 'Dashboard',
-          path: '',
-          component: () => import('@/views/dashboard/Dashboard'),
-        },
         // Pages
         {
           name: 'User Profile',
@@ -68,7 +62,7 @@ export default new Router({
         // Aliases
         {
           name: 'Aliases',
-          path: 'aliases',
+          path: '',
           component: () => import('@/views/dashboard/pages/Aliases'),
         },
         {

@@ -100,7 +100,6 @@
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (response) {
-            console.log('response:', response)
             that.session = response.value
             that.editEnabled = true
           },

@@ -123,7 +123,6 @@
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (response) {
-            console.log('response:', response)
             that.user = response.value
             that.editEnabled = true
           },

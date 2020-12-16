@@ -97,14 +97,9 @@
     data: () => ({
       items: [
         {
-          icon: 'mdi-view-dashboard',
-          title: 'dashboard',
-          to: '/',
-        },
-        {
           icon: 'mdi-connection',
           title: 'aliases',
-          to: '/aliases',
+          to: '/',
         },
         {
           icon: 'mdi-chip',
@@ -120,21 +115,6 @@
           icon: 'mdi-account',
           title: 'user',
           to: '/pages/user',
-        },
-        {
-          title: 'rtables',
-          icon: 'mdi-clipboard-outline',
-          to: '/tables/regular-tables',
-        },
-        {
-          title: 'typography',
-          icon: 'mdi-format-font',
-          to: '/components/typography',
-        },
-        {
-          title: 'icons',
-          icon: 'mdi-chart-bubble',
-          to: '/components/icons',
         },
         {
           title: 'notifications',
