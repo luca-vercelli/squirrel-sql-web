@@ -1,37 +1,31 @@
 <template>
-  <base-material-card
-    icon="mdi-clipboard-text"
-    title="Results"
-    class="px-5 py-3"
-  >
     <v-simple-table>
       <thead>
         <tr>
           <th
-            v-for="(column, index) in dataSet.columnHeaders"
+            v-for="(title, index) in dataSet.columnHeaders"
             :key="index"
             class="primary--text"
           >
-            {{ column.title }}
+            {{ title }}
           </th>
         </tr>
       </thead>
 
       <tbody>
         <tr
-          v-for="(row, rowIndex) in dataSet.allRowsForReadOnly"
+          v-for="(row, rowIndex) in dataSet.rows"
           :key="rowIndex"
         >
           <td
-            v-for="(column, colIndex) in row"
+            v-for="(cellValue, colIndex) in row"
             :key="colIndex"
           >
-            {{ column }}
+            {{ cellValue }}
           </td>
         </tr>
       </tbody>
     </v-simple-table>
-  </base-material-card>
 </template>
 
 <script>

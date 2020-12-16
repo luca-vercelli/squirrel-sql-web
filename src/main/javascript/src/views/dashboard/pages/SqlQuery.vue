@@ -33,7 +33,7 @@
     </base-material-card>
     <sql-results
       v-if="results"
-      :results="results"
+      :data-set="results"
     />
   </v-container>
 </template>

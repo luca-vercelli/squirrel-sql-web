@@ -24,7 +24,7 @@
         </v-btn>
         <sql-results
           v-if="results"
-          :results="results"
+          :data-set="results"
         /> &nbsp;
       </template>
     </base-material-card>
@@ -85,7 +85,6 @@
         this.editEnabled = false
         this.results = null
         // TODO hideMessages();
-        console.log(this, endpoint)
         // var endpoint = null // TODO
         var that = this
         $.ajax({
