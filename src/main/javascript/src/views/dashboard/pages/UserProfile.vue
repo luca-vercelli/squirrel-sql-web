@@ -14,13 +14,11 @@
             <div class="display-2 font-weight-light">
               User Profile
             </div>
-
           </template>
 
           <v-form>
             <v-container class="py-0">
               <v-row>
-
                 <v-col
                   cols="12"
                   md="6"
