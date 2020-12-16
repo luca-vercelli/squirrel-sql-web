@@ -14,7 +14,7 @@
           v-for="button in buttons"
           :key="button.endpoint"
           color="success"
-          @click="loadDetails"
+          @click="loadDetails(button.endpoint)"
         >
           <i
             aria-hidden="true"
@@ -25,7 +25,7 @@
         <sql-results
           v-if="results"
           :results="results"
-        />
+        /> &nbsp;
       </template>
     </base-material-card>
   </v-container>
@@ -35,6 +35,10 @@
   var $ = require('jquery')
   export default {
     name: 'TableTab',
+
+    components: {
+      SqlResults: () => import('./SqlResults'),
+    },
 
     props: {
       sessionIdentifier: {
@@ -67,17 +71,22 @@
       }
     },
 
-    computed: {},
+    computed: {
+      tableName: function () {
+        return this.tableNode.simpleName
+      },
+    },
 
     created: function () {
     },
 
     methods: {
-      loadDetails: function () {
+      loadDetails: function (endpoint) {
         this.editEnabled = false
         this.results = null
         // TODO hideMessages();
-        var endpoint = null // TODO
+        console.log(this, endpoint)
+        // var endpoint = null // TODO
         var that = this
         $.ajax({
           url: this.enableMock ? process.env.BASE_URL + 'mock/ExecuteQuery.json' : `../ws/Session(${this.sessionIdentifier})/${endpoint}`,
