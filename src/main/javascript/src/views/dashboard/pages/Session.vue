@@ -1,5 +1,16 @@
 <template>
   <v-card>
+    <v-btn
+      color="error"
+      @click="disconnect()"
+    >
+      <i
+        aria-hidden="true"
+        class="v-icon notranslate mdi mdi-connection theme--dark"
+      />
+      Disconnect
+    </v-btn>
+
     <v-tabs
       v-model="tab"
       center-active
@@ -101,6 +112,8 @@
       },
       disconnect: function () {
         // TODO should give some warning
+        this.editEnabled = false
+        var that = this
         $.ajax({
           type: this.enableMock ? 'GET' : 'POST',
           url: this.enableMock ? process.env.BASE_URL + 'mock/JustGetOk' : '../ws/Disconnect',
@@ -111,39 +124,16 @@
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (data, status) {
-            window.location.replace('..')
+            that.$router.push('/')
           },
           error: function (response, status) {
             console.log(response)
             // TODO showAjaxError(response)
-            // TODO disableEdit(false)
-          },
-        })
-      },
-      getCatalogs: function () {
-        $.ajax({
-          type: 'GET',
-          url: this.enableMock ? process.env.BASE_URL + 'mock/SchemaInfo.json' : `../ws/Session(${this.session.identifier})/SchemaInfo`,
-          data: {
-            sessionId: this.session.identifier,
-          },
-          headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('authToken'),
-          },
-          success: function (data, status) {
-            console.log('Data:', data, 'Status:', status)
-            var schemaInfo = data.value
-            console.log(schemaInfo)
-            // ASSOCIATION CATALOGS/SCHEMAS???
-          },
-          error: function (response, status) {
-            console.log(response)
-            // TODO showAjaxError(response);
+            this.editEnabled = true
           },
         })
       },
       addTableTab: function (node) {
-        console.log('event:', node)
         var tab = { tab: node.simpleName, type: 'table', node: node }
         this.items.push(tab)
         this.tab = this.items.length - 1
