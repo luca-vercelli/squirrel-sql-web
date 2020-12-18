@@ -55,15 +55,15 @@
         localStorage.removeItem('authToken')
         var that = this
         $.ajax({
-          url: this.enableMock ? process.env.BASE_URL + 'mock/Authenticate' : process.env.BASE_URL + 'ws/Authenticate',
-          dataType: 'text', // this means Accept: text/plain
+          url: this.enableMock ? process.env.BASE_URL + 'mock/Authenticate.json' : process.env.BASE_URL + 'ws/Authenticate',
+          contentType: 'application/json',
           type: this.enableMock ? 'GET' : 'POST',
-          data: {
+          data: JSON.stringify({
             username: this.username,
             password: this.password,
-          },
+          }),
           success: function (response) {
-            var token = response
+            var token = response.value
             // we store the token in localStorage, because this is not a Single Page App
             // is this safe?
             localStorage.setItem('authToken', token)
@@ -72,6 +72,7 @@
           error: function (response) {
             // TODO pretty print
             if (response && response.responseJSON && response.responseJSON.error && response.responseJSON.error.value) {
+              // This is a well-formed OData-like error message
               alert(response.responseJSON.error.value)
             } else {
               console.log(response)
