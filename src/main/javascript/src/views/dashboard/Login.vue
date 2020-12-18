@@ -56,7 +56,7 @@
         var that = this
         $.ajax({
           url: this.enableMock ? process.env.BASE_URL + 'mock/Authenticate' : process.env.BASE_URL + 'ws/Authenticate',
-          dataType: 'text/plain',
+          dataType: 'text', // this means Accept: text/plain
           type: this.enableMock ? 'GET' : 'POST',
           data: {
             username: this.username,
