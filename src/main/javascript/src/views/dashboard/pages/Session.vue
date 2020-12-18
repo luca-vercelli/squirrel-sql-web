@@ -91,7 +91,7 @@
       loadSession: function (identifier) {
         this.editEnabled = false
         this.session = {}
-        var url = this.enableMock ? process.env.BASE_URL + 'mock/SingleSession.json' : '../ws/Session(' + identifier + ')'
+        var url = this.enableMock ? process.env.BASE_URL + 'mock/SingleSession.json' : process.env.BASE_URL + 'ws/Session(' + identifier + ')'
         var that = this
         $.ajax({
           url: url,
@@ -115,7 +115,7 @@
         var that = this
         $.ajax({
           type: this.enableMock ? 'GET' : 'POST',
-          url: this.enableMock ? process.env.BASE_URL + 'mock/JustGetOk' : '../ws/Disconnect',
+          url: this.enableMock ? process.env.BASE_URL + 'mock/JustGetOk' : process.env.BASE_URL + 'ws/Disconnect',
           data: {
             sessionId: this.session.identifier,
           },

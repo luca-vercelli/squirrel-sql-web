@@ -180,7 +180,7 @@
 
     computed: {
       wsUrl: function () {
-        return this.enableMock ? process.env.BASE_URL + 'mock/Aliases.json' : '../ws/Aliases'
+        return this.enableMock ? process.env.BASE_URL + 'mock/Aliases.json' : process.env.BASE_URL + 'ws/Aliases'
       },
     },
 
@@ -222,7 +222,7 @@
         var that = this
         $.ajax({
           type: this.enableMock ? 'GET' : 'POST',
-          url: this.enableMock ? process.env.BASE_URL + 'mock/SingleSession.json' : '../ws/Connect',
+          url: this.enableMock ? process.env.BASE_URL + 'mock/SingleSession.json' : process.env.BASE_URL + 'ws/Connect',
           data: {
             aliasIdentifier: this.connectingIdentifier,
             userName: this.connectUserName,

@@ -128,7 +128,7 @@
 
     computed: {
       wsUrl: function () {
-        return this.enableMock ? process.env.BASE_URL + 'mock/SingleAlias.json' : '../ws/Aliases(' + this.identifier + ')'
+        return this.enableMock ? process.env.BASE_URL + 'mock/SingleAlias.json' : process.env.BASE_URL + 'ws/Aliases(' + this.identifier + ')'
       },
     },
 
@@ -158,7 +158,7 @@
       loadAlias: function (identifier, boolClone) {
         this.editEnabled = false
         this.alias = {}
-        var url = this.enableMock ? process.env.BASE_URL + 'mock/SingleAlias.json' : '../ws/Aliases(' + identifier + ')'
+        var url = this.enableMock ? process.env.BASE_URL + 'mock/SingleAlias.json' : process.env.BASE_URL + 'ws/Aliases(' + identifier + ')'
         var that = this
         $.ajax({
           url: url,
@@ -190,7 +190,7 @@
         console.log('create')
         this.validate()
         this.editEnabled = false
-        var url = this.enableMock ? process.env.BASE_URL + 'mock/SingleAlias.json' : '../ws/Aliases'
+        var url = this.enableMock ? process.env.BASE_URL + 'mock/SingleAlias.json' : process.env.BASE_URL + 'ws/Aliases'
         var that = this
         $.ajax({
           type: this.enableMock ? 'GET' : 'POST',

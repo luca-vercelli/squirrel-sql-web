@@ -75,7 +75,7 @@
         // TODO hideMessages();
         var that = this
         $.ajax({
-          url: this.enableMock ? process.env.BASE_URL + 'mock/ExecuteQuery.json' : '../ws/ExecuteQuery',
+          url: this.enableMock ? process.env.BASE_URL + 'mock/ExecuteQuery.json' : process.env.BASE_URL + 'ws/ExecuteQuery',
           type: this.enableMock ? 'GET' : 'POST',
           data: {
             sessionId: this.sessionIdentifier,

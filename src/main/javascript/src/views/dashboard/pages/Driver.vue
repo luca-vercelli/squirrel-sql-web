@@ -122,7 +122,7 @@
 
     computed: {
       wsUrl: function () {
-        return this.enableMock ? process.env.BASE_URL + 'mock/SingleDriver.json' : '../ws/Drivers(' + this.identifier + ')'
+        return this.enableMock ? process.env.BASE_URL + 'mock/SingleDriver.json' : process.env.BASE_URL + 'ws/Drivers(' + this.identifier + ')'
       },
     },
 
@@ -136,7 +136,7 @@
       loadDriver: function (identifier, boolClone) {
         this.editEnabled = false
         this.driver = {}
-        var url = this.enableMock ? process.env.BASE_URL + 'mock/SingleDriver.json' : '../ws/Drivers(' + identifier + ')'
+        var url = this.enableMock ? process.env.BASE_URL + 'mock/SingleDriver.json' : process.env.BASE_URL + 'ws/Drivers(' + identifier + ')'
         var that = this
         $.ajax({
           url: url,
@@ -168,7 +168,7 @@
         console.log('create')
         this.validate()
         this.editEnabled = false
-        var url = this.enableMock ? process.env.BASE_URL + 'mock/SingleDriver.json' : '../ws/Drivers'
+        var url = this.enableMock ? process.env.BASE_URL + 'mock/SingleDriver.json' : process.env.BASE_URL + 'ws/Drivers'
         var that = this
         $.ajax({
           type: this.enableMock ? 'GET' : 'POST',
@@ -216,7 +216,7 @@
       },
       checkDriverClasses: function () {
         this.editEnabled = false
-        var url = this.enableMock ? process.env.BASE_URL + 'mock/JustGetOk' : '../ws/CheckAllDrivers'
+        var url = this.enableMock ? process.env.BASE_URL + 'mock/JustGetOk' : process.env.BASE_URL + 'ws/CheckAllDrivers'
         var that = this
         $.ajax({
           type: this.enableMock ? 'GET' : 'POST',

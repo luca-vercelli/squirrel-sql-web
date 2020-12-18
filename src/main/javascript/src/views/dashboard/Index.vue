@@ -45,7 +45,7 @@
         // One random endpoint just to check token is valid
         this.editEnabled = false
         var that = this
-        var url = this.enableMock ? process.env.BASE_URL + 'mock/CurrentUser.json' : '../ws/CurrentUser'
+        var url = this.enableMock ? process.env.BASE_URL + 'mock/CurrentUser.json' : process.env.BASE_URL + 'ws/CurrentUser'
         $.ajax({
           url: url,
           dataType: 'json',

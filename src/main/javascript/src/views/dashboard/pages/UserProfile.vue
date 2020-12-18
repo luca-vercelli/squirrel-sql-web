@@ -112,7 +112,7 @@
       loadUser: function () {
         this.editEnabled = false
         this.session = {}
-        var url = this.enableMock ? process.env.BASE_URL + 'mock/CurrentUser.json' : '../ws/CurrentUser'
+        var url = this.enableMock ? process.env.BASE_URL + 'mock/CurrentUser.json' : process.env.BASE_URL + 'ws/CurrentUser'
         var that = this
         $.ajax({
           url: url,

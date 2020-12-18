@@ -100,7 +100,7 @@
       logout () {
         var that = this
         $.ajax({
-          url: this.enableMock ? process.env.BASE_URL + 'mock/JustGetOk' : '../ws/DisconnectAllSessions',
+          url: this.enableMock ? process.env.BASE_URL + 'mock/JustGetOk' : process.env.BASE_URL + 'ws/DisconnectAllSessions',
           type: this.enableMock ? 'GET' : 'POST',
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),

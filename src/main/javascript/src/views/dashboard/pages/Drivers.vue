@@ -126,7 +126,7 @@
 
     computed: {
       wsUrl: function () {
-        return this.enableMock ? process.env.BASE_URL + 'mock/Drivers.json' : '../ws/Drivers'
+        return this.enableMock ? process.env.BASE_URL + 'mock/Drivers.json' : process.env.BASE_URL + 'ws/Drivers'
       },
     },
 
