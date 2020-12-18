@@ -27,6 +27,13 @@
           item-value="identifier"
           label="Choose driver"
           required
+          @change="onChangeDriver"
+        />
+
+        <v-text-field
+          v-model="alias.url"
+          label="URL template"
+          required
         />
 
         <v-text-field
@@ -49,12 +56,12 @@
 
         <v-switch
           v-model="alias.autoConnect"
-          label="Connect at startup (?)"
+          label="Connect at startup (NOT WORKING)"
         />
 
         <v-switch
           v-model="alias.encryptPassword"
-          label="Encrypt password"
+          label="Encrypt password (NOT WORKING)"
         />
       </v-form>
 
@@ -84,18 +91,6 @@
         />
         Save
       </v-btn>
-
-      <v-btn
-        :disabled="!valid"
-        color="success"
-        @click="connect"
-      >
-        <i
-          aria-hidden="true"
-          class="v-icon notranslate mdi mdi-connection theme--dark"
-        />
-        Connect
-      </v-btn>
     </base-material-card>
   </v-container>
 </template>
@@ -118,9 +113,7 @@
 
     data () {
       return {
-        alias: {
-          driverIdentifier: {},
-        },
+        alias: {},
         enableMock: process.env.VUE_APP_MOCK === 'true',
         valid: true,
         editEnabled: false,
@@ -172,13 +165,16 @@
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (response) {
-            console.log('response:', response)
             that.alias = response.value
             if (boolClone) {
               that.alias.identifier = null
               that.creating = true
             } else {
               that.creating = false
+            }
+            if (this.alias.driverPropertiesClone) {
+              // what the xxx is this?
+              this.alias.driverPropertiesClone = undefined
             }
             that.editEnabled = true
           },
@@ -241,8 +237,11 @@
           },
         })
       },
-      connect: function () {
-        alert('TODO')
+      onChangeDriver: function () {
+        if (this.editEnabled) {
+          // editEnabled ensures that the user changed this, and not some other event
+          this.alias.url = this.alias.driver.url
+        }
       },
     },
   }
