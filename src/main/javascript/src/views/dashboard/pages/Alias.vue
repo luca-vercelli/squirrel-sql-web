@@ -220,7 +220,7 @@
         console.log('save')
         this.validate()
         this.editEnabled = false
-        var url = this.enableMock ? process.env.BASE_URL + 'mock/SingleAlias.json' : `../ws/Aliases(${this.alias.identifier})`
+        var url = this.enableMock ? process.env.BASE_URL + 'mock/SingleAlias.json' : process.env.BASE_URL + `ws/Aliases(${this.alias.identifier})`
         var that = this
         $.ajax({
           type: this.enableMock ? 'GET' : 'PUT',

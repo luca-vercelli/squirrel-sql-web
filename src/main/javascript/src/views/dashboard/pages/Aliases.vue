@@ -244,7 +244,7 @@
         var that = this
         $.ajax({
           type: this.enableMock ? 'GET' : 'DELETE',
-          url: this.enableMock ? process.env.BASE_URL + 'mock/JustGetOk' : `../ws/Aliases'(${this.deletingIdentifier})`,
+          url: this.enableMock ? process.env.BASE_URL + 'mock/JustGetOk' : process.env.BASE_URL + `ws/Aliases'(${this.deletingIdentifier})`,
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },

@@ -71,7 +71,7 @@
         // TODO hideMessages();
         var that = this
         $.ajax({
-          url: this.enableMock ? process.env.BASE_URL + 'mock/RootNode.json' : `../ws/Session(${this.sessionIdentifier})/RootNode`,
+          url: this.enableMock ? process.env.BASE_URL + 'mock/RootNode.json' : process.env.BASE_URL + `ws/Session(${this.sessionIdentifier})/RootNode`,
           type: 'GET',
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
@@ -107,7 +107,7 @@
       },
       async loadChildren (node) {
         var that = this
-        const url = this.enableMock ? process.env.BASE_URL + 'mock/ExpandNode.json' : `../ws/Session(${this.sessionIdentifier})/ExpandNode`
+        const url = this.enableMock ? process.env.BASE_URL + 'mock/ExpandNode.json' : process.env.BASE_URL + `ws/Session(${this.sessionIdentifier})/ExpandNode`
         return fetch(url, {
           method: this.enableMock ? 'GET' : 'POST',
           cache: 'no-cache',

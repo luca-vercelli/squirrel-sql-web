@@ -193,7 +193,7 @@
         console.log('save')
         this.validate()
         this.editEnabled = false
-        var url = this.enableMock ? process.env.BASE_URL + 'mock/SingleDriver.json' : `../ws/Drivers(${this.driver.identifier})`
+        var url = this.enableMock ? process.env.BASE_URL + 'mock/SingleDriver.json' : process.env.BASE_URL + `ws/Drivers(${this.driver.identifier})`
         var that = this
         $.ajax({
           type: this.enableMock ? 'GET' : 'PUT',

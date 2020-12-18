@@ -88,7 +88,7 @@
         // var endpoint = null // TODO
         var that = this
         $.ajax({
-          url: this.enableMock ? process.env.BASE_URL + 'mock/ExecuteQuery.json' : `../ws/Session(${this.sessionIdentifier})/${endpoint}`,
+          url: this.enableMock ? process.env.BASE_URL + 'mock/ExecuteQuery.json' : process.env.BASE_URL + `ws/Session(${this.sessionIdentifier})/${endpoint}`,
           type: 'GET',
           data: {
             catalog: this.tableNode.catalog,
