@@ -38,7 +38,7 @@
         <tbody>
           <tr
             v-for="alias in aliases"
-            :key="alias.identifier.string"
+            :key="alias.identifier"
           >
             <td>{{ alias.name }}</td>
             <td class="text-right">
@@ -57,7 +57,7 @@
                 color="success"
                 class="mr-4"
                 title="Edit"
-                :to="'/alias/' + alias.identifier.string"
+                :to="'/alias/' + alias.identifier"
               >
                 <i
                   aria-hidden="true"
@@ -68,7 +68,7 @@
                 color="success"
                 class="mr-4"
                 title="Clone"
-                :to="'/clone-alias/' + alias.identifier.string"
+                :to="'/clone-alias/' + alias.identifier"
               >
                 <i
                   aria-hidden="true"
@@ -79,7 +79,7 @@
                 color="error"
                 class="mr-4"
                 title="Delete"
-                @click="deletingIdentifier = alias.identifier.string; showDeleteDialog = true"
+                @click="deletingIdentifier = alias.identifier; showDeleteDialog = true"
               >
                 <i
                   aria-hidden="true"
@@ -209,7 +209,7 @@
         return name1 < name2 ? -1 : name1 > name2 ? +1 : 0
       },
       connectOrDialog: function (alias) {
-        this.connectingIdentifier = alias.identifier.string
+        this.connectingIdentifier = alias.identifier
         this.connectUserName = alias.userName
         this.connectPassword = alias.password
         if (alias.autoLogon) {

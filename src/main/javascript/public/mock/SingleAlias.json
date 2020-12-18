@@ -2,9 +2,7 @@
   "value" : {
     "name" : "My Home MySQL",
     "valid" : true,
-    "identifier" : {
-      "string" : "fuffa"
-    },
+    "identifier" : "1234",
     "autoLogon" : false,
     "userName" : "myself",
     "password" : "mysecretpassword",

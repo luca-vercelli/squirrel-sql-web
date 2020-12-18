@@ -1,9 +1,7 @@
 {
   "value" : {
     "name" : "LucidDB",
-    "identifier" : {
-      "string" : "-52"
-    },
+    "identifier" : "-52",
     "driverClassName" : "org.luciddb.jdbc.LucidDbClientDriver",
     "jdbcdriverClassLoaded" : false,
     "jarFileNameWrappers" : [ ],

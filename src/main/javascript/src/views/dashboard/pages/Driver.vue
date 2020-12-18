@@ -148,7 +148,7 @@
             console.log('response:', response)
             that.driver = response.value
             if (boolClone) {
-              that.driver.identifier = {}
+              that.driver.identifier = null
               that.creating = true
             } else {
               that.creating = false

@@ -170,7 +170,7 @@
             console.log('response:', response)
             that.alias = response.value
             if (boolClone) {
-              that.alias.identifier = {}
+              that.alias.identifier = null
               that.creating = true
             } else {
               that.creating = false

@@ -38,7 +38,7 @@
         <tbody>
           <tr
             v-for="driver in drivers"
-            :key="driver.identifier.string"
+            :key="driver.identifier"
           >
             <td>{{ driver.name }}</td>
             <td class="text-right">
@@ -46,7 +46,7 @@
                 color="success"
                 class="mr-4"
                 title="Edit"
-                :to="'/driver/' + driver.identifier.string"
+                :to="'/driver/' + driver.identifier"
               >
                 <i
                   aria-hidden="true"
@@ -57,7 +57,7 @@
                 color="success"
                 class="mr-4"
                 title="Clone"
-                :to="'/clone-driver/' + driver.identifier.string"
+                :to="'/clone-driver/' + driver.identifier"
               >
                 <i
                   aria-hidden="true"
@@ -68,7 +68,7 @@
                 color="error"
                 class="mr-4"
                 title="Delete"
-                @click="deletingIdentifier = driver.identifier.string; showDeleteDialog = true"
+                @click="deletingIdentifier = driver.identifier; showDeleteDialog = true"
               >
                 <i
                   aria-hidden="true"
