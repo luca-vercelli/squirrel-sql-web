@@ -20,9 +20,12 @@
           required
         />
 
-        <v-text-field
-          v-model="alias.driverIdentifier.string"
-          label="Choose driver..."
+        <v-select
+          v-model="alias.driverIdentifier"
+          :items="drivers"
+          item-text="name"
+          item-value="identifier"
+          label="Choose driver"
           required
         />
 
@@ -127,9 +130,6 @@
     },
 
     computed: {
-      wsUrl: function () {
-        return this.enableMock ? process.env.BASE_URL + 'mock/SingleAlias.json' : process.env.BASE_URL + 'ws/Aliases(' + this.identifier + ')'
-      },
     },
 
     created: function () {
@@ -141,7 +141,7 @@
 
     methods: {
       loadDrivers: function () {
-        var url = this.wsUrl
+        var url = this.enableMock ? process.env.BASE_URL + 'mock/Drivers.json' : process.env.BASE_URL + 'ws/Drivers'
         var that = this
         $.ajax({
           url: url,
@@ -154,6 +154,11 @@
             that.drivers.sort(that.cmpNames)
           },
         })
+      },
+      cmpNames: function (x, y) {
+        var name1 = x.name ? x.name.toLowerCase() : ''
+        var name2 = y.name ? y.name.toLowerCase() : ''
+        return name1 < name2 ? -1 : name1 > name2 ? +1 : 0
       },
       loadAlias: function (identifier, boolClone) {
         this.editEnabled = false
