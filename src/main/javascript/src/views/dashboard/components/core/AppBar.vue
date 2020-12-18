@@ -63,6 +63,7 @@
 
   // Utilities
   import { mapState, mapMutations } from 'vuex'
+  var $ = require('jquery')
 
   export default {
     name: 'DashboardCoreAppBar',
@@ -85,6 +86,7 @@
         'Another Notification',
         'Another one',
       ],
+      enableMock: process.env.VUE_APP_MOCK === 'true',
     }),
 
     computed: {
@@ -96,7 +98,23 @@
         setDrawer: 'SET_DRAWER',
       }),
       logout () {
-        // TODO
+        var that = this
+        $.ajax({
+          url: this.enableMock ? process.env.BASE_URL + 'mock/JustGetOk' : '../ws/DisconnectAllSessions',
+          type: this.enableMock ? 'GET' : 'POST',
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+          },
+          success: function (response) {
+            localStorage.removeItem('authToken')
+            that.$emit('unauthenticated')
+          },
+          error: function (response) {
+            console.log(response)
+            localStorage.removeItem('authToken')
+            that.$emit('unauthenticated')
+          },
+        })
       },
     },
   }

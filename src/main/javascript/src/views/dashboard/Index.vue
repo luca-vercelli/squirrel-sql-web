@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-app v-if="authenticated">
-      <dashboard-core-app-bar />
+      <dashboard-core-app-bar @unauthenticated="authenticated=false" />
       <dashboard-core-drawer />
       <dashboard-core-view />
       <dashboard-core-settings />
