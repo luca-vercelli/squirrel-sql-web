@@ -46,7 +46,7 @@
 
     computed: {
       wsUrl: function () {
-        return this.enableMock ? process.env.BASE_URL + 'mock/Sessions.json' : process.env.BASE_URL + 'ws/Sessions'
+        return this.enableMock ? process.env.BASE_URL + 'mock/Sessions.json' : process.env.BASE_URL + 'ws/Session'
       },
     },
 

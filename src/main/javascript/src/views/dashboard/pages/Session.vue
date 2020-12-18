@@ -30,16 +30,16 @@
       >
         <v-card flat>
           <objects-tree
-            v-if="item.type=='objects'"
+            v-if="item.type=='objects' && session.identifier"
             :session-identifier="session.identifier"
             @open-table="addTableTab"
           />
           <sql-query
-            v-if="item.type=='query'"
+            v-if="item.type=='query' && session.identifier"
             :session-identifier="session.identifier"
           />
           <table-tab
-            v-if="item.type=='table'"
+            v-if="item.type=='table' && session.identifier"
             :session-identifier="session.identifier"
             :table-node="item.node"
           />
