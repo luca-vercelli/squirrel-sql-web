@@ -1,4 +1,6 @@
 module.exports = {
+  publicPath: '/squirrel-sql-web/',
+
   devServer: {
     disableHostCheck: true,
   },
