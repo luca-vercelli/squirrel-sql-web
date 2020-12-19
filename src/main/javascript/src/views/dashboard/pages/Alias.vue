@@ -55,7 +55,7 @@
         />
 
         <v-switch
-          v-model="alias.autoConnect"
+          v-model="alias.connectAtStartup"
           label="Connect at startup (NOT WORKING)"
         />
 
@@ -172,10 +172,12 @@
             } else {
               that.creating = false
             }
-            if (this.alias.driverPropertiesClone) {
-              // what the xxx is this?
-              this.alias.driverPropertiesClone = undefined
-            }
+
+            // remove unwanted properties
+            // FIXME these should be removed server-side
+            that.alias.driverPropertiesClone = undefined
+            that.alias.valid = undefined
+
             that.editEnabled = true
           },
           error: function (data, status) {
@@ -237,10 +239,16 @@
           },
         })
       },
+      /**
+      When the user changes the driver, we need to change the template URL accordingly
+      */
       onChangeDriver: function () {
         if (this.editEnabled) {
           // editEnabled ensures that the user changed this, and not some other event
-          this.alias.url = this.alias.driver.url
+          var selectedDrivers = this.drivers.filter(x => x.identifier === this.alias.driverIdentifier)
+          if (selectedDrivers.length > 0) {
+            this.alias.url = selectedDrivers[0].url
+          }
         }
       },
     },
