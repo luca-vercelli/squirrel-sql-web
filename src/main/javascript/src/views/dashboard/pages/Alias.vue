@@ -18,6 +18,7 @@
           v-model="alias.name"
           label="Name"
           required
+          :disabled="!editEnabled"
         />
 
         <v-select
@@ -27,6 +28,7 @@
           item-value="identifier"
           label="Choose driver"
           required
+          :disabled="!editEnabled"
           @change="onChangeDriver"
         />
 
@@ -34,6 +36,7 @@
           v-model="alias.url"
           label="URL template"
           required
+          :disabled="!editEnabled"
         />
 
         <v-text-field
@@ -41,33 +44,38 @@
           label="Username"
           class="md-4"
           required
+          :disabled="!editEnabled"
         />
 
         <v-text-field
           v-model="alias.password"
           label="Password"
           required
+          :disabled="!editEnabled"
         />
 
         <v-switch
           v-model="alias.autoLogon"
           label="Auto logon"
+          :disabled="!editEnabled"
         />
 
         <v-switch
           v-model="alias.connectAtStartup"
           label="Connect at startup (NOT WORKING)"
+          :disabled="!editEnabled"
         />
 
         <v-switch
           v-model="alias.encryptPassword"
           label="Encrypt password (NOT WORKING)"
+          :disabled="!editEnabled"
         />
       </v-form>
 
       <v-btn
         v-if="creating"
-        :disabled="!valid"
+        :disabled="!valid || !editEnabled"
         color="success"
         visible="false"
         @click="createAlias"
@@ -81,7 +89,7 @@
 
       <v-btn
         v-if="!creating"
-        :disabled="!valid"
+        :disabled="!valid || !editEnabled"
         color="success"
         @click="saveAlias"
       >
@@ -129,6 +137,8 @@
       this.loadDrivers()
       if (this.$route.params.identifier || this.$route.params.origIdentifier) {
         this.loadAlias(this.$route.params.identifier || this.$route.params.origIdentifier, this.$route.params.origIdentifier)
+      } else {
+        this.editEnabled = true
       }
     },
 

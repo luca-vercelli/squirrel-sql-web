@@ -18,31 +18,34 @@
           v-model="driver.name"
           label="Name"
           required
+          :disabled="!editEnabled"
         />
 
         <v-text-field
           v-model="driver.url"
           label="Example URL"
           required
+          :disabled="!editEnabled"
         />
 
         <v-text-field
           v-model="driver.webSiteUrl"
           label="Website URL"
           class="md-4"
-          required
+          :disabled="!editEnabled"
         />
 
         <v-text-field
           v-model="driver.driverClassName"
           label="Driver class name"
           required
+          :disabled="!editEnabled"
         />
       </v-form>
 
       <v-btn
         v-if="creating"
-        :disabled="!valid"
+        :disabled="!valid || !editEnabled"
         color="success"
         visible="false"
         @click="createDriver"
@@ -56,7 +59,7 @@
 
       <v-btn
         v-if="!creating"
-        :disabled="!valid"
+        :disabled="!valid || !editEnabled"
         color="success"
         @click="saveDriver"
       >
@@ -129,6 +132,8 @@
     created: function () {
       if (this.$route.params.identifier || this.$route.params.origIdentifier) {
         this.loadDriver(this.$route.params.identifier || this.$route.params.origIdentifier, this.$route.params.origIdentifier)
+      } else {
+        this.editEnabled = true
       }
     },
 
@@ -225,7 +230,7 @@
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (data, status) {
-            window.location.reload()
+            that.$route.push('/')
           },
           error: function (data, status) {
             console.log('Data:', data, 'Status:', status)
