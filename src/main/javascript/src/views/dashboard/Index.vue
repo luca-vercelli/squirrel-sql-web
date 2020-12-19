@@ -13,7 +13,10 @@
       v-else
       @authenticated="authenticated=true"
     />
-    <notify :ajax-error-response="ajaxErrorResponse" />
+    <notify
+      :notify="notify"
+      :ajax-error-response="ajaxErrorResponse"
+    />
   </div>
 </template>
 
@@ -38,6 +41,12 @@
       ajaxErrorResponse: null,
       notify: null,
     }),
+
+    watch: {
+      notify: function () {
+        console.log('DEBUG notify =', this.notify)
+      },
+    },
 
     created: function () {
       if (!localStorage.getItem('authToken')) {

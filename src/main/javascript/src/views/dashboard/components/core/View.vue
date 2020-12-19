@@ -1,6 +1,9 @@
 <template>
   <v-content>
-    <router-view />
+    <router-view
+      @notify="$emit('notify', $event)"
+      @ajax-error="$emit('ajax-error', $event)"
+    />
 
     <dashboard-core-footer />
   </v-content>
