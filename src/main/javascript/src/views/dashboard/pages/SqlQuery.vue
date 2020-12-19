@@ -35,6 +35,7 @@
       v-if="results"
       :data-set="results"
     />
+    <notify />
   </v-container>
 </template>
 
@@ -45,6 +46,7 @@
 
     components: {
       SqlResults: () => import('./SqlResults'),
+      Notify: () => import('../component/Notify'),
     },
 
     props: {
