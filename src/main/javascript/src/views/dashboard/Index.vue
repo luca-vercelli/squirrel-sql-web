@@ -59,8 +59,9 @@
           error: function (response) {
             localStorage.removeItem('authToken')
             that.authenticated = false
+            console.log('Pre-authentication failed')
             if (response.status !== 401 && response.status !== 403) {
-              console.log('Error during authentication', response)
+              console.log(response)
             }
           },
         })
