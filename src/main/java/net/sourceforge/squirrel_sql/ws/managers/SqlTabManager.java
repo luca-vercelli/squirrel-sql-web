@@ -1,8 +1,6 @@
 package net.sourceforge.squirrel_sql.ws.managers;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -14,7 +12,12 @@ import javax.ws.rs.core.Context;
 import org.apache.log4j.Logger;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
-import net.sourceforge.squirrel_sql.dto.TableDto;
+import net.sourceforge.squirrel_sql.fw.datasetviewer.DataSetException;
+import net.sourceforge.squirrel_sql.fw.datasetviewer.IDataSet;
+import net.sourceforge.squirrel_sql.fw.datasetviewer.ResultSetDataSet;
+import net.sourceforge.squirrel_sql.fw.dialects.DialectFactory;
+import net.sourceforge.squirrel_sql.fw.dialects.DialectType;
+import net.sourceforge.squirrel_sql.fw.sql.ISQLConnection;
 import net.sourceforge.squirrel_sql.fw.util.StringUtilities;
 import net.sourceforge.squirrel_sql.ws.exceptions.AuthorizationException;
 
@@ -62,60 +65,43 @@ public class SqlTabManager {
 	 * 
 	 * Execute only single queries, not multiple queries.
 	 * 
-	 * @param sessionId
+	 * @param session
 	 * @param query
 	 * @return a TableDto in case of SELECT, null otherwise
 	 * @throws SQLException
+	 * @throws DataSetException
 	 */
-	public TableDto executeSqlCommand(String sessionId, String query) throws SQLException {
-		ISession session = sessionsManager.getSessionById(sessionId, getCurrentToken());
-		if (session == null) {
-			throw new IllegalArgumentException("Session does not exist, or it has been closed.");
-		}
+	public IDataSet executeSqlCommand(ISession session, String query) throws SQLException, DataSetException {
 
 		query = StringUtilities.cleanString(query);
 		logger.info("Running query: " + query);
 
-		Connection conn = session.getSQLConnection().getConnection();
-		try (Statement stmt = conn.createStatement()) {
-			boolean returnResultSet = stmt.execute(query);
-			if (returnResultSet) {
-				try (ResultSet rs = stmt.getResultSet()) {
-					return rs2table(rs);
+		final ISQLConnection conn = session.getSQLConnection();
+		try {
+			final Statement stmt = conn.createStatement();
+			try {
+				final boolean returnResultSet = stmt.execute(query);
+				if (returnResultSet) {
+					// Not a SELECT
+					return null;
 				}
-			} else {
-				return null;
+				final ResultSet rs = stmt.getResultSet();
+				try {
+					final ResultSetDataSet rsds = new ResultSetDataSet();
+					rsds.setResultSet(rs, getDialectType(session));
+					return rsds;
+				} finally {
+					rs.close();
+				}
+			} finally {
+				stmt.close();
 			}
+		} catch (SQLException ex) {
+			throw new DataSetException(ex);
 		}
 	}
 
-	/**
-	 * Convert a ResultSet into a Table
-	 * 
-	 * @param rs
-	 * @return
-	 * @throws SQLException
-	 */
-	public TableDto rs2table(ResultSet rs) throws SQLException {
-		TableDto t = new TableDto();
-
-		// Metadata
-		ResultSetMetaData md = rs.getMetaData();
-		String[] names = new String[md.getColumnCount()];
-		for (int i = 0; i < names.length; ++i) {
-			names[i] = md.getColumnName(i + 1);
-		}
-		t.setColumnHeaders(names);
-
-		// Data
-		while (rs.next()) {
-			Object[] row = new Object[names.length];
-			for (int i = 0; i < names.length; ++i) {
-				row[i] = rs.getObject(i + 1);
-			}
-			t.getRows().add(row);
-		}
-
-		return t;
+	public DialectType getDialectType(ISession session) {
+		return DialectFactory.getDialectType(session.getMetaData());
 	}
 }

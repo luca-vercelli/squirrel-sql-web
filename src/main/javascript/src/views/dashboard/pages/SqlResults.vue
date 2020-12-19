@@ -1,20 +1,22 @@
 <template>
   <v-simple-table>
+    <!-- TODO right-align numbers -->
     <thead>
       <tr>
         <th
-          v-for="(title, index) in dataSet.columnHeaders"
-          :key="index"
+          v-for="column in dataSet.dataSetDefinition.columnDefinitions"
+          :key="column.columnName"
           class="primary--text"
+          :title="column.sqlTypeName"
         >
-          {{ title }}
+          {{ column.columnName }}
         </th>
       </tr>
     </thead>
 
     <tbody>
       <tr
-        v-for="(row, rowIndex) in dataSet.rows"
+        v-for="(row, rowIndex) in dataSet.allDataForReadOnly"
         :key="rowIndex"
       >
         <td

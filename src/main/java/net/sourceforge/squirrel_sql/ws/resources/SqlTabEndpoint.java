@@ -12,8 +12,12 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 
-import net.sourceforge.squirrel_sql.dto.TableDto;
+import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.dto.ValueBean;
+import net.sourceforge.squirrel_sql.fw.datasetviewer.DataSetException;
+import net.sourceforge.squirrel_sql.fw.datasetviewer.IDataSet;
+import net.sourceforge.squirrel_sql.ws.exceptions.AuthorizationException;
+import net.sourceforge.squirrel_sql.ws.managers.SessionsManager;
 import net.sourceforge.squirrel_sql.ws.managers.SqlTabManager;
 
 @Path("/")
@@ -22,15 +26,20 @@ public class SqlTabEndpoint {
 
 	@Inject
 	SqlTabManager manager;
+	@Inject
+	SessionsManager sessionsManager;
 
 	@POST
 	@Path("/ExecuteQuery")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public ValueBean<TableDto> executeQuery(@FormParam("sessionId") String sessionId,
-			@FormParam("query") String query) {
+	public ValueBean<IDataSet> executeQuery(@FormParam("sessionId") String sessionId, @FormParam("query") String query)
+			throws AuthorizationException {
+
+		ISession session = sessionsManager.getSessionById(sessionId);
+
 		try {
-			return new ValueBean<>(manager.executeSqlCommand(sessionId, query));
-		} catch (SQLException e) {
+			return new ValueBean<>(manager.executeSqlCommand(session, query));
+		} catch (SQLException | DataSetException e) {
 			throw new WebApplicationException(e.getMessage(), Status.BAD_REQUEST);
 		}
 	}
