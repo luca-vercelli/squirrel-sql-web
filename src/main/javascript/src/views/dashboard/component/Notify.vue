@@ -11,7 +11,15 @@
   export default {
     name: 'Notify',
 
+    /**
+    Usage: you can set notify = { message: ... type: ...}
+    or, you can set ajaxErrorResponse= the response of some $.ajax call in error
+    */
     props: {
+      notify: {
+        type: Object,
+        default: Object,
+      },
       ajaxErrorResponse: {
         type: Object,
         default: Object,
@@ -44,6 +52,15 @@
         } else {
           this.snackbar = false
           this.msg = ''
+        }
+      },
+      notify () {
+        if (this.notify && this.notify.message) {
+          this.snackbar = true
+        } else {
+          this.snackbar = false
+          this.msg = this.notify.message
+          this.color = this.notify.type
         }
       },
     },

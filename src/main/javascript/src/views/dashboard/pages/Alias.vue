@@ -185,8 +185,8 @@
             }
             that.editEnabled = true
           },
-          error: function (data, status) {
-            console.log('Data:', data, 'Status:', status)
+          error: function (response) {
+            that.$emit('ajax-error', response)
             that.editEnabled = true
           },
         })
@@ -209,13 +209,14 @@
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (data, status) {
+            that.$emit('notify', { message: 'Success.', type: 'success' })
             that.alias = data.value
             that.removeUnwantedProperties()
             that.editEnabled = true
             that.creating = false
           },
-          error: function (data, status) {
-            console.log('Data:', data, 'Status:', status)
+          error: function (response) {
+            that.$emit('ajax-error', response)
             that.editEnabled = true
           },
         })
@@ -235,13 +236,14 @@
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (data, status) {
+            that.$emit('notify', { message: 'Success.', type: 'success' })
             that.alias = data.value
             that.removeUnwantedProperties()
             that.editEnabled = true
             that.creating = false
           },
-          error: function (data, status) {
-            console.log('Data:', data, 'Status:', status)
+          error: function (response) {
+            that.$emit('ajax-error', response)
             that.editEnabled = true
           },
         })

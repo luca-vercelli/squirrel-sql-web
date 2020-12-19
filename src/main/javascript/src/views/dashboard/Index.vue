@@ -3,13 +3,17 @@
     <v-app v-if="authenticated">
       <dashboard-core-app-bar @unauthenticated="authenticated=false" />
       <dashboard-core-drawer />
-      <dashboard-core-view />
+      <dashboard-core-view
+        @notify="notify=$event"
+        @ajax-error="ajaxErrorResponse=$event"
+      />
       <dashboard-core-settings />
     </v-app>
     <login-form
       v-else
       @authenticated="authenticated=true"
     />
+    <notify :ajax-error-response="ajaxErrorResponse" />
   </div>
 </template>
 
@@ -24,12 +28,15 @@
       DashboardCoreSettings: () => import('./components/core/Settings'),
       DashboardCoreView: () => import('./components/core/View'),
       LoginForm: () => import('./Login'),
+      Notify: () => import('./component/Notify'),
     },
 
     data: () => ({
       expandOnHover: false,
       enableMock: process.env.VUE_APP_MOCK === 'true',
       authenticated: false,
+      ajaxErrorResponse: null,
+      notify: null,
     }),
 
     created: function () {

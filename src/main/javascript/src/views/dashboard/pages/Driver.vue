@@ -160,9 +160,8 @@
             }
             that.editEnabled = true
           },
-          error: function (data, status) {
-            console.log('Data:', data, 'Status:', status)
-            that.editEnabled = true
+          error: function (response) {
+            that.$emit('ajax-error', response)
           },
         })
       },
@@ -170,7 +169,6 @@
         this.$refs.form.validate()
       },
       createDriver: function () {
-        console.log('create')
         this.validate()
         this.editEnabled = false
         var url = this.enableMock ? process.env.BASE_URL + 'mock/SingleDriver.json' : process.env.BASE_URL + 'ws/Drivers'
@@ -184,18 +182,17 @@
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (data, status) {
+            that.$emit('notify', { message: 'Success.', type: 'success' })
             that.driver = data.value
             that.editEnabled = true
             that.creating = false
           },
-          error: function (data, status) {
-            console.log('Data:', data, 'Status:', status)
-            that.editEnabled = true
+          error: function (response) {
+            that.$emit('ajax-error', response)
           },
         })
       },
       saveDriver: function () {
-        console.log('save')
         this.validate()
         this.editEnabled = false
         var url = this.enableMock ? process.env.BASE_URL + 'mock/SingleDriver.json' : process.env.BASE_URL + `ws/Drivers(${this.driver.identifier})`
@@ -209,13 +206,13 @@
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (data, status) {
+            that.$emit('notify', { message: 'Success.', type: 'success' })
             that.driver = data.value
             that.editEnabled = true
             that.creating = false
           },
-          error: function (data, status) {
-            console.log('Data:', data, 'Status:', status)
-            that.editEnabled = true
+          error: function (response) {
+            that.$emit('ajax-error', response)
           },
         })
       },
@@ -232,9 +229,8 @@
           success: function (data, status) {
             that.$route.push('/')
           },
-          error: function (data, status) {
-            console.log('Data:', data, 'Status:', status)
-            that.editEnabled = true
+          error: function (response) {
+            that.$emit('ajax-error', response)
           },
         })
       },

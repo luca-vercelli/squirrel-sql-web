@@ -35,7 +35,6 @@
       v-if="results"
       :data-set="results"
     />
-    <notify :ajax-error-response="ajaxErrorResponse" />
   </v-container>
 </template>
 
@@ -46,7 +45,6 @@
 
     components: {
       SqlResults: () => import('./SqlResults'),
-      Notify: () => import('../component/Notify'),
     },
 
     props: {
@@ -62,7 +60,6 @@
         editEnabled: false,
         query: '',
         results: null,
-        ajaxErrorResponse: null,
       }
     },
 
@@ -75,7 +72,6 @@
       executeQuery: function () {
         this.editEnabled = false
         this.results = null
-        // TODO hideMessages();
         var that = this
         $.ajax({
           url: this.enableMock ? process.env.BASE_URL + 'mock/DataSet.json' : process.env.BASE_URL + 'ws/ExecuteQuery',
@@ -90,17 +86,15 @@
           success: function (data) {
             if (data.value == null) {
               // not a SELECT
-              // TODO showMessage("Success.", "success");
+              that.$emit('notify', { message: 'Success.', type: 'success' })
             } else {
               that.results = data.value
             }
             that.editEnabled = true
           },
           error: function (response, status) {
-            // TODO showAjaxError(response)
-            console.log(response)
             that.editEnabled = true
-            that.ajaxErrorResponse = response
+            that.$emit('ajax-error', response)
           },
         })
       },
