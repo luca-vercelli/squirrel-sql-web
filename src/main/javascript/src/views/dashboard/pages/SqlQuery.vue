@@ -35,7 +35,7 @@
       v-if="results"
       :data-set="results"
     />
-    <notify />
+    <notify :ajax-error-response="ajaxErrorResponse" />
   </v-container>
 </template>
 
@@ -62,6 +62,7 @@
         editEnabled: false,
         query: '',
         results: null,
+        ajaxErrorResponse: null,
       }
     },
 
@@ -99,6 +100,7 @@
             // TODO showAjaxError(response)
             console.log(response)
             that.editEnabled = true
+            that.ajaxErrorResponse = response
           },
         })
       },
