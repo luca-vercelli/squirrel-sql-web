@@ -71,10 +71,12 @@ public class SqlTabManager {
 	 * @throws SQLException
 	 * @throws DataSetException
 	 */
-	public IDataSet executeSqlCommand(ISession session, String query) throws SQLException, DataSetException {
+	public IDataSet executeSqlCommand(ISession session, String query) throws DataSetException {
 
 		query = StringUtilities.cleanString(query);
 		logger.info("Running query: " + query);
+
+		// Following code is essentially copied from RowCountTab.java
 
 		final ISQLConnection conn = session.getSQLConnection();
 		try {

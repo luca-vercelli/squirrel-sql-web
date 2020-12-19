@@ -1,7 +1,5 @@
 package net.sourceforge.squirrel_sql.ws.resources;
 
-import java.sql.SQLException;
-
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -39,7 +37,7 @@ public class SqlTabEndpoint {
 
 		try {
 			return new ValueBean<>(manager.executeSqlCommand(session, query));
-		} catch (SQLException | DataSetException e) {
+		} catch (DataSetException e) {
 			throw new WebApplicationException(e.getMessage(), Status.BAD_REQUEST);
 		}
 	}
