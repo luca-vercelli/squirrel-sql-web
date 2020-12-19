@@ -166,18 +166,13 @@
           },
           success: function (response) {
             that.alias = response.value
+            that.removeUnwantedProperties()
             if (boolClone) {
               that.alias.identifier = null
               that.creating = true
             } else {
               that.creating = false
             }
-
-            // remove unwanted properties
-            // FIXME these should be removed server-side
-            that.alias.driverPropertiesClone = undefined
-            that.alias.valid = undefined
-
             that.editEnabled = true
           },
           error: function (data, status) {
@@ -205,6 +200,7 @@
           },
           success: function (data, status) {
             that.alias = data.value
+            that.removeUnwantedProperties()
             that.editEnabled = true
             that.creating = false
           },
@@ -230,6 +226,7 @@
           },
           success: function (data, status) {
             that.alias = data.value
+            that.removeUnwantedProperties()
             that.editEnabled = true
             that.creating = false
           },
@@ -250,6 +247,11 @@
             this.alias.url = selectedDrivers[0].url
           }
         }
+      },
+      removeUnwantedProperties: function () {
+        // FIXME these should be removed server-side
+        this.alias.driverPropertiesClone = undefined
+        this.alias.valid = undefined
       },
     },
   }
