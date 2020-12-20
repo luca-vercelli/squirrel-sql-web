@@ -53,10 +53,8 @@
           this.snackbar = false
           this.msg = ''
         }
-        console.log('HERE', this.msg, this.type)
       },
       notify () {
-        console.log('DEBUG2', this.notify)
         if (this.notify && this.notify.message) {
           this.snackbar = true
           this.msg = this.notify.message
@@ -64,7 +62,6 @@
         } else {
           this.snackbar = false
         }
-        console.log('THERE', this.msg, this.type)
       },
     },
 
