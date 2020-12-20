@@ -12,7 +12,9 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.Status;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeNode;
@@ -87,12 +89,17 @@ public class ObjectsTabEndpoint {
 	public ValueBean<IDataSet> tableContent(@PathParam("sessionId") String sessionId,
 			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
 			@QueryParam("tableName") String tableName, @QueryParam("tableType") String tableType)
-			throws DataSetException, AuthorizationException {
+			throws AuthorizationException {
 
 		// FIXME what about row limits?
 
 		ISession session = sessionsManager.getSessionById(sessionId);
-		IDataSet dataset = manager.getTableContent(session, catalog, schema, tableName, tableType);
+		IDataSet dataset;
+		try {
+			dataset = manager.getTableContent(session, catalog, schema, tableName, tableType);
+		} catch (DataSetException e) {
+			throw webAppException(e);
+		}
 		return new ValueBean<>(dataset);
 	}
 
@@ -101,9 +108,14 @@ public class ObjectsTabEndpoint {
 	public ValueBean<IDataSet> tableRowCount(@PathParam("sessionId") String sessionId,
 			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
 			@QueryParam("tableName") String tableName, @QueryParam("tableType") String tableType)
-			throws DataSetException, AuthorizationException {
+			throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		IDataSet dataset = manager.getTableRowCount(session, catalog, schema, tableName, tableType);
+		IDataSet dataset;
+		try {
+			dataset = manager.getTableRowCount(session, catalog, schema, tableName, tableType);
+		} catch (DataSetException e) {
+			throw webAppException(e);
+		}
 		return new ValueBean<>(dataset);
 	}
 
@@ -111,9 +123,14 @@ public class ObjectsTabEndpoint {
 	@Path("/Session({sessionId})/TablePk")
 	public ValueBean<IDataSet> tablePk(@PathParam("sessionId") String sessionId, @QueryParam("catalog") String catalog,
 			@QueryParam("schema") String schema, @QueryParam("tableName") String tableName,
-			@QueryParam("tableType") String tableType) throws DataSetException, AuthorizationException {
+			@QueryParam("tableType") String tableType) throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		IDataSet dataset = manager.getTablePk(session, catalog, schema, tableName, tableType);
+		IDataSet dataset;
+		try {
+			dataset = manager.getTablePk(session, catalog, schema, tableName, tableType);
+		} catch (DataSetException e) {
+			throw webAppException(e);
+		}
 		return new ValueBean<>(dataset);
 	}
 
@@ -122,9 +139,14 @@ public class ObjectsTabEndpoint {
 	public ValueBean<IDataSet> tableColumns(@PathParam("sessionId") String sessionId,
 			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
 			@QueryParam("tableName") String tableName, @QueryParam("tableType") String tableType)
-			throws DataSetException, AuthorizationException {
+			throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		IDataSet dataset = manager.getTableColumns(session, catalog, schema, tableName, tableType);
+		IDataSet dataset;
+		try {
+			dataset = manager.getTableColumns(session, catalog, schema, tableName, tableType);
+		} catch (DataSetException e) {
+			throw webAppException(e);
+		}
 		return new ValueBean<>(dataset);
 	}
 
@@ -133,9 +155,14 @@ public class ObjectsTabEndpoint {
 	public ValueBean<IDataSet> tableIndexes(@PathParam("sessionId") String sessionId,
 			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
 			@QueryParam("tableName") String tableName, @QueryParam("tableType") String tableType)
-			throws DataSetException, AuthorizationException {
+			throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		IDataSet dataset = manager.getTableIndexes(session, catalog, schema, tableName, tableType);
+		IDataSet dataset;
+		try {
+			dataset = manager.getTableIndexes(session, catalog, schema, tableName, tableType);
+		} catch (DataSetException e) {
+			throw webAppException(e);
+		}
 		return new ValueBean<>(dataset);
 	}
 
@@ -144,9 +171,14 @@ public class ObjectsTabEndpoint {
 	public ValueBean<IDataSet> tablePrivileges(@PathParam("sessionId") String sessionId,
 			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
 			@QueryParam("tableName") String tableName, @QueryParam("tableType") String tableType)
-			throws DataSetException, AuthorizationException {
+			throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		IDataSet dataset = manager.getTablePrivileges(session, catalog, schema, tableName, tableType);
+		IDataSet dataset;
+		try {
+			dataset = manager.getTablePrivileges(session, catalog, schema, tableName, tableType);
+		} catch (DataSetException e) {
+			throw webAppException(e);
+		}
 		return new ValueBean<>(dataset);
 	}
 
@@ -155,9 +187,14 @@ public class ObjectsTabEndpoint {
 	public ValueBean<IDataSet> tableImportedFk(@PathParam("sessionId") String sessionId,
 			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
 			@QueryParam("tableName") String tableName, @QueryParam("tableType") String tableType)
-			throws DataSetException, AuthorizationException {
+			throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		IDataSet dataset = manager.getTableImportedFk(session, catalog, schema, tableName, tableType);
+		IDataSet dataset;
+		try {
+			dataset = manager.getTableImportedFk(session, catalog, schema, tableName, tableType);
+		} catch (DataSetException e) {
+			throw webAppException(e);
+		}
 		return new ValueBean<>(dataset);
 	}
 
@@ -166,9 +203,14 @@ public class ObjectsTabEndpoint {
 	public ValueBean<IDataSet> tableExportedFk(@PathParam("sessionId") String sessionId,
 			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
 			@QueryParam("tableName") String tableName, @QueryParam("tableType") String tableType)
-			throws DataSetException, AuthorizationException {
+			throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		IDataSet dataset = manager.getTableExportedFk(session, catalog, schema, tableName, tableType);
+		IDataSet dataset;
+		try {
+			dataset = manager.getTableExportedFk(session, catalog, schema, tableName, tableType);
+		} catch (DataSetException e) {
+			throw webAppException(e);
+		}
 		return new ValueBean<>(dataset);
 	}
 
@@ -177,9 +219,14 @@ public class ObjectsTabEndpoint {
 	public ValueBean<IDataSet> tableRowId(@PathParam("sessionId") String sessionId,
 			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
 			@QueryParam("tableName") String tableName, @QueryParam("tableType") String tableType)
-			throws DataSetException, AuthorizationException {
+			throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		IDataSet dataset = manager.getTableRowID(session, catalog, schema, tableName, tableType);
+		IDataSet dataset;
+		try {
+			dataset = manager.getTableRowID(session, catalog, schema, tableName, tableType);
+		} catch (DataSetException e) {
+			throw webAppException(e);
+		}
 		return new ValueBean<>(dataset);
 	}
 
@@ -188,9 +235,29 @@ public class ObjectsTabEndpoint {
 	public ValueBean<IDataSet> tableVersionColumns(@PathParam("sessionId") String sessionId,
 			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
 			@QueryParam("tableName") String tableName, @QueryParam("tableType") String tableType)
-			throws DataSetException, AuthorizationException {
+			throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		IDataSet dataset = manager.getTableVersionColumns(session, catalog, schema, tableName, tableType);
+		IDataSet dataset;
+		try {
+			dataset = manager.getTableVersionColumns(session, catalog, schema, tableName, tableType);
+		} catch (DataSetException e) {
+			throw webAppException(e);
+		}
 		return new ValueBean<>(dataset);
+	}
+
+	/**
+	 * Convert a DataSetException into a WebApplicationException
+	 * 
+	 * @param e
+	 * @return
+	 */
+	private WebApplicationException webAppException(DataSetException e) {
+		if (e.getCause() != null) {
+			// this is probably a SQLException
+			return new WebApplicationException(e.getCause().getMessage(), Status.BAD_REQUEST);
+		} else {
+			return new WebApplicationException(e.getMessage(), Status.BAD_REQUEST);
+		}
 	}
 }

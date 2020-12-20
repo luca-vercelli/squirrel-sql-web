@@ -5,22 +5,27 @@ SQuirreL SQL Client - Web version
 
 This is a web version of the famous web client.
 
-
-Screenshots
-----------
-[![Drivers](https://i.postimg.cc/9DfwVs8t/drivers.png)](https://i.postimg.cc/8zRRdSL3/drivers.png)
-[![Aliases](https://i.postimg.cc/vchxJGzZ/aliases.png)](https://i.postimg.cc/Z5tPyRvp/aliases.png)
-
-Build
------
-You need at least Java (>=8), Maven, nodejs, gulp. Compile all with
-
-    mvn package
-
-Frontend: Material Dash https://github.com/BootstrapDash/Material-Admin
+Frontend: Vuetify Material Dashboard https://www.creative-tim.com/product/vuetify-material-dashboard
 
 Backend: Java EE (JAXRS, EJB, CDI).
 
+
+
+Screenshots
+----------
+![Drivers](screenshots/01-drivers-list.png)
+![Driver](screenshots/02-driver.png)
+![Aliases](screenshots/03-alias-list.png)
+![Alias](screenshots/04-alias.png)
+![Objects](screenshots/05-objects-tab.png)
+![Query](screenshots/06-sql-tab.png)
+![Tables](screenshots/07-table-tab.png)
+
+Build
+-----
+You need at least Java (>=8), Maven, nodejs. Compile all with
+
+    mvn package
 
 Run
 ---
@@ -33,16 +38,19 @@ We are using Glassfish 4.1.2 with MOXy patch described [here](https://github.com
 Project roadmap
 ---------------
 
-- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Project structure 
-- ![WIP](https://img.shields.io/badge/Status-Done-green.svg) Drivers CRUD
-- ![WIP](https://img.shields.io/badge/Status-Done-green.svg) Aliasess CRUD
+- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Project structure
+- ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Vue.js frontend
+- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Drivers CRUD
+- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Aliases CRUD
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Aliases properties window
-- ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) SQL window
-- ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Tables tree
+- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) SQL window
+- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Tables tree
+- ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Procedures, UDT, ...
+- ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Handling with large tables
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Global preferences window
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) New session properties window
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) View SQuirreL logs window
-- ![WIP](https://img.shields.io/badge/Status-Done-green.svg) Web security
+- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Web security (well, we still need to encrypt passwords)
 
 
 Authentication
@@ -53,6 +61,6 @@ Run mock
 --------
 For frontend development, we can run in mock mode with NodeJS instead of Glassfish:
 
-1. Set `enable_mock = true` in file `login.js`
+1. Set `VUE_APP_MOCK=true` in file `.env` or `.env.local`
 2. `cd src/main/javascript`
-3. `gulp serve`
+3. `npm start`
