@@ -8,8 +8,13 @@ This is a web version of the famous web client.
 
 Screenshots
 ----------
-[![Drivers](https://i.postimg.cc/9DfwVs8t/drivers.png)](https://i.postimg.cc/8zRRdSL3/drivers.png)
-[![Aliases](https://i.postimg.cc/vchxJGzZ/aliases.png)](https://i.postimg.cc/Z5tPyRvp/aliases.png)
+![Drivers](screenshots/01-drivers-list.png)
+![Driver](screenshots/02-driver.png)
+![Aliases](screenshots/03-alias-list.png)
+![Alias](screenshots/04-alias.png)
+![Objects](screenshots/05-objects-tab.png)
+![Query](screenshots/06-sql-tab.png)
+![Tables](screenshots/07-table-tab.png)
 
 Build
 -----
@@ -33,16 +38,19 @@ We are using Glassfish 4.1.2 with MOXy patch described [here](https://github.com
 Project roadmap
 ---------------
 
-- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Project structure 
-- ![WIP](https://img.shields.io/badge/Status-Done-green.svg) Drivers CRUD
-- ![WIP](https://img.shields.io/badge/Status-Done-green.svg) Aliasess CRUD
+- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Project structure
+- ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Vue.js frontend
+- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Drivers CRUD
+- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Aliasess CRUD
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Aliases properties window
-- ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) SQL window
-- ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Tables tree
+- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) SQL window
+- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Tables tree
+- ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Procedures, UDT, ...
+- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Handling with large tables
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Global preferences window
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) New session properties window
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) View SQuirreL logs window
-- ![WIP](https://img.shields.io/badge/Status-Done-green.svg) Web security
+- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Web security
 
 
 Authentication
