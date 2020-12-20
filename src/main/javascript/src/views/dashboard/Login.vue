@@ -72,7 +72,6 @@
           error: function (response) {
             if (response && response.responseJSON && response.responseJSON.error && response.responseJSON.error.value) {
               // This is a well-formed OData-like error message
-              //alert(response.responseJSON.error.value)
               that.$emit('notify', { message: response.responseJSON.error.value, type: 'error' })
             } else {
               console.log(response)
