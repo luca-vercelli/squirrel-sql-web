@@ -38,7 +38,22 @@ public class SqlTabEndpoint {
 		try {
 			return new ValueBean<>(manager.executeSqlCommand(session, query));
 		} catch (DataSetException e) {
-			throw new WebApplicationException(e.getMessage(), Status.BAD_REQUEST);
+			throw webAppException(e);
+		}
+	}
+
+	/**
+	 * Convert a DataSetException into a WebApplicationException
+	 * 
+	 * @param e
+	 * @return
+	 */
+	private WebApplicationException webAppException(DataSetException e) {
+		if (e.getCause() != null) {
+			// this is probably a SQLException
+			return new WebApplicationException(e.getCause().getMessage(), Status.BAD_REQUEST);
+		} else {
+			return new WebApplicationException(e.getMessage(), Status.BAD_REQUEST);
 		}
 	}
 }

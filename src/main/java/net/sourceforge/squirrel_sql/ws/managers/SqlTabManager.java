@@ -83,7 +83,7 @@ public class SqlTabManager {
 			final Statement stmt = conn.createStatement();
 			try {
 				final boolean returnResultSet = stmt.execute(query);
-				if (returnResultSet) {
+				if (!returnResultSet) {
 					// Not a SELECT
 					return null;
 				}
