@@ -33,15 +33,21 @@
             v-if="item.type=='objects' && session.identifier"
             :session-identifier="session.identifier"
             @open-table="addTableTab"
+            @notify="$emit('notify', $event)"
+            @ajax-error="$emit('ajax-error', $event)"
           />
           <sql-query
             v-if="item.type=='query' && session.identifier"
             :session-identifier="session.identifier"
+            @notify="$emit('notify', $event)"
+            @ajax-error="$emit('ajax-error', $event)"
           />
           <table-tab
             v-if="item.type=='table' && session.identifier"
             :session-identifier="session.identifier"
             :table-node="item.node"
+            @notify="$emit('notify', $event)"
+            @ajax-error="$emit('ajax-error', $event)"
           />
           <!-- TODO should add some kind of "close" button -->
         </v-card>
