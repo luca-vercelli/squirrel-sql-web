@@ -1,22 +1,24 @@
 <template>
   <div>
-    <v-app v-if="authenticated">
-      <dashboard-core-app-bar @unauthenticated="authenticated=false" />
-      <dashboard-core-drawer />
-      <dashboard-core-view
-        @notify="notify=$event"
-        @ajax-error="ajaxErrorResponse=$event"
+    <v-app>
+      <div v-if="authenticated">
+        <dashboard-core-app-bar @unauthenticated="authenticated=false" />
+        <dashboard-core-drawer />
+        <dashboard-core-view
+          @notify="notify=$event"
+          @ajax-error="ajaxErrorResponse=$event"
+        />
+        <dashboard-core-settings />
+      </div>
+      <login-form
+        v-else
+        @authenticated="authenticated=true"
       />
-      <dashboard-core-settings />
+      <notify
+        :notify="notify"
+        :ajax-error-response="ajaxErrorResponse"
+      />
     </v-app>
-    <login-form
-      v-else
-      @authenticated="authenticated=true"
-    />
-    <notify
-      :notify="notify"
-      :ajax-error-response="ajaxErrorResponse"
-    />
   </div>
 </template>
 

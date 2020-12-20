@@ -1,7 +1,7 @@
 <template>
   <base-material-snackbar
     v-model="snackbar"
-    :type="color"
+    :type="type"
   >
     <span v-html="msg" />
   </base-material-snackbar>
@@ -29,7 +29,7 @@
     data: () => ({
       snackbar: false,
       msg: '',
-      color: null,
+      type: null,
     }),
 
     watch: {
@@ -38,7 +38,7 @@
         var response = this.ajaxErrorResponse
         if (response) {
           this.snackbar = true
-          this.color = 'error'
+          this.type = 'error'
           if (response && response.responseJSON && response.responseJSON.error && response.responseJSON.error.value) {
             // well-formed OData-like error
             this.msg = response.responseJSON.error.value
@@ -53,15 +53,18 @@
           this.snackbar = false
           this.msg = ''
         }
+        console.log('HERE', this.msg, this.type)
       },
       notify () {
+        console.log('DEBUG2', this.notify)
         if (this.notify && this.notify.message) {
           this.snackbar = true
+          this.msg = this.notify.message
+          this.type = this.notify.type
         } else {
           this.snackbar = false
-          this.msg = this.notify.message
-          this.color = this.notify.type
         }
+        console.log('THERE', this.msg, this.type)
       },
     },
 
