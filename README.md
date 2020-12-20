@@ -5,6 +5,11 @@ SQuirreL SQL Client - Web version
 
 This is a web version of the famous web client.
 
+Frontend: Vuetify Material Dashboard https://www.creative-tim.com/product/vuetify-material-dashboard
+
+Backend: Java EE (JAXRS, EJB, CDI).
+
+
 
 Screenshots
 ----------
@@ -22,11 +27,6 @@ You need at least Java (>=8), Maven, nodejs. Compile all with
 
     mvn package
 
-Frontend: Vuetify Material Dashboard https://www.creative-tim.com/product/vuetify-material-dashboard
-
-Backend: Java EE (JAXRS, EJB, CDI).
-
-
 Run
 ---
 The application is intended to be run in a real EE container (Glassfish, TomEE, JBoss, ...) not Tomcat.
@@ -41,16 +41,16 @@ Project roadmap
 - ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Project structure
 - ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Vue.js frontend
 - ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Drivers CRUD
-- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Aliasess CRUD
+- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Aliases CRUD
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Aliases properties window
 - ![DONE](https://img.shields.io/badge/Status-Done-green.svg) SQL window
 - ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Tables tree
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Procedures, UDT, ...
-- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Handling with large tables
+- ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Handling with large tables
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Global preferences window
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) New session properties window
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) View SQuirreL logs window
-- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Web security
+- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Web security (well, we still need to encrypt passwords)
 
 
 Authentication
