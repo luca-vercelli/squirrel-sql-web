@@ -97,7 +97,7 @@
     data: () => ({
       items: [
         {
-          icon: 'mdi-connection',
+          icon: 'mdi-database',
           title: 'aliases',
           to: '/',
         },

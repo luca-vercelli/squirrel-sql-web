@@ -5,7 +5,7 @@
     tag="section"
   >
     <base-material-card
-      icon="mdi-clipboard-text"
+      icon="mdi-pencil"
       title="Alias"
       class="px-5 py-3"
     >

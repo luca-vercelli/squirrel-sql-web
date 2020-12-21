@@ -5,8 +5,8 @@
     tag="section"
   >
     <base-material-card
-      icon="mdi-clipboard-text"
-      title="Drivers"
+      icon="mdi-pencil"
+      title="Driver"
       class="px-5 py-3"
     >
       <v-form

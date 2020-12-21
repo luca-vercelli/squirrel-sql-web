@@ -1,12 +1,12 @@
 <template>
   <v-container
-    id="regular-tables"
+    id="sql-tab"
     fluid
     tag="section"
   >
     <base-material-card
-      icon="mdi-clipboard-text"
-      title="Session"
+      icon="mdi-database-search"
+      title="SQL"
       class="px-5 py-3"
     >
       <v-textarea

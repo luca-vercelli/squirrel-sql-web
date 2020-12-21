@@ -5,7 +5,7 @@
     tag="section"
   >
     <base-material-card
-      icon="mdi-clipboard-text"
+      icon="mdi-connection"
       title="Open sessions"
       class="px-5 py-3"
     >
