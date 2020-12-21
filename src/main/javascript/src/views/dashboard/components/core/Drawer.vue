@@ -116,11 +116,6 @@
           title: 'user',
           to: '/pages/user',
         },
-        {
-          title: 'notifications',
-          icon: 'mdi-bell',
-          to: '/components/notifications',
-        },
       ],
     }),
 
