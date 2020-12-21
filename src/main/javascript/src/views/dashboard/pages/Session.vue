@@ -114,8 +114,9 @@
             that.editEnabled = true
           },
           error: function (response) {
-            console.error('Wrong session id. Probably the user typed an old url: ' + location.href)
+            console.error('Error retrieving session id. Probably the user typed an old url: ' + location.href)
             that.$emit('ajax-error', response)
+            that.$router.push('/')
           },
         })
       },
@@ -137,7 +138,7 @@
           },
           error: function (response) {
             that.$emit('ajax-error', response)
-            that.editEnabled = true
+            that.$router.push('/')
           },
         })
       },
