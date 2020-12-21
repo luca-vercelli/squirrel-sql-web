@@ -5,8 +5,8 @@
     tag="section"
   >
     <base-material-card
-      icon="mdi-clipboard-text"
-      title="Aliases"
+      icon="mdi-login"
+      title="Login"
       class="px-5 py-3"
     >
       <v-form
@@ -25,15 +25,17 @@
           label="Password"
           required
         />
-      </v-form>
 
-      <v-btn
-        :disabled="!valid"
-        color="success"
-        @click="login"
-      >
-        Login
-      </v-btn>
+        <p>Default username/password is admin/admin</p>
+
+        <v-btn
+          :disabled="!valid"
+          color="success"
+          @click="login"
+        >
+          Login
+        </v-btn>
+      </v-form>
     </base-material-card>
   </v-container>
 </template>
