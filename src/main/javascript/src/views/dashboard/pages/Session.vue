@@ -107,11 +107,15 @@
           },
           success: function (response) {
             that.session = response.value
+            if (!that.session) {
+              console.log('Wrong session id. Probably the user typed an old url: ' + location.href)
+              that.$route.push('/')
+            }
             that.editEnabled = true
           },
-          error: function (data, status) {
-            console.log('Data:', data, 'Status:', status)
-            that.editEnabled = true
+          error: function (response) {
+            console.error('Wrong session id. Probably the user typed an old url: ' + location.href)
+            that.$emit('ajax-error', response)
           },
         })
       },
@@ -128,13 +132,12 @@
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
-          success: function (data, status) {
+          success: function () {
             that.$router.push('/')
           },
-          error: function (response, status) {
-            console.log(response)
-            // TODO showAjaxError(response)
-            this.editEnabled = true
+          error: function (response) {
+            that.$emit('ajax-error', response)
+            that.editEnabled = true
           },
         })
       },
