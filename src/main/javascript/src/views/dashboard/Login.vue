@@ -18,12 +18,14 @@
           v-model="username"
           label="Username"
           required
+          @keydown="onEnterLogin"
         />
 
         <v-text-field
           v-model="password"
           label="Password"
           required
+          @keydown="onEnterLogin"
         />
 
         <p>Default username/password is admin/admin</p>
@@ -81,6 +83,12 @@
             }
           },
         })
+      },
+      onEnterLogin: function (evt) {
+        console.log(evt)
+        if (evt.key === 'Enter') {
+          this.login()
+        }
       },
     },
   }
