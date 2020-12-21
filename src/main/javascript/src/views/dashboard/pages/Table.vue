@@ -10,22 +10,22 @@
       class="px-5 py-3"
     >
       <template>
-        <v-btn
-          v-for="button in buttons"
-          :key="button.endpoint"
-          color="success"
-          @click="loadDetails(button.endpoint)"
+        <v-tabs
+          v-model="tab"
+          center-active
         >
-          <i
-            aria-hidden="true"
-            class="v-icon notranslate mdi mdi-edit theme--dark"
-          />
-          {{ button.caption }}
-        </v-btn>
+          <v-tab
+            v-for="tab in tabs"
+            :key="tab.endpoint"
+            @click="loadDetails(tab.endpoint)"
+          >
+            {{ tab.caption }}
+          </v-tab>
+        </v-tabs>
         <sql-results
           v-if="results"
           :data-set="results"
-        /> &nbsp;
+        />
       </template>
     </base-material-card>
   </v-container>
@@ -56,7 +56,7 @@
         enableMock: process.env.VUE_APP_MOCK === 'true',
         editEnabled: false,
         results: null,
-        buttons: [
+        tabs: [
           { caption: 'Table content', endpoint: 'TableContent' },
           { caption: 'Columns', endpoint: 'TableColumns' },
           { caption: 'Row count', endpoint: 'TableRowCount' },
@@ -84,8 +84,6 @@
       loadDetails: function (endpoint) {
         this.editEnabled = false
         this.results = null
-        // TODO hideMessages();
-        // var endpoint = null // TODO
         var that = this
         $.ajax({
           url: this.enableMock ? process.env.BASE_URL + 'mock/DataSet.json' : process.env.BASE_URL + `ws/Session(${this.sessionIdentifier})/${endpoint}`,
@@ -103,9 +101,8 @@
             that.results = data.value
             that.editEnabled = true
           },
-          error: function (response, status) {
-            // TODO showAjaxError(response)
-            console.log(response)
+          error: function (response) {
+            that.$emit('ajax-error', response)
             that.editEnabled = true
           },
         })
