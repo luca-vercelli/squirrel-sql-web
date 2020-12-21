@@ -49,7 +49,6 @@
             @notify="$emit('notify', $event)"
             @ajax-error="$emit('ajax-error', $event)"
           />
-          <!-- TODO should add some kind of "close" button -->
         </v-card>
       </v-tab-item>
     </v-tabs-items>
@@ -97,7 +96,7 @@
       loadSession: function (identifier) {
         this.editEnabled = false
         this.session = {}
-        var url = this.enableMock ? process.env.BASE_URL + 'mock/SingleSession.json' : process.env.BASE_URL + 'ws/Session(' + identifier + ')'
+        var url = this.enableMock ? process.env.BASE_URL + 'mock/SingleSession.json' : process.env.BASE_URL + `ws/Session(${identifier})`
         var that = this
         $.ajax({
           url: url,
@@ -121,7 +120,7 @@
         })
       },
       disconnect: function () {
-        // TODO should give some warning
+        // TODO should give some warning. Or not?
         this.editEnabled = false
         var that = this
         $.ajax({
