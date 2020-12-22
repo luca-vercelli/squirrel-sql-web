@@ -108,7 +108,7 @@
             that.session = response.value
             if (!that.session) {
               console.log('Wrong session id. Probably the user typed an old url: ' + location.href)
-              that.$route.push('/')
+              that.$router.push('/')
             }
             that.editEnabled = true
           },
