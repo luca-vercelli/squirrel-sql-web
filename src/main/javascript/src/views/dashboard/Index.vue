@@ -8,7 +8,6 @@
           @notify="notify=$event"
           @ajax-error="ajaxErrorResponse=$event"
         />
-        <dashboard-core-settings />
       </div>
       <login-form
         v-else
@@ -32,7 +31,6 @@
     components: {
       DashboardCoreAppBar: () => import('./components/core/AppBar'),
       DashboardCoreDrawer: () => import('./components/core/Drawer'),
-      DashboardCoreSettings: () => import('./components/core/Settings'),
       DashboardCoreView: () => import('./components/core/View'),
       LoginForm: () => import('./Login'),
       Notify: () => import('./component/Notify'),
