@@ -10,7 +10,6 @@
       class="px-5 py-3"
     >
       <template>
-
         <v-btn
           :disabled="!editEnabled"
           color="secondary"
@@ -114,7 +113,7 @@
        */
       gc: function (node) {
         if (node.children) {
-          node.children.forEach(x => { this.gc(x); })
+          node.children.forEach(x => { this.gc(x) })
           node.children = []
         }
       },
