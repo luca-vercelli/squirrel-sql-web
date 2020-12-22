@@ -116,6 +116,11 @@
           title: 'user',
           to: '/pages/user',
         },
+        {
+          icon: 'mdi-tools',
+          title: 'tools',
+          to: '/pages/tools',
+        },
       ],
     }),
 

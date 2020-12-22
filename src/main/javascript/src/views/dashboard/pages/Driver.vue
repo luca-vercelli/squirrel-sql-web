@@ -81,18 +81,6 @@
         />
         Visit website
       </v-btn>
-      <v-btn
-        class="mr-4"
-        :disabled="driver.driverClassName == ''"
-        target="_blank"
-        @click="checkDriverClasses"
-      >
-        <i
-          aria-hidden="true"
-          class="v-icon notranslate mdi mdi-android theme--dark"
-        />
-        Load drivers
-      </v-btn>
 
       <v-btn
         :disabled="!editEnabled"
@@ -222,24 +210,6 @@
             that.driver = data.value
             that.editEnabled = true
             that.creating = false
-          },
-          error: function (response) {
-            that.$emit('ajax-error', response)
-          },
-        })
-      },
-      checkDriverClasses: function () {
-        this.editEnabled = false
-        var url = this.enableMock ? process.env.BASE_URL + 'mock/JustGetOk' : process.env.BASE_URL + 'ws/CheckAllDrivers'
-        var that = this
-        $.ajax({
-          type: this.enableMock ? 'GET' : 'POST',
-          url: url,
-          headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('authToken'),
-          },
-          success: function (data, status) {
-            that.$router.push('/')
           },
           error: function (response) {
             that.$emit('ajax-error', response)

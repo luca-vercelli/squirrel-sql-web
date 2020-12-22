@@ -17,6 +17,11 @@ export default new Router({
           path: 'pages/user',
           component: () => import('@/views/dashboard/pages/UserProfile'),
         },
+        {
+          name: 'Tools',
+          path: 'pages/tools',
+          component: () => import('@/views/dashboard/pages/Tools'),
+        },
         // Drivers
         {
           name: 'Drivers',
