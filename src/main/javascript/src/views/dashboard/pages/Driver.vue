@@ -93,6 +93,18 @@
         />
         Load drivers
       </v-btn>
+
+      <v-btn
+        :disabled="!editEnabled"
+        color="secondary"
+        @click="back"
+      >
+        <i
+          aria-hidden="true"
+          class="v-icon notranslate mdi mdi-step-backward theme--dark"
+        />
+        Back
+      </v-btn>
     </base-material-card>
   </v-container>
 </template>
@@ -227,12 +239,15 @@
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (data, status) {
-            that.$route.push('/')
+            that.$router.push('/')
           },
           error: function (response) {
             that.$emit('ajax-error', response)
           },
         })
+      },
+      back: function () {
+        this.$router.push('/drivers')
       },
     },
   }

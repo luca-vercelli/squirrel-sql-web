@@ -99,6 +99,18 @@
         />
         Save
       </v-btn>
+
+      <v-btn
+        :disabled="!editEnabled"
+        color="secondary"
+        @click="back"
+      >
+        <i
+          aria-hidden="true"
+          class="v-icon notranslate mdi mdi-step-backward theme--dark"
+        />
+        Back
+      </v-btn>
     </base-material-card>
   </v-container>
 </template>
@@ -264,6 +276,9 @@
         // FIXME these should be removed server-side
         this.alias.driverPropertiesClone = undefined
         this.alias.valid = undefined
+      },
+      back: function () {
+        this.$router.push('/')
       },
     },
   }
