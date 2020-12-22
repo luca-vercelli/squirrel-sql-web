@@ -121,6 +121,11 @@
           title: 'tools',
           to: '/pages/tools',
         },
+        {
+          icon: 'mdi-cog',
+          title: 'settings',
+          to: '/pages/settings',
+        },
       ],
     }),
 

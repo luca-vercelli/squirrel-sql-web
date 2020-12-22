@@ -22,6 +22,11 @@ export default new Router({
           path: 'pages/tools',
           component: () => import('@/views/dashboard/pages/Tools'),
         },
+        {
+          name: 'Settings',
+          path: 'pages/settings',
+          component: () => import('@/views/dashboard/pages/Settings'),
+        },
         // Drivers
         {
           name: 'Drivers',
