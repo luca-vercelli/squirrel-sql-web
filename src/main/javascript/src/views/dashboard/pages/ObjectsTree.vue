@@ -10,6 +10,18 @@
       class="px-5 py-3"
     >
       <template>
+
+        <v-btn
+          :disabled="!editEnabled"
+          color="secondary"
+          @click="refresh"
+        >
+          <i
+            aria-hidden="true"
+            class="v-icon notranslate mdi mdi-refresh theme--dark"
+          />
+          Refresh
+        </v-btn>
         <v-treeview
           activatable
           :active.sync="selectedNodes"
@@ -68,7 +80,6 @@
       loadRootNode: function () {
         this.editEnabled = false
         this.objectsTree = null
-        // TODO hideMessages();
         var that = this
         $.ajax({
           url: this.enableMock ? process.env.BASE_URL + 'mock/RootNode.json' : process.env.BASE_URL + `ws/Session(${this.sessionIdentifier})/RootNode`,
@@ -84,12 +95,28 @@
             }
             that.rootNode = rootNode
             that.openNodes.push(that.rootNode.simpleName)
+            that.editEnabled = true
           },
-          error: function (response, status) {
-            // TODO showAjaxError(response)
-            console.log(response)
+          error: function (response) {
+            that.$emit('ajax-error', response)
+            that.editEnabled = true
           },
         })
+      },
+      refresh: function () {
+        if (this.rootNode) {
+          this.gc(this.rootNode)
+        }
+        this.loadRootNode()
+      },
+      /**
+       * Free up some memory. Is this useful?
+       */
+      gc: function (node) {
+        if (node.children) {
+          node.children.forEach(x => { this.gc(x); })
+          node.children = []
+        }
       },
       addTreeViewNodeProperties: function (node) {
         node.id = node.simpleName
@@ -132,9 +159,6 @@
           console.log('Unsupported object type:' + node.objectType)
         }
         // TODO other types of nodes
-      },
-      alert: function (msg) {
-        alert(msg)
       },
     },
   }
