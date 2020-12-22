@@ -45,7 +45,7 @@
               <v-btn
                 color="success"
                 class="mr-4"
-                title="Delete"
+                title="Connect"
                 @click="connectOrDialog(alias)"
               >
                 <i
