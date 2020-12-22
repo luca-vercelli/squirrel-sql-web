@@ -11,7 +11,6 @@
     >
       <template>
         <v-tabs
-          v-model="tab"
           center-active
         >
           <v-tab
