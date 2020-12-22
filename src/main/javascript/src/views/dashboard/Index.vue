@@ -13,6 +13,8 @@
       <login-form
         v-else
         @authenticated="authenticated=true"
+        @notify="notify=$event"
+        @ajax-error="ajaxErrorResponse=$event"
       />
       <notify
         :notify="notify"
