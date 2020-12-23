@@ -246,6 +246,23 @@ public class ObjectsTabEndpoint {
 		return new ValueBean<>(dataset);
 	}
 
+	@GET
+	@Path("/Session({sessionId})/ProcedureColumns")
+	public ValueBean<IDataSet> procedureColumns(@PathParam("sessionId") String sessionId,
+			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+			@QueryParam("procedureName") String procedureName, @QueryParam("procedureType") int procedureType)
+			throws AuthorizationException {
+
+		ISession session = sessionsManager.getSessionById(sessionId);
+		IDataSet dataset;
+		try {
+			dataset = manager.getProcedureColumns(session, catalog, schema, procedureName, procedureType);
+		} catch (DataSetException e) {
+			throw webAppException(e);
+		}
+		return new ValueBean<>(dataset);
+	}
+
 	/**
 	 * Convert a DataSetException into a WebApplicationException
 	 * 
