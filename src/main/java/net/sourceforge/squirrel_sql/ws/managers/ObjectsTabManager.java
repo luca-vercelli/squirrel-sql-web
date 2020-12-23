@@ -211,6 +211,7 @@ public class ObjectsTabManager {
 		} else if (type == DatabaseObjectType.UDT_TYPE_DBO) {
 			return new UDTTypeExpander();
 		}
+		logger.error("Unsupported DatabaseObjectType: " + (type == null ? "null" : type.getName()));
 		return null;
 	}
 
