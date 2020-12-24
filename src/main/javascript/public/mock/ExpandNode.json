@@ -47,6 +47,15 @@
     "simpleName" : "SOMETABLE",
     "objectTypeI18n" : "SOMETABLE",
     "objectType" : "TABLE"
+  }, {
+    "children" : [ ],
+    "catalog" : null,
+    "qualifiedName" : "\"APP\".\"SOMEPROCEDURE\"",
+    "schemaName" : "APP",
+    "simpleName" : "SOMEPROCEDURE",
+    "objectTypeI18n" : "SOMEPROCEDURE",
+    "objectType" : "PROCEDURE",
+    "procedureType": 1
   } ],
   "count" : 6
 }

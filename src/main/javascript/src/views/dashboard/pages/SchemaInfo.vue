@@ -1,12 +1,12 @@
 <template>
   <v-container
-    id="table"
+    id="schema-info"
     fluid
     tag="section"
   >
     <base-material-card
       icon="mdi-table"
-      :title="'Procedure ' + procName"
+      title="Schema info"
       class="px-5 py-3"
     >
       <template>

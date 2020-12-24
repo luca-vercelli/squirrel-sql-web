@@ -250,7 +250,7 @@ public class ObjectsTabEndpoint {
 	@Path("/Session({sessionId})/ProcedureColumns")
 	public ValueBean<IDataSet> procedureColumns(@PathParam("sessionId") String sessionId,
 			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
-			@QueryParam("procedureName") String procedureName, @QueryParam("procedureType") int procedureType)
+			@QueryParam("procedureName") String procedureName, @QueryParam("procedureType") Integer procedureType)
 			throws AuthorizationException {
 
 		ISession session = sessionsManager.getSessionById(sessionId);

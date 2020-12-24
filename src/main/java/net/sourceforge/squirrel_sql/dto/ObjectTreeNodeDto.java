@@ -14,6 +14,8 @@ public class ObjectTreeNodeDto {
 	private String simpleName;
 	private String objectTypeI18n;
 	private String objectType;
+	private Integer procedureType;
+	private String procedureTypeDescription;
 
 	public ObjectTreeNodeDto() {
 	}
@@ -74,4 +76,19 @@ public class ObjectTreeNodeDto {
 		this.objectType = objectType;
 	}
 
+	public Integer getProcedureType() {
+		return procedureType;
+	}
+
+	public void setProcedureType(Integer procedureType) {
+		this.procedureType = procedureType;
+	}
+
+	public String getProcedureTypeDescription() {
+		return procedureTypeDescription;
+	}
+
+	public void setProcedureTypeDescription(String procedureTypeDescription) {
+		this.procedureTypeDescription = procedureTypeDescription;
+	}
 }

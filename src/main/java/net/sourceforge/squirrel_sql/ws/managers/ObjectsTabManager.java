@@ -120,6 +120,12 @@ public class ObjectsTabManager {
 		dto.setSimpleName(info.getSimpleName());
 		dto.setObjectTypeI18n(info.getDatabaseObjectType().getName());
 		dto.setObjectType(inverseDatabaseObjectTypes.get(info.getDatabaseObjectType()));
+
+		if (info instanceof ProcedureInfo) {
+			dto.setProcedureType(((ProcedureInfo) info).getProcedureType());
+			dto.setProcedureTypeDescription(((ProcedureInfo) info).getProcedureTypeDescription());
+		}
+
 		for (int i = 0; i < node.getChildCount(); ++i) {
 			dto.getChildren().add(node2Dto((ObjectTreeNode) node.getChildAt(i)));
 		}
@@ -144,8 +150,15 @@ public class ObjectsTabManager {
 	 * children.
 	 */
 	public ObjectTreeNode dto2Node(ObjectTreeNodeDto dto, ISession session) {
-		DatabaseObjectInfo info = new DatabaseObjectInfo(dto.getCatalog(), dto.getSchemaName(), dto.getSimpleName(),
-				databaseObjectTypes.get(dto.getObjectType()), session.getMetaData());
+		DatabaseObjectInfo info;
+		if (dto.getProcedureType() != null) {
+			// this is a procedure, I guess
+			info = new ProcedureInfo(dto.getCatalog(), dto.getSchemaName(), dto.getSimpleName(), null,
+					dto.getProcedureType(), (SQLDatabaseMetaData) session.getMetaData());
+		} else {
+			info = new DatabaseObjectInfo(dto.getCatalog(), dto.getSchemaName(), dto.getSimpleName(),
+					databaseObjectTypes.get(dto.getObjectType()), session.getMetaData());
+		}
 		ObjectTreeNode node = new ObjectTreeNode(session, info);
 		for (ObjectTreeNodeDto child : dto.getChildren()) {
 			node.add(dto2Node(child, session));

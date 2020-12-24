@@ -152,12 +152,7 @@
       },
       clickTreeNode: function (simpleName) {
         var node = this.allNodes[simpleName]
-        if (node.objectType === 'TABLE' || node.objectType === 'VIEW') {
-          this.$emit('open-table', node)
-        } else if (node.objectType !== 'SESSION' && node.objectType !== 'CATALOG' && node.objectType !== 'SCHEMA') {
-          console.log('Unsupported object type:' + node.objectType)
-        }
-        // TODO other types of nodes
+        this.$emit('open-tab', node)
       },
     },
   }

@@ -1,12 +1,12 @@
 <template>
   <v-container
-    id="table"
+    id="procedure"
     fluid
     tag="section"
   >
     <base-material-card
       icon="mdi-table"
-      :title="'Table ' + tableName"
+      :title="'Procedure ' + procName"
       class="px-5 py-3"
     >
       <template>
@@ -33,7 +33,7 @@
 <script>
   var $ = require('jquery')
   export default {
-    name: 'TableTab',
+    name: 'ProcedureTab',
 
     components: {
       SqlResults: () => import('./SqlResults'),
@@ -56,22 +56,13 @@
         editEnabled: false,
         results: null,
         tabs: [
-          { caption: 'Table content', endpoint: 'TableContent' },
-          { caption: 'Columns', endpoint: 'TableColumns' },
-          { caption: 'Row count', endpoint: 'TableRowCount' },
-          { caption: 'Primary key', endpoint: 'TablePk' },
-          { caption: 'Indexes', endpoint: 'TableIndexes' },
-          { caption: 'Privileges', endpoint: 'TablePrivileges' },
-          { caption: 'Imported keys', endpoint: 'TableImportedFk' },
-          { caption: 'Exported keys', endpoint: 'TableExportedFk' },
-          { caption: 'Table Row ID', endpoint: 'TableRowId' },
-          { caption: 'Version columns', endpoint: 'TableVersionColumns' },
+          { caption: 'Columns', endpoint: 'ProcedureColumns' },
         ],
       }
     },
 
     computed: {
-      tableName: function () {
+      procName: function () {
         return this.node.simpleName
       },
     },
@@ -90,8 +81,8 @@
           data: {
             catalog: this.node.catalog,
             schema: this.node.schemaName,
-            tableName: this.node.simpleName,
-            tableType: this.node.objectType,
+            procedureName: this.node.simpleName,
+            procedureType: this.node.procedureType,
           },
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),

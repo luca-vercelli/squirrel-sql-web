@@ -32,7 +32,7 @@
           <objects-tree
             v-if="item.type=='objects' && session.identifier"
             :session-identifier="session.identifier"
-            @open-table="addTableTab"
+            @open-tab="addTab"
             @notify="$emit('notify', $event)"
             @ajax-error="$emit('ajax-error', $event)"
           />
@@ -45,7 +45,21 @@
           <table-tab
             v-if="item.type=='table' && session.identifier"
             :session-identifier="session.identifier"
-            :table-node="item.node"
+            :node="item.node"
+            @notify="$emit('notify', $event)"
+            @ajax-error="$emit('ajax-error', $event)"
+          />
+          <procedure-tab
+            v-if="item.type=='procedure' && session.identifier"
+            :session-identifier="session.identifier"
+            :node="item.node"
+            @notify="$emit('notify', $event)"
+            @ajax-error="$emit('ajax-error', $event)"
+          />
+          <schema-info-tab
+            v-if="item.type=='schemaInfo' && session.identifier"
+            :session-identifier="session.identifier"
+            :node="item.node"
             @notify="$emit('notify', $event)"
             @ajax-error="$emit('ajax-error', $event)"
           />
@@ -64,6 +78,8 @@
       SqlQuery: () => import('./SqlQuery'),
       ObjectsTree: () => import('./ObjectsTree'),
       TableTab: () => import('./Table'),
+      ProcedureTab: () => import('./Procedure'),
+      SchemaInfoTab: () => import('./SchemaInfo'),
     },
 
     props: {
@@ -141,8 +157,22 @@
           },
         })
       },
-      addTableTab: function (node) {
-        var tab = { tab: node.simpleName, type: 'table', node: node }
+      addTab: function (node) {
+        if (node == null) {
+          // maybe the user has de-selected some node
+          return
+        }
+        var tab = null
+        if (node.objectType === 'TABLE' || node.objectType === 'VIEW') {
+          tab = { tab: node.simpleName, type: 'table', node: node }
+        } else if (node.objectType === 'PROCEDURE' || node.objectType === 'FUNCTION') {
+          tab = { tab: node.simpleName, type: 'procedure', node: node }
+        } else if (node.objectType === 'SESSION') {
+          tab = { tab: node.simpleName, type: 'schemaInfo', node: node }
+        } else if (node.objectType !== 'CATALOG' && node.objectType !== 'SCHEMA') {
+          console.log('Object type not supported:' + node.objectType)
+          return
+        }
         this.items.push(tab)
         this.tab = this.items.length - 1
       },
