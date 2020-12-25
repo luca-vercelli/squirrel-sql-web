@@ -10,14 +10,24 @@
       />
       Disconnect
     </v-btn>
+    <v-btn
+      color="success"
+      @click="addSqlTab()"
+    >
+      <i
+        aria-hidden="true"
+        class="v-icon notranslate mdi mdi-database-plus theme--dark"
+      />
+      New SQL tab
+    </v-btn>
 
     <v-tabs
       v-model="tab"
       center-active
     >
       <v-tab
-        v-for="item in items"
-        :key="item.tab"
+        v-for="(item, index) in items"
+        :key="index"
       >
         {{ item.tab }}
       </v-tab>
@@ -25,43 +35,50 @@
 
     <v-tabs-items v-model="tab">
       <v-tab-item
-        v-for="item in items"
-        :key="item.tab"
+        v-for="(item, index) in items"
+        :key="index"
       >
-        <v-card flat>
+        <v-card
+          v-if="session.identifier"
+          flat
+        >
           <objects-tree
-            v-if="item.type=='objects' && session.identifier"
+            v-if="item.type=='objects'"
             :session-identifier="session.identifier"
             @open-tab="addTab"
             @notify="$emit('notify', $event)"
             @ajax-error="$emit('ajax-error', $event)"
           />
           <sql-query
-            v-if="item.type=='query' && session.identifier"
+            v-if="item.type=='query'"
             :session-identifier="session.identifier"
             @notify="$emit('notify', $event)"
             @ajax-error="$emit('ajax-error', $event)"
+            @close-tab="closeTab(index)"
           />
           <table-tab
-            v-if="item.type=='table' && session.identifier"
+            v-if="item.type=='table'"
             :session-identifier="session.identifier"
             :node="item.node"
             @notify="$emit('notify', $event)"
             @ajax-error="$emit('ajax-error', $event)"
+            @close-tab="closeTab(index)"
           />
           <procedure-tab
-            v-if="item.type=='procedure' && session.identifier"
+            v-if="item.type=='procedure'"
             :session-identifier="session.identifier"
             :node="item.node"
             @notify="$emit('notify', $event)"
             @ajax-error="$emit('ajax-error', $event)"
+            @close-tab="closeTab(index)"
           />
           <schema-info-tab
-            v-if="item.type=='schemaInfo' && session.identifier"
+            v-if="item.type=='schemaInfo'"
             :session-identifier="session.identifier"
             :node="item.node"
             @notify="$emit('notify', $event)"
             @ajax-error="$emit('ajax-error', $event)"
+            @close-tab="closeTab(index)"
           />
         </v-card>
       </v-tab-item>
@@ -97,7 +114,7 @@
         tab: null,
         items: [
           { tab: 'Objects tree', type: 'objects' },
-          { tab: 'SQL Query', type: 'query' },
+          { tab: 'SQL', type: 'query' },
         ],
       }
     },
@@ -177,6 +194,15 @@
         }
         this.items.push(tab)
         this.tab = this.items.length - 1
+      },
+      addSqlTab: function () {
+        var tab = { tab: 'SQL', type: 'query' }
+        this.items.push(tab)
+        this.tab = this.items.length - 1
+      },
+      closeTab: function (index) {
+        this.items.splice(index, 1)
+        this.tab = 0
       },
     },
   }
