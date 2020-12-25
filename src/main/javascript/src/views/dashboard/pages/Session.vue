@@ -51,7 +51,7 @@
           />
           <sql-query
             v-if="item.type=='query'"
-            :session-identifier="session.identifier"
+            :session="session"
             @notify="$emit('notify', $event)"
             @ajax-error="$emit('ajax-error', $event)"
             @close-tab="closeTab(index)"

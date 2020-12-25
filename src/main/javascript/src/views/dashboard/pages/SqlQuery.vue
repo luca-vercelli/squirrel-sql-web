@@ -29,6 +29,16 @@
         placeholder="Type your query here"
         required
       />
+      <v-row>
+        <v-checkbox
+          v-model="session.properties.sqllimitRows"
+        />
+        <span title="'Read on' mode not supported">Limit rows:</span>
+        <v-text-field
+          v-model="session.properties.sqlnbrRowsToShow"
+          :disabled="!session.properties.sqllimitRows"
+        />
+      </v-row>
 
       <template v-slot:actions>
         <v-btn
@@ -61,9 +71,9 @@
     },
 
     props: {
-      sessionIdentifier: {
-        type: String,
-        default: '',
+      session: {
+        type: Object,
+        default: Object,
       },
     },
 
@@ -90,7 +100,7 @@
           url: this.enableMock ? process.env.BASE_URL + 'mock/DataSet.json' : process.env.BASE_URL + 'ws/ExecuteQuery',
           type: this.enableMock ? 'GET' : 'POST',
           data: {
-            sessionId: this.sessionIdentifier,
+            sessionId: this.session.identifier,
             query: this.query,
           },
           headers: {
