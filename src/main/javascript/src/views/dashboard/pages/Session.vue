@@ -75,10 +75,10 @@
     name: 'Session',
 
     components: {
+      ProcedureTab: () => import('./Procedure'),
       SqlQuery: () => import('./SqlQuery'),
       ObjectsTree: () => import('./ObjectsTree'),
       TableTab: () => import('./Table'),
-      ProcedureTab: () => import('./Procedure'),
       SchemaInfoTab: () => import('./SchemaInfo'),
     },
 
@@ -169,8 +169,10 @@
           tab = { tab: node.simpleName, type: 'procedure', node: node }
         } else if (node.objectType === 'SESSION') {
           tab = { tab: node.simpleName, type: 'schemaInfo', node: node }
-        } else if (node.objectType !== 'CATALOG' && node.objectType !== 'SCHEMA') {
-          console.log('Object type not supported:' + node.objectType)
+        } else {
+          if (node.objectType !== 'CATALOG' && node.objectType !== 'SCHEMA') {
+            console.log('Object type not supported:' + node.objectType)
+          }
           return
         }
         this.items.push(tab)

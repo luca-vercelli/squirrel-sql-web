@@ -128,7 +128,8 @@
         return nodes
       },
       removeUnwantedChildren: function (nodes) {
-        nodes.forEach(node => { if (node.objectType == null || node.objectType === 'TABLE' || node.objectType === 'VIEW') node.children = undefined })
+        const leafTypes = [null, 'TABLE', 'VIEW', 'PROCEDURE', 'FUNCTION']
+        nodes.forEach(node => { if (leafTypes.includes(node.objectType)) node.children = undefined })
         return nodes
       },
       async loadChildren (node) {
