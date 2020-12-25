@@ -11,6 +11,8 @@
     >
       <template>
         TODO
+        (this is NOT the schema info)
+        Tabs: Metadata, status, catalogs, table types, data types, numerig/string/system/datetime functions, keywords
       </template>
     </base-material-card>
   </v-container>

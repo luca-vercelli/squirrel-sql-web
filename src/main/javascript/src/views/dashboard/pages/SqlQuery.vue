@@ -9,6 +9,18 @@
       title="SQL"
       class="px-5 py-3"
     >
+      <v-col class="text-right">
+        <v-btn
+          color="light"
+          @click="$emit('close-tab')"
+        >
+          <i
+            aria-hidden="true"
+            class="v-icon notranslate mdi mdi-close-circle theme--dark"
+          />
+          Close
+        </v-btn>
+      </v-col>
       <v-textarea
         v-model="query"
         filled
@@ -18,18 +30,19 @@
         required
       />
 
-      <v-btn
-        :disabled="!query"
-        color="success"
-        visible="false"
-        @click="executeQuery"
-      >
-        <i
-          aria-hidden="true"
-          class="v-icon notranslate mdi mdi-edit theme--dark"
-        />
-        Query
-      </v-btn>
+      <template v-slot:actions>
+        <v-btn
+          :disabled="!query"
+          color="success"
+          @click="executeQuery"
+        >
+          <i
+            aria-hidden="true"
+            class="v-icon notranslate mdi mdi-edit theme--dark"
+          />
+          Query
+        </v-btn>
+      </template>
     </base-material-card>
     <sql-results
       v-if="results"

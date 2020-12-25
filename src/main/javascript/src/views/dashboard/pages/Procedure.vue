@@ -9,6 +9,18 @@
       :title="'Procedure ' + procName"
       class="px-5 py-3"
     >
+      <v-col class="text-right">
+        <v-btn
+          color="light"
+          @click="$emit('close-tab')"
+        >
+          <i
+            aria-hidden="true"
+            class="v-icon notranslate mdi mdi-close-circle theme--dark"
+          />
+          Close
+        </v-btn>
+      </v-col>
       <template>
         <v-tabs
           center-active
