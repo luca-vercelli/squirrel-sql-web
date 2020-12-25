@@ -114,7 +114,7 @@
         tab: null,
         items: [
           { tab: 'Objects tree', type: 'objects' },
-          { tab: 'SQL', type: 'query' },
+          { tab: 'SQL', type: 'query', number: 1 },
         ],
       }
     },
@@ -196,24 +196,15 @@
         this.tab = this.items.length - 1
       },
       addSqlTab: function () {
-        var index = 2
-        for (var i in this.items) {
-          var label = this.items[i].tab
-          if (label.startsWith('SQL (')) {
-            // FIXME this could cause exceptions...
-            var newIndex = parseInt(label.replace('SQL (', '').replace(')', ''))
-            if (newIndex >= index) {
-              index = newIndex + 1
-            }
-          }
-        }
-        var tab = { tab: 'SQL (' + index + ')', type: 'query' }
+        var number = 1
+        this.items.forEach(x => { if (x.type === 'query' && x.number >= number) number = x.number + 1 })
+        var tab = { tab: `SQL (${number})`, type: 'query', number: number }
         this.items.push(tab)
         this.tab = this.items.length - 1
       },
       closeTab: function (index) {
         this.items.splice(index, 1)
-        this.tab = 0
+        this.tab = index - 1
       },
     },
   }
