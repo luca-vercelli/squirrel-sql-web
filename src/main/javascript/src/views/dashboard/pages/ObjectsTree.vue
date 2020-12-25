@@ -24,7 +24,7 @@
         </v-sheet>
         <v-btn
           :disabled="!editEnabled"
-          color="secondary"
+          color=""
           @click="refresh"
         >
           <i
