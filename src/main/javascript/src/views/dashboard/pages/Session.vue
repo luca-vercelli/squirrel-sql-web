@@ -196,7 +196,18 @@
         this.tab = this.items.length - 1
       },
       addSqlTab: function () {
-        var tab = { tab: 'SQL', type: 'query' }
+        var index = 2
+        for (var i in this.items) {
+          var label = this.items[i].tab
+          if (label.startsWith('SQL (')) {
+            // FIXME this could cause exceptions...
+            var newIndex = parseInt(label.replace('SQL (', '').replace(')', ''))
+            if (newIndex >= index) {
+              index = newIndex + 1
+            }
+          }
+        }
+        var tab = { tab: 'SQL (' + index + ')', type: 'query' }
         this.items.push(tab)
         this.tab = this.items.length - 1
       },
