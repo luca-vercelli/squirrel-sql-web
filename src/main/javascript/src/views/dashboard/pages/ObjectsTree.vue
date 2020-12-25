@@ -10,6 +10,18 @@
       class="px-5 py-3"
     >
       <template>
+        <v-sheet class="pa-4 primary ">
+          <v-text-field
+            v-model="search"
+            label="Search..."
+            dark
+            flat
+            solo-inverted
+            hide-details
+            clearable
+            clear-icon="mdi-close-circle-outline"
+          />
+        </v-sheet>
         <v-btn
           :disabled="!editEnabled"
           color="secondary"
@@ -28,6 +40,7 @@
           item-key="simpleName"
           :open="openNodes"
           :load-children="loadChildren"
+          :search="search"
           @update:active="clickTreeNode"
         />
       </template>
@@ -56,6 +69,7 @@
         selectedNodes: [], // the
         openNodes: [],
         allNodes: {},
+        search: null,
       }
     },
 
