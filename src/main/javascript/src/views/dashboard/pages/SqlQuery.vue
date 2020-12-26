@@ -45,10 +45,12 @@
         <v-checkbox
           v-model="session.properties.sqllimitRows"
           label="Limit rows:"
+          @change="saveProperties"
         />
         <v-text-field
           v-model="session.properties.sqlnbrRowsToShow"
           :disabled="!session.properties.sqllimitRows"
+          @change="saveProperties"
         />
       </template>
     </base-material-card>
@@ -114,6 +116,26 @@
             that.editEnabled = true
           },
           error: function (response, status) {
+            that.editEnabled = true
+            that.$emit('ajax-error', response)
+          },
+        })
+      },
+      saveProperties: function () {
+        this.editEnabled = false
+        this.results = null
+        var that = this
+        $.ajax({
+          url: this.enableMock ? process.env.BASE_URL + 'mock/JustGetOk' : process.env.BASE_URL + `ws/Session(${this.session.identifier})/Properties`,
+          type: this.enableMock ? 'GET' : 'PUT',
+          data: JSON.stringify(this.session.properties),
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+          },
+          success: function (data) {
+            that.editEnabled = true
+          },
+          error: function (response) {
             that.editEnabled = true
             that.$emit('ajax-error', response)
           },
