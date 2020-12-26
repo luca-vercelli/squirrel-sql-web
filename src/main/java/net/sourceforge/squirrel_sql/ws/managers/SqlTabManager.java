@@ -83,6 +83,7 @@ public class SqlTabManager {
 			final Statement stmt = conn.createStatement();
 			try {
 				final boolean returnResultSet = stmt.execute(query);
+				//StatementWrapper honours getSQLNbrRowsToShow....
 				if (!returnResultSet) {
 					// Not a SELECT
 					return null;

@@ -91,7 +91,7 @@ public class ObjectsTabEndpoint {
 			@QueryParam("tableName") String tableName, @QueryParam("tableType") String tableType)
 			throws AuthorizationException {
 
-		// FIXME what about row limits?
+		// FIXME what about row limits? -> SessionProperties.getSQLNbrRowsToShow
 
 		ISession session = sessionsManager.getSessionById(sessionId);
 		IDataSet dataset;
