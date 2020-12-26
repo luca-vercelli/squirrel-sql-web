@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 
 import net.sourceforge.squirrel_sql.client.gui.db.SQLAlias;
 import net.sourceforge.squirrel_sql.client.session.ISession;
+import net.sourceforge.squirrel_sql.client.session.properties.SessionProperties;
 import net.sourceforge.squirrel_sql.fw.id.IIdentifier;
 import net.sourceforge.squirrel_sql.fw.id.IntegerIdentifier;
 import net.sourceforge.squirrel_sql.fw.sql.SQLConnection;
@@ -219,6 +220,55 @@ public class SessionsManager {
 		}
 		sessions.clear();
 		openSessions.remove(token);
+	}
+
+	/**
+	 * Set all (?) properties from given bean into Session object.
+	 * 
+	 * @param session
+	 * @param newProps
+	 */
+	public void setProperties(ISession session, SessionProperties newProps) {
+		SessionProperties prop = session.getProperties();
+		prop.setAbortOnError(newProps.getAbortOnError());
+		prop.setAllowCtrlBJumpToObjectTree(newProps.getAllowCtrlBJumpToObjectTree());
+		prop.setAllowCtrlMouseClickJumpToObjectTree(newProps.getAllowCtrlMouseClickJumpToObjectTree());
+		prop.setAutoCommit(newProps.getAutoCommit());
+		prop.setCatalogFilterExclude(newProps.getCatalogFilterExclude());
+		prop.setCatalogFilterInclude(newProps.getCatalogFilterInclude());
+		prop.setCommitOnClosingConnection(newProps.getCommitOnClosingConnection());
+		prop.setContentsLimitRows(newProps.getContentsLimitRows());
+		prop.setContentsNbrRowsToShow(newProps.getContentsNbrRowsToShow());
+		prop.setFontInfo(newProps.getFontInfo());
+		prop.setKeepTableLayoutOnRerun(newProps.getKeepTableLayoutOnRerun());
+		prop.setLimitSQLEntryHistorySize(newProps.getLimitSQLEntryHistorySize());
+		prop.setLimitSQLResultTabs(newProps.getLimitSQLResultTabs());
+		prop.setLoadColumnsInBackground(newProps.getLoadColumnsInBackground());
+		prop.setLoadConnectionsCurrentCatalogOnly(newProps.getLoadConnectionsCurrentCatalogOnly());
+		prop.setLoadSchemasCatalogs(newProps.getLoadSchemasCatalogs());
+		prop.setMainTabPlacement(newProps.getMainTabPlacement());
+		prop.setMetaDataOutputClassName(newProps.getMetaDataOutputClassName());
+		prop.setObjectFilterExclude(newProps.getObjectFilterExclude());
+		prop.setObjectFilterInclude(newProps.getObjectFilterInclude());
+		prop.setObjectTabPlacement(newProps.getObjectTabPlacement());
+		prop.setRemoveMultiLineComment(newProps.getRemoveMultiLineComment());
+		prop.setSchemaFilterExclude(newProps.getSchemaFilterExclude());
+		prop.setSchemaFilterInclude(newProps.getSchemaFilterInclude());
+		prop.setShowResultsMetaData(newProps.getShowResultsMetaData());
+		prop.setShowRowCount(newProps.getShowRowCount());
+		prop.setShowSQLErrorsInTab(newProps.getShowSQLErrorsInTab());
+		prop.setShowToolBar(newProps.getShowToolBar());
+		prop.setSQLEntryHistorySize(newProps.getSQLEntryHistorySize());
+		prop.setSQLExecutionTabPlacement(newProps.getSQLExecutionTabPlacement());
+		prop.setSQLFetchSize(newProps.getSQLFetchSize());
+		prop.setSQLLimitRows(newProps.getSQLLimitRows());
+		prop.setSQLUseFetchSize(newProps.getSQLUseFetchSize());
+		prop.setStartOfLineComment(newProps.getStartOfLineComment());
+		prop.setSQLNbrRowsToShow(newProps.getSQLNbrRowsToShow());
+		prop.setTableContentsOutputClassName(newProps.getTableContentsOutputClassName());
+		prop.setTableTypeFilterExclude(newProps.getTableTypeFilterExclude());
+		prop.setTableTypeFilterInclude(newProps.getTableTypeFilterInclude());
+		prop.setWriteSQLErrorsToLog(newProps.getWriteSQLErrorsToLog());
 	}
 
 }

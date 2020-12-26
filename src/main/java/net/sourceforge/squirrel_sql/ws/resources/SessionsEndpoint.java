@@ -11,12 +11,14 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
+import net.sourceforge.squirrel_sql.client.session.properties.SessionProperties;
 import net.sourceforge.squirrel_sql.dto.ListBean;
 import net.sourceforge.squirrel_sql.dto.SessionDto;
 import net.sourceforge.squirrel_sql.dto.ValueBean;
@@ -91,4 +93,11 @@ public class SessionsEndpoint {
 		manager.disconnectAll(getCurrentToken());
 	}
 
+	@PUT
+	@Path("/Session({identifier})/Properties")
+	public void saveProperties(@PathParam("identifier") String identifier, SessionProperties props)
+			throws AuthorizationException {
+		ISession session = manager.getSessionById(identifier);
+		manager.setProperties(session, props);
+	}
 }
