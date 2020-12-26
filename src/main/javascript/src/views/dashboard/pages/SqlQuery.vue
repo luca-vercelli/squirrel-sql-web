@@ -29,16 +29,6 @@
         placeholder="Type your query here"
         required
       />
-      <v-row>
-        <v-checkbox
-          v-model="session.properties.sqllimitRows"
-        />
-        <span title="'Read on' mode not supported">Limit rows:</span>
-        <v-text-field
-          v-model="session.properties.sqlnbrRowsToShow"
-          :disabled="!session.properties.sqllimitRows"
-        />
-      </v-row>
 
       <template v-slot:actions>
         <v-btn
@@ -52,6 +42,14 @@
           />
           Query
         </v-btn>
+        <v-checkbox
+          v-model="session.properties.sqllimitRows"
+          label="Limit rows:"
+        />
+        <v-text-field
+          v-model="session.properties.sqlnbrRowsToShow"
+          :disabled="!session.properties.sqllimitRows"
+        />
       </template>
     </base-material-card>
     <sql-results
