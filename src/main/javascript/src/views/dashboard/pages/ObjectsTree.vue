@@ -10,12 +10,12 @@
       class="px-5 py-3"
     >
       <template>
-          <v-text-field
-            v-model="search"
-            label="Search..."
-            clearable
-            clear-icon="mdi-close-circle-outline"
-          />
+        <v-text-field
+          v-model="search"
+          label="Search..."
+          clearable
+          clear-icon="mdi-close-circle-outline"
+        />
         <v-btn
           :disabled="!editEnabled"
           color=""
