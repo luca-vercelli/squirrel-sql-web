@@ -26,7 +26,7 @@ public class PreferencesEndpoint {
 	}
 
 	@PUT
-	@Path("/Aliases({identifier})")
+	@Path("/Preferences")
 	public ValueBean<SquirrelPreferences> update(SquirrelPreferences prefs) throws ValidationException {
 		prefs = manager.update(prefs);
 		return new ValueBean<>(prefs);
