@@ -42,6 +42,15 @@
           />
           Query
         </v-btn>
+
+        <v-select
+          v-model="historySelected"
+          :items="history"
+          label="History"
+          :disabled="!editEnabled"
+          @change="selectFromHistory"
+        />
+
         <v-checkbox
           v-model="session.properties.sqllimitRows"
           label="Limit rows:"
@@ -83,15 +92,36 @@
         editEnabled: false,
         query: '',
         results: null,
+        historySelected: null,
+        history: [],
       }
     },
 
     computed: {},
 
     created: function () {
+      this.loadHistory()
     },
 
     methods: {
+      loadHistory: function () {
+        var url = this.enableMock ? process.env.BASE_URL + 'mock/History.json' : process.env.BASE_URL + 'ws/History'
+        var that = this
+        $.ajax({
+          url: url,
+          dataType: 'json',
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+          },
+          success: function (response) {
+            that.history = response.data
+          },
+          error: function (response, status) {
+            that.editEnabled = true
+            that.$emit('ajax-error', response)
+          },
+        })
+      },
       executeQuery: function () {
         this.editEnabled = false
         this.results = null
@@ -107,6 +137,7 @@
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (data) {
+            that.history.push(that.query)
             if (data.value == null) {
               // not a SELECT
               that.$emit('notify', { message: 'Success.', type: 'success' })
@@ -155,6 +186,11 @@
       },
       downloadSql: function () {
         this.download('Query.sql', this.query)
+      },
+      selectFromHistory: function () {
+        if (this.historySelected) {
+          this.query = this.historySelected
+        }
       },
     },
   }
