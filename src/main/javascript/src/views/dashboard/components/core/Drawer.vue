@@ -123,7 +123,7 @@
         },
         {
           icon: 'mdi-cog',
-          title: 'settings',
+          title: 'globalprefs',
           to: '/pages/settings',
         },
       ],

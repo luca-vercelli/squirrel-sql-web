@@ -23,7 +23,7 @@ export default new Router({
           component: () => import('@/views/dashboard/pages/Tools'),
         },
         {
-          name: 'Settings',
+          name: 'Global Preferences', // can't we translate this?
           path: 'pages/settings',
           component: () => import('@/views/dashboard/pages/Settings'),
         },
