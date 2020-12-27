@@ -10,18 +10,12 @@
       class="px-5 py-3"
     >
       <template>
-        <v-sheet class="pa-4 primary ">
           <v-text-field
             v-model="search"
             label="Search..."
-            dark
-            flat
-            solo-inverted
-            hide-details
             clearable
             clear-icon="mdi-close-circle-outline"
           />
-        </v-sheet>
         <v-btn
           :disabled="!editEnabled"
           color=""
