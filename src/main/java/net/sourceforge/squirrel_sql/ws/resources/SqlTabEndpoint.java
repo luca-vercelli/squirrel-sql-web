@@ -4,6 +4,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
@@ -11,6 +12,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.SQLHistoryItem;
+import net.sourceforge.squirrel_sql.dto.ListBean;
 import net.sourceforge.squirrel_sql.dto.ValueBean;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.DataSetException;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.IDataSet;
@@ -26,6 +29,12 @@ public class SqlTabEndpoint {
 	SqlTabManager manager;
 	@Inject
 	SessionsManager sessionsManager;
+
+	@GET
+	@Path("/History")
+	public ListBean<SQLHistoryItem> getHistory() {
+		return new ListBean<>(manager.getHistory());
+	}
 
 	@POST
 	@Path("/ExecuteQuery")

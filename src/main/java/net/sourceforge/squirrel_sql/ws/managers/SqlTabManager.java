@@ -3,6 +3,8 @@ package net.sourceforge.squirrel_sql.ws.managers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -12,6 +14,8 @@ import javax.ws.rs.core.Context;
 import org.apache.log4j.Logger;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.SQLHistory;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.SQLHistoryItem;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.DataSetException;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.IDataSet;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.ResultSetDataSet;
@@ -83,7 +87,7 @@ public class SqlTabManager {
 			final Statement stmt = conn.createStatement();
 			try {
 				final boolean returnResultSet = stmt.execute(query);
-				//StatementWrapper honours getSQLNbrRowsToShow....
+				// StatementWrapper honours getSQLNbrRowsToShow....
 				if (!returnResultSet) {
 					// Not a SELECT
 					return null;
@@ -106,5 +110,16 @@ public class SqlTabManager {
 
 	public DialectType getDialectType(ISession session) {
 		return DialectFactory.getDialectType(session.getMetaData());
+	}
+
+	/**
+	 * Return History
+	 * 
+	 * @return
+	 */
+	public List<SQLHistoryItem> getHistory() {
+		SQLHistory sqlHistory = webapp.getSQLHistory();
+		SQLHistoryItem[] data = sqlHistory.getData();
+		return Arrays.asList(data);
 	}
 }
