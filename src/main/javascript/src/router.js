@@ -24,8 +24,8 @@ export default new Router({
         },
         {
           name: 'Global Preferences', // can't we translate this?
-          path: 'pages/settings',
-          component: () => import('@/views/dashboard/pages/Settings'),
+          path: 'pages/preferences',
+          component: () => import('@/views/dashboard/pages/Preferences'),
         },
         // Drivers
         {

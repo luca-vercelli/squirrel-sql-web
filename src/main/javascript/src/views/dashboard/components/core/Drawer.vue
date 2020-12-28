@@ -124,7 +124,7 @@
         {
           icon: 'mdi-cog',
           title: 'globalprefs',
-          to: '/pages/settings',
+          to: '/pages/preferences',
         },
       ],
     }),
