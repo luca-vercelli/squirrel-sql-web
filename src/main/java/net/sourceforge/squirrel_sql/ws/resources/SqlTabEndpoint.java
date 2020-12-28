@@ -7,6 +7,8 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
@@ -31,12 +33,10 @@ public class SqlTabEndpoint {
 	SessionsManager sessionsManager;
 
 	@GET
-	@Path("/History")
-	public ListBean<SQLHistoryItem> getHistory() {
-		
-		 // should we filter by alias name?
-		
-		return new ListBean<>(manager.getHistory());
+	@Path("/Session({sessionId})/History")
+	public ListBean<SQLHistoryItem> getHistory(@PathParam("sessionId") String sessionId) throws AuthorizationException {
+		ISession session = sessionsManager.getSessionById(sessionId);
+		return new ListBean<>(manager.getHistory(session));
 	}
 
 	@POST
@@ -48,7 +48,7 @@ public class SqlTabEndpoint {
 		ISession session = sessionsManager.getSessionById(sessionId);
 
 		try {
-			return new ValueBean<>(manager.executeSqlCommand(session, query));
+			return new ValueBean<>(manager.executeSqlCommand(query, session));
 		} catch (DataSetException e) {
 			throw webAppException(e);
 		}

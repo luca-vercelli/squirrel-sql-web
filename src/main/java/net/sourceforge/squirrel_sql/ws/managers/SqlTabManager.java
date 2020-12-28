@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -13,6 +14,7 @@ import javax.ws.rs.core.Context;
 
 import org.apache.log4j.Logger;
 
+import net.sourceforge.squirrel_sql.client.preferences.PreferenceType;
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.SQLHistory;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.SQLHistoryItem;
@@ -75,12 +77,14 @@ public class SqlTabManager {
 	 * @throws SQLException
 	 * @throws DataSetException
 	 */
-	public IDataSet executeSqlCommand(ISession session, String query) throws DataSetException {
+	public IDataSet executeSqlCommand(String query, ISession session) throws DataSetException {
 
 		query = StringUtilities.cleanString(query);
 		logger.info("Running query: " + query);
 
 		// Following code is essentially copied from RowCountTab.java
+
+		addSQLToHistory(query, session);
 
 		final ISQLConnection conn = session.getSQLConnection();
 		try {
@@ -113,13 +117,39 @@ public class SqlTabManager {
 	}
 
 	/**
+	 * Save in history, if Preferences say that
+	 * 
+	 * @param sql
+	 * @param session
+	 */
+	public void addSQLToHistory(String sql, ISession session) {
+
+		// cfr. SQLPanelAPI.addSQLToHistory()
+
+		if (session.getProperties().getSQLShareHistory()) {
+			final SQLHistoryItem shi = new SQLHistoryItem(sql, session.getAlias().getName());
+			session.getApplication().getSQLHistory().add(shi);
+			session.getApplication().savePreferences(PreferenceType.SQLHISTORY);
+		}
+	}
+
+	/**
 	 * Return History
+	 * 
+	 * @param session
 	 * 
 	 * @return
 	 */
-	public List<SQLHistoryItem> getHistory() {
+	public List<SQLHistoryItem> getHistory(ISession session) {
+
 		SQLHistory sqlHistory = webapp.getSQLHistory();
 		SQLHistoryItem[] data = sqlHistory.getData();
-		return Arrays.asList(data);
+		List<SQLHistoryItem> list = Arrays.asList(data);
+
+		// FIXME how can we filter by session.alias ?!?
+
+		String aliasName = session.getAlias().getName();
+		return list.stream().filter(x -> x.getAliasName() == null || x.getAliasName().equals(aliasName))
+				.collect(Collectors.toList());
 	}
 }
