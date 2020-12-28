@@ -105,7 +105,7 @@
 
     methods: {
       loadHistory: function () {
-        var url = this.enableMock ? process.env.BASE_URL + 'mock/History.json' : process.env.BASE_URL + 'ws/History'
+        var url = this.enableMock ? process.env.BASE_URL + 'mock/History.json' : process.env.BASE_URL + `ws/Session(${this.session.identifier})/History`
         var that = this
         $.ajax({
           url: url,
