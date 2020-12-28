@@ -11,7 +11,7 @@
     >
       TODO
       <v-checkbox
-        v-model="settings.showTooltips"
+        v-model="preferences.showToolTips"
         label="Show tooltips"
         @change="saveProperties"
       />
@@ -38,16 +38,16 @@
     data () {
       return {
         enableMock: process.env.VUE_APP_MOCK === 'true',
-        settings: {},
+        preferences: {},
       }
     },
 
     created: function () {
-      this.loadSettings()
+      this.loadPreferences()
     },
 
     methods: {
-      loadSettings: function (identifier, boolClone) {
+      loadPreferences: function (identifier, boolClone) {
         this.editEnabled = false
         this.alias = {}
         var url = this.enableMock ? process.env.BASE_URL + 'mock/Preferences.json' : process.env.BASE_URL + 'ws/Preferences'
@@ -59,7 +59,7 @@
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (response) {
-            that.settings = response.value
+            that.preferences = response.value
             that.editEnabled = true
           },
           error: function (response) {
@@ -78,12 +78,12 @@
           method: this.enableMock ? 'GET' : 'PUT',
           dataType: 'json',
           contentType: 'application/json',
-          data: JSON.stringify(this.settings),
+          data: JSON.stringify(this.preferences),
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (response) {
-            that.settings = response.value
+            that.preferences = response.value
             that.editEnabled = true
           },
           error: function (response) {
