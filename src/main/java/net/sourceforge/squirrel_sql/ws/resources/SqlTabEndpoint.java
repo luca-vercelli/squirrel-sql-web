@@ -33,6 +33,9 @@ public class SqlTabEndpoint {
 	@GET
 	@Path("/History")
 	public ListBean<SQLHistoryItem> getHistory() {
+		
+		 // should we filter by alias name?
+		
 		return new ListBean<>(manager.getHistory());
 	}
 
