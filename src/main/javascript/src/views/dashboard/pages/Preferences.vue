@@ -19,12 +19,11 @@
       <v-checkbox
         v-model="preferences.showToolTips"
         label="Show tooltips"
-        @change="saveProperties"
       />
       <v-btn
         :disabled="!editEnabled"
         color="success"
-        @click="saveSettings"
+        @click="savePreferences"
       >
         <i
           aria-hidden="true"
@@ -74,7 +73,7 @@
           },
         })
       },
-      saveSettings: function (identifier, boolClone) {
+      savePreferences: function (identifier, boolClone) {
         this.editEnabled = false
         this.alias = {}
         var url = this.enableMock ? process.env.BASE_URL + 'mock/Preferences.json' : process.env.BASE_URL + 'ws/Preferences'
