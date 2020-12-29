@@ -22,7 +22,13 @@
         </v-btn>
       </v-col>
       <template>
-        <b>WORK IN PROGRESS</b>
+        <b>
+          <span
+            aria-hidden="true"
+            class="v-icon notranslate mdi mdi-alert"
+          />
+          WORK IN PROGRESS
+        </b>
 
         <v-tabs
           center-active

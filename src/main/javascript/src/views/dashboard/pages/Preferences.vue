@@ -9,7 +9,13 @@
       title="Global Prefrerences"
       class="px-5 py-3"
     >
-      TODO
+      <b>
+        <span
+          aria-hidden="true"
+          class="v-icon notranslate mdi mdi-alert"
+        />
+        WORK IN PROGRESS
+      </b>
       <v-checkbox
         v-model="preferences.showToolTips"
         label="Show tooltips"
