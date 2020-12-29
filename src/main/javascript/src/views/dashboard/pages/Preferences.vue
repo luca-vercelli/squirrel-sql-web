@@ -18,7 +18,7 @@
       </b>
       <v-checkbox
         v-model="preferences.showToolTips"
-        label="Show tooltips"
+        :label="$t('GeneralPreferencesPanel.showtooltips')"
       />
       <v-btn
         :disabled="!editEnabled"
