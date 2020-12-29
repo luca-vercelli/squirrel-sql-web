@@ -78,7 +78,7 @@
           method: this.enableMock ? 'GET' : 'PUT',
           dataType: 'json',
           contentType: 'application/json',
-          data: this.enableMock ? undefined: JSON.stringify(this.preferences),
+          data: this.enableMock ? undefined : JSON.stringify(this.preferences),
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
