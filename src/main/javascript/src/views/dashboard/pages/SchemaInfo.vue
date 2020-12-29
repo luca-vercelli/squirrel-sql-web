@@ -50,7 +50,7 @@
     name: 'SchemaInfoTab',
 
     components: {
-      // SqlResults: () => import('./SqlResults'),
+      SqlResults: () => import('./SqlResults'),
     },
 
     props: {
@@ -84,9 +84,6 @@
     },
 
     computed: {
-      procName: function () {
-        return this.node.simpleName
-      },
     },
 
     created: function () {
@@ -105,6 +102,7 @@
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (data) {
+            console.log(data)
             that.results = data.value
             that.editEnabled = true
           },
