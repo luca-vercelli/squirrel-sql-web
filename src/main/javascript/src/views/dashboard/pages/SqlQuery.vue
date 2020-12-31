@@ -46,14 +46,14 @@
         <v-select
           v-model="historySelected"
           :items="history"
-          :label="$t('TRANSLATE.history')"
+          :label="$t('SessionSQLPropertiesPanel.sqlhistory')"
           :disabled="!editEnabled"
           @change="selectFromHistory"
         />
 
         <v-checkbox
           v-model="session.properties.sqllimitRows"
-          :label="$t('TRANSLATE.limit rows:')"
+          :label="$t('SQLPanel.limitrowscheckbox.label')"
           @change="saveProperties"
         />
         <v-text-field
