@@ -36,6 +36,7 @@
       class="ml-2"
       min-width="0"
       text
+      :title="$t('AliasesList.title')"
       to="/"
     >
       <v-icon>mdi-view-dashboard</v-icon>
@@ -44,6 +45,7 @@
       class="ml-2"
       min-width="0"
       text
+      :title="$t('UserProfile.title')"
       to="/pages/user"
     >
       <v-icon>mdi-account</v-icon>

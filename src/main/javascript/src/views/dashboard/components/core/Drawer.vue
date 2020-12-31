@@ -98,12 +98,12 @@
       items: [
         {
           icon: 'mdi-database',
-          title: 'aliases',
+          title: 'AliasesList.title',
           to: '/',
         },
         {
           icon: 'mdi-chip',
-          title: 'drivers',
+          title: 'DriversList.title',
           to: '/drivers',
         },
         {

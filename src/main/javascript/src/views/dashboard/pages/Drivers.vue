@@ -6,7 +6,7 @@
   >
     <base-material-card
       icon="mdi-chip"
-      title="Drivers"
+      :title="$t('DriversList.title')"
       class="px-5 py-3"
     >
       <div class="text-right">

@@ -1,5 +1,4 @@
 {
-  "aliases": "Alias",
   "avatar": "SQuirreL SQL",
   "buttons": "Buttons",
   "calendar": "Calendar",
@@ -7,7 +6,6 @@
   "components": "Components",
   "ct": "CT",
   "dashboard": "Dashboard",
-  "drivers": "Drivers",
   "dtables": "Data Tables",
   "eforms": "Extended Forms",
   "error": "Error Page",
@@ -66,6 +64,14 @@
 "Login.username": "Username",
 "Login.password": "Password",
 "Login.message": "Default username/password is: admin/admin",
+
+"UserProfile.title": "User Profile",
+"UserProfile.username": "Username",
+"UserProfile.email": "Email Address",
+"UserProfile.firstname": "First Name",
+"UserProfile.lastname": "Last Name",
+"UserProfile.roles": "Role(s)",
+"UserProfile.action.update": "Update Profile",
 
 "DataTypePreferencesPanel.propsPanel.hint": "Set options for specific Data Types",
 "DataTypePreferencesPanel.propsPanel.title": "Data Type Controls",
@@ -212,6 +218,8 @@
 "SQLPreferencesPanel.notify.external.file.changes": "Notify external file changes (requires application restart)",
 
 "AliasesList.tooltip": "List of database aliases that can be connected to",
+"AliasesList.title": "Aliases",
+"AliasInternalFrame.title": "Alias",
 "AliasInternalFrame.addalias": "Add Alias",
 "AliasInternalFrame.autologon": "Auto logon",
 "AliasInternalFrame.autologon.security.tooltip": "DB-Session will be opened without stopping at login dialog. Requires saved user and password.",
@@ -313,6 +321,7 @@
 "DriverInternalFrame.weburl": "Website URL",
 "DriverInternalFrame.visitwebsite": "Visit Website",
 "DriversList.tooltiptext": "List of database drivers that can be used to configure an alias",
+"DriversList.title": "Drivers",
 "DriversListInternalFrame.error.ctrlF4key": "Probably closed by the ctrl F4 key. See BasicDesktopPaneUi.CloseAction",
 "DriversListInternalFrame.windowtitle": "Drivers",
 "DriverWindowFactory.error.copyingdriver": "Error occurred copying the driver",

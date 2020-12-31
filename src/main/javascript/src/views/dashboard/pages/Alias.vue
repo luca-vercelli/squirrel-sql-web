@@ -6,7 +6,7 @@
   >
     <base-material-card
       icon="mdi-pencil"
-      :title="$t('AliasInternalFrame.name')"
+      :title="$t('AliasInternalFrame.title')"
       class="px-5 py-3"
     >
       <v-form
