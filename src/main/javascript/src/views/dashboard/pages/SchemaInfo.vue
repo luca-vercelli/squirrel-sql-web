@@ -18,7 +18,7 @@
             aria-hidden="true"
             class="v-icon notranslate mdi mdi-close-circle theme--dark"
           />
-          Close
+          {{ $t('Action.close') }}
         </v-btn>
       </v-col>
       <template>

@@ -18,7 +18,7 @@
         aria-hidden="true"
         class="v-icon notranslate mdi mdi-database-plus theme--dark"
       />
-      New SQL tab
+      {{ $t('SQLPanel.newtab') }}
     </v-btn>
 
     <v-tabs
@@ -113,8 +113,8 @@
         editEnabled: false,
         tab: null,
         items: [
-          { tab: 'Objects tree', type: 'objects' },
-          { tab: 'SQL', type: 'query', number: 1 },
+          { tab: this.$t('ObjectTreeTab.title'), type: 'objects' },
+          { tab: this.$t('SQLTab.title'), type: 'query', number: 1 },
         ],
       }
     },
@@ -198,7 +198,7 @@
       addSqlTab: function () {
         var number = 1
         this.items.forEach(x => { if (x.type === 'query' && x.number >= number) number = x.number + 1 })
-        var tab = { tab: `SQL (${number})`, type: 'query', number: number }
+        var tab = { tab: this.$t('AdditionalSQLTab.title', [number]), type: 'query', number: number }
         this.items.push(tab)
         this.tab = this.items.length - 1
       },

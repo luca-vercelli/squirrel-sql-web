@@ -6,7 +6,7 @@
   >
     <base-material-card
       icon="mdi-table"
-      :title="'Procedure ' + procName"
+      :title="$t('Procedure.title', procName)"
       class="px-5 py-3"
     >
       <v-col class="text-right">
@@ -18,7 +18,7 @@
             aria-hidden="true"
             class="v-icon notranslate mdi mdi-close-circle theme--dark"
           />
-          Close
+          {{ $t('Action.close') }}
         </v-btn>
       </v-col>
       <template>
@@ -30,7 +30,7 @@
             :key="tab.endpoint"
             @click="loadDetails(tab.endpoint)"
           >
-            {{ tab.caption }}
+            {{ $t(tab.caption) }}
           </v-tab>
         </v-tabs>
         <sql-results
@@ -68,7 +68,7 @@
         editEnabled: false,
         results: null,
         tabs: [
-          { caption: 'Columns', endpoint: 'ProcedureColumns' },
+          { caption: 'ProcedureColumnsTab.title', endpoint: 'ProcedureColumns' },
         ],
       }
     },

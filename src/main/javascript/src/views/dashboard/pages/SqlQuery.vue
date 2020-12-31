@@ -6,7 +6,7 @@
   >
     <base-material-card
       icon="mdi-database-search"
-      title="SQL"
+      :title="$t('SQLTab.title')"
       class="px-5 py-3"
     >
       <v-col class="text-right">
@@ -18,7 +18,7 @@
             aria-hidden="true"
             class="v-icon notranslate mdi mdi-close-circle theme--dark"
           />
-          Close
+          {{ $t('Action.close') }}
         </v-btn>
       </v-col>
       <v-textarea
@@ -26,7 +26,7 @@
         filled
         auto-grow
         label="SQL Query"
-        placeholder="Type your query here"
+        :placeholder="$t('SQLTab.typeyourquery')"
         required
       />
 
@@ -40,20 +40,20 @@
             aria-hidden="true"
             class="v-icon notranslate mdi mdi-edit theme--dark"
           />
-          Query
+          {{ $t('SQLTab.action.query') }}
         </v-btn>
 
         <v-select
           v-model="historySelected"
           :items="history"
-          label="History"
+          :label="$t('TRANSLATE.history')"
           :disabled="!editEnabled"
           @change="selectFromHistory"
         />
 
         <v-checkbox
           v-model="session.properties.sqllimitRows"
-          label="Limit rows:"
+          :label="$t('TRANSLATE.limit rows:')"
           @change="saveProperties"
         />
         <v-text-field

@@ -6,7 +6,7 @@
   >
     <base-material-card
       icon="mdi-table"
-      :title="'Table ' + tableName"
+      :title="$t('Table.title', tableName)"
       class="px-5 py-3"
     >
       <v-col class="text-right">
@@ -18,7 +18,7 @@
             aria-hidden="true"
             class="v-icon notranslate mdi mdi-close-circle theme--dark"
           />
-          Close
+          {{ $t('Action.close') }}
         </v-btn>
       </v-col>
       <template>
@@ -30,7 +30,7 @@
             :key="tab.endpoint"
             @click="loadDetails(tab.endpoint)"
           >
-            {{ tab.caption }}
+            {{ $t(tab.caption) }}
           </v-tab>
         </v-tabs>
         <sql-results
@@ -68,16 +68,16 @@
         editEnabled: false,
         results: null,
         tabs: [
-          { caption: 'Table content', endpoint: 'TableContent' },
-          { caption: 'Columns', endpoint: 'TableColumns' },
-          { caption: 'Row count', endpoint: 'TableRowCount' },
-          { caption: 'Primary key', endpoint: 'TablePk' },
-          { caption: 'Indexes', endpoint: 'TableIndexes' },
-          { caption: 'Privileges', endpoint: 'TablePrivileges' },
-          { caption: 'Imported keys', endpoint: 'TableImportedFk' },
-          { caption: 'Exported keys', endpoint: 'TableExportedFk' },
-          { caption: 'Table Row ID', endpoint: 'TableRowId' },
-          { caption: 'Version columns', endpoint: 'TableVersionColumns' },
+          { caption: 'ContentsTab.title', endpoint: 'TableContent' },
+          { caption: 'ColumnsTab.title', endpoint: 'TableColumns' },
+          { caption: 'RowCountTab.title', endpoint: 'TableRowCount' },
+          { caption: 'PrimaryKeyTab.title', endpoint: 'TablePk' },
+          { caption: 'IndexesTab.title', endpoint: 'TableIndexes' },
+          { caption: 'ColumnPriviligesTab.title', endpoint: 'TablePrivileges' },
+          { caption: 'ImportedKeysTab.title', endpoint: 'TableImportedFk' },
+          { caption: 'ExportedKeysTab.title', endpoint: 'TableExportedFk' },
+          { caption: 'RowIDTab.title', endpoint: 'TableRowId' },
+          { caption: 'VersionColumnsTab.title', endpoint: 'TableVersionColumns' },
         ],
       }
     },
