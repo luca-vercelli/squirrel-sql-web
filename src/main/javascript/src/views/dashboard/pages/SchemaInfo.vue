@@ -6,7 +6,7 @@
   >
     <base-material-card
       icon="mdi-database"
-      title="Schema/Database Info"
+      :title="$t('MetaDataTab.title')"
       class="px-5 py-3"
     >
       <v-col class="text-right">
@@ -38,7 +38,7 @@
             :key="tab.endpoint"
             @click="loadDetails(tab.endpoint)"
           >
-            {{ tab.caption }}
+            {{ $t(tab.caption) }}
           </v-tab>
         </v-tabs>
         <sql-results
@@ -76,15 +76,17 @@
         editEnabled: false,
         results: null,
         tabs: [
-          { caption: 'Metadata', endpoint: 'SessionMetadata' },
-          { caption: 'Status', endpoint: 'SessionStatus' },
-          { caption: 'Catalogs', endpoint: 'SessionCatalogs' },
-          { caption: 'Table Types', endpoint: 'SessionTableTypes' },
-          { caption: 'Data Types', endpoint: 'SessionDataTypes' },
-          { caption: 'Numeric Functions', endpoint: 'SessionNumericFunctions' },
-          { caption: 'String Functions', endpoint: 'SessionStringFunctions' },
-          { caption: 'Date/time Functions', endpoint: 'SessionDateTimeFunctions' },
-          { caption: 'Keywords', endpoint: 'SessionKeywords' },
+          { caption: 'MetaDataTab.title', endpoint: 'SessionMetadata' },
+          { caption: 'ConnectionStatusTab.title', endpoint: 'SessionStatus' },
+          { caption: 'CatalogsTab.title', endpoint: 'SessionCatalogs' },
+          { caption: 'SchemasTab.title', endpoint: 'SessionSchemas' },
+          { caption: 'TableTypesTab.title', endpoint: 'SessionTableTypes' },
+          { caption: 'DataTypesTab.title', endpoint: 'SessionDataTypes' },
+          { caption: 'NumericFunctionsTab.title', endpoint: 'SessionNumericFunctions' },
+          { caption: 'StringFunctionsTab.title', endpoint: 'SessionStringFunctions' },
+          { caption: 'SystemFunctionsTab.title', endpoint: 'SessionSystemFunctions' },
+          { caption: 'TimeDateFunctionsTab.title', endpoint: 'SessionDateTimeFunctions' },
+          { caption: 'KeywordsTab.title', endpoint: 'SessionKeywords' },
         ],
       }
     },
