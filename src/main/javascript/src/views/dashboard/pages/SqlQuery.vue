@@ -46,6 +46,8 @@
         <v-select
           v-model="historySelected"
           :items="history"
+          item-text="sql"
+          item-value="sql"
           :label="$t('SessionSQLPropertiesPanel.sqlhistory')"
           :disabled="!editEnabled"
           @change="selectFromHistory"
@@ -89,7 +91,7 @@
     data () {
       return {
         enableMock: process.env.VUE_APP_MOCK === 'true',
-        editEnabled: false,
+        editEnabled: true,
         query: '',
         results: null,
         historySelected: null,
