@@ -9,16 +9,21 @@
       title="Global Prefrerences"
       class="px-5 py-3"
     >
-      TODO
+      <b>
+        <span
+          aria-hidden="true"
+          class="v-icon notranslate mdi mdi-alert"
+        />
+        WORK IN PROGRESS
+      </b>
       <v-checkbox
         v-model="preferences.showToolTips"
-        label="Show tooltips"
-        @change="saveProperties"
+        :label="$t('GeneralPreferencesPanel.showtooltips')"
       />
       <v-btn
         :disabled="!editEnabled"
         color="success"
-        @click="saveSettings"
+        @click="savePreferences"
       >
         <i
           aria-hidden="true"
@@ -68,7 +73,7 @@
           },
         })
       },
-      saveSettings: function (identifier, boolClone) {
+      savePreferences: function (identifier, boolClone) {
         this.editEnabled = false
         this.alias = {}
         var url = this.enableMock ? process.env.BASE_URL + 'mock/Preferences.json' : process.env.BASE_URL + 'ws/Preferences'

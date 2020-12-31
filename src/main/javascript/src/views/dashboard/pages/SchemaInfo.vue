@@ -5,14 +5,46 @@
     tag="section"
   >
     <base-material-card
-      icon="mdi-table"
-      title="Schema info"
+      icon="mdi-database"
+      title="Schema/Database Info"
       class="px-5 py-3"
     >
+      <v-col class="text-right">
+        <v-btn
+          color="light"
+          @click="$emit('close-tab')"
+        >
+          <i
+            aria-hidden="true"
+            class="v-icon notranslate mdi mdi-close-circle theme--dark"
+          />
+          Close
+        </v-btn>
+      </v-col>
       <template>
-        TODO
-        (this is NOT the schema info)
-        Tabs: Metadata, status, catalogs, table types, data types, numerig/string/system/datetime functions, keywords
+        <b>
+          <span
+            aria-hidden="true"
+            class="v-icon notranslate mdi mdi-alert"
+          />
+          WORK IN PROGRESS
+        </b>
+
+        <v-tabs
+          center-active
+        >
+          <v-tab
+            v-for="tab in tabs"
+            :key="tab.endpoint"
+            @click="loadDetails(tab.endpoint)"
+          >
+            {{ tab.caption }}
+          </v-tab>
+        </v-tabs>
+        <sql-results
+          v-if="results"
+          :data-set="results"
+        />
       </template>
     </base-material-card>
   </v-container>
@@ -24,7 +56,7 @@
     name: 'SchemaInfoTab',
 
     components: {
-      // SqlResults: () => import('./SqlResults'),
+      SqlResults: () => import('./SqlResults'),
     },
 
     props: {
@@ -44,15 +76,20 @@
         editEnabled: false,
         results: null,
         tabs: [
-          { caption: 'Columns', endpoint: 'ProcedureColumns' },
+          { caption: 'Metadata', endpoint: 'SessionMetadata' },
+          { caption: 'Status', endpoint: 'SessionStatus' },
+          { caption: 'Catalogs', endpoint: 'SessionCatalogs' },
+          { caption: 'Table Types', endpoint: 'SessionTableTypes' },
+          { caption: 'Data Types', endpoint: 'SessionDataTypes' },
+          { caption: 'Numeric Functions', endpoint: 'SessionNumericFunctions' },
+          { caption: 'String Functions', endpoint: 'SessionStringFunctions' },
+          { caption: 'Date/time Functions', endpoint: 'SessionDateTimeFunctions' },
+          { caption: 'Keywords', endpoint: 'SessionKeywords' },
         ],
       }
     },
 
     computed: {
-      procName: function () {
-        return this.node.simpleName
-      },
     },
 
     created: function () {
@@ -66,16 +103,12 @@
         $.ajax({
           url: this.enableMock ? process.env.BASE_URL + 'mock/DataSet.json' : process.env.BASE_URL + `ws/Session(${this.sessionIdentifier})/${endpoint}`,
           type: 'GET',
-          data: {
-            catalog: this.node.catalog,
-            schema: this.node.schemaName,
-            procedureName: this.node.simpleName,
-            procedureType: this.node.procedureType,
-          },
+          data: this.node,
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (data) {
+            console.log(data)
             that.results = data.value
             that.editEnabled = true
           },
