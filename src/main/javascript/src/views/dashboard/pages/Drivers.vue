@@ -13,7 +13,7 @@
         <v-btn
           color="success"
           class="mr-4"
-          title="Create new driver"
+          :title="$t('DriverInternalFrame.adddriver')"
           to="/new-driver"
         >
           <i
@@ -27,10 +27,10 @@
         <thead>
           <tr>
             <th class="primary--text">
-              Name
+              {{ $t('DriverInternalFrame.name') }}
             </th>
             <th class="text-right primary--text">
-              Actions
+              {{ $t('Action.actions') }}
             </th>
           </tr>
         </thead>
@@ -45,7 +45,7 @@
               <v-btn
                 color="success"
                 class="mr-4"
-                title="Edit"
+                :title="$t('Action.edit')"
                 :to="'/driver/' + driver.identifier"
               >
                 <i
@@ -56,7 +56,7 @@
               <v-btn
                 color="success"
                 class="mr-4"
-                title="Clone"
+                :title="$t('Action.clone')"
                 :to="'/clone-driver/' + driver.identifier"
               >
                 <i
@@ -67,7 +67,7 @@
               <v-btn
                 color="error"
                 class="mr-4"
-                title="Delete"
+                :title="$t('Action.delete')"
                 @click="deletingIdentifier = driver.identifier; showDeleteDialog = true"
               >
                 <i

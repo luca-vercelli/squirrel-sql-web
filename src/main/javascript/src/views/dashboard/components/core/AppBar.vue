@@ -52,6 +52,7 @@
       class="ml-2"
       min-width="0"
       text
+      :title="$t('Action.logout')"
       @click="logout"
     >
       <v-icon>mdi-logout</v-icon>

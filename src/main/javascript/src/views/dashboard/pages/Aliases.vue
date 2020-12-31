@@ -13,7 +13,7 @@
         <v-btn
           color="success"
           class="mr-4"
-          title="Create new alias"
+          :title="$t('AliasInternalFrame.addalias')"
           to="/new-alias"
         >
           <i
@@ -27,10 +27,10 @@
         <thead>
           <tr>
             <th class="primary--text">
-              Name
+              {{ $t('AliasInternalFrame.name') }}
             </th>
             <th class="text-right primary--text">
-              Actions
+              {{ $t('Action.actions') }}
             </th>
           </tr>
         </thead>
@@ -45,7 +45,7 @@
               <v-btn
                 color="success"
                 class="mr-4"
-                title="Connect"
+                :title="$t('AliasInternalFrame.connect')"
                 @click="connectOrDialog(alias)"
               >
                 <i
@@ -56,7 +56,7 @@
               <v-btn
                 color="success"
                 class="mr-4"
-                title="Edit"
+                :title="$t('Action.edit')"
                 :to="'/alias/' + alias.identifier"
               >
                 <i
@@ -67,7 +67,7 @@
               <v-btn
                 color="success"
                 class="mr-4"
-                title="Clone"
+                :title="$t('Action.clone')"
                 :to="'/clone-alias/' + alias.identifier"
               >
                 <i
@@ -78,7 +78,7 @@
               <v-btn
                 color="error"
                 class="mr-4"
-                title="Delete"
+                :title="$t('Action.delete')"
                 @click="deletingIdentifier = alias.identifier; showDeleteDialog = true"
               >
                 <i

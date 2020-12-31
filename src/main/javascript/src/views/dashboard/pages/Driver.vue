@@ -6,7 +6,7 @@
   >
     <base-material-card
       icon="mdi-pencil"
-      title="Driver"
+      :title="$t('DriverInternalFrame.driver')"
       class="px-5 py-3"
     >
       <v-form
@@ -16,28 +16,28 @@
       >
         <v-text-field
           v-model="driver.name"
-          label="Name"
+          :label="$t('DriverInternalFrame.name')"
           required
           :disabled="!editEnabled"
         />
 
         <v-text-field
           v-model="driver.url"
-          label="Example URL"
+          :label="$t('DriverInternalFrame.egurl')"
           required
           :disabled="!editEnabled"
         />
 
         <v-text-field
           v-model="driver.webSiteUrl"
-          label="Website URL"
+          :label="$t('DriverInternalFrame.weburl')"
           class="md-4"
           :disabled="!editEnabled"
         />
 
         <v-text-field
           v-model="driver.driverClassName"
-          label="Driver class name"
+          :label="$t('DriverInternalFrame.classname')"
           required
           :disabled="!editEnabled"
         />
@@ -54,7 +54,7 @@
           aria-hidden="true"
           class="v-icon notranslate mdi mdi-content-save theme--dark"
         />
-        Create
+        {{ $t('Action.create') }}
       </v-btn>
 
       <v-btn
@@ -67,7 +67,7 @@
           aria-hidden="true"
           class="v-icon notranslate mdi mdi-content-save theme--dark"
         />
-        Save
+        {{ $t('Action.save') }}
       </v-btn>
       <v-btn
         class="mr-4"
@@ -79,7 +79,7 @@
           aria-hidden="true"
           class="v-icon notranslate mdi mdi-call-made theme--dark"
         />
-        Visit website
+        {{ $t('DriverInternalFrame.visitwebsite') }}
       </v-btn>
 
       <v-btn
@@ -91,7 +91,7 @@
           aria-hidden="true"
           class="v-icon notranslate mdi mdi-step-backward theme--dark"
         />
-        Back
+        {{ $t('Action.back') }}
       </v-btn>
     </base-material-card>
   </v-container>

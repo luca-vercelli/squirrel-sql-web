@@ -6,7 +6,7 @@
   >
     <base-material-card
       icon="mdi-pencil"
-      title="Alias"
+      :title="$t('AliasInternalFrame.name')"
       class="px-5 py-3"
     >
       <v-form
@@ -16,7 +16,7 @@
       >
         <v-text-field
           v-model="alias.name"
-          label="Name"
+          :label="$t('AliasInternalFrame.name')"
           required
           :disabled="!editEnabled"
         />
@@ -26,7 +26,7 @@
           :items="drivers"
           item-text="name"
           item-value="identifier"
-          label="Choose driver"
+          :label="$t('AliasInternalFrame.driver')"
           required
           :disabled="!editEnabled"
           @change="onChangeDriver"
@@ -34,14 +34,14 @@
 
         <v-text-field
           v-model="alias.url"
-          label="URL template"
+          :label="$t('AliasInternalFrame.url')"
           required
           :disabled="!editEnabled"
         />
 
         <v-text-field
           v-model="alias.userName"
-          label="Username"
+          :label="$t('AliasInternalFrame.username')"
           class="md-4"
           required
           :disabled="!editEnabled"
@@ -49,26 +49,27 @@
 
         <v-text-field
           v-model="alias.password"
-          label="Password"
+          :label="$t('AliasInternalFrame.password')"
           required
           :disabled="!editEnabled"
         />
 
         <v-switch
           v-model="alias.autoLogon"
-          label="Auto logon"
+          :label="$t('AliasInternalFrame.autologon')"
+          :title="$t('AliasInternalFrame.autologon.security.tooltip')"
           :disabled="!editEnabled"
         />
 
         <v-switch
           v-model="alias.connectAtStartup"
-          label="Connect at startup (NOT WORKING)"
+          :label="$t('AliasInternalFrame.connectatstartup') + ' (NOT WORKING)'"
           :disabled="!editEnabled"
         />
 
         <v-switch
           v-model="alias.encryptPassword"
-          label="Encrypt password (NOT WORKING)"
+          :label="$t('AliasInternalFrame.password.encrypted')"
           :disabled="!editEnabled"
         />
       </v-form>
@@ -84,7 +85,7 @@
           aria-hidden="true"
           class="v-icon notranslate mdi mdi-content-save theme--dark"
         />
-        Create
+        {{ $t('Action.create') }}
       </v-btn>
 
       <v-btn
@@ -97,7 +98,7 @@
           aria-hidden="true"
           class="v-icon notranslate mdi mdi-content-save theme--dark"
         />
-        Save
+        {{ $t('Action.save') }}
       </v-btn>
 
       <v-btn
@@ -109,7 +110,7 @@
           aria-hidden="true"
           class="v-icon notranslate mdi mdi-step-backward theme--dark"
         />
-        Back
+        {{ $t('Action.back') }}
       </v-btn>
     </base-material-card>
   </v-container>
