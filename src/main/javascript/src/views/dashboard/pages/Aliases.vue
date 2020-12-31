@@ -6,7 +6,7 @@
   >
     <base-material-card
       icon="mdi-database"
-      title="Aliases"
+      :title="$t('AliasesToolWindow.windowtitle')"
       class="px-5 py-3"
     >
       <div class="text-right">

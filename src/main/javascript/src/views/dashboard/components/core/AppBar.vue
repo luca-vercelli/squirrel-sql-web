@@ -36,7 +36,7 @@
       class="ml-2"
       min-width="0"
       text
-      :title="$t('AliasesList.title')"
+      :title="$t('AliasesToolWindow.windowtitle')"
       to="/"
     >
       <v-icon>mdi-view-dashboard</v-icon>

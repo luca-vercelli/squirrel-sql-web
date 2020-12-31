@@ -6,14 +6,14 @@
   >
     <base-material-card
       icon="mdi-connection"
-      title="Open sessions"
+      :title="$t('Session.opensessions')"
       class="px-5 py-3"
     >
       <v-simple-table>
         <thead>
           <tr>
             <th class="primary--text">
-              Session title
+              {{ $t('Session.sessiontitle') }}
             </th>
           </tr>
         </thead>

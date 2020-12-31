@@ -8,7 +8,7 @@
         aria-hidden="true"
         class="v-icon notranslate mdi mdi-connection theme--dark"
       />
-      Disconnect
+      {{ $t('Session.disconnect') }}
     </v-btn>
     <v-btn
       color="success"
@@ -18,7 +18,7 @@
         aria-hidden="true"
         class="v-icon notranslate mdi mdi-database-plus theme--dark"
       />
-      {{ $t('SQLPanel.newtab') }}
+      {{ $t('Session.newsqltab') }}
     </v-btn>
 
     <v-tabs
