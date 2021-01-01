@@ -76,8 +76,9 @@
         editEnabled: false,
         results: null,
         tabs: [
-          { caption: 'MetaDataTab.title', endpoint: 'SessionMetadata' },
+          { caption: 'MetaDataTab.title', endpoint: 'MetaData' },
           { caption: 'ConnectionStatusTab.title', endpoint: 'ConnectionStatus' },
+          // FIXME: show these iff md.supportsCatalogs() and md.supportsSchemas()
           { caption: 'CatalogsTab.title', endpoint: 'Catalogs' },
           { caption: 'SchemasTab.title', endpoint: 'Schemas' },
           { caption: 'TableTypesTab.title', endpoint: 'TableTypes' },

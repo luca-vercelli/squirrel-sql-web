@@ -247,6 +247,23 @@ public class ObjectsTabEndpoint {
 	}
 
 	@GET
+	@Path("/Session({sessionId})/MetaData")
+	public ValueBean<IDataSet> dbMetaData(@PathParam("sessionId") String sessionId,
+			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+			@QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
+			throws AuthorizationException {
+
+		ISession session = sessionsManager.getSessionById(sessionId);
+		IDataSet dataset;
+		try {
+			dataset = manager.getMetaData(session, catalog, schema, simpleName, objectType);
+		} catch (DataSetException e) {
+			throw webAppException(e);
+		}
+		return new ValueBean<>(dataset);
+	}
+
+	@GET
 	@Path("/Session({sessionId})/ConnectionStatus")
 	public ValueBean<IDataSet> dbConnectionStatus(@PathParam("sessionId") String sessionId,
 			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,

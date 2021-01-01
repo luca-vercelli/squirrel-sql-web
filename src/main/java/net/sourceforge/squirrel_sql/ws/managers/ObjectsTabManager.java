@@ -25,6 +25,7 @@ import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.dat
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.database.DataTypesTabPublic;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.database.IBaseDataSetTabPublic;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.database.KeywordsTabPublic;
+import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.database.MetaDataTabPublic;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.database.NumericFunctionsTabPublic;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.database.SchemasTabPublic;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.database.StringFunctionsTabPublic;
@@ -45,14 +46,17 @@ import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.tab
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.TablePriviligesTabPublic;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.VersionColumnsTabPublic;
 import net.sourceforge.squirrel_sql.dto.ObjectTreeNodeDto;
+import net.sourceforge.squirrel_sql.fw.datasetviewer.DataSetDefinition;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.DataSetException;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.IDataSet;
+import net.sourceforge.squirrel_sql.fw.datasetviewer.ObjectArrayDataSet;
 import net.sourceforge.squirrel_sql.fw.sql.DatabaseObjectInfo;
 import net.sourceforge.squirrel_sql.fw.sql.DatabaseObjectType;
 import net.sourceforge.squirrel_sql.fw.sql.IDatabaseObjectInfo;
 import net.sourceforge.squirrel_sql.fw.sql.ProcedureInfo;
 import net.sourceforge.squirrel_sql.fw.sql.SQLDatabaseMetaData;
 import net.sourceforge.squirrel_sql.fw.sql.TableInfo;
+import net.sourceforge.squirrel_sql.fw.util.IMessageHandler;
 import net.sourceforge.squirrel_sql.ws.resources.SessionsEndpoint;
 
 /**
@@ -403,6 +407,11 @@ public class ObjectsTabManager {
 		return result;
 	}
 
+	public IDataSet getMetaData(ISession session, String catalog, String schema, String simpleName, String objectType)
+			throws DataSetException {
+		return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new MetaDataTabPublic());
+	}
+
 	public IDataSet getConnectionStatus(ISession session, String catalog, String schema, String simpleName,
 			String objectType) throws DataSetException {
 		return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new ConnectionStatusTabPublic());
@@ -462,7 +471,60 @@ public class ObjectsTabManager {
 		tab.setSession(session);
 		tab.setDatabaseObjectInfo(info);
 		IDataSet result = tab.createDataSet();
+
+		// This is probably a ObjectArrayDataSet, that cannot be serialized...
+		if (result instanceof ObjectArrayDataSet) {
+			result = new PlainObjectArrayDataSet((ObjectArrayDataSet) result);
+		}
+
 		return result;
 	}
 
+	public static class PlainObjectArrayDataSet implements IDataSet {
+
+		private ObjectArrayDataSet objectArrayDataSet;
+		private List<Object[]> allDataForReadOnly;
+
+		public PlainObjectArrayDataSet(ObjectArrayDataSet objectArrayDataSet) {
+			this.objectArrayDataSet = objectArrayDataSet;
+			createAllData();
+		}
+
+		private void createAllData() {
+			allDataForReadOnly = new ArrayList<>();
+			int columns = objectArrayDataSet.getColumnCount();
+			while (objectArrayDataSet.next(null)) {
+				Object[] row = new Object[columns];
+				for (int i = 0; i < columns; ++i) {
+					row[i] = objectArrayDataSet.get(i);
+				}
+			}
+		}
+
+		// Similar to ResultSetDataSet
+		public List<Object[]> getAllDataForReadOnly() {
+			return allDataForReadOnly;
+		}
+
+		@Override
+		public Object get(int columnIndex) throws DataSetException {
+			return objectArrayDataSet.get(columnIndex);
+		}
+
+		@Override
+		public int getColumnCount() throws DataSetException {
+			return objectArrayDataSet.getColumnCount();
+		}
+
+		@Override
+		public DataSetDefinition getDataSetDefinition() throws DataSetException {
+			return objectArrayDataSet.getDataSetDefinition();
+		}
+
+		@Override
+		public boolean next(IMessageHandler msgHandler) throws DataSetException {
+			return objectArrayDataSet.next(msgHandler);
+		}
+
+	}
 }
