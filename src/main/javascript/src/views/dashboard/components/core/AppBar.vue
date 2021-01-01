@@ -39,7 +39,7 @@
       :title="$t('AliasesToolWindow.windowtitle')"
       to="/"
     >
-      <v-icon>mdi-view-dashboard</v-icon>
+      <v-icon>mdi-database</v-icon>
     </v-btn>
     <v-btn
       class="ml-2"
