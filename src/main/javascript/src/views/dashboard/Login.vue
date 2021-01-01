@@ -85,7 +85,6 @@
         })
       },
       onEnterLogin: function (evt) {
-        console.log(evt)
         if (evt.key === 'Enter') {
           this.login()
         }

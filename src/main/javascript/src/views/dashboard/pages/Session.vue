@@ -147,7 +147,7 @@
           },
           error: function (response) {
             console.error('Error retrieving session id. Probably the user typed an old url: ' + location.href)
-            that.$emit('ajax-error', response)
+            // do NOT emit ajax-error
             that.$router.push('/')
           },
         })
