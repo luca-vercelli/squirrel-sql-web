@@ -474,23 +474,24 @@ public class ObjectsTabManager {
 
 		// This is probably a ObjectArrayDataSet, that cannot be serialized...
 		if (result instanceof ObjectArrayDataSet) {
-			result = new PlainObjectArrayDataSet((ObjectArrayDataSet) result);
+			result = new PlainDataSet((ObjectArrayDataSet) result);
+			logger.info("CREATING PlainDataSet");
 		}
 
 		return result;
 	}
 
-	public static class PlainObjectArrayDataSet implements IDataSet {
+	public static class PlainDataSet implements IDataSet {
 
-		private ObjectArrayDataSet objectArrayDataSet;
+		private IDataSet objectArrayDataSet;
 		private List<Object[]> allDataForReadOnly;
 
-		public PlainObjectArrayDataSet(ObjectArrayDataSet objectArrayDataSet) {
+		public PlainDataSet(ObjectArrayDataSet objectArrayDataSet) throws DataSetException {
 			this.objectArrayDataSet = objectArrayDataSet;
 			createAllData();
 		}
 
-		private void createAllData() {
+		private void createAllData() throws DataSetException {
 			allDataForReadOnly = new ArrayList<>();
 			int columns = objectArrayDataSet.getColumnCount();
 			while (objectArrayDataSet.next(null)) {
