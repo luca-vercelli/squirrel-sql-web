@@ -139,7 +139,7 @@
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (data) {
-            that.history.push(that.query)
+            that.history.push({ sql: that.query })
             if (data.value == null) {
               // not a SELECT
               that.$emit('notify', { message: 'Success.', type: 'success' })
