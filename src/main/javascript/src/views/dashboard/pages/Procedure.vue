@@ -6,7 +6,7 @@
   >
     <base-material-card
       icon="mdi-table"
-      :title="$t('Procedure.title', procName)"
+      :title="$t('Procedure.title', [procName])"
       class="px-5 py-3"
     >
       <v-col class="text-right">

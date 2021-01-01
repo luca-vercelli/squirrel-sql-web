@@ -6,7 +6,7 @@
   >
     <base-material-card
       icon="mdi-table"
-      :title="$t('Table.title', tableName)"
+      :title="$t('Table.title', [tableName])"
       class="px-5 py-3"
     >
       <v-col class="text-right">
