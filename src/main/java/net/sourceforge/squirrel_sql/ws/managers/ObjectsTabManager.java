@@ -48,15 +48,19 @@ import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.tab
 import net.sourceforge.squirrel_sql.dto.ObjectTreeNodeDto;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.DataSetDefinition;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.DataSetException;
+import net.sourceforge.squirrel_sql.fw.datasetviewer.DatabaseTypesDataSet;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.IDataSet;
+import net.sourceforge.squirrel_sql.fw.datasetviewer.JavabeanDataSet;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.ObjectArrayDataSet;
 import net.sourceforge.squirrel_sql.fw.sql.DatabaseObjectInfo;
 import net.sourceforge.squirrel_sql.fw.sql.DatabaseObjectType;
 import net.sourceforge.squirrel_sql.fw.sql.IDatabaseObjectInfo;
+import net.sourceforge.squirrel_sql.fw.sql.MetaDataDecoratorDataSet;
 import net.sourceforge.squirrel_sql.fw.sql.ProcedureInfo;
 import net.sourceforge.squirrel_sql.fw.sql.SQLDatabaseMetaData;
 import net.sourceforge.squirrel_sql.fw.sql.TableInfo;
 import net.sourceforge.squirrel_sql.fw.util.IMessageHandler;
+import net.sourceforge.squirrel_sql.fw.util.NullMessageHandler;
 import net.sourceforge.squirrel_sql.ws.resources.SessionsEndpoint;
 
 /**
@@ -465,66 +469,74 @@ public class ObjectsTabManager {
 	private IDataSet commonGetDataSetDb(ISession session, String catalog, String schema, String simpleName,
 			String objectType, IBaseDataSetTabPublic tab) throws DataSetException {
 
-		// One can also think to take a ObjectTreeNode as input
-
 		DatabaseObjectInfo info = new DatabaseObjectInfo(catalog, schema, simpleName);
 		tab.setSession(session);
 		tab.setDatabaseObjectInfo(info);
 		IDataSet result = tab.createDataSet();
 
-		// This is probably a ObjectArrayDataSet, that cannot be serialized...
-		if (result instanceof ObjectArrayDataSet) {
-			result = new PlainDataSet((ObjectArrayDataSet) result);
-			logger.info("CREATING PlainDataSet");
+		if (result instanceof ObjectArrayDataSet || result instanceof MetaDataDecoratorDataSet
+				|| result instanceof JavabeanDataSet || result instanceof DatabaseTypesDataSet) {
+			// Well, more or less every kind of IDataSet but the ResultSetDataSet
+			result = new PlainDataSet(result);
 		}
 
 		return result;
 	}
 
+	/**
+	 * This is more or less an ObjectArrayDataSet, with public access to underlying
+	 * array with getAllDataForReadOnly(). The name and signature of this method is
+	 * compatible with ResultSetDataSet class.
+	 * 
+	 * @author lv 2021
+	 *
+	 */
 	public static class PlainDataSet implements IDataSet {
 
-		private IDataSet objectArrayDataSet;
+		private IDataSet wrappedDataSet;
 		private List<Object[]> allDataForReadOnly;
+		private int curRow = -1;
+		private int columnCount = 0;
 
-		public PlainDataSet(ObjectArrayDataSet objectArrayDataSet) throws DataSetException {
-			this.objectArrayDataSet = objectArrayDataSet;
+		public PlainDataSet(IDataSet wrappedDataSet) throws DataSetException {
+			this.wrappedDataSet = wrappedDataSet;
 			createAllData();
 		}
 
 		private void createAllData() throws DataSetException {
 			allDataForReadOnly = new ArrayList<>();
-			int columns = objectArrayDataSet.getColumnCount();
-			while (objectArrayDataSet.next(null)) {
-				Object[] row = new Object[columns];
-				for (int i = 0; i < columns; ++i) {
-					row[i] = objectArrayDataSet.get(i);
+			columnCount = wrappedDataSet.getColumnCount();
+			while (wrappedDataSet.next(NullMessageHandler.getInstance())) {
+				Object[] row = new Object[columnCount];
+				for (int i = 0; i < columnCount; ++i) {
+					row[i] = wrappedDataSet.get(i);
 				}
+				allDataForReadOnly.add(row);
 			}
 		}
 
-		// Similar to ResultSetDataSet
 		public List<Object[]> getAllDataForReadOnly() {
 			return allDataForReadOnly;
 		}
 
 		@Override
 		public Object get(int columnIndex) throws DataSetException {
-			return objectArrayDataSet.get(columnIndex);
+			return allDataForReadOnly.get(curRow)[columnIndex];
 		}
 
 		@Override
 		public int getColumnCount() throws DataSetException {
-			return objectArrayDataSet.getColumnCount();
+			return columnCount;
 		}
 
 		@Override
 		public DataSetDefinition getDataSetDefinition() throws DataSetException {
-			return objectArrayDataSet.getDataSetDefinition();
+			return wrappedDataSet.getDataSetDefinition();
 		}
 
 		@Override
 		public boolean next(IMessageHandler msgHandler) throws DataSetException {
-			return objectArrayDataSet.next(msgHandler);
+			return ++curRow < allDataForReadOnly.size();
 		}
 
 	}

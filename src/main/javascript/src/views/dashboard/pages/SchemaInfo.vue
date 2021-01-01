@@ -22,18 +22,12 @@
         </v-btn>
       </v-col>
       <template>
-        <b>
-          <span
-            aria-hidden="true"
-            class="v-icon notranslate mdi mdi-alert"
-          />
-          WORK IN PROGRESS
-        </b>
 
         <v-tabs
           center-active
         >
           <v-tab
+            v-model="currentTab"
             v-for="tab in tabs"
             :key="tab.endpoint"
             @click="loadDetails(tab.endpoint)"
@@ -78,7 +72,6 @@
         tabs: [
           { caption: 'MetaDataTab.title', endpoint: 'MetaData' },
           { caption: 'ConnectionStatusTab.title', endpoint: 'ConnectionStatus' },
-          // FIXME: show these iff md.supportsCatalogs() and md.supportsSchemas()
           { caption: 'CatalogsTab.title', endpoint: 'Catalogs' },
           { caption: 'SchemasTab.title', endpoint: 'Schemas' },
           { caption: 'TableTypesTab.title', endpoint: 'TableTypes' },
@@ -89,6 +82,7 @@
           { caption: 'TimeDateFunctionsTab.title', endpoint: 'TimeDateFunctions' },
           { caption: 'KeywordsTab.title', endpoint: 'Keywords' },
         ],
+        currentTab: 0,
       }
     },
 
