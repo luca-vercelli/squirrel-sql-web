@@ -106,7 +106,12 @@
         $.ajax({
           url: this.enableMock ? process.env.BASE_URL + 'mock/DataSet.json' : process.env.BASE_URL + `ws/Session(${this.sessionIdentifier})/${endpoint}`,
           type: 'GET',
-          data: this.node,
+          data: {
+            catalog: this.node.catalog,
+            schema: this.node.schemaName,
+            simpleName: this.node.simpleName,
+            objectType: this.node.objectType,
+          },
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
