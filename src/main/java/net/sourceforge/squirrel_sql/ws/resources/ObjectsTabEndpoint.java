@@ -11,6 +11,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -28,17 +29,21 @@ import net.sourceforge.squirrel_sql.fw.datasetviewer.DataSetException;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.IDataSet;
 import net.sourceforge.squirrel_sql.fw.sql.ITableInfo;
 import net.sourceforge.squirrel_sql.ws.exceptions.AuthorizationException;
+import net.sourceforge.squirrel_sql.ws.managers.DdlManager;
 import net.sourceforge.squirrel_sql.ws.managers.ObjectsTabManager;
 import net.sourceforge.squirrel_sql.ws.managers.SessionsManager;
 
 @Path("/")
 @Stateless
+@Produces(MediaType.APPLICATION_JSON)
 public class ObjectsTabEndpoint {
 
 	@Inject
 	ObjectsTabManager manager;
 	@Inject
 	SessionsManager sessionsManager;
+	@Inject
+	DdlManager ddlManager;
 
 	@GET
 	@Path("/Session({sessionId})/SchemaInfo")
@@ -244,6 +249,17 @@ public class ObjectsTabEndpoint {
 			throw webAppException(e);
 		}
 		return new ValueBean<>(dataset);
+	}
+
+	@GET
+	@Path("/Session({sessionId})/TableDdl")
+	public ValueBean<String> tableDdl(@PathParam("sessionId") String sessionId, @QueryParam("catalog") String catalog,
+			@QueryParam("schema") String schema, @QueryParam("tableName") String tableName)
+			throws DataSetException, AuthorizationException {
+		ISession session = sessionsManager.getSessionById(sessionId);
+		String ddl = ddlManager.getTableDdl(session, catalog, schema, tableName);
+		return new ValueBean<>(ddl);
+
 	}
 
 	@GET
