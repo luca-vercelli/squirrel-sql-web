@@ -1,5 +1,9 @@
 package net.sourceforge.squirrel_sql.ws.managers;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ejb.Stateless;
 
 import org.apache.log4j.Logger;
@@ -7,7 +11,11 @@ import org.apache.log4j.Logger;
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.DataSetException;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.IDataSet;
+import net.sourceforge.squirrel_sql.fw.dialects.CreateScriptPreferences;
+import net.sourceforge.squirrel_sql.fw.dialects.DialectFactory;
+import net.sourceforge.squirrel_sql.fw.dialects.HibernateDialect;
 import net.sourceforge.squirrel_sql.fw.sql.ISQLConnection;
+import net.sourceforge.squirrel_sql.fw.sql.ITableInfo;
 import net.sourceforge.squirrel_sql.fw.sql.SQLDatabaseMetaData;
 import net.sourceforge.squirrel_sql.fw.sql.TableInfo;
 import net.sourceforge.squirrel_sql.fw.util.NullMessageHandler;
@@ -64,5 +72,19 @@ public class DdlManager {
 			}
 		}
 		return ddl.append("\n)").toString();
+	}
+
+	public String getTableDdlV2(ISession session, String catalog, String schema, String tableName)
+			throws DataSetException, SQLException {
+		// cfr. ColumnsTab.createDataSet()
+
+		HibernateDialect dialect = DialectFactory.getDialect(session.getMetaData());
+		TableInfo info = new TableInfo(catalog, schema, tableName, "TABLE", null, session.getMetaData());
+		List<ITableInfo> infos = new ArrayList<>();
+		infos.add(info);
+		CreateScriptPreferences prefs = null; // ?!?
+		boolean isJdbcOdbc = false; // ?!?
+		List<String> ddls = dialect.getCreateTableSQL(infos, session.getMetaData(), prefs, isJdbcOdbc);
+		return ddls.get(0);
 	}
 }

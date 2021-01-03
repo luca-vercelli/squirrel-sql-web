@@ -263,6 +263,17 @@ public class ObjectsTabEndpoint {
 	}
 
 	@GET
+	@Path("/Session({sessionId})/TableDdlV2")
+	public ValueBean<String> tableDdlV2(@PathParam("sessionId") String sessionId, @QueryParam("catalog") String catalog,
+			@QueryParam("schema") String schema, @QueryParam("tableName") String tableName)
+			throws AuthorizationException, DataSetException, SQLException {
+		ISession session = sessionsManager.getSessionById(sessionId);
+		String ddl = ddlManager.getTableDdlV2(session, catalog, schema, tableName);
+		return new ValueBean<>(ddl);
+
+	}
+
+	@GET
 	@Path("/Session({sessionId})/MetaData")
 	public ValueBean<IDataSet> dbMetaData(@PathParam("sessionId") String sessionId,
 			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
