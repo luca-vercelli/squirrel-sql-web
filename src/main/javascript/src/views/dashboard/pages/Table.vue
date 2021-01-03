@@ -28,7 +28,7 @@
           <v-tab
             v-for="tab in tabs"
             :key="tab.endpoint"
-            @click="loadDetails(tab.endpoint)"
+            @click="loadDetails(tab.endpoint, tab.script)"
           >
             {{ $t(tab.caption) }}
           </v-tab>
@@ -78,6 +78,7 @@
           { caption: 'ExportedKeysTab.title', endpoint: 'TableExportedFk' },
           { caption: 'RowIDTab.title', endpoint: 'TableRowId' },
           { caption: 'VersionColumnsTab.title', endpoint: 'TableVersionColumns' },
+          { caption: 'DDL', endpoint: 'TableDdl', script: true }, // TODO i18n
         ],
       }
     },
@@ -92,7 +93,7 @@
     },
 
     methods: {
-      loadDetails: function (endpoint) {
+      loadDetails: function (endpoint, script) {
         this.editEnabled = false
         this.results = null
         var that = this
@@ -109,7 +110,11 @@
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (data) {
-            that.results = data.value
+            if (script) {
+              that.$emit('sql-script', data.value)
+            } else {
+              that.results = data.value
+            }
             that.editEnabled = true
           },
           error: function (response) {

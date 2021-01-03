@@ -86,6 +86,10 @@
         type: Object,
         default: Object,
       },
+      defaultQuery: {
+        type: String,
+        default: null,
+      },
     },
 
     data () {
@@ -99,9 +103,13 @@
       }
     },
 
-    computed: {},
+    computed: {
+    },
 
     created: function () {
+      if (this.defaultQuery) {
+        this.query = this.defaultQuery
+      }
       this.loadHistory()
     },
 
