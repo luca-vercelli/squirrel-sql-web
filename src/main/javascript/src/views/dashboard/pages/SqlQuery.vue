@@ -108,6 +108,7 @@
 
     created: function () {
       if (this.defaultQuery) {
+        console.log(this.defaultQuery)
         this.query = this.defaultQuery
       }
       this.loadHistory()

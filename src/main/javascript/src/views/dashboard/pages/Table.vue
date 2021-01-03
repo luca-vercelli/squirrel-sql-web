@@ -9,18 +9,46 @@
       :title="$t('Table.title', [tableName])"
       class="px-5 py-3"
     >
-      <v-col class="text-right">
-        <v-btn
-          color="light"
-          @click="$emit('close-tab')"
-        >
-          <i
-            aria-hidden="true"
-            class="v-icon notranslate mdi mdi-close-circle theme--dark"
-          />
-          {{ $t('Action.close') }}
-        </v-btn>
-      </v-col>
+      <v-row>
+        <v-col>
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                color="primary"
+                dark
+                v-bind="attrs"
+                v-on="on"
+              >
+                {{ $t('Scripts') }}
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item
+                v-for="(item, index) in scriptMenuVoices"
+                :key="index"
+              >
+                <v-list-item-title
+                  @click="loadScript(item.endpoint)"
+                >
+                  {{ $t(item.title) }}
+                </v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-col>
+        <v-col class="text-right">
+          <v-btn
+            color="light"
+            @click="$emit('close-tab')"
+          >
+            <i
+              aria-hidden="true"
+              class="v-icon notranslate mdi mdi-close-circle theme--dark"
+            />
+            {{ $t('Action.close') }}
+          </v-btn>
+        </v-col>
+      </v-row>
       <template>
         <v-tabs
           center-active
@@ -78,7 +106,9 @@
           { caption: 'ExportedKeysTab.title', endpoint: 'TableExportedFk' },
           { caption: 'RowIDTab.title', endpoint: 'TableRowId' },
           { caption: 'VersionColumnsTab.title', endpoint: 'TableVersionColumns' },
-          { caption: 'DDL', endpoint: 'TableDdl', script: true }, // TODO i18n
+        ],
+        scriptMenuVoices: [
+          { title: 'Table.Ddl', endpoint: 'TableDdl' },
         ],
       }
     },
@@ -93,7 +123,7 @@
     },
 
     methods: {
-      loadDetails: function (endpoint, script) {
+      loadDetails: function (endpoint) {
         this.editEnabled = false
         this.results = null
         var that = this
@@ -110,11 +140,32 @@
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (data) {
-            if (script) {
-              that.$emit('sql-script', data.value)
-            } else {
-              that.results = data.value
-            }
+            that.results = data.value
+            that.editEnabled = true
+          },
+          error: function (response) {
+            that.$emit('ajax-error', response)
+            that.editEnabled = true
+          },
+        })
+      },
+      loadScript: function (endpoint) {
+        this.editEnabled = false
+        var that = this
+        $.ajax({
+          url: this.enableMock ? process.env.BASE_URL + 'mock/TableDdl.json' : process.env.BASE_URL + `ws/Session(${this.sessionIdentifier})/${endpoint}`,
+          type: 'GET',
+          data: {
+            catalog: this.node.catalog,
+            schema: this.node.schemaName,
+            tableName: this.node.simpleName,
+            tableType: this.node.objectType,
+          },
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+          },
+          success: function (data) {
+            that.$emit('sql-script', data.value)
             that.editEnabled = true
           },
           error: function (response) {
