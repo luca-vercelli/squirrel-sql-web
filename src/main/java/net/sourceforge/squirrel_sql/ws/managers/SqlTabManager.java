@@ -9,8 +9,6 @@ import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.Context;
 
 import org.apache.log4j.Logger;
 
@@ -25,7 +23,6 @@ import net.sourceforge.squirrel_sql.fw.dialects.DialectFactory;
 import net.sourceforge.squirrel_sql.fw.dialects.DialectType;
 import net.sourceforge.squirrel_sql.fw.sql.ISQLConnection;
 import net.sourceforge.squirrel_sql.fw.util.StringUtilities;
-import net.sourceforge.squirrel_sql.ws.exceptions.AuthorizationException;
 
 /**
  * Manages statements execution.
@@ -38,27 +35,8 @@ public class SqlTabManager {
 
 	@Inject
 	WebApplication webapp;
-	@Inject
-	SessionsManager sessionsManager;
-	@Inject
-	TokensManager tokensManager;
-	@Context
-	HttpServletRequest request;
 
 	Logger logger = Logger.getLogger(SqlTabManager.class);
-
-	/**
-	 * Return token in current Request.
-	 * 
-	 * @return
-	 */
-	protected String getCurrentToken() {
-		try {
-			return tokensManager.extractTokenFromRequest(request);
-		} catch (AuthorizationException e) {
-			throw new IllegalStateException("Error retrieving token. This should not happen.", e);
-		}
-	}
 
 	// In SQuirreLSQL Core, the SQLExecuterTask is reached through the chain:
 	// Session -> SessionPanel -> MainPanel -> SQLPanel.runCurrentExecuter() ->
