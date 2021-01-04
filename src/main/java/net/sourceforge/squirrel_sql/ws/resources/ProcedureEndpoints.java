@@ -34,6 +34,7 @@ public class ProcedureEndpoints {
 			@PathParam("catalog") String catalog, @PathParam("schema") String schema,
 			@PathParam("procName") String procName, @PathParam("procType") int procType) throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
+		checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getProcedureColumns(session, catalog, schema, procName, procType);
@@ -57,4 +58,16 @@ public class ProcedureEndpoints {
 			return new WebApplicationException(e.getMessage(), Status.BAD_REQUEST);
 		}
 	}
+
+	/**
+	 * Throw exception if session is null
+	 * 
+	 * @param session
+	 */
+	private void checkSession(ISession session) {
+		if (session == null) {
+			throw new WebApplicationException("Invalid session id", Status.BAD_REQUEST);
+		}
+	}
+
 }
