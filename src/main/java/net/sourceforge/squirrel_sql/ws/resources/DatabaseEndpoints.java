@@ -19,7 +19,7 @@ import net.sourceforge.squirrel_sql.ws.exceptions.AuthorizationException;
 import net.sourceforge.squirrel_sql.ws.managers.DatabasesManager;
 import net.sourceforge.squirrel_sql.ws.managers.SessionsManager;
 
-@Path("/Session({sessionId})/Database({catalog},{schema},{simpleName},{objectType})")
+@Path("/Session({sessionId})/Database({catalog : ([^,/]+)?},{schema : ([^,/]+)?},{simpleName},{objectType})")
 @Stateless
 @Produces(MediaType.APPLICATION_JSON)
 public class DatabaseEndpoints {

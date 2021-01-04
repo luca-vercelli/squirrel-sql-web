@@ -20,7 +20,7 @@ import net.sourceforge.squirrel_sql.ws.exceptions.AuthorizationException;
 import net.sourceforge.squirrel_sql.ws.managers.SessionsManager;
 import net.sourceforge.squirrel_sql.ws.managers.TablesManager;
 
-@Path("/Session({sessionId})/Table({catalog},{schema},{tableName},{tableType})")
+@Path("/Session({sessionId})/Table({catalog : ([^,/]+)?},{schema : ([^,/]+)?},{tableName},{tableType})")
 @Stateless
 @Produces(MediaType.APPLICATION_JSON)
 public class TableEndpoints {

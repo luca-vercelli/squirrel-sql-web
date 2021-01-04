@@ -96,19 +96,23 @@
         editEnabled: false,
         results: null,
         tabs: [
-          { caption: 'ContentsTab.title', endpoint: 'TableContent' },
-          { caption: 'ColumnsTab.title', endpoint: 'TableColumns' },
-          { caption: 'RowCountTab.title', endpoint: 'TableRowCount' },
-          { caption: 'PrimaryKeyTab.title', endpoint: 'TablePk' },
-          { caption: 'IndexesTab.title', endpoint: 'TableIndexes' },
-          { caption: 'ColumnPriviligesTab.title', endpoint: 'TablePrivileges' },
-          { caption: 'ImportedKeysTab.title', endpoint: 'TableImportedFk' },
-          { caption: 'ExportedKeysTab.title', endpoint: 'TableExportedFk' },
-          { caption: 'RowIDTab.title', endpoint: 'TableRowId' },
-          { caption: 'VersionColumnsTab.title', endpoint: 'TableVersionColumns' },
+          { caption: 'ContentsTab.title', endpoint: 'Content' },
+          { caption: 'ColumnsTab.title', endpoint: 'Columns' },
+          { caption: 'RowCountTab.title', endpoint: 'RowCount' },
+          { caption: 'PrimaryKeyTab.title', endpoint: 'Pk' },
+          { caption: 'IndexesTab.title', endpoint: 'Indexes' },
+          { caption: 'ColumnPriviligesTab.title', endpoint: 'Privileges' },
+          { caption: 'ImportedKeysTab.title', endpoint: 'ImportedFk' },
+          { caption: 'ExportedKeysTab.title', endpoint: 'ExportedFk' },
+          { caption: 'RowIDTab.title', endpoint: 'RowId' },
+          { caption: 'VersionColumnsTab.title', endpoint: 'VersionColumns' },
         ],
         scriptMenuVoices: [
-          { title: 'Table.Ddl', endpoint: 'TableDdl' },
+          { title: 'Table.Ddl', endpoint: 'Ddl' },
+          { title: 'Table.Select', endpoint: 'ScriptSelect' },
+          { title: 'Table.Insert', endpoint: 'ScriptInsert' },
+          { title: 'Table.Update', endpoint: 'ScriptUpdate' },
+          { title: 'Table.Delete', endpoint: 'ScriptDelete' },
         ],
       }
     },
@@ -135,14 +139,8 @@
         this.results = null
         var that = this
         $.ajax({
-          url: this.enableMock ? process.env.BASE_URL + 'mock/DataSet.json' : process.env.BASE_URL + `ws/Session(${this.sessionIdentifier})/${endpoint}`,
+          url: this.enableMock ? process.env.BASE_URL + 'mock/DataSet.json' : this.tableEndpoint + endpoint,
           type: 'GET',
-          data: {
-            catalog: this.node.catalog,
-            schema: this.node.schemaName,
-            tableName: this.node.simpleName,
-            tableType: this.node.objectType,
-          },
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
@@ -160,7 +158,7 @@
         this.editEnabled = false
         var that = this
         $.ajax({
-          url: this.enableMock ? process.env.BASE_URL + 'mock/TableDdl.json' : this.tableEndpoint() + endpoint,
+          url: this.enableMock ? process.env.BASE_URL + 'mock/TableDdl.json' : this.tableEndpoint + endpoint,
           type: 'GET',
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),

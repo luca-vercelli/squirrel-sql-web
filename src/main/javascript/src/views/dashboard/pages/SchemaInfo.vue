@@ -87,6 +87,13 @@
     },
 
     computed: {
+      dbEndpoint: function () {
+        const catalog = this.node.catalog || ''
+        const schema = this.node.schemaName || ''
+        const name = this.node.simpleName || ''
+        const type = this.node.objectType || ''
+        return `ws/Session(${this.sessionIdentifier})/Database(${catalog},${schema},${name},${type})/`
+      },
     },
 
     created: function () {
@@ -98,14 +105,8 @@
         this.results = null
         var that = this
         $.ajax({
-          url: this.enableMock ? process.env.BASE_URL + 'mock/DataSet.json' : process.env.BASE_URL + `ws/Session(${this.sessionIdentifier})/${endpoint}`,
+          url: this.enableMock ? process.env.BASE_URL + 'mock/DataSet.json' : this.dbEndpoint + endpoint,
           type: 'GET',
-          data: {
-            catalog: this.node.catalog,
-            schema: this.node.schemaName,
-            simpleName: this.node.simpleName,
-            objectType: this.node.objectType,
-          },
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
