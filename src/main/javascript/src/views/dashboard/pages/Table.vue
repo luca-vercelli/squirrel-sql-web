@@ -51,6 +51,7 @@
       </v-row>
       <template>
         <v-tabs
+          v-model="currentTab"
           center-active
         >
           <v-tab
@@ -114,6 +115,7 @@
           { title: 'Table.Update', endpoint: 'ScriptUpdate' },
           { title: 'Table.Delete', endpoint: 'ScriptDelete' },
         ],
+        currentTab: 1,
       }
     },
 
@@ -131,6 +133,7 @@
     },
 
     created: function () {
+      this.loadDetails(this.tabs[this.currentTab].endpoint)
     },
 
     methods: {

@@ -23,6 +23,7 @@
       </v-col>
       <template>
         <v-tabs
+          v-model="currentTab"
           center-active
         >
           <v-tab
@@ -70,6 +71,7 @@
         tabs: [
           { caption: 'ProcedureColumnsTab.title', endpoint: 'Columns' },
         ],
+        currentTab: 0,
       }
     },
 
@@ -88,6 +90,7 @@
     },
 
     created: function () {
+      this.loadDetails(this.tabs[this.currentTab].endpoint)
     },
 
     methods: {

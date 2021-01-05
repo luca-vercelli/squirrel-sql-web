@@ -24,10 +24,10 @@
       <template>
 
         <v-tabs
+          v-model="currentTab"
           center-active
         >
           <v-tab
-            v-model="currentTab"
             v-for="tab in tabs"
             :key="tab.endpoint"
             @click="loadDetails(tab.endpoint)"
@@ -97,6 +97,7 @@
     },
 
     created: function () {
+      this.loadDetails(this.tabs[this.currentTab].endpoint)
     },
 
     methods: {
