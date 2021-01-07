@@ -1,6 +1,7 @@
 package net.sourceforge.squirrel_sql.ws.managers;
 
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,9 +25,14 @@ import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.tab
 import net.sourceforge.squirrel_sql.fw.datasetviewer.DataSetException;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.IDataSet;
 import net.sourceforge.squirrel_sql.fw.dialects.CreateScriptPreferences;
+import net.sourceforge.squirrel_sql.fw.dialects.DatabaseObjectQualifier;
 import net.sourceforge.squirrel_sql.fw.dialects.DialectFactory;
 import net.sourceforge.squirrel_sql.fw.dialects.HibernateDialect;
+import net.sourceforge.squirrel_sql.fw.dialects.SqlGenerationPreferences;
+import net.sourceforge.squirrel_sql.fw.sql.ISQLConnection;
 import net.sourceforge.squirrel_sql.fw.sql.ITableInfo;
+import net.sourceforge.squirrel_sql.fw.sql.SQLDatabaseMetaData;
+import net.sourceforge.squirrel_sql.fw.sql.TableColumnInfo;
 import net.sourceforge.squirrel_sql.fw.sql.TableInfo;
 
 /**
@@ -200,5 +206,85 @@ public class TablesManager {
 			throw new SQLException("Cannot retrieve DDL");
 		}
 		return ddls.isEmpty() ? null : ddls.get(0);
+	}
+
+	public String getTableSelectScript(ISession session, String catalog, String schema, String tableName,
+			String tableType) throws SQLException, DataSetException {
+
+		// HibernateDialect cannot help here?
+
+		List<String> columns = getNonBlobColumns(session, catalog, schema, tableName, tableType);
+
+		StringBuilder sb = new StringBuilder("SELECT ");
+		boolean first = true;
+		for (String column : columns) {
+			if (first) {
+				first = false;
+			} else {
+				sb.append(", ");
+			}
+			sb.append(column);
+		}
+		sb.append("\nFROM").append(tableName); // FIXME schema? catalog?
+		return sb.toString();
+	}
+
+	public String getTableInsertScript(ISession session, String catalog, String schema, String tableName,
+			String tableType) throws SQLException, DataSetException {
+
+		HibernateDialect dialect = DialectFactory.getDialect(session.getMetaData());
+
+		List<String> columns = getNonBlobColumns(session, catalog, schema, tableName, tableType);
+
+		// TODO: How to let the user customize this??
+		SqlGenerationPreferences prefs = new SqlGenerationPreferences();
+
+		DatabaseObjectQualifier qualifier = new DatabaseObjectQualifier(catalog, schema);
+
+		String command = dialect.getInsertIntoSQL(tableName, columns, "VALUES(...)", qualifier, prefs);
+
+		if (command == null || command.isEmpty()) {
+			logger.error("Got empty script for " + tableType + " " + catalog + "." + schema + "." + tableName);
+			throw new SQLException("Cannot retrieve DDL");
+		}
+		return command;
+	}
+
+	public String getTableDeleteScript(ISession session, String catalog, String schema, String tableName,
+			String tableType) throws SQLException, DataSetException {
+		return null;
+	}
+
+	public String getTableUpdateScript(ISession session, String catalog, String schema, String tableName,
+			String tableType) throws SQLException, DataSetException {
+		return null;
+	}
+
+	/**
+	 * Retrieve all columns name, but BLOB and CLOB ones.
+	 * 
+	 * @param session
+	 * @param catalog
+	 * @param schema
+	 * @param tableName
+	 * @param tableType
+	 * @return
+	 * @throws SQLException
+	 */
+	private List<String> getNonBlobColumns(ISession session, String catalog, String schema, String tableName,
+			String tableType) throws SQLException {
+
+		final ISQLConnection conn = session.getSQLConnection();
+		SQLDatabaseMetaData md = conn.getSQLMetaData();
+		TableColumnInfo[] columnsMetadata = md
+				.getColumnInfo(new TableInfo(catalog, schema, tableName, tableType, null, md));
+
+		List<String> columns = new ArrayList<>();
+		for (TableColumnInfo col : columnsMetadata) {
+			if (col.getDataType() != Types.BLOB && col.getDataType() != Types.CLOB) {
+				columns.add(col.getTableName());
+			}
+		}
+		return columns;
 	}
 }
