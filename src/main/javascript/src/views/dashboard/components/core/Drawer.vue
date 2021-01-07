@@ -98,32 +98,32 @@
       items: [
         {
           icon: 'mdi-database',
-          title: 'aliases',
+          title: 'AliasesToolWindow.windowtitle',
           to: '/',
         },
         {
           icon: 'mdi-chip',
-          title: 'drivers',
+          title: 'DriversToolWindow.windowtitle',
           to: '/drivers',
         },
         {
           icon: 'mdi-connection',
-          title: 'open sessions',
+          title: 'Session.opensessions',
           to: '/sessions',
         },
         {
           icon: 'mdi-account',
-          title: 'user',
+          title: 'UserProfile.title',
           to: '/pages/user',
         },
         {
           icon: 'mdi-tools',
-          title: 'tools',
+          title: 'Tools.title',
           to: '/pages/tools',
         },
         {
           icon: 'mdi-cog',
-          title: 'globalprefs',
+          title: 'GlobalPreferencesSheet.title',
           to: '/pages/preferences',
         },
       ],

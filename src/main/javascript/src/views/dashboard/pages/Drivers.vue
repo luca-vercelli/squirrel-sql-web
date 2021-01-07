@@ -6,14 +6,14 @@
   >
     <base-material-card
       icon="mdi-chip"
-      title="Drivers"
+      :title="$t('DriversToolWindow.windowtitle')"
       class="px-5 py-3"
     >
       <div class="text-right">
         <v-btn
           color="success"
           class="mr-4"
-          title="Create new driver"
+          :title="$t('DriverInternalFrame.adddriver')"
           to="/new-driver"
         >
           <i
@@ -27,10 +27,10 @@
         <thead>
           <tr>
             <th class="primary--text">
-              Name
+              {{ $t('DriverInternalFrame.name') }}
             </th>
             <th class="text-right primary--text">
-              Actions
+              {{ $t('Action.actions') }}
             </th>
           </tr>
         </thead>
@@ -45,7 +45,7 @@
               <v-btn
                 color="success"
                 class="mr-4"
-                title="Edit"
+                :title="$t('Action.edit')"
                 :to="'/driver/' + driver.identifier"
               >
                 <i
@@ -56,7 +56,7 @@
               <v-btn
                 color="success"
                 class="mr-4"
-                title="Clone"
+                :title="$t('Action.clone')"
                 :to="'/clone-driver/' + driver.identifier"
               >
                 <i
@@ -67,8 +67,8 @@
               <v-btn
                 color="error"
                 class="mr-4"
-                title="Delete"
-                @click="deletingIdentifier = driver.identifier; showDeleteDialog = true"
+                :title="$t('Action.delete')"
+                @click="openDeleteDialog(driver)"
               >
                 <i
                   aria-hidden="true"
@@ -88,21 +88,21 @@
     >
       <v-card>
         <v-card-title class="headline">
-          Delete driver?
+          {{ $t('Action.confirm') }}
         </v-card-title>
-        <v-card-text>This operation cannot be undone.</v-card-text>
+        <v-card-text>{{ deletingMessage }}</v-card-text>
         <v-card-actions>
           <v-spacer />
           <v-btn
             color="error"
             @click="deleteDriver(); showDeleteDialog = false"
           >
-            OK
+            {{ $t('Action.ok') }}
           </v-btn>
           <v-btn
             @click="showDeleteDialog = false"
           >
-            Undo
+            {{ $t('Action.cancel') }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -120,7 +120,8 @@
         drivers: [],
         enableMock: process.env.VUE_APP_MOCK === 'true',
         showDeleteDialog: false,
-        deletingIdentifier: null,
+        deletingDriver: null,
+        deletingMessage: null,
       }
     },
 
@@ -155,21 +156,27 @@
         var name2 = y.name ? y.name.toLowerCase() : ''
         return name1 < name2 ? -1 : name1 > name2 ? +1 : 0
       },
+      openDeleteDialog (driver) {
+        this.deletingDriver = driver
+        this.deletingMessage = this.$t('DeleteDriverCommand.comfirm', [driver.name])
+        // FIXME should honour DeleteDriverCommand.used
+        this.showDeleteDialog = true
+      },
       deleteDriver: function () {
         var that = this
         $.ajax({
           type: this.enableMock ? 'GET' : 'DELETE',
-          url: this.enableMock ? process.env.BASE_URL + 'mock/JustGetOk' : process.env.BASE_URL + `ws/Drivers(${this.deletingIdentifier})`,
+          url: this.enableMock ? process.env.BASE_URL + 'mock/JustGetOk' : process.env.BASE_URL + `ws/Drivers(${this.deletingDriver.dentifier})`,
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (data, status) {
             that.loadDrivers()
-            that.deletingIdentifier = null
+            that.deletingDriver = null
           },
           error: function (data, status) {
             console.log('Data:', data, 'Status:', status)
-            that.deletingIdentifier = null
+            that.deletingDriver = null
           },
         })
       },

@@ -12,7 +12,7 @@
         <base-material-card>
           <template v-slot:heading>
             <div class="display-2 font-weight-light">
-              User Profile
+              {{ $t('UserProfile.title') }}
             </div>
           </template>
 
@@ -26,7 +26,7 @@
                   <v-text-field
                     v-model="user.username"
                     class="purple-input"
-                    label="User Name"
+                    :label="$t('UserProfile.username')"
                   />
                 </v-col>
 
@@ -36,7 +36,7 @@
                 >
                   <v-text-field
                     v-model="user.email"
-                    label="Email Address"
+                    :label="$t('UserProfile.email')"
                     class="purple-input"
                   />
                 </v-col>
@@ -47,7 +47,7 @@
                 >
                   <v-text-field
                     v-model="user.name"
-                    label="First Name"
+                    :label="$t('UserProfile.firstname')"
                     class="purple-input"
                   />
                 </v-col>
@@ -58,7 +58,7 @@
                 >
                   <v-text-field
                     v-model="user.surname"
-                    label="Last Name"
+                    :label="$t('UserProfile.lastname')"
                     class="purple-input"
                   />
                 </v-col>
@@ -66,7 +66,7 @@
                 <v-col cols="12">
                   <v-text-field
                     v-model="user.roles"
-                    label="Role(s)"
+                    :label="$t('UserProfile.roles')"
                     class="purple-input"
                   />
                 </v-col>
@@ -79,7 +79,7 @@
                     class="mr-0"
                     disabled
                   >
-                    Update Profile
+                    {{ $t('UserProfile.action.update') }}
                   </v-btn>
                 </v-col>
               </v-row>

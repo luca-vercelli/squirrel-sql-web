@@ -214,7 +214,7 @@ public class SessionsManager {
 	 * @param token Authentication JWT token
 	 */
 	public void disconnectAll(String token) {
-		Set<ISession> sessions = getOpenSessions(token);
+		Set<ISession> sessions = openSessions.get(token);
 		for (ISession session : sessions) {
 			internalDisconnect(session);
 		}

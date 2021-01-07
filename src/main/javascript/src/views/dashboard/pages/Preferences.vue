@@ -6,7 +6,7 @@
   >
     <base-material-card
       icon="mdi-cog"
-      title="Global Prefrerences"
+      :title="$t('GlobalPreferencesSheet.title')"
       class="px-5 py-3"
     >
       <b>
@@ -29,7 +29,7 @@
           aria-hidden="true"
           class="v-icon notranslate mdi mdi-content-save theme--dark"
         />
-        Save
+        {{ $t('Action.save') }}
       </v-btn>
     </base-material-card>
   </v-container>

@@ -6,7 +6,7 @@
   >
     <base-material-card
       icon="mdi-table"
-      :title="'Procedure ' + procName"
+      :title="$t('Procedure.title', [procName])"
       class="px-5 py-3"
     >
       <v-col class="text-right">
@@ -18,11 +18,12 @@
             aria-hidden="true"
             class="v-icon notranslate mdi mdi-close-circle theme--dark"
           />
-          Close
+          {{ $t('Action.close') }}
         </v-btn>
       </v-col>
       <template>
         <v-tabs
+          v-model="currentTab"
           center-active
         >
           <v-tab
@@ -30,7 +31,7 @@
             :key="tab.endpoint"
             @click="loadDetails(tab.endpoint)"
           >
-            {{ tab.caption }}
+            {{ $t(tab.caption) }}
           </v-tab>
         </v-tabs>
         <sql-results
@@ -68,8 +69,9 @@
         editEnabled: false,
         results: null,
         tabs: [
-          { caption: 'Columns', endpoint: 'ProcedureColumns' },
+          { caption: 'ProcedureColumnsTab.title', endpoint: 'Columns' },
         ],
+        currentTab: 0,
       }
     },
 
@@ -77,9 +79,18 @@
       procName: function () {
         return this.node.simpleName
       },
+      procEndpoint: function () {
+        // Remember, procedureType is not objectType
+        const catalog = this.node.catalog || ''
+        const schema = this.node.schemaName || ''
+        const name = this.node.simpleName || ''
+        const type = this.node.procedureType || ''
+        return `ws/Session(${this.sessionIdentifier})/Procedure(${catalog},${schema},${name},${type})/`
+      },
     },
 
     created: function () {
+      this.loadDetails(this.tabs[this.currentTab].endpoint)
     },
 
     methods: {
@@ -88,14 +99,8 @@
         this.results = null
         var that = this
         $.ajax({
-          url: this.enableMock ? process.env.BASE_URL + 'mock/DataSet.json' : process.env.BASE_URL + `ws/Session(${this.sessionIdentifier})/${endpoint}`,
+          url: this.enableMock ? process.env.BASE_URL + 'mock/DataSet.json' : this.procEndpoint + endpoint,
           type: 'GET',
-          data: {
-            catalog: this.node.catalog,
-            schema: this.node.schemaName,
-            procedureName: this.node.simpleName,
-            procedureType: this.node.procedureType,
-          },
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },

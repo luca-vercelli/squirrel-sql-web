@@ -6,7 +6,7 @@
   >
     <base-material-card
       icon="mdi-tools"
-      title="Tools"
+      :title="$t('Tools.title')"
       class="px-5 py-3"
     >
       <v-btn
@@ -18,7 +18,7 @@
           aria-hidden="true"
           class="v-icon notranslate mdi mdi-android theme--dark"
         />
-        Scan for driver classes
+        {{ $t('Tools.scanfordrivers') }}
       </v-btn>
     </base-material-card>
   </v-container>

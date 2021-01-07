@@ -6,7 +6,7 @@
   >
     <base-material-card
       icon="mdi-login"
-      title="Login"
+      :title="$t('Login.title')"
       class="px-5 py-3"
     >
       <v-form
@@ -16,26 +16,26 @@
       >
         <v-text-field
           v-model="username"
-          label="Username"
+          :label="$t('Login.username')"
           required
           @keydown="onEnterLogin"
         />
 
         <v-text-field
           v-model="password"
-          label="Password"
+          :label="$t('Login.password')"
           required
           @keydown="onEnterLogin"
         />
 
-        <p>Default username/password is admin/admin</p>
+        <p>{{ $t('Login.message') }}</p>
 
         <v-btn
           :disabled="!valid"
           color="success"
           @click="login"
         >
-          Login
+          {{ $t('Action.login') }}
         </v-btn>
       </v-form>
     </base-material-card>
@@ -85,7 +85,6 @@
         })
       },
       onEnterLogin: function (evt) {
-        console.log(evt)
         if (evt.key === 'Enter') {
           this.login()
         }

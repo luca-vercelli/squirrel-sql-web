@@ -6,14 +6,14 @@
   >
     <base-material-card
       icon="mdi-database"
-      title="Aliases"
+      :title="$t('AliasesToolWindow.windowtitle')"
       class="px-5 py-3"
     >
       <div class="text-right">
         <v-btn
           color="success"
           class="mr-4"
-          title="Create new alias"
+          :title="$t('AliasInternalFrame.addalias')"
           to="/new-alias"
         >
           <i
@@ -27,10 +27,10 @@
         <thead>
           <tr>
             <th class="primary--text">
-              Name
+              {{ $t('AliasInternalFrame.name') }}
             </th>
             <th class="text-right primary--text">
-              Actions
+              {{ $t('Action.actions') }}
             </th>
           </tr>
         </thead>
@@ -45,7 +45,7 @@
               <v-btn
                 color="success"
                 class="mr-4"
-                title="Connect"
+                :title="$t('AliasInternalFrame.connect')"
                 @click="connectOrDialog(alias)"
               >
                 <i
@@ -56,7 +56,7 @@
               <v-btn
                 color="success"
                 class="mr-4"
-                title="Edit"
+                :title="$t('Action.edit')"
                 :to="'/alias/' + alias.identifier"
               >
                 <i
@@ -67,7 +67,7 @@
               <v-btn
                 color="success"
                 class="mr-4"
-                title="Clone"
+                :title="$t('Action.clone')"
                 :to="'/clone-alias/' + alias.identifier"
               >
                 <i
@@ -78,8 +78,8 @@
               <v-btn
                 color="error"
                 class="mr-4"
-                title="Delete"
-                @click="deletingIdentifier = alias.identifier; showDeleteDialog = true"
+                :title="$t('Action.delete')"
+                @click="openDeleteDialog(alias)"
               >
                 <i
                   aria-hidden="true"
@@ -99,21 +99,21 @@
     >
       <v-card>
         <v-card-title class="headline">
-          Delete alias?
+          {{ $t('Action.confirm') }}
         </v-card-title>
-        <v-card-text>This operation cannot be undone.</v-card-text>
+        <v-card-text>{{ deletingMessage }}</v-card-text>
         <v-card-actions>
           <v-spacer />
           <v-btn
             color="error"
             @click="deleteAlias(); showDeleteDialog = false"
           >
-            OK
+            {{ $t('Action.ok') }}
           </v-btn>
           <v-btn
             @click="showDeleteDialog = false"
           >
-            Undo
+            {{ $t('Action.cancel') }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -126,18 +126,18 @@
     >
       <v-card>
         <v-card-title class="headline">
-          Connect
+          {{ $t('ConnectionInternalFrame.connect') }}
         </v-card-title>
         <v-card-text>
           <v-container>
             <v-text-field
               v-model="connectUserName"
-              label="Username"
+              :label="$t('ConnectionInternalFrame.user')"
             />
             <v-text-field
               v-model="connectPassword"
               type="password"
-              label="Password"
+              :label="$t('ConnectionInternalFrame.password')"
             />
           </v-container>
         </v-card-text>
@@ -147,12 +147,12 @@
             color="error"
             @click="connect(); showConnectDialog = false"
           >
-            OK
+            {{ $t('Action.ok') }}
           </v-btn>
           <v-btn
             @click="showConnectDialog = false"
           >
-            Undo
+            {{ $t('Action.cancel') }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -171,7 +171,8 @@
         enableMock: process.env.VUE_APP_MOCK === 'true',
         showDeleteDialog: false,
         showConnectDialog: false,
-        deletingIdentifier: null,
+        deletingAlias: {},
+        deletingMessage: null,
         connectingIdentifier: null,
         connectUserName: null,
         connectPassword: null,
@@ -240,21 +241,26 @@
           },
         })
       },
+      openDeleteDialog (alias) {
+        this.deletingAlias = alias
+        this.deletingMessage = this.$t('DeleteAliasCommand.confirm', [alias.name])
+        this.showDeleteDialog = true
+      },
       deleteAlias: function () {
         var that = this
         $.ajax({
           type: this.enableMock ? 'GET' : 'DELETE',
-          url: this.enableMock ? process.env.BASE_URL + 'mock/JustGetOk' : process.env.BASE_URL + `ws/Aliases(${this.deletingIdentifier})`,
+          url: this.enableMock ? process.env.BASE_URL + 'mock/JustGetOk' : process.env.BASE_URL + `ws/Aliases(${this.deletingAlias.identifier})`,
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (data, status) {
             that.loadAliases()
-            that.deletingIdentifier = null
+            that.deletingAlias = null
           },
           error: function (data, status) {
             console.log('Data:', data, 'Status:', status)
-            that.deletingIdentifier = null
+            that.deletingAlias = null
           },
         })
       },

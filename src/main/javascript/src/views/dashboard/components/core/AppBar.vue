@@ -36,14 +36,16 @@
       class="ml-2"
       min-width="0"
       text
+      :title="$t('AliasesToolWindow.windowtitle')"
       to="/"
     >
-      <v-icon>mdi-view-dashboard</v-icon>
+      <v-icon>mdi-database</v-icon>
     </v-btn>
     <v-btn
       class="ml-2"
       min-width="0"
       text
+      :title="$t('UserProfile.title')"
       to="/pages/user"
     >
       <v-icon>mdi-account</v-icon>
@@ -52,6 +54,7 @@
       class="ml-2"
       min-width="0"
       text
+      :title="$t('Action.logout')"
       @click="logout"
     >
       <v-icon>mdi-logout</v-icon>
@@ -79,13 +82,6 @@
     },
 
     data: () => ({
-      notifications: [
-        'Mike John Responded to your email',
-        'You have 5 new tasks',
-        'You\'re now friends with Andrew',
-        'Another Notification',
-        'Another one',
-      ],
       enableMock: process.env.VUE_APP_MOCK === 'true',
     }),
 

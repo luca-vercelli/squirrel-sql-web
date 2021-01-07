@@ -20,28 +20,12 @@ import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expander
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expanders.ProcedureTypeExpander;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expanders.TableTypeExpander;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.expanders.UDTTypeExpander;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.procedure.IProcedureTabPublic;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.procedure.ProcedureColumnsTabPublic;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ColumnsTabPublic;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ContentsTabPublic;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ExportedKeysTabPublic;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ITableTabPublic;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ImportedKeysTabPublic;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.IndexesTabPublic;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.PrimaryKeyTabPublic;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.RowCountTabPublic;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.RowIDTabPublic;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.TablePriviligesTabPublic;
-import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.VersionColumnsTabPublic;
 import net.sourceforge.squirrel_sql.dto.ObjectTreeNodeDto;
-import net.sourceforge.squirrel_sql.fw.datasetviewer.DataSetException;
-import net.sourceforge.squirrel_sql.fw.datasetviewer.IDataSet;
 import net.sourceforge.squirrel_sql.fw.sql.DatabaseObjectInfo;
 import net.sourceforge.squirrel_sql.fw.sql.DatabaseObjectType;
 import net.sourceforge.squirrel_sql.fw.sql.IDatabaseObjectInfo;
 import net.sourceforge.squirrel_sql.fw.sql.ProcedureInfo;
 import net.sourceforge.squirrel_sql.fw.sql.SQLDatabaseMetaData;
-import net.sourceforge.squirrel_sql.fw.sql.TableInfo;
 import net.sourceforge.squirrel_sql.ws.resources.SessionsEndpoint;
 
 /**
@@ -248,147 +232,4 @@ public class ObjectsTabManager {
 		return expander.createChildren(node.getSession(), node);
 	}
 
-	/**
-	 * Return SELECT * FROM given table
-	 * 
-	 * @return
-	 * @throws DataSetException
-	 */
-	public IDataSet getTableContent(ISession session, String catalog, String schema, String table, String type)
-			throws DataSetException {
-		return commonGetDataSet(session, catalog, schema, table, type, new ContentsTabPublic(session));
-	}
-
-	/**
-	 * Return SELECT COUNT(*) FROM given table
-	 * 
-	 * @return
-	 * @throws DataSetException
-	 */
-	public IDataSet getTableRowCount(ISession session, String catalog, String schema, String table, String type)
-			throws DataSetException {
-		return commonGetDataSet(session, catalog, schema, table, type, new RowCountTabPublic());
-	}
-
-	/**
-	 * Return primary keys of given table
-	 * 
-	 * @return
-	 * @throws DataSetException
-	 */
-	public IDataSet getTablePk(ISession session, String catalog, String schema, String table, String type)
-			throws DataSetException {
-		return commonGetDataSet(session, catalog, schema, table, type, new PrimaryKeyTabPublic());
-	}
-
-	/**
-	 * Return columns definitions of given table
-	 * 
-	 * @return
-	 * @throws DataSetException
-	 */
-	public IDataSet getTableColumns(ISession session, String catalog, String schema, String table, String type)
-			throws DataSetException {
-		return commonGetDataSet(session, catalog, schema, table, type, new ColumnsTabPublic());
-	}
-
-	/**
-	 * Return indexes of given table
-	 * 
-	 * @return
-	 * @throws DataSetException
-	 */
-	public IDataSet getTableIndexes(ISession session, String catalog, String schema, String table, String type)
-			throws DataSetException {
-		return commonGetDataSet(session, catalog, schema, table, type, new IndexesTabPublic());
-	}
-
-	/**
-	 * Return privileges on given table
-	 * 
-	 * @return
-	 * @throws DataSetException
-	 */
-	public IDataSet getTablePrivileges(ISession session, String catalog, String schema, String table, String type)
-			throws DataSetException {
-		return commonGetDataSet(session, catalog, schema, table, type, new TablePriviligesTabPublic());
-	}
-
-	/**
-	 * Return imported keys for given table
-	 * 
-	 * @return
-	 * @throws DataSetException
-	 */
-	public IDataSet getTableImportedFk(ISession session, String catalog, String schema, String table, String type)
-			throws DataSetException {
-		return commonGetDataSet(session, catalog, schema, table, type, new ImportedKeysTabPublic());
-	}
-
-	/**
-	 * Return exported keys for given table
-	 * 
-	 * @return
-	 * @throws DataSetException
-	 */
-	public IDataSet getTableExportedFk(ISession session, String catalog, String schema, String table, String type)
-			throws DataSetException {
-		return commonGetDataSet(session, catalog, schema, table, type, new ExportedKeysTabPublic());
-	}
-
-	/**
-	 * Return what???
-	 * 
-	 * @return
-	 * @throws DataSetException
-	 */
-	public IDataSet getTableRowID(ISession session, String catalog, String schema, String table, String type)
-			throws DataSetException {
-		return commonGetDataSet(session, catalog, schema, table, type, new RowIDTabPublic());
-	}
-
-	/**
-	 * Return what???
-	 * 
-	 * @return
-	 * @throws DataSetException
-	 */
-	public IDataSet getTableVersionColumns(ISession session, String catalog, String schema, String table, String type)
-			throws DataSetException {
-		return commonGetDataSet(session, catalog, schema, table, type, new VersionColumnsTabPublic());
-	}
-
-	private IDataSet commonGetDataSet(ISession session, String catalog, String schema, String table, String type,
-			ITableTabPublic tab) throws DataSetException {
-
-		// One can also think to take a ObjectTreeNode as input
-
-		TableInfo info = new TableInfo(catalog, schema, table, type, null, session.getMetaData());
-		tab.setSession(session);
-		tab.setTableInfo(info);
-		IDataSet result = tab.createDataSet();
-		return result;
-	}
-
-	/**
-	 * Return "columns", i.e. parameters, of given procedure / function / ...
-	 * 
-	 * @param session
-	 * @param catalog
-	 * @param schema
-	 * @param procedure
-	 * @param procType  DatabaseMetaData.procedureNoResult|DatabaseMetaData.procedureReturnsResult|...
-	 * @return
-	 * @throws DataSetException
-	 */
-	public IDataSet getProcedureColumns(ISession session, String catalog, String schema, String procedure, int procType)
-			throws DataSetException {
-		ProcedureInfo info = new ProcedureInfo(catalog, schema, procedure, null, procType,
-				(SQLDatabaseMetaData) session.getMetaData());
-		IProcedureTabPublic tab = new ProcedureColumnsTabPublic();
-		tab.setSession(session);
-		tab.setProcedureInfo(info);
-		IDataSet result = tab.createDataSet();
-		return result;
-	}
 }

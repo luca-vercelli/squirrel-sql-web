@@ -1,0 +1,4 @@
+{
+  "value" : "CREATE TABLE fuffa\n(\n   id integer DEFAULT NULL,\n   description varchar(2000) DEFAULT NULL\n)"
+}
+

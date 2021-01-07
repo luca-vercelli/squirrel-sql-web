@@ -8,7 +8,7 @@
         aria-hidden="true"
         class="v-icon notranslate mdi mdi-connection theme--dark"
       />
-      Disconnect
+      {{ $t('Session.disconnect') }}
     </v-btn>
     <v-btn
       color="success"
@@ -18,7 +18,7 @@
         aria-hidden="true"
         class="v-icon notranslate mdi mdi-database-plus theme--dark"
       />
-      New SQL tab
+      {{ $t('Session.newsqltab') }}
     </v-btn>
 
     <v-tabs
@@ -52,6 +52,7 @@
           <sql-query
             v-if="item.type=='query'"
             :session="session"
+            :default-query="item.defaultQuery"
             @notify="$emit('notify', $event)"
             @ajax-error="$emit('ajax-error', $event)"
             @close-tab="closeTab(index)"
@@ -63,6 +64,7 @@
             @notify="$emit('notify', $event)"
             @ajax-error="$emit('ajax-error', $event)"
             @close-tab="closeTab(index)"
+            @sql-script="addSqlTab($event)"
           />
           <procedure-tab
             v-if="item.type=='procedure'"
@@ -113,8 +115,8 @@
         editEnabled: false,
         tab: null,
         items: [
-          { tab: 'Objects tree', type: 'objects' },
-          { tab: 'SQL', type: 'query', number: 1 },
+          { tab: this.$t('ObjectTreeTab.title'), type: 'objects' },
+          { tab: this.$t('SQLTab.title'), type: 'query', number: 1 },
         ],
       }
     },
@@ -147,7 +149,7 @@
           },
           error: function (response) {
             console.error('Error retrieving session id. Probably the user typed an old url: ' + location.href)
-            that.$emit('ajax-error', response)
+            // do NOT emit ajax-error
             that.$router.push('/')
           },
         })
@@ -195,10 +197,10 @@
         this.items.push(tab)
         this.tab = this.items.length - 1
       },
-      addSqlTab: function () {
+      addSqlTab: function (defaultQuery) {
         var number = 1
         this.items.forEach(x => { if (x.type === 'query' && x.number >= number) number = x.number + 1 })
-        var tab = { tab: `SQL (${number})`, type: 'query', number: number }
+        var tab = { tab: this.$t('AdditionalSQLTab.title', [number]), type: 'query', number: number, defaultQuery: defaultQuery }
         this.items.push(tab)
         this.tab = this.items.length - 1
       },

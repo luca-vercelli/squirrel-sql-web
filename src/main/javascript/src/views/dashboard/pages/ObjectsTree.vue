@@ -6,13 +6,13 @@
   >
     <base-material-card
       icon="mdi-database"
-      title="Objects"
+      :title="$t('ObjectTreeTab.title')"
       class="px-5 py-3"
     >
       <template>
         <v-text-field
           v-model="search"
-          label="Search..."
+          :label="$t('ObjectTreeTab.search')"
           clearable
           clear-icon="mdi-close-circle-outline"
         />
@@ -25,7 +25,7 @@
             aria-hidden="true"
             class="v-icon notranslate mdi mdi-refresh theme--dark"
           />
-          Refresh
+          {{ $t('Action.refresh') }}
         </v-btn>
         <v-treeview
           activatable

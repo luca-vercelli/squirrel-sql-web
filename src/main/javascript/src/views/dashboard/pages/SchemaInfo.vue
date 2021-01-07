@@ -6,7 +6,7 @@
   >
     <base-material-card
       icon="mdi-database"
-      title="Schema/Database Info"
+      :title="$t('MetaDataTab.title')"
       class="px-5 py-3"
     >
       <v-col class="text-right">
@@ -18,19 +18,13 @@
             aria-hidden="true"
             class="v-icon notranslate mdi mdi-close-circle theme--dark"
           />
-          Close
+          {{ $t('Action.close') }}
         </v-btn>
       </v-col>
       <template>
-        <b>
-          <span
-            aria-hidden="true"
-            class="v-icon notranslate mdi mdi-alert"
-          />
-          WORK IN PROGRESS
-        </b>
 
         <v-tabs
+          v-model="currentTab"
           center-active
         >
           <v-tab
@@ -38,7 +32,7 @@
             :key="tab.endpoint"
             @click="loadDetails(tab.endpoint)"
           >
-            {{ tab.caption }}
+            {{ $t(tab.caption) }}
           </v-tab>
         </v-tabs>
         <sql-results
@@ -76,23 +70,34 @@
         editEnabled: false,
         results: null,
         tabs: [
-          { caption: 'Metadata', endpoint: 'SessionMetadata' },
-          { caption: 'Status', endpoint: 'SessionStatus' },
-          { caption: 'Catalogs', endpoint: 'SessionCatalogs' },
-          { caption: 'Table Types', endpoint: 'SessionTableTypes' },
-          { caption: 'Data Types', endpoint: 'SessionDataTypes' },
-          { caption: 'Numeric Functions', endpoint: 'SessionNumericFunctions' },
-          { caption: 'String Functions', endpoint: 'SessionStringFunctions' },
-          { caption: 'Date/time Functions', endpoint: 'SessionDateTimeFunctions' },
-          { caption: 'Keywords', endpoint: 'SessionKeywords' },
+          { caption: 'MetaDataTab.title', endpoint: 'MetaData' },
+          { caption: 'ConnectionStatusTab.title', endpoint: 'ConnectionStatus' },
+          { caption: 'CatalogsTab.title', endpoint: 'Catalogs' },
+          { caption: 'SchemasTab.title', endpoint: 'Schemas' },
+          { caption: 'TableTypesTab.title', endpoint: 'TableTypes' },
+          { caption: 'DataTypesTab.title', endpoint: 'DataTypes' },
+          { caption: 'NumericFunctionsTab.title', endpoint: 'NumericFunctions' },
+          { caption: 'StringFunctionsTab.title', endpoint: 'StringFunctions' },
+          { caption: 'SystemFunctionsTab.title', endpoint: 'SystemFunctions' },
+          { caption: 'TimeDateFunctionsTab.title', endpoint: 'TimeDateFunctions' },
+          { caption: 'KeywordsTab.title', endpoint: 'Keywords' },
         ],
+        currentTab: 0,
       }
     },
 
     computed: {
+      dbEndpoint: function () {
+        const catalog = this.node.catalog || ''
+        const schema = this.node.schemaName || ''
+        const name = this.node.simpleName || ''
+        const type = this.node.objectType || ''
+        return `ws/Session(${this.sessionIdentifier})/Database(${catalog},${schema},${name},${type})/`
+      },
     },
 
     created: function () {
+      this.loadDetails(this.tabs[this.currentTab].endpoint)
     },
 
     methods: {
@@ -101,9 +106,8 @@
         this.results = null
         var that = this
         $.ajax({
-          url: this.enableMock ? process.env.BASE_URL + 'mock/DataSet.json' : process.env.BASE_URL + `ws/Session(${this.sessionIdentifier})/${endpoint}`,
+          url: this.enableMock ? process.env.BASE_URL + 'mock/DataSet.json' : this.dbEndpoint + endpoint,
           type: 'GET',
-          data: this.node,
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },

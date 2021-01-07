@@ -6,7 +6,7 @@
   >
     <base-material-card
       icon="mdi-database-search"
-      title="SQL"
+      :title="$t('SQLTab.title')"
       class="px-5 py-3"
     >
       <v-col class="text-right">
@@ -18,7 +18,7 @@
             aria-hidden="true"
             class="v-icon notranslate mdi mdi-close-circle theme--dark"
           />
-          Close
+          {{ $t('Action.close') }}
         </v-btn>
       </v-col>
       <v-textarea
@@ -26,7 +26,7 @@
         filled
         auto-grow
         label="SQL Query"
-        placeholder="Type your query here"
+        :placeholder="$t('SQLTab.typeyourquery')"
         required
       />
 
@@ -40,20 +40,22 @@
             aria-hidden="true"
             class="v-icon notranslate mdi mdi-edit theme--dark"
           />
-          Query
+          {{ $t('SQLTab.action.query') }}
         </v-btn>
 
         <v-select
           v-model="historySelected"
           :items="history"
-          label="History"
+          item-text="sql"
+          item-value="sql"
+          :label="$t('SessionSQLPropertiesPanel.sqlhistory')"
           :disabled="!editEnabled"
           @change="selectFromHistory"
         />
 
         <v-checkbox
           v-model="session.properties.sqllimitRows"
-          label="Limit rows:"
+          :label="$t('SQLPanel.limitrowscheckbox.label')"
           @change="saveProperties"
         />
         <v-text-field
@@ -84,12 +86,16 @@
         type: Object,
         default: Object,
       },
+      defaultQuery: {
+        type: String,
+        default: null,
+      },
     },
 
     data () {
       return {
         enableMock: process.env.VUE_APP_MOCK === 'true',
-        editEnabled: false,
+        editEnabled: true,
         query: '',
         results: null,
         historySelected: null,
@@ -97,9 +103,13 @@
       }
     },
 
-    computed: {},
+    computed: {
+    },
 
     created: function () {
+      if (this.defaultQuery) {
+        this.query = this.defaultQuery
+      }
       this.loadHistory()
     },
 
@@ -137,7 +147,7 @@
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (data) {
-            that.history.push(that.query)
+            that.history.push({ sql: that.query })
             if (data.value == null) {
               // not a SELECT
               that.$emit('notify', { message: 'Success.', type: 'success' })
