@@ -57,6 +57,7 @@ public class UsersManager {
 		// cfr. code from AliasListHolder
 
 		User u = new User();
+		u.setIdentifier(1);
 		u.setUsername("admin");
 		u.setPassword("admin");
 		u.setSurname("John");
