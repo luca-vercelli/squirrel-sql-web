@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class User {
 
-	private Integer identifier;
+	private int identifier;
 	private String username;
 	private String name;
 	private String surname;
@@ -12,11 +12,11 @@ public class User {
 	private String password; // XmlWriter does not support char[]
 	private String[] roles; // XmlWriter does not support List's
 
-	public Integer getIdentifier() {
+	public int getIdentifier() {
 		return identifier;
 	}
 
-	public void setIdentifier(Integer identifier) {
+	public void setIdentifier(int identifier) {
 		this.identifier = identifier;
 	}
 
