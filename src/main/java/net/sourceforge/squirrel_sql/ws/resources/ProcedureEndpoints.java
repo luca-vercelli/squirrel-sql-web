@@ -1,5 +1,7 @@
 package net.sourceforge.squirrel_sql.ws.resources;
 
+import java.sql.SQLException;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -42,6 +44,31 @@ public class ProcedureEndpoints {
 			throw webAppException(e);
 		}
 		return new ValueBean<>(dataset);
+	}
+
+	@GET
+	@Path("CreateProcedure")
+	public ValueBean<String> getDdl(@PathParam("sessionId") String sessionId, @PathParam("catalog") String catalog,
+			@PathParam("schema") String schema, @PathParam("procName") String procName,
+			@PathParam("procType") int procType) throws AuthorizationException {
+		ISession session = sessionsManager.getSessionById(sessionId);
+		checkSession(session);
+		String ddl;
+		ddl = manager.getSource(session, catalog, schema, procName, procType);
+		return new ValueBean<>(ddl);
+	}
+
+	@GET
+	@Path("RunProcedure")
+	public ValueBean<String> getRunProcedureScript(@PathParam("sessionId") String sessionId,
+			@PathParam("catalog") String catalog, @PathParam("schema") String schema,
+			@PathParam("procName") String procName, @PathParam("procType") int procType)
+			throws AuthorizationException, SQLException {
+		ISession session = sessionsManager.getSessionById(sessionId);
+		checkSession(session);
+		String script;
+		script = manager.getRunCommand(session, catalog, schema, procName, procType);
+		return new ValueBean<>(script);
 	}
 
 	/**

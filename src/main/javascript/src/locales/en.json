@@ -80,6 +80,8 @@
 "Scripts.Update": "UPDATE",
 "Scripts.Insert": "INSERT",
 "Scripts.Delete": "DELETE",
+"Scripts.CreateProcedure": "DDL",
+"Scripts.RunProcedure": "Run",
 
 "ConnectToAliasCommand.tooltip": "List of database aliases that can be connected to",
 "AliasesToolWindow.windowtitle": "Aliases",
