@@ -20,6 +20,7 @@ Screenshots
 ![Objects](screenshots/05-objects-tab.png)
 ![Query](screenshots/06-sql-tab.png)
 ![Tables](screenshots/07-table-tab.png)
+![Preferences](screenshots/08-preferences.png)
 
 Build
 -----
@@ -49,8 +50,8 @@ Project roadmap
 - ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Database tab
 - ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Table tab
 - ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Procedure tab
-- ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) UDT tab, ...
-- ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Handling with large tables
+- ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) UDT tab
+- ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Handling with large tables
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Editing table contents
 - ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Table DDL, Script SQL
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Procedure source code: Mysql, Oracle, PostGreSQL, ...
@@ -59,8 +60,10 @@ Project roadmap
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) SQuirreL logs window
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Highlight syntax
 - ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Web security: authentication (well, we still need to encrypt passwords)
-- ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Web security: authorizations, and a CRUD window for handling users
+- ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Web security: authorizations
+- ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Users CRUD
 - ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) i18n
+- ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Github CI (continuous integration)
 
 
 Authentication
