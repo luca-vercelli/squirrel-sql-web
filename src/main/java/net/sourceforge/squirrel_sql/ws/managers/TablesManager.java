@@ -25,10 +25,8 @@ import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.tab
 import net.sourceforge.squirrel_sql.fw.datasetviewer.DataSetException;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.IDataSet;
 import net.sourceforge.squirrel_sql.fw.dialects.CreateScriptPreferences;
-import net.sourceforge.squirrel_sql.fw.dialects.DatabaseObjectQualifier;
 import net.sourceforge.squirrel_sql.fw.dialects.DialectFactory;
 import net.sourceforge.squirrel_sql.fw.dialects.HibernateDialect;
-import net.sourceforge.squirrel_sql.fw.dialects.SqlGenerationPreferences;
 import net.sourceforge.squirrel_sql.fw.sql.ISQLConnection;
 import net.sourceforge.squirrel_sql.fw.sql.ITableInfo;
 import net.sourceforge.squirrel_sql.fw.sql.PrimaryKeyInfo;
@@ -174,6 +172,8 @@ public class TablesManager {
 		return result;
 	}
 
+	// ==========================================================================================================
+
 	/**
 	 * Retrieve table DDL script using internal HibernateDialect stuff
 	 * 
@@ -212,17 +212,16 @@ public class TablesManager {
 	public String getTableSelectScript(ISession session, String catalog, String schema, String tableName,
 			String tableType) throws SQLException, DataSetException {
 
-		// HibernateDialect cannot help here?
-
 		List<String> columns = getNonBlobColumns(session, catalog, schema, tableName, tableType);
 
-		StringBuilder sb = new StringBuilder("SELECT ");
+		StringBuilder sb = new StringBuilder("SELECT");
 		boolean first = true;
 		for (String column : columns) {
 			if (first) {
 				first = false;
+				sb.append("\n    ");
 			} else {
-				sb.append(", ");
+				sb.append(",\n    ");
 			}
 			sb.append(column);
 		}
@@ -232,11 +231,14 @@ public class TablesManager {
 
 	public String getTableDeleteScript(ISession session, String catalog, String schema, String tableName,
 			String tableType) throws SQLException, DataSetException {
-		List<String> columns = getKeyColumns(session, catalog, schema, tableName, tableType);
+		List<String> whereColumns = getKeyColumns(session, catalog, schema, tableName, tableType);
+		if (whereColumns.isEmpty()) {
+			whereColumns = getNonBlobColumns(session, catalog, schema, tableName, tableType);
+		}
 
 		StringBuilder sb = new StringBuilder("DELETE FROM ");
 		sb.append(tableName); // FIXME schema? catalog?
-		appendWhereClause(sb, columns);
+		appendWhereClause(sb, whereColumns);
 		return sb.toString();
 	}
 
@@ -259,49 +261,60 @@ public class TablesManager {
 	public String getTableInsertScript(ISession session, String catalog, String schema, String tableName,
 			String tableType) throws SQLException, DataSetException {
 
-		HibernateDialect dialect = DialectFactory.getDialect(session.getMetaData());
-
 		List<String> columns = getNonBlobColumns(session, catalog, schema, tableName, tableType);
-
-		// TODO: How to let the user customize this??
-		SqlGenerationPreferences prefs = new SqlGenerationPreferences();
-
-		DatabaseObjectQualifier qualifier = new DatabaseObjectQualifier(catalog, schema);
-
-		String command = dialect.getInsertIntoSQL(tableName, columns, "VALUES(...)", qualifier, prefs);
-
-		if (command == null || command.isEmpty()) {
-			logger.error("Got empty script for " + tableType + " " + catalog + "." + schema + "." + tableName);
-			throw new SQLException("Cannot retrieve DDL");
+		StringBuilder sb = new StringBuilder("INSERT INTO ");
+		sb.append(tableName); // FIXME schema? catalog?
+		sb.append('(');
+		boolean first = true;
+		for (String colName : columns) {
+			if (first) {
+				first = false;
+			} else {
+				sb.append(", ");
+			}
+			sb.append(colName);
 		}
-		return command;
+		sb.append(")\nVALUES(");
+		first = true;
+		for (int i = 0; i < columns.size(); ++i) {
+			if (first) {
+				first = false;
+			} else {
+				sb.append(", ");
+			}
+			sb.append("NULL");
+		}
+		sb.append(')');
+
+		return sb.toString();
 	}
 
 	public String getTableUpdateScript(ISession session, String catalog, String schema, String tableName,
 			String tableType) throws SQLException, DataSetException {
-		HibernateDialect dialect = DialectFactory.getDialect(session.getMetaData());
 
 		List<String> columns = getNonBlobColumns(session, catalog, schema, tableName, tableType);
-		String[] strColumns = new String[columns.size()];
-		columns.toArray(strColumns);
-		String[] nulls = new String[strColumns.length];
-		for (int i = 0; i < nulls.length; ++i)
-			nulls[i] = "NULL";
 
-		// TODO: How to let the user customize this??
-		SqlGenerationPreferences prefs = new SqlGenerationPreferences();
-
-		DatabaseObjectQualifier qualifier = new DatabaseObjectQualifier(catalog, schema);
-
-		String[] commands = dialect.getUpdateSQL(tableName, strColumns, nulls, null, strColumns, nulls, qualifier,
-				prefs);
-		String command = String.join(";\n", commands);
-
-		if (command == null || command.isEmpty()) {
-			logger.error("Got empty script for " + tableType + " " + catalog + "." + schema + "." + tableName);
-			throw new SQLException("Cannot retrieve DDL");
+		List<String> whereColumns = getKeyColumns(session, catalog, schema, tableName, tableType);
+		if (whereColumns.isEmpty()) {
+			whereColumns = columns;
 		}
-		return command;
+
+		StringBuilder sb = new StringBuilder("UPDATE ");
+		sb.append(tableName); // FIXME schema? catalog?
+		sb.append("\nSET");
+		boolean first = true;
+		for (String colName : columns) {
+			if (first) {
+				sb.append("\n   ");
+				first = false;
+			} else {
+				sb.append(",\n   ");
+			}
+			sb.append(colName).append(" = 'xxx'"); // this is /very/ naive
+		}
+
+		appendWhereClause(sb, whereColumns);
+		return sb.toString();
 	}
 
 	/**
@@ -325,8 +338,9 @@ public class TablesManager {
 	}
 
 	/**
-	 * Retrieve all key columns names. If none, return all columns but BLOB and CLOB
-	 * ones.
+	 * Retrieve all key columns names. ones.
+	 * 
+	 * @return list of key columns. May be empty.
 	 */
 	public List<String> getKeyColumns(ISession session, String catalog, String schema, String tableName,
 			String tableType) throws SQLException {
@@ -336,13 +350,11 @@ public class TablesManager {
 		PrimaryKeyInfo[] columnsMetadata = md
 				.getPrimaryKey(new TableInfo(catalog, schema, tableName, tableType, null, md));
 
-		if (columnsMetadata == null || columnsMetadata.length == 0) {
-			return getNonBlobColumns(session, catalog, schema, tableName, tableType);
-		}
-
 		List<String> columns = new ArrayList<>();
-		for (PrimaryKeyInfo col : columnsMetadata) {
-			columns.add(col.getColumnName());
+		if (columnsMetadata != null) {
+			for (PrimaryKeyInfo col : columnsMetadata) {
+				columns.add(col.getColumnName());
+			}
 		}
 		return columns;
 	}
