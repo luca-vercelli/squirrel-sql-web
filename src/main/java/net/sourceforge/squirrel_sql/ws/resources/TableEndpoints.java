@@ -8,6 +8,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
@@ -20,6 +21,12 @@ import net.sourceforge.squirrel_sql.ws.exceptions.AuthorizationException;
 import net.sourceforge.squirrel_sql.ws.managers.SessionsManager;
 import net.sourceforge.squirrel_sql.ws.managers.TablesManager;
 
+/**
+ * Endpoints for showing table-like object data and metadata.
+ * 
+ * @author lv 2021
+ *
+ */
 @Path("/Session({sessionId})/Table({catalog : ([^,/]+)?},{schema : ([^,/]+)?},{tableName},{tableType})")
 @Stateless
 @Produces(MediaType.APPLICATION_JSON)
@@ -30,12 +37,25 @@ public class TableEndpoints {
 	@Inject
 	TablesManager manager;
 
+	/**
+	 * Return table data
+	 * 
+	 * @param sessionId
+	 * @param catalog
+	 * @param schema
+	 * @param tableName
+	 * @param tableType JDBC table type (TABLE, VIEW, or whatever)
+	 * @param skip      How many rows to skip from beginning
+	 * @param top       How many rows to show
+	 * @return table content
+	 * @throws AuthorizationException
+	 */
 	@GET
 	@Path("Content")
 	public ValueBean<IDataSet> tableContent(@PathParam("sessionId") String sessionId,
 			@PathParam("catalog") String catalog, @PathParam("schema") String schema,
-			@PathParam("tableName") String tableName, @PathParam("tableType") String tableType)
-			throws AuthorizationException {
+			@PathParam("tableName") String tableName, @PathParam("tableType") String tableType,
+			@QueryParam("$skip") Integer skip, @QueryParam("$top") Integer top) throws AuthorizationException {
 
 		// FIXME what about row limits? -> SessionProperties.getSQLNbrRowsToShow
 
