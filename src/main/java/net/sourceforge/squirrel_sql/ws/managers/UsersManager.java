@@ -163,7 +163,7 @@ public class UsersManager {
 
 		List<User> list = readList(getUsersFile());
 		for (User u : list) {
-			if (u.getIdentifier().equals(identifier)) {
+			if (u.getIdentifier() == identifier) {
 				list.clear();
 				return u;
 			}
@@ -181,7 +181,7 @@ public class UsersManager {
 	}
 
 	public User createNewUser(User item) {
-		item.setIdentifier(getIdentifier());
+		item.setIdentifier(newIdentifier());
 		List<User> list = readList(getUsersFile());
 		checkDuplicatedUserName(list, item);
 		list.add(item);
@@ -190,27 +190,7 @@ public class UsersManager {
 		return item;
 	}
 
-	private void checkDuplicatedUserName(List<User> list, User user) {
-		for (User u : list) {
-			if (u.getUsername().equals(user.getUsername()) && !u.getIdentifier().equals(user.getIdentifier())) {
-				throw new WebApplicationException("Duplicated username", Status.BAD_REQUEST);
-			}
-		}
-	}
-
-	private static Integer maxId = 0;
-
-	public synchronized Integer getIdentifier() {
-		List<User> list = readList(getUsersFile());
-		for (User u : list) {
-			if (u.getIdentifier() != null && u.getIdentifier() > maxId) {
-				maxId = u.getIdentifier();
-			}
-		}
-		return ++maxId;
-	}
-
-	public User updateUser(User item, Integer identifier) {
+	public User updateUser(User item, int identifier) {
 		List<User> list = readList(getUsersFile());
 		int index = findUserIndex(list, identifier);
 		if (index == -1) {
@@ -229,17 +209,6 @@ public class UsersManager {
 		return oldItem;
 	}
 
-	private int findUserIndex(List<User> list, Integer identifier) {
-		int index = -1;
-		for (User u : list) {
-			index++;
-			if (u.getIdentifier().equals(identifier)) {
-				break;
-			}
-		}
-		return index;
-	}
-
 	public void removeUser(Integer identifier) {
 		List<User> list = readList(getUsersFile());
 		int index = findUserIndex(list, identifier);
@@ -251,4 +220,35 @@ public class UsersManager {
 		list.clear();
 	}
 
+	private int findUserIndex(List<User> list, int identifier) {
+		int index = -1;
+		for (User u : list) {
+			index++;
+			if (u.getIdentifier() == identifier) {
+				break;
+			}
+		}
+		return index;
+	}
+
+	private void checkDuplicatedUserName(List<User> list, User user) {
+		for (User u : list) {
+			if (u.getUsername().equals(user.getUsername()) && !u.equals(user)) {
+				throw new WebApplicationException("Duplicated username", Status.BAD_REQUEST);
+			}
+		}
+	}
+
+	// this is static for concurrency reasons
+	private static Integer maxId = 0;
+
+	public synchronized Integer newIdentifier() {
+		List<User> list = readList(getUsersFile());
+		for (User u : list) {
+			if (u.getIdentifier() > maxId) {
+				maxId = u.getIdentifier();
+			}
+		}
+		return ++maxId;
+	}
 }
