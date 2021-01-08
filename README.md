@@ -49,6 +49,7 @@ Project roadmap
 - ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Objects tree tab
 - ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Database tab
 - ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Table tab
+- ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Table "WHERE" and "ORDERBY" clause panels
 - ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Procedure tab
 - ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) UDT tab
 - ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Handling with large tables
