@@ -74,6 +74,15 @@
 "Tools.title": "Tools",
 "Tools.scanfordrivers": "Scan for Driver Classes",
 
+"Scripts.title": "Scripts",
+"Scripts.CreateTable": "DDL",
+"Scripts.Select": "SELECT",
+"Scripts.Update": "UPDATE",
+"Scripts.Insert": "INSERT",
+"Scripts.Delete": "DELETE",
+"Scripts.CreateProcedure": "DDL",
+"Scripts.RunProcedure": "Run",
+
 "ConnectToAliasCommand.tooltip": "List of database aliases that can be connected to",
 "AliasesToolWindow.windowtitle": "Aliases",
 "DriversToolWindow.windowtitle": "Drivers",

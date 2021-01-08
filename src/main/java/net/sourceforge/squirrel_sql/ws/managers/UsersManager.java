@@ -7,6 +7,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
 
@@ -55,6 +57,7 @@ public class UsersManager {
 		// cfr. code from AliasListHolder
 
 		User u = new User();
+		u.setIdentifier(1);
 		u.setUsername("admin");
 		u.setPassword("admin");
 		u.setSurname("John");
@@ -74,7 +77,7 @@ public class UsersManager {
 	 * @param list
 	 * @param file
 	 */
-	protected void saveList(List<User> list, File file) {
+	protected synchronized void saveList(List<User> list, File file) {
 		// cfr. code from AliasListHolder
 		try {
 			XMLBeanWriter xmlBeanWriter = new XMLBeanWriter();
@@ -131,7 +134,7 @@ public class UsersManager {
 	}
 
 	/**
-	 * Search for use on Users.xml file.
+	 * Search for user on Users.xml file.
 	 * 
 	 * @param username
 	 * @return User, or null if not found
@@ -148,5 +151,104 @@ public class UsersManager {
 
 		// not found
 		return null;
+	}
+
+	/**
+	 * Search for user on Users.xml file.
+	 * 
+	 * @param identifier
+	 * @return User, or null if not found
+	 */
+	public User findByIdentifier(Integer identifier) {
+
+		List<User> list = readList(getUsersFile());
+		for (User u : list) {
+			if (u.getIdentifier() == identifier) {
+				list.clear();
+				return u;
+			}
+		}
+
+		// not found
+		return null;
+	}
+
+	/**
+	 * Return all users in Users.xml file.
+	 */
+	public List<User> findAll() {
+		return readList(getUsersFile());
+	}
+
+	public User createNewUser(User item) {
+		item.setIdentifier(newIdentifier());
+		List<User> list = readList(getUsersFile());
+		checkDuplicatedUserName(list, item);
+		list.add(item);
+		saveList(list, getUsersFile());
+		list.clear();
+		return item;
+	}
+
+	public User updateUser(User item, int identifier) {
+		List<User> list = readList(getUsersFile());
+		int index = findUserIndex(list, identifier);
+		if (index == -1) {
+			throw new WebApplicationException(Status.NOT_FOUND);
+		}
+
+		User oldItem = list.get(index);
+		oldItem.setEmail(item.getEmail());
+		oldItem.setName(item.getName());
+		oldItem.setRoles(item.getRoles());
+		oldItem.setSurname(item.getSurname());
+		oldItem.setUsername(item.getUsername());
+
+		checkDuplicatedUserName(list, oldItem);
+		saveList(list, getUsersFile());
+		return oldItem;
+	}
+
+	public void removeUser(Integer identifier) {
+		List<User> list = readList(getUsersFile());
+		int index = findUserIndex(list, identifier);
+		if (index == -1) {
+			throw new WebApplicationException(Status.NOT_FOUND);
+		}
+		list.remove(index);
+		saveList(list, getUsersFile());
+		list.clear();
+	}
+
+	private int findUserIndex(List<User> list, int identifier) {
+		int index = -1;
+		for (User u : list) {
+			index++;
+			if (u.getIdentifier() == identifier) {
+				break;
+			}
+		}
+		return index;
+	}
+
+	private void checkDuplicatedUserName(List<User> list, User user) {
+		for (User u : list) {
+			if (u.getUsername().equals(user.getUsername()) && !u.equals(user)) {
+				throw new WebApplicationException("Duplicated username", Status.BAD_REQUEST);
+			}
+		}
+	}
+
+	// this is static for concurrency reasons
+	private static Integer maxId = 0;
+
+	public synchronized Integer newIdentifier() {
+		List<User> list = readList(getUsersFile());
+		for (User u : list) {
+			if (u.getIdentifier() > maxId) {
+				maxId = u.getIdentifier();
+			}
+		}
+		return ++maxId;
 	}
 }

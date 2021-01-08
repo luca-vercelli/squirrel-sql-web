@@ -9,18 +9,46 @@
       :title="$t('Procedure.title', [procName])"
       class="px-5 py-3"
     >
-      <v-col class="text-right">
-        <v-btn
-          color="light"
-          @click="$emit('close-tab')"
-        >
-          <i
-            aria-hidden="true"
-            class="v-icon notranslate mdi mdi-close-circle theme--dark"
-          />
-          {{ $t('Action.close') }}
-        </v-btn>
-      </v-col>
+      <v-row>
+        <v-col>
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                color="primary"
+                dark
+                v-bind="attrs"
+                v-on="on"
+              >
+                {{ $t('Scripts.title') }}
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item
+                v-for="(item, index) in scriptMenuVoices"
+                :key="index"
+              >
+                <v-list-item-title
+                  @click="loadScript(item.endpoint)"
+                >
+                  {{ $t(item.title) }}
+                </v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-col>
+        <v-col class="text-right">
+          <v-btn
+            color="light"
+            @click="$emit('close-tab')"
+          >
+            <i
+              aria-hidden="true"
+              class="v-icon notranslate mdi mdi-close-circle theme--dark"
+            />
+            {{ $t('Action.close') }}
+          </v-btn>
+        </v-col>
+      </v-row>
       <template>
         <v-tabs
           v-model="currentTab"
@@ -71,6 +99,10 @@
         tabs: [
           { caption: 'ProcedureColumnsTab.title', endpoint: 'Columns' },
         ],
+        scriptMenuVoices: [
+          { title: 'Scripts.CreateProcedure', endpoint: 'CreateProcedure' },
+          { title: 'Scripts.RunProcedure', endpoint: 'RunProcedure' },
+        ],
         currentTab: 0,
       }
     },
@@ -106,6 +138,25 @@
           },
           success: function (data) {
             that.results = data.value
+            that.editEnabled = true
+          },
+          error: function (response) {
+            that.$emit('ajax-error', response)
+            that.editEnabled = true
+          },
+        })
+      },
+      loadScript: function (endpoint) {
+        this.editEnabled = false
+        var that = this
+        $.ajax({
+          url: this.enableMock ? process.env.BASE_URL + 'mock/TableDdl.json' : this.tableEndpoint + endpoint,
+          type: 'GET',
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+          },
+          success: function (data) {
+            that.$emit('sql-script', data.value)
             that.editEnabled = true
           },
           error: function (response) {

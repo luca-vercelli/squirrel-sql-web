@@ -31,17 +31,6 @@ public class TableEndpoints {
 	TablesManager manager;
 
 	@GET
-	@Path("Ddl")
-	public ValueBean<String> tableDdl(@PathParam("sessionId") String sessionId, @PathParam("catalog") String catalog,
-			@PathParam("schema") String schema, @PathParam("tableName") String tableName,
-			@PathParam("tableType") String tableType) throws AuthorizationException, SQLException {
-		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
-		String ddl = manager.getTableDdl(session, catalog, schema, tableName, tableType);
-		return new ValueBean<>(ddl);
-	}
-
-	@GET
 	@Path("Content")
 	public ValueBean<IDataSet> tableContent(@PathParam("sessionId") String sessionId,
 			@PathParam("catalog") String catalog, @PathParam("schema") String schema,
@@ -211,6 +200,85 @@ public class TableEndpoints {
 			throw webAppException(e);
 		}
 		return new ValueBean<>(dataset);
+	}
+
+	@GET
+	@Path("Ddl")
+	public ValueBean<String> tableDdl(@PathParam("sessionId") String sessionId, @PathParam("catalog") String catalog,
+			@PathParam("schema") String schema, @PathParam("tableName") String tableName,
+			@PathParam("tableType") String tableType) throws AuthorizationException, SQLException {
+		ISession session = sessionsManager.getSessionById(sessionId);
+		checkSession(session);
+		String ddl = manager.getTableDdl(session, catalog, schema, tableName, tableType);
+		return new ValueBean<>(ddl);
+	}
+
+	@GET
+	@Path("ScriptSelect")
+	public ValueBean<String> getTableSelectScript(@PathParam("sessionId") String sessionId,
+			@PathParam("catalog") String catalog, @PathParam("schema") String schema,
+			@PathParam("tableName") String tableName, @PathParam("tableType") String tableType)
+			throws AuthorizationException, SQLException {
+		ISession session = sessionsManager.getSessionById(sessionId);
+		checkSession(session);
+		String ddl;
+		try {
+			ddl = manager.getTableSelectScript(session, catalog, schema, tableName, tableType);
+		} catch (DataSetException e) {
+			throw webAppException(e);
+		}
+		return new ValueBean<>(ddl);
+	}
+
+	@GET
+	@Path("ScriptInsert")
+	public ValueBean<String> getTableInsertScript(@PathParam("sessionId") String sessionId,
+			@PathParam("catalog") String catalog, @PathParam("schema") String schema,
+			@PathParam("tableName") String tableName, @PathParam("tableType") String tableType)
+			throws AuthorizationException, SQLException {
+		ISession session = sessionsManager.getSessionById(sessionId);
+		checkSession(session);
+		String ddl;
+		try {
+			ddl = manager.getTableInsertScript(session, catalog, schema, tableName, tableType);
+		} catch (DataSetException e) {
+			throw webAppException(e);
+		}
+		return new ValueBean<>(ddl);
+	}
+
+	@GET
+	@Path("ScriptUpdate")
+	public ValueBean<String> getTableUpdateScript(@PathParam("sessionId") String sessionId,
+			@PathParam("catalog") String catalog, @PathParam("schema") String schema,
+			@PathParam("tableName") String tableName, @PathParam("tableType") String tableType)
+			throws AuthorizationException, SQLException {
+		ISession session = sessionsManager.getSessionById(sessionId);
+		checkSession(session);
+		String ddl;
+		try {
+			ddl = manager.getTableUpdateScript(session, catalog, schema, tableName, tableType);
+		} catch (DataSetException e) {
+			throw webAppException(e);
+		}
+		return new ValueBean<>(ddl);
+	}
+
+	@GET
+	@Path("ScriptDelete")
+	public ValueBean<String> getTableDeleteScript(@PathParam("sessionId") String sessionId,
+			@PathParam("catalog") String catalog, @PathParam("schema") String schema,
+			@PathParam("tableName") String tableName, @PathParam("tableType") String tableType)
+			throws AuthorizationException, SQLException {
+		ISession session = sessionsManager.getSessionById(sessionId);
+		checkSession(session);
+		String ddl;
+		try {
+			ddl = manager.getTableDeleteScript(session, catalog, schema, tableName, tableType);
+		} catch (DataSetException e) {
+			throw webAppException(e);
+		}
+		return new ValueBean<>(ddl);
 	}
 
 	/**

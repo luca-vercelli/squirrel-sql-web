@@ -1,6 +1,7 @@
 package net.sourceforge.squirrel_sql.ws.managers;
 
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,11 @@ import net.sourceforge.squirrel_sql.fw.datasetviewer.IDataSet;
 import net.sourceforge.squirrel_sql.fw.dialects.CreateScriptPreferences;
 import net.sourceforge.squirrel_sql.fw.dialects.DialectFactory;
 import net.sourceforge.squirrel_sql.fw.dialects.HibernateDialect;
+import net.sourceforge.squirrel_sql.fw.sql.ISQLConnection;
 import net.sourceforge.squirrel_sql.fw.sql.ITableInfo;
+import net.sourceforge.squirrel_sql.fw.sql.PrimaryKeyInfo;
+import net.sourceforge.squirrel_sql.fw.sql.SQLDatabaseMetaData;
+import net.sourceforge.squirrel_sql.fw.sql.TableColumnInfo;
 import net.sourceforge.squirrel_sql.fw.sql.TableInfo;
 
 /**
@@ -167,6 +172,8 @@ public class TablesManager {
 		return result;
 	}
 
+	// ==========================================================================================================
+
 	/**
 	 * Retrieve table DDL script using internal HibernateDialect stuff
 	 * 
@@ -200,5 +207,155 @@ public class TablesManager {
 			throw new SQLException("Cannot retrieve DDL");
 		}
 		return ddls.isEmpty() ? null : ddls.get(0);
+	}
+
+	public String getTableSelectScript(ISession session, String catalog, String schema, String tableName,
+			String tableType) throws SQLException, DataSetException {
+
+		List<String> columns = getNonBlobColumns(session, catalog, schema, tableName, tableType);
+
+		StringBuilder sb = new StringBuilder("SELECT");
+		boolean first = true;
+		for (String column : columns) {
+			if (first) {
+				first = false;
+				sb.append("\n    ");
+			} else {
+				sb.append(",\n    ");
+			}
+			sb.append(column);
+		}
+		sb.append("\nFROM ").append(tableName); // FIXME schema? catalog?
+		return sb.toString();
+	}
+
+	public String getTableDeleteScript(ISession session, String catalog, String schema, String tableName,
+			String tableType) throws SQLException, DataSetException {
+		List<String> whereColumns = getKeyColumns(session, catalog, schema, tableName, tableType);
+		if (whereColumns.isEmpty()) {
+			whereColumns = getNonBlobColumns(session, catalog, schema, tableName, tableType);
+		}
+
+		StringBuilder sb = new StringBuilder("DELETE FROM ");
+		sb.append(tableName); // FIXME schema? catalog?
+		appendWhereClause(sb, whereColumns);
+		return sb.toString();
+	}
+
+	private void appendWhereClause(StringBuilder sb, List<String> columns) {
+		if (!columns.isEmpty()) {
+			sb.append("\nWHERE");
+			boolean first = true;
+			for (String colName : columns) {
+				if (first) {
+					sb.append("\n   ");
+					first = false;
+				} else {
+					sb.append(" AND\n   ");
+				}
+				sb.append(colName).append(" = 'xxx'"); // this is /very/ naive
+			}
+		}
+	}
+
+	public String getTableInsertScript(ISession session, String catalog, String schema, String tableName,
+			String tableType) throws SQLException, DataSetException {
+
+		List<String> columns = getNonBlobColumns(session, catalog, schema, tableName, tableType);
+		StringBuilder sb = new StringBuilder("INSERT INTO ");
+		sb.append(tableName); // FIXME schema? catalog?
+		sb.append('(');
+		boolean first = true;
+		for (String colName : columns) {
+			if (first) {
+				first = false;
+			} else {
+				sb.append(", ");
+			}
+			sb.append(colName);
+		}
+		sb.append(")\nVALUES(");
+		first = true;
+		for (int i = 0; i < columns.size(); ++i) {
+			if (first) {
+				first = false;
+			} else {
+				sb.append(", ");
+			}
+			sb.append("NULL");
+		}
+		sb.append(')');
+
+		return sb.toString();
+	}
+
+	public String getTableUpdateScript(ISession session, String catalog, String schema, String tableName,
+			String tableType) throws SQLException, DataSetException {
+
+		List<String> columns = getNonBlobColumns(session, catalog, schema, tableName, tableType);
+
+		List<String> whereColumns = getKeyColumns(session, catalog, schema, tableName, tableType);
+		if (whereColumns.isEmpty()) {
+			whereColumns = columns;
+		}
+
+		StringBuilder sb = new StringBuilder("UPDATE ");
+		sb.append(tableName); // FIXME schema? catalog?
+		sb.append("\nSET");
+		boolean first = true;
+		for (String colName : columns) {
+			if (first) {
+				sb.append("\n   ");
+				first = false;
+			} else {
+				sb.append(",\n   ");
+			}
+			sb.append(colName).append(" = 'xxx'"); // this is /very/ naive
+		}
+
+		appendWhereClause(sb, whereColumns);
+		return sb.toString();
+	}
+
+	/**
+	 * Retrieve all columns names, but BLOB and CLOB ones.
+	 */
+	public List<String> getNonBlobColumns(ISession session, String catalog, String schema, String tableName,
+			String tableType) throws SQLException {
+
+		final ISQLConnection conn = session.getSQLConnection();
+		SQLDatabaseMetaData md = conn.getSQLMetaData();
+		TableColumnInfo[] columnsMetadata = md
+				.getColumnInfo(new TableInfo(catalog, schema, tableName, tableType, null, md));
+
+		List<String> columns = new ArrayList<>();
+		for (TableColumnInfo col : columnsMetadata) {
+			if (col.getDataType() != Types.BLOB && col.getDataType() != Types.CLOB) {
+				columns.add(col.getColumnName());
+			}
+		}
+		return columns;
+	}
+
+	/**
+	 * Retrieve all key columns names. ones.
+	 * 
+	 * @return list of key columns. May be empty.
+	 */
+	public List<String> getKeyColumns(ISession session, String catalog, String schema, String tableName,
+			String tableType) throws SQLException {
+
+		final ISQLConnection conn = session.getSQLConnection();
+		SQLDatabaseMetaData md = conn.getSQLMetaData();
+		PrimaryKeyInfo[] columnsMetadata = md
+				.getPrimaryKey(new TableInfo(catalog, schema, tableName, tableType, null, md));
+
+		List<String> columns = new ArrayList<>();
+		if (columnsMetadata != null) {
+			for (PrimaryKeyInfo col : columnsMetadata) {
+				columns.add(col.getColumnName());
+			}
+		}
+		return columns;
 	}
 }

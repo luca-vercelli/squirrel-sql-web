@@ -19,7 +19,7 @@
                 v-bind="attrs"
                 v-on="on"
               >
-                {{ $t('Scripts') }}
+                {{ $t('Scripts.title') }}
               </v-btn>
             </template>
             <v-list>
@@ -109,11 +109,11 @@
           { caption: 'VersionColumnsTab.title', endpoint: 'VersionColumns' },
         ],
         scriptMenuVoices: [
-          { title: 'Table.Ddl', endpoint: 'Ddl' },
-          { title: 'Table.Select', endpoint: 'ScriptSelect' },
-          { title: 'Table.Insert', endpoint: 'ScriptInsert' },
-          { title: 'Table.Update', endpoint: 'ScriptUpdate' },
-          { title: 'Table.Delete', endpoint: 'ScriptDelete' },
+          { title: 'Scripts.CreateTable', endpoint: 'Ddl' },
+          { title: 'Scripts.Select', endpoint: 'ScriptSelect' },
+          { title: 'Scripts.Insert', endpoint: 'ScriptInsert' },
+          { title: 'Scripts.Update', endpoint: 'ScriptUpdate' },
+          { title: 'Scripts.Delete', endpoint: 'ScriptDelete' },
         ],
         currentTab: 1,
       }
