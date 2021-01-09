@@ -95,9 +95,11 @@ public class SessionsEndpoint {
 
 	@PUT
 	@Path("/Session({identifier})/Properties")
+	@Consumes(MediaType.APPLICATION_JSON)
 	public void saveProperties(@PathParam("identifier") String identifier, SessionProperties props)
 			throws AuthorizationException {
 		ISession session = manager.getSessionById(identifier);
+		manager.checkSession(session);
 		manager.setProperties(session, props);
 	}
 }

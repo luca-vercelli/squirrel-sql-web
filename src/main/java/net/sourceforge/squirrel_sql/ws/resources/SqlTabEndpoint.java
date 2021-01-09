@@ -8,7 +8,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
@@ -36,6 +35,7 @@ public class SqlTabEndpoint {
 	@Path("/Session({sessionId})/History")
 	public ListBean<SQLHistoryItem> getHistory(@PathParam("sessionId") String sessionId) throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
+		sessionsManager.checkSession(session);
 		return new ListBean<>(manager.getHistory(session));
 	}
 
@@ -46,7 +46,7 @@ public class SqlTabEndpoint {
 			throws AuthorizationException {
 
 		ISession session = sessionsManager.getSessionById(sessionId);
-
+		sessionsManager.checkSession(session);
 		try {
 			return new ValueBean<>(manager.executeSqlCommand(query, session));
 		} catch (DataSetException e) {

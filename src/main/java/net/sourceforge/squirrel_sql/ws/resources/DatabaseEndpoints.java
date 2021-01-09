@@ -37,7 +37,7 @@ public class DatabaseEndpoints {
 			throws AuthorizationException {
 
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getMetaData(session, catalog, schema, simpleName, objectType);
@@ -55,7 +55,7 @@ public class DatabaseEndpoints {
 			throws AuthorizationException {
 
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getConnectionStatus(session, catalog, schema, simpleName, objectType);
@@ -73,7 +73,7 @@ public class DatabaseEndpoints {
 			throws AuthorizationException {
 
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getCatalogs(session, catalog, schema, simpleName, objectType);
@@ -91,7 +91,7 @@ public class DatabaseEndpoints {
 			throws AuthorizationException {
 
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getSchemas(session, catalog, schema, simpleName, objectType);
@@ -109,7 +109,7 @@ public class DatabaseEndpoints {
 			throws AuthorizationException {
 
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getTableTypes(session, catalog, schema, simpleName, objectType);
@@ -127,7 +127,7 @@ public class DatabaseEndpoints {
 			throws AuthorizationException {
 
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getDataTypes(session, catalog, schema, simpleName, objectType);
@@ -145,7 +145,7 @@ public class DatabaseEndpoints {
 			throws AuthorizationException {
 
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getNumericFunctions(session, catalog, schema, simpleName, objectType);
@@ -163,7 +163,7 @@ public class DatabaseEndpoints {
 			throws AuthorizationException {
 
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getStringFunctions(session, catalog, schema, simpleName, objectType);
@@ -181,7 +181,7 @@ public class DatabaseEndpoints {
 			throws AuthorizationException {
 
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getSystemFunctions(session, catalog, schema, simpleName, objectType);
@@ -199,7 +199,7 @@ public class DatabaseEndpoints {
 			throws AuthorizationException {
 
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getTimeDateFunctions(session, catalog, schema, simpleName, objectType);
@@ -217,7 +217,7 @@ public class DatabaseEndpoints {
 			throws AuthorizationException {
 
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getKeywords(session, catalog, schema, simpleName, objectType);
@@ -239,17 +239,6 @@ public class DatabaseEndpoints {
 			return new WebApplicationException(e.getCause().getMessage(), Status.BAD_REQUEST);
 		} else {
 			return new WebApplicationException(e.getMessage(), Status.BAD_REQUEST);
-		}
-	}
-
-	/**
-	 * Throw exception if session is null
-	 * 
-	 * @param session
-	 */
-	private void checkSession(ISession session) {
-		if (session == null) {
-			throw new WebApplicationException("Invalid session id", Status.BAD_REQUEST);
 		}
 	}
 

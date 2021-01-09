@@ -12,9 +12,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response.Status;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.ObjectTreeNode;
@@ -44,7 +42,7 @@ public class ObjectsTabEndpoint {
 	public ValueBean<SchemaInfoDto> getSchemaInfo(@PathParam("sessionId") String sessionId)
 			throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		SchemaInfo schemaInfo = session.getSchemaInfo();
 		// If null, may raise HTTP 404
 		return new ValueBean<>(new SchemaInfoDto(schemaInfo));
@@ -54,7 +52,7 @@ public class ObjectsTabEndpoint {
 	@Path("/Session({sessionId})/SchemaInfo/TableInfo")
 	public ListBean<TableInfoDto> getTableInfo(@PathParam("sessionId") String sessionId) throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		ITableInfo[] tableInfos = session.getSchemaInfo().getITableInfos();
 		List<TableInfoDto> lst = new ArrayList<>();
 		for (ITableInfo t : tableInfos) {
@@ -69,7 +67,7 @@ public class ObjectsTabEndpoint {
 	public ValueBean<ObjectTreeNodeDto> getRootNode(@PathParam("sessionId") String sessionId)
 			throws SQLException, AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		ObjectTreeNode rootNode = manager.createAndExpandRootNode(session);
 		ObjectTreeNodeDto rootNodeDto = manager.node2Dto(rootNode);
 		return new ValueBean<>(rootNodeDto);
@@ -81,21 +79,10 @@ public class ObjectsTabEndpoint {
 	public ListBean<ObjectTreeNodeDto> expandNode(@PathParam("sessionId") String sessionId,
 			ObjectTreeNodeDto parentNodeDto) throws SQLException, AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		ObjectTreeNode node = manager.dto2Node(parentNodeDto, session);
 		List<ObjectTreeNode> list = manager.expandNode(node);
 		return new ListBean<>(manager.node2Dto(list));
-	}
-
-	/**
-	 * Throw exception if session is null
-	 * 
-	 * @param session
-	 */
-	private void checkSession(ISession session) {
-		if (session == null) {
-			throw new WebApplicationException("Invalid session id", Status.BAD_REQUEST);
-		}
 	}
 
 }

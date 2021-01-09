@@ -60,7 +60,7 @@ public class TableEndpoints {
 		// FIXME what about row limits? -> SessionProperties.getSQLNbrRowsToShow
 
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getTableContent(session, catalog, schema, tableName, tableType, skip, top);
@@ -77,7 +77,7 @@ public class TableEndpoints {
 			@PathParam("tableName") String tableName, @PathParam("tableType") String tableType)
 			throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getTableRowCount(session, catalog, schema, tableName, tableType);
@@ -93,7 +93,7 @@ public class TableEndpoints {
 			@PathParam("schema") String schema, @PathParam("tableName") String tableName,
 			@PathParam("tableType") String tableType) throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getTablePk(session, catalog, schema, tableName, tableType);
@@ -110,7 +110,7 @@ public class TableEndpoints {
 			@PathParam("tableName") String tableName, @PathParam("tableType") String tableType)
 			throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getTableColumns(session, catalog, schema, tableName, tableType);
@@ -127,7 +127,7 @@ public class TableEndpoints {
 			@PathParam("tableName") String tableName, @PathParam("tableType") String tableType)
 			throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getTableIndexes(session, catalog, schema, tableName, tableType);
@@ -144,7 +144,7 @@ public class TableEndpoints {
 			@PathParam("tableName") String tableName, @PathParam("tableType") String tableType)
 			throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getTablePrivileges(session, catalog, schema, tableName, tableType);
@@ -161,7 +161,7 @@ public class TableEndpoints {
 			@PathParam("tableName") String tableName, @PathParam("tableType") String tableType)
 			throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getTableImportedFk(session, catalog, schema, tableName, tableType);
@@ -178,7 +178,7 @@ public class TableEndpoints {
 			@PathParam("tableName") String tableName, @PathParam("tableType") String tableType)
 			throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getTableExportedFk(session, catalog, schema, tableName, tableType);
@@ -195,7 +195,7 @@ public class TableEndpoints {
 			@PathParam("tableName") String tableName, @PathParam("tableType") String tableType)
 			throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getTableRowID(session, catalog, schema, tableName, tableType);
@@ -212,7 +212,7 @@ public class TableEndpoints {
 			@PathParam("tableName") String tableName, @PathParam("tableType") String tableType)
 			throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getTableVersionColumns(session, catalog, schema, tableName, tableType);
@@ -228,7 +228,7 @@ public class TableEndpoints {
 			@PathParam("schema") String schema, @PathParam("tableName") String tableName,
 			@PathParam("tableType") String tableType) throws AuthorizationException, SQLException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		String ddl = manager.getTableDdl(session, catalog, schema, tableName, tableType);
 		return new ValueBean<>(ddl);
 	}
@@ -240,7 +240,7 @@ public class TableEndpoints {
 			@PathParam("tableName") String tableName, @PathParam("tableType") String tableType)
 			throws AuthorizationException, SQLException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		String ddl;
 		try {
 			ddl = manager.getTableSelectScript(session, catalog, schema, tableName, tableType);
@@ -257,7 +257,7 @@ public class TableEndpoints {
 			@PathParam("tableName") String tableName, @PathParam("tableType") String tableType)
 			throws AuthorizationException, SQLException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		String ddl;
 		try {
 			ddl = manager.getTableInsertScript(session, catalog, schema, tableName, tableType);
@@ -274,7 +274,7 @@ public class TableEndpoints {
 			@PathParam("tableName") String tableName, @PathParam("tableType") String tableType)
 			throws AuthorizationException, SQLException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		String ddl;
 		try {
 			ddl = manager.getTableUpdateScript(session, catalog, schema, tableName, tableType);
@@ -291,7 +291,7 @@ public class TableEndpoints {
 			@PathParam("tableName") String tableName, @PathParam("tableType") String tableType)
 			throws AuthorizationException, SQLException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		String ddl;
 		try {
 			ddl = manager.getTableDeleteScript(session, catalog, schema, tableName, tableType);
@@ -313,17 +313,6 @@ public class TableEndpoints {
 			return new WebApplicationException(e.getCause().getMessage(), Status.BAD_REQUEST);
 		} else {
 			return new WebApplicationException(e.getMessage(), Status.BAD_REQUEST);
-		}
-	}
-
-	/**
-	 * Throw exception if session is null
-	 * 
-	 * @param session
-	 */
-	private void checkSession(ISession session) {
-		if (session == null) {
-			throw new WebApplicationException("Invalid session id", Status.BAD_REQUEST);
 		}
 	}
 }
