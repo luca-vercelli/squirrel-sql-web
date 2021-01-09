@@ -91,8 +91,15 @@ public class ContentsTabPublic extends BaseTableTab implements IDataSetUpdateabl
 
 	private SquirrelPreferences _prefs = null;
 
-	public ContentsTabPublic(ISession session) {
+	private Integer _skip = 0;
+	private Integer _top = null;
+
+	public ContentsTabPublic(ISession session, Integer skip, Integer top) {
 		_prefs = session.getApplication().getSquirrelPreferences();
+		if (skip != null) {
+			_skip = skip;
+		}
+		_top = top;
 	}
 
 	/**
@@ -143,9 +150,13 @@ public class ContentsTabPublic extends BaseTableTab implements IDataSetUpdateabl
 			final Statement stmt = conn.createStatement();
 			try {
 				final SessionProperties props = session.getProperties();
-				if (props.getContentsLimitRows()) {
+				if (props.getContentsLimitRows() || _top != null) {
 					try {
-						stmt.setMaxRows(props.getContentsNbrRowsToShow());
+						if (_top != null) {
+							stmt.setMaxRows(_skip + _top);
+						} else {
+							stmt.setMaxRows(_skip + props.getContentsNbrRowsToShow());
+						}
 					} catch (Exception ex) {
 						s_log.error("Error on Statement.setMaxRows()", ex);
 					}
@@ -322,7 +333,7 @@ public class ContentsTabPublic extends BaseTableTab implements IDataSetUpdateabl
 			// showWaitDialog(stmt);
 
 			ResultSet rs = stmt.executeQuery(buf.toString());
-
+			skip(rs);
 			return rs;
 		} catch (Throwable e) {
 			s_log.warn("Failed to execute content SQL: " + buf.toString(), e);
@@ -330,6 +341,21 @@ public class ContentsTabPublic extends BaseTableTab implements IDataSetUpdateabl
 			// throw (e instanceof RuntimeException ? (RuntimeException)e : new
 			// RuntimeException(e));
 			return null;
+		}
+	}
+
+	/**
+	 * Skip first <code>_skip</code> records in <code>rs</code>
+	 * 
+	 * @param rs
+	 * @throws SQLException
+	 */
+	private void skip(ResultSet rs) throws SQLException {
+		int i = 0;
+		while (i < _skip && rs.next()) {
+			// this is slow and resource expensive...
+			// If I am not wrong Hibernate does the same, doesn't it?
+			++i;
 		}
 	}
 

@@ -63,7 +63,7 @@ public class TableEndpoints {
 		checkSession(session);
 		IDataSet dataset;
 		try {
-			dataset = manager.getTableContent(session, catalog, schema, tableName, tableType);
+			dataset = manager.getTableContent(session, catalog, schema, tableName, tableType, skip, top);
 		} catch (DataSetException e) {
 			throw webAppException(e);
 		}

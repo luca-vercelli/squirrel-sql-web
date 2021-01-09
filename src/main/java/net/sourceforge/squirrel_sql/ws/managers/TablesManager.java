@@ -9,12 +9,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
-import net.sourceforge.squirrel_sql.client.gui.db.ISQLAliasExt;
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ColumnsTabPublic;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.table.ContentsTabPublic;
@@ -36,7 +31,6 @@ import net.sourceforge.squirrel_sql.fw.sql.ISQLConnection;
 import net.sourceforge.squirrel_sql.fw.sql.ITableInfo;
 import net.sourceforge.squirrel_sql.fw.sql.PrimaryKeyInfo;
 import net.sourceforge.squirrel_sql.fw.sql.SQLDatabaseMetaData;
-import net.sourceforge.squirrel_sql.fw.sql.SQLDriver;
 import net.sourceforge.squirrel_sql.fw.sql.TableColumnInfo;
 import net.sourceforge.squirrel_sql.fw.sql.TableInfo;
 
@@ -53,67 +47,23 @@ public class TablesManager {
 	WebApplication webapp;
 	@Inject
 	SessionsManager sessionsManager;
-	@Inject
-	DriversManager driversManager;
 
 	Logger logger = Logger.getLogger(TablesManager.class);
 
 	/**
 	 * Return SELECT * FROM given table
+	 * @param skip      How many rows to skip from beginning
+	 * @param top       How many rows to show
 	 * 
 	 * @return
 	 * @throws DataSetException
 	 */
-	public IDataSet getTableContent(ISession session, String catalog, String schema, String table, String type)
+	public IDataSet getTableContent(ISession session, String catalog, String schema, String table, String type, Integer skip, Integer top)
 			throws DataSetException {
 
-		return commonGetDataSet(session, catalog, schema, table, type, new ContentsTabPublic(session));
+		return commonGetDataSet(session, catalog, schema, table, type, new ContentsTabPublic(session, skip, top));
 	}
 
-	/**
-	 * Return SELECT * FROM given table
-	 * 
-	 * @param skip items to skip
-	 * @param top  items to show
-	 * @return
-	 * @throws DataSetException
-	 */
-	public IDataSet getTableContentV2(ISession session, String catalog, String schema, String table, String type,
-			Integer skip, Integer top) throws DataSetException {
-
-		// FIXME should better use EntityManager API (not in Hibernate 3.2 ...)
-		SessionFactory sessionFactory = openSession(session);
-		Session hbSession = sessionFactory.openSession();
-		String sql = ""; // TODO, cfr. ContentsTab
-		SQLQuery query = hbSession.createSQLQuery(sql); // NativeQuery, in more recent Hibernate
-		query.setFirstResult(skip);
-		query.setMaxResults(top);
-		@SuppressWarnings("unchecked")
-		List<Object[]> list = query.list();
-
-		sessionFactory.close(); // or not?
-
-		// TODO convert list into IDataSet
-		return null;
-	}
-
-	protected SessionFactory openSession(ISession session) {
-		ISQLAliasExt alias = session.getAlias();
-		SQLDriver driver = driversManager.getDriverById(alias.getDriverIdentifier());
-
-		// Hibernate configuration
-		Configuration c = new Configuration();
-		c.configure();
-		c.setProperty("connection.driver_class", driver.getDriverClassName());
-		c.setProperty("hibernate.connection.url", alias.getUrl());
-		c.setProperty("hibernate.connection.username", alias.getName());
-		c.setProperty("hibernate.connection.password", alias.getPassword());
-		c.setProperty("show_sql", "true");
-		// should also set property "dialect"
-
-		// FIXME should better use EntityManager API
-		return c.buildSessionFactory();
-	}
 	/**
 	 * Return SELECT COUNT(*) FROM given table
 	 * 
