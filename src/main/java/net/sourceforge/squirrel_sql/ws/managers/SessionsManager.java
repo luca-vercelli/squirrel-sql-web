@@ -230,7 +230,7 @@ public class SessionsManager {
 	 * @param session
 	 * @param newProps
 	 */
-	public void setProperties(ISession session, SessionProperties newProps) {
+	public SessionProperties setProperties(ISession session, SessionProperties newProps) {
 		SessionProperties prop = session.getProperties();
 		prop.setAbortOnError(newProps.getAbortOnError());
 		prop.setAllowCtrlBJumpToObjectTree(newProps.getAllowCtrlBJumpToObjectTree());
@@ -271,6 +271,8 @@ public class SessionsManager {
 		prop.setTableTypeFilterExclude(newProps.getTableTypeFilterExclude());
 		prop.setTableTypeFilterInclude(newProps.getTableTypeFilterInclude());
 		prop.setWriteSQLErrorsToLog(newProps.getWriteSQLErrorsToLog());
+		
+		return prop;
 	}
 
 	/**
