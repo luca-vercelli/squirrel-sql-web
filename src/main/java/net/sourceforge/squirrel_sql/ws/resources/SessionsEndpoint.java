@@ -14,6 +14,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -96,6 +97,7 @@ public class SessionsEndpoint {
 	@PUT
 	@Path("/Session({identifier})/Properties")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public ValueBean<SessionProperties> saveProperties(@PathParam("identifier") String identifier,
 			SessionProperties props) throws AuthorizationException {
 		ISession session = manager.getSessionById(identifier);
