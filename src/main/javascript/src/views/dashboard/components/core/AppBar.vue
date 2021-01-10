@@ -89,6 +89,11 @@
       ...mapState(['drawer']),
     },
 
+    created: function () {
+      // FIXME intended meaning: if user closes the window, perform logout. It does not work.
+      document.addEventListener('beforeunload', this.logout)
+    },
+
     methods: {
       ...mapMutations({
         setDrawer: 'SET_DRAWER',
@@ -104,11 +109,13 @@
           success: function (response) {
             localStorage.removeItem('authToken')
             that.$emit('unauthenticated')
+            that.$router.push('/')
           },
           error: function (response) {
             console.log(response)
             localStorage.removeItem('authToken')
             that.$emit('unauthenticated')
+            that.$router.push('/')
           },
         })
       },
