@@ -110,6 +110,9 @@
       if (this.defaultQuery) {
         this.query = this.defaultQuery
       }
+    },
+
+    beforeMount: function () {
       this.loadHistory()
     },
 
