@@ -52,14 +52,15 @@ public class TablesManager {
 
     /**
      * Return SELECT * FROM given table
-     * @param skip      How many rows to skip from beginning
-     * @param top       How many rows to show
+     * 
+     * @param skip How many rows to skip from beginning
+     * @param top  How many rows to show
      * 
      * @return
      * @throws DataSetException
      */
-    public IDataSet getTableContent(ISession session, String catalog, String schema, String table, String type, Integer skip, Integer top)
-            throws DataSetException {
+    public IDataSet getTableContent(ISession session, String catalog, String schema, String table, String type,
+            Integer skip, Integer top) throws DataSetException {
 
         return commonGetDataSet(session, catalog, schema, table, type, new ContentsTabPublic(session, skip, top));
     }
