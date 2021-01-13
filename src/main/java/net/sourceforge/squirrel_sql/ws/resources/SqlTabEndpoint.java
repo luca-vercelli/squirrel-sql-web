@@ -35,6 +35,7 @@ public class SqlTabEndpoint {
 	@Path("/Session({sessionId})/History")
 	public ListBean<SQLHistoryItem> getHistory(@PathParam("sessionId") String sessionId) throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
+		sessionsManager.checkSession(session);
 		return new ListBean<>(manager.getHistory(session));
 	}
 
@@ -45,7 +46,7 @@ public class SqlTabEndpoint {
 			throws AuthorizationException {
 
 		ISession session = sessionsManager.getSessionById(sessionId);
-
+		sessionsManager.checkSession(session);
 		try {
 			return new ValueBean<>(manager.executeSqlCommand(query, session));
 		} catch (DataSetException e) {

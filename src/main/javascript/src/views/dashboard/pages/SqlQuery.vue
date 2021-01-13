@@ -110,6 +110,9 @@
       if (this.defaultQuery) {
         this.query = this.defaultQuery
       }
+    },
+
+    beforeMount: function () {
       this.loadHistory()
     },
 
@@ -167,8 +170,9 @@
         this.results = null
         var that = this
         $.ajax({
-          url: this.enableMock ? process.env.BASE_URL + 'mock/JustGetOk' : process.env.BASE_URL + `ws/Session(${this.session.identifier})/Properties`,
+          url: this.enableMock ? process.env.BASE_URL + 'mock/SessionProperties.json' : process.env.BASE_URL + `ws/Session(${this.session.identifier})/Properties`,
           type: this.enableMock ? 'GET' : 'PUT',
+          contentType: 'application/json',
           data: JSON.stringify(this.session.properties),
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),

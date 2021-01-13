@@ -10,6 +10,8 @@ import java.util.Set;
 import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
 
@@ -228,7 +230,7 @@ public class SessionsManager {
 	 * @param session
 	 * @param newProps
 	 */
-	public void setProperties(ISession session, SessionProperties newProps) {
+	public SessionProperties setProperties(ISession session, SessionProperties newProps) {
 		SessionProperties prop = session.getProperties();
 		prop.setAbortOnError(newProps.getAbortOnError());
 		prop.setAllowCtrlBJumpToObjectTree(newProps.getAllowCtrlBJumpToObjectTree());
@@ -269,6 +271,19 @@ public class SessionsManager {
 		prop.setTableTypeFilterExclude(newProps.getTableTypeFilterExclude());
 		prop.setTableTypeFilterInclude(newProps.getTableTypeFilterInclude());
 		prop.setWriteSQLErrorsToLog(newProps.getWriteSQLErrorsToLog());
+		
+		return prop;
+	}
+
+	/**
+	 * Throw exception if session is null
+	 * 
+	 * @param session
+	 */
+	public void checkSession(ISession session) {
+		if (session == null) {
+			throw new WebApplicationException("Invalid session id", Status.BAD_REQUEST);
+		}
 	}
 
 }

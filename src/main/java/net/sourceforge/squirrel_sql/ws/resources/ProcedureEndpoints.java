@@ -36,7 +36,7 @@ public class ProcedureEndpoints {
 			@PathParam("catalog") String catalog, @PathParam("schema") String schema,
 			@PathParam("procName") String procName, @PathParam("procType") int procType) throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		IDataSet dataset;
 		try {
 			dataset = manager.getProcedureColumns(session, catalog, schema, procName, procType);
@@ -52,7 +52,7 @@ public class ProcedureEndpoints {
 			@PathParam("schema") String schema, @PathParam("procName") String procName,
 			@PathParam("procType") int procType) throws AuthorizationException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		String ddl;
 		ddl = manager.getSource(session, catalog, schema, procName, procType);
 		return new ValueBean<>(ddl);
@@ -65,7 +65,7 @@ public class ProcedureEndpoints {
 			@PathParam("procName") String procName, @PathParam("procType") int procType)
 			throws AuthorizationException, SQLException {
 		ISession session = sessionsManager.getSessionById(sessionId);
-		checkSession(session);
+		sessionsManager.checkSession(session);
 		String script;
 		script = manager.getRunCommand(session, catalog, schema, procName, procType);
 		return new ValueBean<>(script);
@@ -83,17 +83,6 @@ public class ProcedureEndpoints {
 			return new WebApplicationException(e.getCause().getMessage(), Status.BAD_REQUEST);
 		} else {
 			return new WebApplicationException(e.getMessage(), Status.BAD_REQUEST);
-		}
-	}
-
-	/**
-	 * Throw exception if session is null
-	 * 
-	 * @param session
-	 */
-	private void checkSession(ISession session) {
-		if (session == null) {
-			throw new WebApplicationException("Invalid session id", Status.BAD_REQUEST);
 		}
 	}
 
