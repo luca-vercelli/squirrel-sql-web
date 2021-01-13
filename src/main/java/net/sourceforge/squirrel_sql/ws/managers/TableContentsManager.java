@@ -31,7 +31,7 @@ public class TableContentsManager {
     @Inject
     DriversManager driversManager;
 
-    ILogger s_log = LoggerController.createLogger(TableContentsManager.class);
+    ILogger logger = LoggerController.createLogger(TableContentsManager.class);
 
     /**
      * Return SELECT * FROM given table
@@ -95,8 +95,8 @@ public class TableContentsManager {
             buf.append(" order by ").append(clause);
         }
 
-        if (s_log.isDebugEnabled()) {
-            s_log.debug("createDataSet running SQL: " + buf.toString());
+        if (logger.isDebugEnabled()) {
+            logger.debug("createDataSet running SQL: " + buf.toString());
         }
         return buf.toString();
 

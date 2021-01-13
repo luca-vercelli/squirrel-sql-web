@@ -105,7 +105,7 @@ public class UsersManager {
 
             for (Object bean : xmlBeanReader.getBeans()) {
                 final User user = (User) bean;
-                if (false == list.contains(user)) {
+                if (!list.contains(user)) {
                     list.add(user);
                 }
             }

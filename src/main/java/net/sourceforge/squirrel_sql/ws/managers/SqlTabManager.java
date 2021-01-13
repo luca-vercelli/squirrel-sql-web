@@ -65,8 +65,9 @@ public class SqlTabManager {
         query = StringUtilities.cleanString(query);
         logger.info("Running query: " + query);
 
-        if (skip == null)
+        if (skip == null) {
             skip = 0;
+        }
 
         // Following code is essentially copied from RowCountTab.java
 

@@ -53,7 +53,7 @@ public class TokensManager {
      * Token validity in ms
      */
     public static final long DELAY = 24 * 3600 * 1000; // 1 day
-    public final static String SECRET_FILENAME = "server.key";
+    public static final String SECRET_FILENAME = "server.key";
     public static final String AUTHENTICATION_SCHEME = "Bearer "; // JWT
     public static final int AUTHENTICATION_SCHEME_LEN = AUTHENTICATION_SCHEME.length();
 
