@@ -21,44 +21,44 @@ import net.sourceforge.squirrel_sql.ws.managers.AliasesManager;
 @Stateless
 public class AliasesEndpoint {
 
-	@Inject
-	AliasesManager manager;
+    @Inject
+    AliasesManager manager;
 
-	@GET
-	@Path("/Aliases")
-	public ListBean<SQLAlias> getItems() {
-		List<SQLAlias> list = manager.getAliases();
-		// If 0, may raise HTTP 404
-		return new ListBean<>(list);
-	}
+    @GET
+    @Path("/Aliases")
+    public ListBean<SQLAlias> getItems() {
+        List<SQLAlias> list = manager.getAliases();
+        // If 0, may raise HTTP 404
+        return new ListBean<>(list);
+    }
 
-	@GET
-	@Path("/Aliases({identifier})")
-	public ValueBean<SQLAlias> getItem(@PathParam("identifier") String stringId) {
-		SQLAlias item = manager.getAliasById(stringId);
-		// If null, may raise HTTP 404
-		return new ValueBean<>(item);
-	}
+    @GET
+    @Path("/Aliases({identifier})")
+    public ValueBean<SQLAlias> getItem(@PathParam("identifier") String stringId) {
+        SQLAlias item = manager.getAliasById(stringId);
+        // If null, may raise HTTP 404
+        return new ValueBean<>(item);
+    }
 
-	@POST
-	@Path("/Aliases")
-	public ValueBean<SQLAlias> createItem(SQLAlias item) throws ValidationException {
-		item = manager.createNewAlias(item);
-		return new ValueBean<>(item);
-	}
+    @POST
+    @Path("/Aliases")
+    public ValueBean<SQLAlias> createItem(SQLAlias item) throws ValidationException {
+        item = manager.createNewAlias(item);
+        return new ValueBean<>(item);
+    }
 
-	@PUT
-	@Path("/Aliases({identifier})")
-	public ValueBean<SQLAlias> updateItem(@PathParam("identifier") String stringId, SQLAlias item)
-			throws ValidationException {
-		item = manager.updateAlias(item, stringId);
-		return new ValueBean<>(item);
-	}
+    @PUT
+    @Path("/Aliases({identifier})")
+    public ValueBean<SQLAlias> updateItem(@PathParam("identifier") String stringId, SQLAlias item)
+            throws ValidationException {
+        item = manager.updateAlias(item, stringId);
+        return new ValueBean<>(item);
+    }
 
-	@DELETE
-	@Path("/Aliases({identifier})")
-	public void deleteItem(@PathParam("identifier") String stringId) {
-		manager.removeAlias(stringId);
-	}
+    @DELETE
+    @Path("/Aliases({identifier})")
+    public void deleteItem(@PathParam("identifier") String stringId) {
+        manager.removeAlias(stringId);
+    }
 
 }

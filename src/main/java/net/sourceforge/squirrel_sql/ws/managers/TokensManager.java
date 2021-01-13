@@ -41,229 +41,229 @@ import net.sourceforge.squirrel_sql.ws.model.User;
 // TODO use keystore instead of file
 @Singleton
 public class TokensManager {
-	@Context
-	HttpServletRequest request;
+    @Context
+    HttpServletRequest request;
 
-	/**
-	 * The server private key used for signing and encoding messages.
-	 */
-	private Key serverKey = null;
+    /**
+     * The server private key used for signing and encoding messages.
+     */
+    private Key serverKey = null;
 
-	/**
-	 * Token validity in ms
-	 */
-	public static final long DELAY = 24 * 3600 * 1000; // 1 day
-	public final static String SECRET_FILENAME = "server.key";
-	public static final String AUTHENTICATION_SCHEME = "Bearer "; // JWT
-	public static final int AUTHENTICATION_SCHEME_LEN = AUTHENTICATION_SCHEME.length();
+    /**
+     * Token validity in ms
+     */
+    public static final long DELAY = 24 * 3600 * 1000; // 1 day
+    public final static String SECRET_FILENAME = "server.key";
+    public static final String AUTHENTICATION_SCHEME = "Bearer "; // JWT
+    public static final int AUTHENTICATION_SCHEME_LEN = AUTHENTICATION_SCHEME.length();
 
-	/**
-	 * In debug mode all there are no JWT tokens, and we assume 1 only connected
-	 * user
-	 */
-	private boolean debugMode = false;
+    /**
+     * In debug mode all there are no JWT tokens, and we assume 1 only connected
+     * user
+     */
+    private boolean debugMode = false;
 
-	Logger logger = Logger.getLogger(TokensManager.class);
+    Logger logger = Logger.getLogger(TokensManager.class);
 
-	@PostConstruct
-	public void postConstructEJB() {
-		// either generate or load
-		if (!new File(SECRET_FILENAME).exists()) {
-			serverKey = generateSecretKey();
-		} else {
-			serverKey = loadSecretKey();
-		}
-	}
+    @PostConstruct
+    public void postConstructEJB() {
+        // either generate or load
+        if (!new File(SECRET_FILENAME).exists()) {
+            serverKey = generateSecretKey();
+        } else {
+            serverKey = loadSecretKey();
+        }
+    }
 
-	/**
-	 * Issue a JWT token associated to given userid , then record it to database.
-	 * 
-	 * @see https://github.com/jwtk/jjwt
-	 */
-	public String issueToken(User user) {
+    /**
+     * Issue a JWT token associated to given userid , then record it to database.
+     * 
+     * @see https://github.com/jwtk/jjwt
+     */
+    public String issueToken(User user) {
 
-		Date now = new Date();
+        Date now = new Date();
 
-		String compactJwts = Jwts.builder() //
-				.setSubject(user.getUsername()) //
-				.claim("name", user.getName()) //
-				.claim("surname", user.getSurname()) //
-				.claim("email", user.getEmail()) //
-				.claim("roles", user.getRoles()) //
-				.setIssuedAt(now) //
-				.setExpiration(new Date(now.getTime() + DELAY)) //
-				.signWith(SignatureAlgorithm.HS512, serverKey) //
-				.compact();
+        String compactJwts = Jwts.builder() //
+                .setSubject(user.getUsername()) //
+                .claim("name", user.getName()) //
+                .claim("surname", user.getSurname()) //
+                .claim("email", user.getEmail()) //
+                .claim("roles", user.getRoles()) //
+                .setIssuedAt(now) //
+                .setExpiration(new Date(now.getTime() + DELAY)) //
+                .signWith(SignatureAlgorithm.HS512, serverKey) //
+                .compact();
 
-		return compactJwts;
-	}
+        return compactJwts;
+    }
 
-	/**
-	 * Check if token was issued by the server and if it's not expired.
-	 * 
-	 * @see https://github.com/jwtk/jjwt
-	 * @param token
-	 * @return parsed jws token
-	 * @throws AuthorizationException if token is malformed or expired
-	 */
-	public Jws<Claims> validateToken(String token) throws AuthorizationException {
+    /**
+     * Check if token was issued by the server and if it's not expired.
+     * 
+     * @see https://github.com/jwtk/jjwt
+     * @param token
+     * @return parsed jws token
+     * @throws AuthorizationException if token is malformed or expired
+     */
+    public Jws<Claims> validateToken(String token) throws AuthorizationException {
 
-		Jws<Claims> jws;
+        Jws<Claims> jws;
 
-		try {
-			jws = Jwts.parser().setSigningKey(serverKey).parseClaimsJws(token);
-		} catch (Exception e) {
-			throw new AuthorizationException("Unrecognized token");
-		}
+        try {
+            jws = Jwts.parser().setSigningKey(serverKey).parseClaimsJws(token);
+        } catch (Exception e) {
+            throw new AuthorizationException("Unrecognized token");
+        }
 
-		// OK, we can trust this JWT (well, JWS). What about its content?
+        // OK, we can trust this JWT (well, JWS). What about its content?
 
-		Claims claims = jws.getBody();
+        Claims claims = jws.getBody();
 
-		if (claims.getExpiration() != null && claims.getExpiration().before(new Date())) {
-			throw new AuthorizationException("Token expired");
-		}
+        if (claims.getExpiration() != null && claims.getExpiration().before(new Date())) {
+            throw new AuthorizationException("Token expired");
+        }
 
-		return jws;
-	}
+        return jws;
+    }
 
-	/**
-	 * Return subject, i.e.e username, contained in token.
-	 * 
-	 * Do not check if token is valid or not.
-	 * 
-	 * @param token
-	 * @return null if given string is not a token
-	 */
-	public String getSubject(String token) {
+    /**
+     * Return subject, i.e.e username, contained in token.
+     * 
+     * Do not check if token is valid or not.
+     * 
+     * @param token
+     * @return null if given string is not a token
+     */
+    public String getSubject(String token) {
 
-		Jws<Claims> jws;
+        Jws<Claims> jws;
 
-		try {
-			jws = Jwts.parser().setSigningKey(serverKey).parseClaimsJws(token);
-		} catch (RuntimeException e) {
-			return null;
-		}
+        try {
+            jws = Jwts.parser().setSigningKey(serverKey).parseClaimsJws(token);
+        } catch (RuntimeException e) {
+            return null;
+        }
 
-		Claims claims = jws.getBody();
+        Claims claims = jws.getBody();
 
-		return claims.getSubject();
-	}
+        return claims.getSubject();
+    }
 
-	/**
-	 * The new key is a random sequence generated through MacProvider.generateKey(),
-	 * to be used for SHA-256.
-	 * 
-	 * Use this in local to generate key, then save key into server.
-	 * 
-	 * @see https://stackoverflow.com/questions/11410770
-	 */
-	public Key generateSecretKey() {
-		File f = new File(SECRET_FILENAME).getAbsoluteFile();
-		Key key = MacProvider.generateKey();
-		logger.info("Writing server key to " + f.getPath());
-		try {
-			try (FileOutputStream fos = new FileOutputStream(f, false)) {
-				fos.write(key.getEncoded());
-			}
-			return key;
+    /**
+     * The new key is a random sequence generated through MacProvider.generateKey(),
+     * to be used for SHA-256.
+     * 
+     * Use this in local to generate key, then save key into server.
+     * 
+     * @see https://stackoverflow.com/questions/11410770
+     */
+    public Key generateSecretKey() {
+        File f = new File(SECRET_FILENAME).getAbsoluteFile();
+        Key key = MacProvider.generateKey();
+        logger.info("Writing server key to " + f.getPath());
+        try {
+            try (FileOutputStream fos = new FileOutputStream(f, false)) {
+                fos.write(key.getEncoded());
+            }
+            return key;
 
-		} catch (IOException e) {
-			logger.error("Error generating secret key in " + SECRET_FILENAME, e);
-			throw Utilities.wrapRuntime(e);
-		}
-	}
+        } catch (IOException e) {
+            logger.error("Error generating secret key in " + SECRET_FILENAME, e);
+            throw Utilities.wrapRuntime(e);
+        }
+    }
 
-	/**
-	 * Load secret key from server file
-	 * 
-	 * @throws IOException
-	 * @see https://stackoverflow.com/questions/11410770
-	 */
-	public SecretKey loadSecretKey() {
-		try {
-			byte[] keyBytes = Files.readAllBytes(Paths.get(SECRET_FILENAME));
-			return new SecretKeySpec(keyBytes, "SHA-512");
-		} catch (IOException e) {
-			logger.error("Error loading secret key from " + SECRET_FILENAME, e);
-			throw Utilities.wrapRuntime(e);
-		}
-	}
+    /**
+     * Load secret key from server file
+     * 
+     * @throws IOException
+     * @see https://stackoverflow.com/questions/11410770
+     */
+    public SecretKey loadSecretKey() {
+        try {
+            byte[] keyBytes = Files.readAllBytes(Paths.get(SECRET_FILENAME));
+            return new SecretKeySpec(keyBytes, "SHA-512");
+        } catch (IOException e) {
+            logger.error("Error loading secret key from " + SECRET_FILENAME, e);
+            throw Utilities.wrapRuntime(e);
+        }
+    }
 
-	/**
-	 * Search for the "Authorization: Bearer xxx" header, and extract the token xxx.
-	 * 
-	 * Authentication scheme comparison must be case-insensitive
-	 * 
-	 * @param request
-	 * @return token
-	 * @throws AuthorizationException if not found
-	 */
-	public String extractTokenFromRequest(HttpServletRequest request) throws AuthorizationException {
+    /**
+     * Search for the "Authorization: Bearer xxx" header, and extract the token xxx.
+     * 
+     * Authentication scheme comparison must be case-insensitive
+     * 
+     * @param request
+     * @return token
+     * @throws AuthorizationException if not found
+     */
+    public String extractTokenFromRequest(HttpServletRequest request) throws AuthorizationException {
 
-		if (debugMode) {
-			return "*";
-		}
+        if (debugMode) {
+            return "*";
+        }
 
-		// Get the Authorization header from the request
-		String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        // Get the Authorization header from the request
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-		return extractTokenFromAuthorizationHeader(authorizationHeader);
-	}
+        return extractTokenFromAuthorizationHeader(authorizationHeader);
+    }
 
-	/**
-	 * Search for the "Authorization: Bearer xxx" header, and extract the token xxx.
-	 * 
-	 * Authentication scheme comparison must be case-insensitive
-	 * 
-	 * @param context
-	 * @return token
-	 * @throws AuthorizationException if not found
-	 */
-	public String extractTokenFromContext(ContainerRequestContext context) throws AuthorizationException {
+    /**
+     * Search for the "Authorization: Bearer xxx" header, and extract the token xxx.
+     * 
+     * Authentication scheme comparison must be case-insensitive
+     * 
+     * @param context
+     * @return token
+     * @throws AuthorizationException if not found
+     */
+    public String extractTokenFromContext(ContainerRequestContext context) throws AuthorizationException {
 
-		// Get the Authorization header from the context
-		String authorizationHeader = context.getHeaderString(HttpHeaders.AUTHORIZATION);
+        // Get the Authorization header from the context
+        String authorizationHeader = context.getHeaderString(HttpHeaders.AUTHORIZATION);
 
-		return extractTokenFromAuthorizationHeader(authorizationHeader);
-	}
+        return extractTokenFromAuthorizationHeader(authorizationHeader);
+    }
 
-	protected String extractTokenFromAuthorizationHeader(String authorizationHeader) throws AuthorizationException {
+    protected String extractTokenFromAuthorizationHeader(String authorizationHeader) throws AuthorizationException {
 
-		if (authorizationHeader == null || authorizationHeader.isEmpty()) {
-			throw new AuthorizationException("Missing Authorization header");
-		}
+        if (authorizationHeader == null || authorizationHeader.isEmpty()) {
+            throw new AuthorizationException("Missing Authorization header");
+        }
 
-		// Check if Authorization type is JWT
-		// @see https://stackoverflow.com/a/19154150/5116356
-		if (!authorizationHeader.regionMatches(true, 0, AUTHENTICATION_SCHEME, 0, AUTHENTICATION_SCHEME_LEN)) {
-			throw new AuthorizationException("Unexpected Authorization schema");
-		}
+        // Check if Authorization type is JWT
+        // @see https://stackoverflow.com/a/19154150/5116356
+        if (!authorizationHeader.regionMatches(true, 0, AUTHENTICATION_SCHEME, 0, AUTHENTICATION_SCHEME_LEN)) {
+            throw new AuthorizationException("Unexpected Authorization schema");
+        }
 
-		// Extract the token from the Authorization header
-		String token = authorizationHeader.substring(AUTHENTICATION_SCHEME.length()).trim();
-		if (token.isEmpty()) {
-			throw new AuthorizationException("Unexpected empty token");
-		}
+        // Extract the token from the Authorization header
+        String token = authorizationHeader.substring(AUTHENTICATION_SCHEME.length()).trim();
+        if (token.isEmpty()) {
+            throw new AuthorizationException("Unexpected empty token");
+        }
 
-		return token;
-	}
+        return token;
+    }
 
-	/**
-	 * Return JWT token in current Request.
-	 * 
-	 * @return
-	 * @throws AuthorizationException
-	 */
-	public String getCurrentToken() throws AuthorizationException {
-		return extractTokenFromRequest(request);
-	}
+    /**
+     * Return JWT token in current Request.
+     * 
+     * @return
+     * @throws AuthorizationException
+     */
+    public String getCurrentToken() throws AuthorizationException {
+        return extractTokenFromRequest(request);
+    }
 
-	public boolean isDebugMode() {
-		return debugMode;
-	}
+    public boolean isDebugMode() {
+        return debugMode;
+    }
 
-	public void setDebugMode(boolean debugMode) {
-		this.debugMode = debugMode;
-	}
+    public void setDebugMode(boolean debugMode) {
+        this.debugMode = debugMode;
+    }
 }

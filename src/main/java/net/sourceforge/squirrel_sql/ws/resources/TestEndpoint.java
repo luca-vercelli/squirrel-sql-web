@@ -6,9 +6,9 @@ import javax.ws.rs.Path;
 @Path("/")
 public class TestEndpoint {
 
-	@GET
-	@Path("/HelloWorld")
-	public String helloWorld() {
-		return "Hello World";
-	}
+    @GET
+    @Path("/HelloWorld")
+    public String helloWorld() {
+        return "Hello World";
+    }
 }

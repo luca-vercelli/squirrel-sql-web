@@ -18,6 +18,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.log4j.Logger;
+
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.client.session.properties.SessionProperties;
 import net.sourceforge.squirrel_sql.dto.ListBean;
@@ -31,78 +33,82 @@ import net.sourceforge.squirrel_sql.ws.managers.TokensManager;
 @Stateless
 public class SessionsEndpoint {
 
-	@Inject
-	SessionsManager manager;
-	@Inject
-	TokensManager tokensManager;
-	@Context
-	HttpServletRequest request;
+    @Inject
+    SessionsManager manager;
+    @Inject
+    TokensManager tokensManager;
+    @Context
+    HttpServletRequest request;
 
-	/**
-	 * Return token in current Request.
-	 * 
-	 * @return
-	 */
-	protected String getCurrentToken() {
-		try {
-			return tokensManager.extractTokenFromRequest(request);
-		} catch (AuthorizationException e) {
-			throw new IllegalStateException("Error retrieving token. This should not happen.", e);
-		}
-	}
+    Logger logger = Logger.getLogger(SessionsEndpoint.class);
 
-	@GET
-	@Path("/Session")
-	public ListBean<SessionDto> getItems() {
-		Set<ISession> set = manager.getOpenSessions(getCurrentToken());
-		List<SessionDto> list = new ArrayList<>();
-		for (ISession session : set) {
-			list.add(new SessionDto(session));
-		}
-		// If 0, may raise HTTP 404
-		return new ListBean<>(list);
-	}
+    /**
+     * Return token in current Request.
+     * 
+     * @return
+     */
+    protected String getCurrentToken() {
+        try {
+            return tokensManager.extractTokenFromRequest(request);
+        } catch (AuthorizationException e) {
+            throw new IllegalStateException("Error retrieving token. This should not happen.", e);
+        }
+    }
 
-	@GET
-	@Path("/Session({identifier})")
-	public ValueBean<SessionDto> getItem(@PathParam("identifier") String identifier) {
-		ISession session = manager.getSessionById(identifier, getCurrentToken());
-		// If null, may raise HTTP 404
-		return new ValueBean<>(new SessionDto(session));
-	}
+    @GET
+    @Path("/Session")
+    public ListBean<SessionDto> getItems() {
+        Set<ISession> set = manager.getOpenSessions(getCurrentToken());
+        List<SessionDto> list = new ArrayList<>();
+        for (ISession session : set) {
+            list.add(new SessionDto(session));
+        }
+        // If 0, may raise HTTP 404
+        return new ListBean<>(list);
+    }
 
-	@POST
-	@Path("/Connect")
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public ValueBean<SessionDto> connect(@FormParam("aliasIdentifier") String aliasIdentifier,
-			@FormParam("userName") String user, @FormParam("password") String passwd) {
+    @GET
+    @Path("/Session({identifier})")
+    public ValueBean<SessionDto> getItem(@PathParam("identifier") String identifier) {
+        ISession session = manager.getSessionById(identifier, getCurrentToken());
+        // If null, may raise HTTP 404
+        return new ValueBean<>(new SessionDto(session));
+    }
 
-		ISession session = manager.connect(aliasIdentifier, user, passwd, getCurrentToken());
-		return new ValueBean<>(new SessionDto(session));
-	}
+    @POST
+    @Path("/Connect")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public ValueBean<SessionDto> connect(@FormParam("aliasIdentifier") String aliasIdentifier,
+            @FormParam("userName") String user, @FormParam("password") String passwd) {
 
-	@POST
-	@Path("/Disconnect")
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public void disconnect(@FormParam("sessionId") String sessionId) {
-		manager.disconnect(sessionId, getCurrentToken());
-	}
+        ISession session = manager.connect(aliasIdentifier, user, passwd, getCurrentToken());
+        return new ValueBean<>(new SessionDto(session));
+    }
 
-	@POST
-	@Path("/DisconnectAllSessions")
-	public void disconnectAll() {
-		manager.disconnectAll(getCurrentToken());
-	}
+    @POST
+    @Path("/Disconnect")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void disconnect(@FormParam("sessionId") String sessionId) {
+        manager.disconnect(sessionId, getCurrentToken());
+    }
 
-	@PUT
-	@Path("/Session({identifier})/Properties")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public ValueBean<SessionProperties> saveProperties(@PathParam("identifier") String identifier,
-			SessionProperties props) throws AuthorizationException {
-		ISession session = manager.getSessionById(identifier);
-		manager.checkSession(session);
-		props = manager.setProperties(session, props);
-		return new ValueBean<>(props);
-	}
+    @POST
+    @Path("/DisconnectAllSessions")
+    public void disconnectAll() {
+        manager.disconnectAll(getCurrentToken());
+    }
+
+    @PUT
+    @Path("/Session({identifier})/Properties")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ValueBean<SessionProperties> saveProperties(@PathParam("identifier") String identifier,
+            SessionProperties props) throws AuthorizationException {
+        logger.info("DEBUG RECEIVED getSQLNbrRowsToShow=" + props.getSQLNbrRowsToShow() + "; " + props.getClass());
+
+        ISession session = manager.getSessionById(identifier);
+        manager.checkSession(session);
+        props = manager.setProperties(session, props);
+        return new ValueBean<>(props);
+    }
 }

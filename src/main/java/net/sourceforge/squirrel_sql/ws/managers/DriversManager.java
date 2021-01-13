@@ -26,144 +26,144 @@ import net.sourceforge.squirrel_sql.fw.util.NullMessageHandler;
 @Stateless
 public class DriversManager {
 
-	@Inject
-	WebApplication webapp;
+    @Inject
+    WebApplication webapp;
 
-	Logger logger = Logger.getLogger(DriversManager.class);
+    Logger logger = Logger.getLogger(DriversManager.class);
 
-	public List<SQLDriver> getDrivers() {
-		return webapp.getAliasesAndDriversManager().getDriverList();
-	}
+    public List<SQLDriver> getDrivers() {
+        return webapp.getAliasesAndDriversManager().getDriverList();
+    }
 
-	public SQLDriver getDriverById(IIdentifier id) {
-		return (SQLDriver) webapp.getAliasesAndDriversManager().getDriver(id);
-	}
+    public SQLDriver getDriverById(IIdentifier id) {
+        return (SQLDriver) webapp.getAliasesAndDriversManager().getDriver(id);
+    }
 
-	public SQLDriver getDriverById(String id) {
-		return getDriverById(getDriverIdentifier(id));
-	}
+    public SQLDriver getDriverById(String id) {
+        return getDriverById(getDriverIdentifier(id));
+    }
 
-	public IIdentifier getDriverIdentifier(String stringId) {
-		UidIdentifier id = new UidIdentifier();
-		id.setString(stringId);
-		return id;
-	}
+    public IIdentifier getDriverIdentifier(String stringId) {
+        UidIdentifier id = new UidIdentifier();
+        id.setString(stringId);
+        return id;
+    }
 
-	public synchronized void saveAllDrivers() {
-		webapp.savePreferences(PreferenceType.DRIVER_DEFINITIONS);
-	}
+    public synchronized void saveAllDrivers() {
+        webapp.savePreferences(PreferenceType.DRIVER_DEFINITIONS);
+    }
 
-	public SQLDriver updateDriver(final SQLDriver item, String id) throws ValidationException {
+    public SQLDriver updateDriver(final SQLDriver item, String id) throws ValidationException {
 
-		logger.info("updateSQLDriver: " + item + ";" + id);
-		// Load old values
-		SQLDriver itemOld = getDriverById(id);
+        logger.info("updateSQLDriver: " + item + ";" + id);
+        // Load old values
+        SQLDriver itemOld = getDriverById(id);
 
-		logger.info("itemOld: " + itemOld);
+        logger.info("itemOld: " + itemOld);
 
-		// Replace old values with new ones
-		// This may raise ValidationException if required attribute are missing
-		itemOld.setName(item.getName());
-		itemOld.setDriverClassName(item.getDriverClassName());
-		itemOld.setUrl(item.getUrl());
-		itemOld.setWebSiteUrl(item.getWebSiteUrl());
+        // Replace old values with new ones
+        // This may raise ValidationException if required attribute are missing
+        itemOld.setName(item.getName());
+        itemOld.setDriverClassName(item.getDriverClassName());
+        itemOld.setUrl(item.getUrl());
+        itemOld.setWebSiteUrl(item.getWebSiteUrl());
 
-		searchJDBCDriverInClasspath(itemOld);
+        searchJDBCDriverInClasspath(itemOld);
 
-		saveAllDrivers();
+        saveAllDrivers();
 
-		return itemOld;
-	}
+        return itemOld;
+    }
 
-	public SQLDriver createNewDriver(final SQLDriver item) throws ValidationException {
+    public SQLDriver createNewDriver(final SQLDriver item) throws ValidationException {
 
-		logger.info("createNewDriver: " + item);
-		SQLDriver itemNew = new SQLDriver(new UidIdentifier());
-		logger.info("" + itemNew);
+        logger.info("createNewDriver: " + item);
+        SQLDriver itemNew = new SQLDriver(new UidIdentifier());
+        logger.info("" + itemNew);
 
-		// Set values
-		// This may raise ValidationException if required attribute are missing
-		itemNew.setName(item.getName());
-		itemNew.setDriverClassName(item.getDriverClassName());
-		itemNew.setUrl(item.getUrl());
-		itemNew.setWebSiteUrl(item.getWebSiteUrl());
+        // Set values
+        // This may raise ValidationException if required attribute are missing
+        itemNew.setName(item.getName());
+        itemNew.setDriverClassName(item.getDriverClassName());
+        itemNew.setUrl(item.getUrl());
+        itemNew.setWebSiteUrl(item.getWebSiteUrl());
 
-		searchJDBCDriverInClasspath(itemNew);
+        searchJDBCDriverInClasspath(itemNew);
 
-		// add driver to managed drivers list
-		webapp.getAliasesAndDriversManager().addDriver(itemNew, null);
+        // add driver to managed drivers list
+        webapp.getAliasesAndDriversManager().addDriver(itemNew, null);
 
-		saveAllDrivers();
+        saveAllDrivers();
 
-		return itemNew;
-	}
+        return itemNew;
+    }
 
-	public SQLDriver removeDriver(String id) {
-		SQLDriver item = getDriverById(id);
-		webapp.getAliasesAndDriversManager().removeDriver(item);
-		saveAllDrivers();
-		return item;
-	}
+    public SQLDriver removeDriver(String id) {
+        SQLDriver item = getDriverById(id);
+        webapp.getAliasesAndDriversManager().removeDriver(item);
+        saveAllDrivers();
+        return item;
+    }
 
-	/**
-	 * Search a class in current classpath.
-	 * 
-	 * No custom classloader is used.
-	 * 
-	 * @param className
-	 * @return
-	 */
-	public Class<?> isClassInClasspath(String className) {
-		if (className == null || className.trim().isEmpty()) {
-			return null;
-		}
-		try {
-			return Class.forName(className.trim());
-		} catch (ClassNotFoundException exc) {
-			return null;
-		}
-	}
+    /**
+     * Search a class in current classpath.
+     * 
+     * No custom classloader is used.
+     * 
+     * @param className
+     * @return
+     */
+    public Class<?> isClassInClasspath(String className) {
+        if (className == null || className.trim().isEmpty()) {
+            return null;
+        }
+        try {
+            return Class.forName(className.trim());
+        } catch (ClassNotFoundException exc) {
+            return null;
+        }
+    }
 
-	/**
-	 * Set JDBCDriverClassLoaded, JarFileName, JarFileNames driver attributes.
-	 * 
-	 * @param driver
-	 */
-	public void searchJDBCDriverInClasspath(SQLDriver driver) {
+    /**
+     * Set JDBCDriverClassLoaded, JarFileName, JarFileNames driver attributes.
+     * 
+     * @param driver
+     */
+    public void searchJDBCDriverInClasspath(SQLDriver driver) {
 
-		// TODO search for equivalent SquirrelSql-core method
+        // TODO search for equivalent SquirrelSql-core method
 
-		driver.setJDBCDriverClassLoaded(false);
-		driver.setJarFileName(null);
-		driver.setJarFileNames(new String[] {});
+        driver.setJDBCDriverClassLoaded(false);
+        driver.setJarFileName(null);
+        driver.setJarFileNames(new String[] {});
 
-		Class<?> clazz = isClassInClasspath(driver.getDriverClassName());
-		if (clazz == null) {
-			return;
-		}
-		URI jarURI;
-		try {
-			jarURI = clazz.getProtectionDomain().getCodeSource().getLocation().toURI();
-		} catch (URISyntaxException e) {
-			logger.error("Exception while loading JDBC driver", e);
-			return;
-		} catch (SecurityException e) {
-			logger.error("Exception while loading JDBC driver", e);
-			return;
-		}
-		String jarFilename = new File(jarURI).getAbsolutePath();
-		driver.setJarFileNames(new String[] { jarFilename });
-		webapp.getAliasesAndDriversManager().refreshDriver(driver, NullMessageHandler.getInstance());
-	}
+        Class<?> clazz = isClassInClasspath(driver.getDriverClassName());
+        if (clazz == null) {
+            return;
+        }
+        URI jarURI;
+        try {
+            jarURI = clazz.getProtectionDomain().getCodeSource().getLocation().toURI();
+        } catch (URISyntaxException e) {
+            logger.error("Exception while loading JDBC driver", e);
+            return;
+        } catch (SecurityException e) {
+            logger.error("Exception while loading JDBC driver", e);
+            return;
+        }
+        String jarFilename = new File(jarURI).getAbsolutePath();
+        driver.setJarFileNames(new String[] { jarFilename });
+        webapp.getAliasesAndDriversManager().refreshDriver(driver, NullMessageHandler.getInstance());
+    }
 
-	/**
-	 * Call searchJDBCDriverInClasspath() for all drivers, then save all of them
-	 */
-	public void searchJDBCDriversInClasspath() {
-		List<SQLDriver> list = getDrivers();
-		for (SQLDriver driver : list) {
-			searchJDBCDriverInClasspath(driver);
-		}
-		saveAllDrivers();
-	}
+    /**
+     * Call searchJDBCDriverInClasspath() for all drivers, then save all of them
+     */
+    public void searchJDBCDriversInClasspath() {
+        List<SQLDriver> list = getDrivers();
+        for (SQLDriver driver : list) {
+            searchJDBCDriverInClasspath(driver);
+        }
+        saveAllDrivers();
+    }
 }

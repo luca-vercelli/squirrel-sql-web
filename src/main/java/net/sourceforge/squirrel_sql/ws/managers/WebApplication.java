@@ -19,85 +19,85 @@ import net.sourceforge.squirrel_sql.fw.util.log.LoggerController;
 @Startup
 public class WebApplication extends Application {
 
-	protected static ApplicationArguments applicationArguments;
+    protected static ApplicationArguments applicationArguments;
 
-	Logger logger = Logger.getLogger(WebApplication.class);
+    Logger logger = Logger.getLogger(WebApplication.class);
 
-	@Override
-	public void startup() {
-		throw new java.awt.HeadlessException("This class is not intended to be run in Swing");
-	}
+    @Override
+    public void startup() {
+        throw new java.awt.HeadlessException("This class is not intended to be run in Swing");
+    }
 
-	/**
-	 * Mimic Main.main() and this.startup()
-	 */
-	@PostConstruct
-	public void postConstruct() {
+    /**
+     * Mimic Main.main() and this.startup()
+     */
+    @PostConstruct
+    public void postConstruct() {
 
-		// why not log4j?
-		LoggerController.registerLoggerFactory(new SquirrelLoggerFactory(true));
+        // why not log4j?
+        LoggerController.registerLoggerFactory(new SquirrelLoggerFactory(true));
 
-		logger.info("******************APPLICATION STARTUP*****************");
+        logger.info("******************APPLICATION STARTUP*****************");
 
-		// should be in some cfg file
-		String[] cliArgs = { "--no-splash" };
-		ApplicationArguments.initialize(cliArgs);
+        // should be in some cfg file
+        String[] cliArgs = { "--no-splash" };
+        ApplicationArguments.initialize(cliArgs);
 
-		// by default, files are saved in ~/.squirrel-sql
+        // by default, files are saved in ~/.squirrel-sql
 
-		applicationArguments = ApplicationArguments.getInstance();
-		applicationArguments.validateArgs(true);
+        applicationArguments = ApplicationArguments.getInstance();
+        applicationArguments.validateArgs(true);
 
-		initResourcesAndPrefs();
-		initSessionManager();
-		initPluginManager();
-		if (applicationArguments.getLoadPlugins()) {
-			// TODO
-		}
-		initDriverManager();
-		initAppFiles();
+        initResourcesAndPrefs();
+        initSessionManager();
+        initPluginManager();
+        if (applicationArguments.getLoadPlugins()) {
+            // TODO
+        }
+        initDriverManager();
+        initAppFiles();
 
-		getSquirrelPreferences().setSavePreferencesImmediately(true);
+        getSquirrelPreferences().setSavePreferencesImmediately(true);
 
-		Main.setApplication(this); // some classes look at this
-		getPropsImpl(); // this is not only a getter
+        Main.setApplication(this); // some classes look at this
+        getPropsImpl(); // this is not only a getter
 
-		initDataCache();
-		loadRecentFileHistory();
-		loadSQLHistory();
-		loadCellImportExportInfo();
-		loadEditWhereColsInfo();
-		loadDTProperties();
-		loadUserSpecificWikiTableConfigurations();
+        initDataCache();
+        loadRecentFileHistory();
+        loadSQLHistory();
+        loadCellImportExportInfo();
+        loadEditWhereColsInfo();
+        loadDTProperties();
+        loadUserSpecificWikiTableConfigurations();
 
-		saveApplicationState(); // force file creation ?
+        saveApplicationState(); // force file creation ?
 
-		DatabaseObjectType.initialize();
-	}
+        DatabaseObjectType.initialize();
+    }
 
-	@PreDestroy
-	public void preDestroy() {
-		// mimic this.shutdown()
+    @PreDestroy
+    public void preDestroy() {
+        // mimic this.shutdown()
 
-		saveApplicationState();
-		SchemaInfoCacheSerializer.waitTillStoringIsDone();
-		// cannot call closeOutputStreams()
+        saveApplicationState();
+        SchemaInfoCacheSerializer.waitTillStoringIsDone();
+        // cannot call closeOutputStreams()
 
-		logger.info("******************APPLICATION SHUTDOWN*****************");
-		LoggerController.shutdown();
-	}
+        logger.info("******************APPLICATION SHUTDOWN*****************");
+        LoggerController.shutdown();
+    }
 
-	public ApplicationArguments getApplicationArguments() {
-		return applicationArguments;
-	}
+    public ApplicationArguments getApplicationArguments() {
+        return applicationArguments;
+    }
 
-	public void setApplicationArguments(ApplicationArguments args) {
-		applicationArguments = args;
-	}
+    public void setApplicationArguments(ApplicationArguments args) {
+        applicationArguments = args;
+    }
 
-	@Override
-	public void showErrorDialog(String msg, Throwable th) {
-		logger.error(msg, th);
-		// do *not* try to open dialog boxes
-	}
+    @Override
+    public void showErrorDialog(String msg, Throwable th) {
+        logger.error(msg, th);
+        // do *not* try to open dialog boxes
+    }
 }

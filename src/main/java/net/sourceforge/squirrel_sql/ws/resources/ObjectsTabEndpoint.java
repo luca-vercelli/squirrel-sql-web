@@ -32,57 +32,57 @@ import net.sourceforge.squirrel_sql.ws.managers.SessionsManager;
 @Produces(MediaType.APPLICATION_JSON)
 public class ObjectsTabEndpoint {
 
-	@Inject
-	ObjectsTabManager manager;
-	@Inject
-	SessionsManager sessionsManager;
+    @Inject
+    ObjectsTabManager manager;
+    @Inject
+    SessionsManager sessionsManager;
 
-	@GET
-	@Path("/Session({sessionId})/SchemaInfo")
-	public ValueBean<SchemaInfoDto> getSchemaInfo(@PathParam("sessionId") String sessionId)
-			throws AuthorizationException {
-		ISession session = sessionsManager.getSessionById(sessionId);
-		sessionsManager.checkSession(session);
-		SchemaInfo schemaInfo = session.getSchemaInfo();
-		// If null, may raise HTTP 404
-		return new ValueBean<>(new SchemaInfoDto(schemaInfo));
-	}
+    @GET
+    @Path("/Session({sessionId})/SchemaInfo")
+    public ValueBean<SchemaInfoDto> getSchemaInfo(@PathParam("sessionId") String sessionId)
+            throws AuthorizationException {
+        ISession session = sessionsManager.getSessionById(sessionId);
+        sessionsManager.checkSession(session);
+        SchemaInfo schemaInfo = session.getSchemaInfo();
+        // If null, may raise HTTP 404
+        return new ValueBean<>(new SchemaInfoDto(schemaInfo));
+    }
 
-	@GET
-	@Path("/Session({sessionId})/SchemaInfo/TableInfo")
-	public ListBean<TableInfoDto> getTableInfo(@PathParam("sessionId") String sessionId) throws AuthorizationException {
-		ISession session = sessionsManager.getSessionById(sessionId);
-		sessionsManager.checkSession(session);
-		ITableInfo[] tableInfos = session.getSchemaInfo().getITableInfos();
-		List<TableInfoDto> lst = new ArrayList<>();
-		for (ITableInfo t : tableInfos) {
-			lst.add(new TableInfoDto(t));
-		}
-		// If null, may raise HTTP 404
-		return new ListBean<>(lst);
-	}
+    @GET
+    @Path("/Session({sessionId})/SchemaInfo/TableInfo")
+    public ListBean<TableInfoDto> getTableInfo(@PathParam("sessionId") String sessionId) throws AuthorizationException {
+        ISession session = sessionsManager.getSessionById(sessionId);
+        sessionsManager.checkSession(session);
+        ITableInfo[] tableInfos = session.getSchemaInfo().getITableInfos();
+        List<TableInfoDto> lst = new ArrayList<>();
+        for (ITableInfo t : tableInfos) {
+            lst.add(new TableInfoDto(t));
+        }
+        // If null, may raise HTTP 404
+        return new ListBean<>(lst);
+    }
 
-	@GET
-	@Path("/Session({sessionId})/RootNode")
-	public ValueBean<ObjectTreeNodeDto> getRootNode(@PathParam("sessionId") String sessionId)
-			throws SQLException, AuthorizationException {
-		ISession session = sessionsManager.getSessionById(sessionId);
-		sessionsManager.checkSession(session);
-		ObjectTreeNode rootNode = manager.createAndExpandRootNode(session);
-		ObjectTreeNodeDto rootNodeDto = manager.node2Dto(rootNode);
-		return new ValueBean<>(rootNodeDto);
-	}
+    @GET
+    @Path("/Session({sessionId})/RootNode")
+    public ValueBean<ObjectTreeNodeDto> getRootNode(@PathParam("sessionId") String sessionId)
+            throws SQLException, AuthorizationException {
+        ISession session = sessionsManager.getSessionById(sessionId);
+        sessionsManager.checkSession(session);
+        ObjectTreeNode rootNode = manager.createAndExpandRootNode(session);
+        ObjectTreeNodeDto rootNodeDto = manager.node2Dto(rootNode);
+        return new ValueBean<>(rootNodeDto);
+    }
 
-	@POST
-	@Path("/Session({sessionId})/ExpandNode")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public ListBean<ObjectTreeNodeDto> expandNode(@PathParam("sessionId") String sessionId,
-			ObjectTreeNodeDto parentNodeDto) throws SQLException, AuthorizationException {
-		ISession session = sessionsManager.getSessionById(sessionId);
-		sessionsManager.checkSession(session);
-		ObjectTreeNode node = manager.dto2Node(parentNodeDto, session);
-		List<ObjectTreeNode> list = manager.expandNode(node);
-		return new ListBean<>(manager.node2Dto(list));
-	}
+    @POST
+    @Path("/Session({sessionId})/ExpandNode")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public ListBean<ObjectTreeNodeDto> expandNode(@PathParam("sessionId") String sessionId,
+            ObjectTreeNodeDto parentNodeDto) throws SQLException, AuthorizationException {
+        ISession session = sessionsManager.getSessionById(sessionId);
+        sessionsManager.checkSession(session);
+        ObjectTreeNode node = manager.dto2Node(parentNodeDto, session);
+        List<ObjectTreeNode> list = manager.expandNode(node);
+        return new ListBean<>(manager.node2Dto(list));
+    }
 
 }

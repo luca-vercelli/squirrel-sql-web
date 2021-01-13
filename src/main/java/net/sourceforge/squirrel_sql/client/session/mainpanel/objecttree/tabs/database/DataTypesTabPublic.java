@@ -4,9 +4,9 @@ import net.sourceforge.squirrel_sql.fw.datasetviewer.DataSetException;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.IDataSet;
 
 public class DataTypesTabPublic extends DataTypesTab implements IBaseDataSetTabPublic {
-	@Override
-	public IDataSet createDataSet() throws DataSetException {
-		return super.createDataSet();
-	}
+    @Override
+    public IDataSet createDataSet() throws DataSetException {
+        return super.createDataSet();
+    }
 
 }

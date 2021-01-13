@@ -28,36 +28,36 @@ import net.sourceforge.squirrel_sql.ws.model.User;
 @Path("/")
 public class UserEndpoint {
 
-	Logger logger = Logger.getLogger(SessionsEndpoint.class);
+    Logger logger = Logger.getLogger(SessionsEndpoint.class);
 
-	@Inject
-	UsersManager manager;
+    @Inject
+    UsersManager manager;
 
-	@GET
-	@Path("/Users")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<User> findAll() {
+    @GET
+    @Path("/Users")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<User> findAll() {
 
-		return manager.findAll();
-	}
+        return manager.findAll();
+    }
 
-	@POST
-	@Path("/Users")
-	public ValueBean<User> createItem(User item) {
-		item = manager.createNewUser(item);
-		return new ValueBean<>(item);
-	}
+    @POST
+    @Path("/Users")
+    public ValueBean<User> createItem(User item) {
+        item = manager.createNewUser(item);
+        return new ValueBean<>(item);
+    }
 
-	@PUT
-	@Path("/Users({identifier})")
-	public ValueBean<User> updateItem(@PathParam("identifier") Integer identifier, User item) {
-		item = manager.updateUser(item, identifier);
-		return new ValueBean<>(item);
-	}
+    @PUT
+    @Path("/Users({identifier})")
+    public ValueBean<User> updateItem(@PathParam("identifier") Integer identifier, User item) {
+        item = manager.updateUser(item, identifier);
+        return new ValueBean<>(item);
+    }
 
-	@DELETE
-	@Path("/Users({identifier})")
-	public void deleteItem(@PathParam("identifier") Integer identifier) {
-		manager.removeUser(identifier);
-	}
+    @DELETE
+    @Path("/Users({identifier})")
+    public void deleteItem(@PathParam("identifier") Integer identifier) {
+        manager.removeUser(identifier);
+    }
 }

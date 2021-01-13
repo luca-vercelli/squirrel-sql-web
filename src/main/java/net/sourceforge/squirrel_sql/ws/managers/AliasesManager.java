@@ -24,99 +24,99 @@ import net.sourceforge.squirrel_sql.fw.sql.SQLDriverPropertyCollection;
 @Stateless
 public class AliasesManager {
 
-	@Inject
-	WebApplication webapp;
-	@Inject
-	DriversManager driversManager;
+    @Inject
+    WebApplication webapp;
+    @Inject
+    DriversManager driversManager;
 
-	@SuppressWarnings("unchecked")
-	public List<SQLAlias> getAliases() {
-		return (List<SQLAlias>) webapp.getAliasesAndDriversManager().getAliasList();
-	}
+    @SuppressWarnings("unchecked")
+    public List<SQLAlias> getAliases() {
+        return (List<SQLAlias>) webapp.getAliasesAndDriversManager().getAliasList();
+    }
 
-	public SQLAlias getAliasById(IIdentifier id) {
-		return (SQLAlias) webapp.getAliasesAndDriversManager().getAlias(id);
-	}
+    public SQLAlias getAliasById(IIdentifier id) {
+        return (SQLAlias) webapp.getAliasesAndDriversManager().getAlias(id);
+    }
 
-	public SQLAlias getAliasById(String id) {
-		return getAliasById(getAliasIdentifier(id));
-	}
+    public SQLAlias getAliasById(String id) {
+        return getAliasById(getAliasIdentifier(id));
+    }
 
-	public IIdentifier getAliasIdentifier(String stringId) {
-		UidIdentifier id = new UidIdentifier();
-		id.setString(stringId);
-		return id;
-	}
+    public IIdentifier getAliasIdentifier(String stringId) {
+        UidIdentifier id = new UidIdentifier();
+        id.setString(stringId);
+        return id;
+    }
 
-	public synchronized void saveAllAliases() {
-		webapp.savePreferences(PreferenceType.ALIAS_DEFINITIONS);
-	}
+    public synchronized void saveAllAliases() {
+        webapp.savePreferences(PreferenceType.ALIAS_DEFINITIONS);
+    }
 
-	public SQLAlias updateAlias(final SQLAlias item, String id) throws ValidationException {
+    public SQLAlias updateAlias(final SQLAlias item, String id) throws ValidationException {
 
-		// Load old values
-		SQLAlias itemOld = getAliasById(id);
+        // Load old values
+        SQLAlias itemOld = getAliasById(id);
 
-		// Replace old values with new ones
-		// This may raise ValidationException if required attribute are missing
-		itemOld.setName(item.getName());
-		itemOld.setUrl(item.getUrl());
-		itemOld.setDriverIdentifier(item.getDriverIdentifier());
-		itemOld.setPassword(item.getPassword());
-		itemOld.setUserName(item.getUserName());
-		itemOld.setAutoLogon(item.isAutoLogon());
-		itemOld.setConnectAtStartup(item.isConnectAtStartup());
-		itemOld.setEncryptPassword(item.isEncryptPassword());
-		itemOld.setDriverProperties(item.getDriverPropertiesClone());
+        // Replace old values with new ones
+        // This may raise ValidationException if required attribute are missing
+        itemOld.setName(item.getName());
+        itemOld.setUrl(item.getUrl());
+        itemOld.setDriverIdentifier(item.getDriverIdentifier());
+        itemOld.setPassword(item.getPassword());
+        itemOld.setUserName(item.getUserName());
+        itemOld.setAutoLogon(item.isAutoLogon());
+        itemOld.setConnectAtStartup(item.isConnectAtStartup());
+        itemOld.setEncryptPassword(item.isEncryptPassword());
+        itemOld.setDriverProperties(item.getDriverPropertiesClone());
 
-		saveAllAliases();
+        saveAllAliases();
 
-		return itemOld;
-	}
+        return itemOld;
+    }
 
-	public SQLAlias createNewAlias(final SQLAlias item) throws ValidationException {
+    public SQLAlias createNewAlias(final SQLAlias item) throws ValidationException {
 
-		SQLAlias itemNew = new SQLAlias(new UidIdentifier());
+        SQLAlias itemNew = new SQLAlias(new UidIdentifier());
 
-		// Set values
-		// This may raise ValidationException if required attribute are missing
-		itemNew.setName(item.getName());
-		itemNew.setUrl(item.getUrl());
-		itemNew.setDriverIdentifier(item.getDriverIdentifier());
-		itemNew.setPassword(item.getPassword());
-		itemNew.setUserName(item.getUserName());
-		itemNew.setAutoLogon(item.isAutoLogon());
-		itemNew.setConnectAtStartup(item.isConnectAtStartup());
-		itemNew.setEncryptPassword(item.isEncryptPassword());
-		itemNew.setDriverProperties(item.getDriverPropertiesClone());
+        // Set values
+        // This may raise ValidationException if required attribute are missing
+        itemNew.setName(item.getName());
+        itemNew.setUrl(item.getUrl());
+        itemNew.setDriverIdentifier(item.getDriverIdentifier());
+        itemNew.setPassword(item.getPassword());
+        itemNew.setUserName(item.getUserName());
+        itemNew.setAutoLogon(item.isAutoLogon());
+        itemNew.setConnectAtStartup(item.isConnectAtStartup());
+        itemNew.setEncryptPassword(item.isEncryptPassword());
+        itemNew.setDriverProperties(item.getDriverPropertiesClone());
 
-		// add driver to managed drivers list
-		webapp.getAliasesAndDriversManager().addAlias(itemNew);
+        // add driver to managed drivers list
+        webapp.getAliasesAndDriversManager().addAlias(itemNew);
 
-		saveAllAliases();
+        saveAllAliases();
 
-		return itemNew;
-	}
+        return itemNew;
+    }
 
-	public SQLAlias removeAlias(String id) {
-		SQLAlias item = getAliasById(id);
-		webapp.getAliasesAndDriversManager().removeAlias(item);
-		saveAllAliases();
-		return item;
-	}
+    public SQLAlias removeAlias(String id) {
+        SQLAlias item = getAliasById(id);
+        webapp.getAliasesAndDriversManager().removeAlias(item);
+        saveAllAliases();
+        return item;
+    }
 
-	/**
-	 * Create a SQLConnection (and a Connection) for the given alias
-	 * 
-	 * @param driver
-	 * @param alias
-	 * @return
-	 */
-	public SQLConnection createConnection(SQLAlias alias, String user, String pw) {
-		SQLDriver driver = driversManager.getDriverById(alias.getDriverIdentifier());
-		SQLDriverPropertyCollection props = null;
-		ReconnectInfo reconnectInfo = null;
-		return webapp.getSQLDriverManager().getConnection(driver, alias, user, pw, props, reconnectInfo);
-	}
+    /**
+     * Create a SQLConnection (and a Connection) for the given alias
+     * 
+     * @param driver
+     * @param alias
+     * @return
+     */
+    public SQLConnection createConnection(SQLAlias alias, String user, String pw) {
+        SQLDriver driver = driversManager.getDriverById(alias.getDriverIdentifier());
+        SQLDriverPropertyCollection props = null;
+        ReconnectInfo reconnectInfo = null;
+        return webapp.getSQLDriverManager().getConnection(driver, alias, user, pw, props, reconnectInfo);
+    }
 
 }

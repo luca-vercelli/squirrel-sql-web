@@ -4,33 +4,33 @@ import net.sourceforge.squirrel_sql.client.session.schemainfo.SchemaInfo;
 
 public class SchemaInfoDto {
 
-	SchemaInfo schemaInfo;
+    SchemaInfo schemaInfo;
 
-	public SchemaInfoDto(SchemaInfo schemaInfo) {
-		this.schemaInfo = schemaInfo;
-	}
+    public SchemaInfoDto(SchemaInfo schemaInfo) {
+        this.schemaInfo = schemaInfo;
+    }
 
-	public String[] getSchemas() {
-		return schemaInfo.getSchemas();
-	}
+    public String[] getSchemas() {
+        return schemaInfo.getSchemas();
+    }
 
-	public String[] getCatalogs() {
-		return schemaInfo.getCatalogs();
-	}
+    public String[] getCatalogs() {
+        return schemaInfo.getCatalogs();
+    }
 
-	public String[] getFunctions() {
-		return schemaInfo.getFunctions();
-	}
+    public String[] getFunctions() {
+        return schemaInfo.getFunctions();
+    }
 
-	public String[] getDataTypes() {
-		return schemaInfo.getDataTypes();
-	}
+    public String[] getDataTypes() {
+        return schemaInfo.getDataTypes();
+    }
 
-	public String[] getTables() {
-		return schemaInfo.getTables();
-	}
+    public String[] getTables() {
+        return schemaInfo.getTables();
+    }
 
-	public String[] getKeywords() {
-		return schemaInfo.getKeywords();
-	}
+    public String[] getKeywords() {
+        return schemaInfo.getKeywords();
+    }
 }

@@ -9,5 +9,5 @@ import net.sourceforge.squirrel_sql.fw.datasetviewer.IDataSet;
  * @author lv 2020
  */
 public interface IProcedureTabPublic extends IProcedureTab {
-	public IDataSet createDataSet() throws DataSetException;
+    public IDataSet createDataSet() throws DataSetException;
 }

@@ -24,222 +24,222 @@ import net.sourceforge.squirrel_sql.ws.managers.SessionsManager;
 @Produces(MediaType.APPLICATION_JSON)
 public class DatabaseEndpoints {
 
-	@Inject
-	SessionsManager sessionsManager;
-	@Inject
-	DatabasesManager manager;
+    @Inject
+    SessionsManager sessionsManager;
+    @Inject
+    DatabasesManager manager;
 
-	@GET
-	@Path("MetaData")
-	public ValueBean<IDataSet> dbMetaData(@PathParam("sessionId") String sessionId,
-			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
-			@QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
-			throws AuthorizationException {
+    @GET
+    @Path("MetaData")
+    public ValueBean<IDataSet> dbMetaData(@PathParam("sessionId") String sessionId,
+            @QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+            @QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
+            throws AuthorizationException {
 
-		ISession session = sessionsManager.getSessionById(sessionId);
-		sessionsManager.checkSession(session);
-		IDataSet dataset;
-		try {
-			dataset = manager.getMetaData(session, catalog, schema, simpleName, objectType);
-		} catch (DataSetException e) {
-			throw webAppException(e);
-		}
-		return new ValueBean<>(dataset);
-	}
+        ISession session = sessionsManager.getSessionById(sessionId);
+        sessionsManager.checkSession(session);
+        IDataSet dataset;
+        try {
+            dataset = manager.getMetaData(session, catalog, schema, simpleName, objectType);
+        } catch (DataSetException e) {
+            throw webAppException(e);
+        }
+        return new ValueBean<>(dataset);
+    }
 
-	@GET
-	@Path("ConnectionStatus")
-	public ValueBean<IDataSet> dbConnectionStatus(@PathParam("sessionId") String sessionId,
-			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
-			@QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
-			throws AuthorizationException {
+    @GET
+    @Path("ConnectionStatus")
+    public ValueBean<IDataSet> dbConnectionStatus(@PathParam("sessionId") String sessionId,
+            @QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+            @QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
+            throws AuthorizationException {
 
-		ISession session = sessionsManager.getSessionById(sessionId);
-		sessionsManager.checkSession(session);
-		IDataSet dataset;
-		try {
-			dataset = manager.getConnectionStatus(session, catalog, schema, simpleName, objectType);
-		} catch (DataSetException e) {
-			throw webAppException(e);
-		}
-		return new ValueBean<>(dataset);
-	}
+        ISession session = sessionsManager.getSessionById(sessionId);
+        sessionsManager.checkSession(session);
+        IDataSet dataset;
+        try {
+            dataset = manager.getConnectionStatus(session, catalog, schema, simpleName, objectType);
+        } catch (DataSetException e) {
+            throw webAppException(e);
+        }
+        return new ValueBean<>(dataset);
+    }
 
-	@GET
-	@Path("Catalogs")
-	public ValueBean<IDataSet> dbCatalogs(@PathParam("sessionId") String sessionId,
-			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
-			@QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
-			throws AuthorizationException {
+    @GET
+    @Path("Catalogs")
+    public ValueBean<IDataSet> dbCatalogs(@PathParam("sessionId") String sessionId,
+            @QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+            @QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
+            throws AuthorizationException {
 
-		ISession session = sessionsManager.getSessionById(sessionId);
-		sessionsManager.checkSession(session);
-		IDataSet dataset;
-		try {
-			dataset = manager.getCatalogs(session, catalog, schema, simpleName, objectType);
-		} catch (DataSetException e) {
-			throw webAppException(e);
-		}
-		return new ValueBean<>(dataset);
-	}
+        ISession session = sessionsManager.getSessionById(sessionId);
+        sessionsManager.checkSession(session);
+        IDataSet dataset;
+        try {
+            dataset = manager.getCatalogs(session, catalog, schema, simpleName, objectType);
+        } catch (DataSetException e) {
+            throw webAppException(e);
+        }
+        return new ValueBean<>(dataset);
+    }
 
-	@GET
-	@Path("Schemas")
-	public ValueBean<IDataSet> dbSchemas(@PathParam("sessionId") String sessionId,
-			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
-			@QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
-			throws AuthorizationException {
+    @GET
+    @Path("Schemas")
+    public ValueBean<IDataSet> dbSchemas(@PathParam("sessionId") String sessionId,
+            @QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+            @QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
+            throws AuthorizationException {
 
-		ISession session = sessionsManager.getSessionById(sessionId);
-		sessionsManager.checkSession(session);
-		IDataSet dataset;
-		try {
-			dataset = manager.getSchemas(session, catalog, schema, simpleName, objectType);
-		} catch (DataSetException e) {
-			throw webAppException(e);
-		}
-		return new ValueBean<>(dataset);
-	}
+        ISession session = sessionsManager.getSessionById(sessionId);
+        sessionsManager.checkSession(session);
+        IDataSet dataset;
+        try {
+            dataset = manager.getSchemas(session, catalog, schema, simpleName, objectType);
+        } catch (DataSetException e) {
+            throw webAppException(e);
+        }
+        return new ValueBean<>(dataset);
+    }
 
-	@GET
-	@Path("TableTypes")
-	public ValueBean<IDataSet> dbTableTypes(@PathParam("sessionId") String sessionId,
-			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
-			@QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
-			throws AuthorizationException {
+    @GET
+    @Path("TableTypes")
+    public ValueBean<IDataSet> dbTableTypes(@PathParam("sessionId") String sessionId,
+            @QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+            @QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
+            throws AuthorizationException {
 
-		ISession session = sessionsManager.getSessionById(sessionId);
-		sessionsManager.checkSession(session);
-		IDataSet dataset;
-		try {
-			dataset = manager.getTableTypes(session, catalog, schema, simpleName, objectType);
-		} catch (DataSetException e) {
-			throw webAppException(e);
-		}
-		return new ValueBean<>(dataset);
-	}
+        ISession session = sessionsManager.getSessionById(sessionId);
+        sessionsManager.checkSession(session);
+        IDataSet dataset;
+        try {
+            dataset = manager.getTableTypes(session, catalog, schema, simpleName, objectType);
+        } catch (DataSetException e) {
+            throw webAppException(e);
+        }
+        return new ValueBean<>(dataset);
+    }
 
-	@GET
-	@Path("DataTypes")
-	public ValueBean<IDataSet> dbDataTypes(@PathParam("sessionId") String sessionId,
-			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
-			@QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
-			throws AuthorizationException {
+    @GET
+    @Path("DataTypes")
+    public ValueBean<IDataSet> dbDataTypes(@PathParam("sessionId") String sessionId,
+            @QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+            @QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
+            throws AuthorizationException {
 
-		ISession session = sessionsManager.getSessionById(sessionId);
-		sessionsManager.checkSession(session);
-		IDataSet dataset;
-		try {
-			dataset = manager.getDataTypes(session, catalog, schema, simpleName, objectType);
-		} catch (DataSetException e) {
-			throw webAppException(e);
-		}
-		return new ValueBean<>(dataset);
-	}
+        ISession session = sessionsManager.getSessionById(sessionId);
+        sessionsManager.checkSession(session);
+        IDataSet dataset;
+        try {
+            dataset = manager.getDataTypes(session, catalog, schema, simpleName, objectType);
+        } catch (DataSetException e) {
+            throw webAppException(e);
+        }
+        return new ValueBean<>(dataset);
+    }
 
-	@GET
-	@Path("NumericFunctions")
-	public ValueBean<IDataSet> dbNumericFunctions(@PathParam("sessionId") String sessionId,
-			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
-			@QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
-			throws AuthorizationException {
+    @GET
+    @Path("NumericFunctions")
+    public ValueBean<IDataSet> dbNumericFunctions(@PathParam("sessionId") String sessionId,
+            @QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+            @QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
+            throws AuthorizationException {
 
-		ISession session = sessionsManager.getSessionById(sessionId);
-		sessionsManager.checkSession(session);
-		IDataSet dataset;
-		try {
-			dataset = manager.getNumericFunctions(session, catalog, schema, simpleName, objectType);
-		} catch (DataSetException e) {
-			throw webAppException(e);
-		}
-		return new ValueBean<>(dataset);
-	}
+        ISession session = sessionsManager.getSessionById(sessionId);
+        sessionsManager.checkSession(session);
+        IDataSet dataset;
+        try {
+            dataset = manager.getNumericFunctions(session, catalog, schema, simpleName, objectType);
+        } catch (DataSetException e) {
+            throw webAppException(e);
+        }
+        return new ValueBean<>(dataset);
+    }
 
-	@GET
-	@Path("StringFunctions")
-	public ValueBean<IDataSet> dbStringFunctions(@PathParam("sessionId") String sessionId,
-			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
-			@QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
-			throws AuthorizationException {
+    @GET
+    @Path("StringFunctions")
+    public ValueBean<IDataSet> dbStringFunctions(@PathParam("sessionId") String sessionId,
+            @QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+            @QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
+            throws AuthorizationException {
 
-		ISession session = sessionsManager.getSessionById(sessionId);
-		sessionsManager.checkSession(session);
-		IDataSet dataset;
-		try {
-			dataset = manager.getStringFunctions(session, catalog, schema, simpleName, objectType);
-		} catch (DataSetException e) {
-			throw webAppException(e);
-		}
-		return new ValueBean<>(dataset);
-	}
+        ISession session = sessionsManager.getSessionById(sessionId);
+        sessionsManager.checkSession(session);
+        IDataSet dataset;
+        try {
+            dataset = manager.getStringFunctions(session, catalog, schema, simpleName, objectType);
+        } catch (DataSetException e) {
+            throw webAppException(e);
+        }
+        return new ValueBean<>(dataset);
+    }
 
-	@GET
-	@Path("SystemFunctions")
-	public ValueBean<IDataSet> dbSystemFunctions(@PathParam("sessionId") String sessionId,
-			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
-			@QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
-			throws AuthorizationException {
+    @GET
+    @Path("SystemFunctions")
+    public ValueBean<IDataSet> dbSystemFunctions(@PathParam("sessionId") String sessionId,
+            @QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+            @QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
+            throws AuthorizationException {
 
-		ISession session = sessionsManager.getSessionById(sessionId);
-		sessionsManager.checkSession(session);
-		IDataSet dataset;
-		try {
-			dataset = manager.getSystemFunctions(session, catalog, schema, simpleName, objectType);
-		} catch (DataSetException e) {
-			throw webAppException(e);
-		}
-		return new ValueBean<>(dataset);
-	}
+        ISession session = sessionsManager.getSessionById(sessionId);
+        sessionsManager.checkSession(session);
+        IDataSet dataset;
+        try {
+            dataset = manager.getSystemFunctions(session, catalog, schema, simpleName, objectType);
+        } catch (DataSetException e) {
+            throw webAppException(e);
+        }
+        return new ValueBean<>(dataset);
+    }
 
-	@GET
-	@Path("TimeDateFunctions")
-	public ValueBean<IDataSet> dbTimeDateFunctions(@PathParam("sessionId") String sessionId,
-			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
-			@QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
-			throws AuthorizationException {
+    @GET
+    @Path("TimeDateFunctions")
+    public ValueBean<IDataSet> dbTimeDateFunctions(@PathParam("sessionId") String sessionId,
+            @QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+            @QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
+            throws AuthorizationException {
 
-		ISession session = sessionsManager.getSessionById(sessionId);
-		sessionsManager.checkSession(session);
-		IDataSet dataset;
-		try {
-			dataset = manager.getTimeDateFunctions(session, catalog, schema, simpleName, objectType);
-		} catch (DataSetException e) {
-			throw webAppException(e);
-		}
-		return new ValueBean<>(dataset);
-	}
+        ISession session = sessionsManager.getSessionById(sessionId);
+        sessionsManager.checkSession(session);
+        IDataSet dataset;
+        try {
+            dataset = manager.getTimeDateFunctions(session, catalog, schema, simpleName, objectType);
+        } catch (DataSetException e) {
+            throw webAppException(e);
+        }
+        return new ValueBean<>(dataset);
+    }
 
-	@GET
-	@Path("Keywords")
-	public ValueBean<IDataSet> dbKeywords(@PathParam("sessionId") String sessionId,
-			@QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
-			@QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
-			throws AuthorizationException {
+    @GET
+    @Path("Keywords")
+    public ValueBean<IDataSet> dbKeywords(@PathParam("sessionId") String sessionId,
+            @QueryParam("catalog") String catalog, @QueryParam("schema") String schema,
+            @QueryParam("simpleName") String simpleName, @QueryParam("objectType") String objectType)
+            throws AuthorizationException {
 
-		ISession session = sessionsManager.getSessionById(sessionId);
-		sessionsManager.checkSession(session);
-		IDataSet dataset;
-		try {
-			dataset = manager.getKeywords(session, catalog, schema, simpleName, objectType);
-		} catch (DataSetException e) {
-			throw webAppException(e);
-		}
-		return new ValueBean<>(dataset);
-	}
+        ISession session = sessionsManager.getSessionById(sessionId);
+        sessionsManager.checkSession(session);
+        IDataSet dataset;
+        try {
+            dataset = manager.getKeywords(session, catalog, schema, simpleName, objectType);
+        } catch (DataSetException e) {
+            throw webAppException(e);
+        }
+        return new ValueBean<>(dataset);
+    }
 
-	/**
-	 * Convert a DataSetException into a WebApplicationException
-	 * 
-	 * @param e
-	 * @return
-	 */
-	private WebApplicationException webAppException(DataSetException e) {
-		if (e.getCause() != null) {
-			// this is probably a SQLException
-			return new WebApplicationException(e.getCause().getMessage(), Status.BAD_REQUEST);
-		} else {
-			return new WebApplicationException(e.getMessage(), Status.BAD_REQUEST);
-		}
-	}
+    /**
+     * Convert a DataSetException into a WebApplicationException
+     * 
+     * @param e
+     * @return
+     */
+    private WebApplicationException webAppException(DataSetException e) {
+        if (e.getCause() != null) {
+            // this is probably a SQLException
+            return new WebApplicationException(e.getCause().getMessage(), Status.BAD_REQUEST);
+        } else {
+            return new WebApplicationException(e.getMessage(), Status.BAD_REQUEST);
+        }
+    }
 
 }

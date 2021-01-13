@@ -10,34 +10,34 @@ import java.util.List;
  */
 public class ListBean<T> {
 
-	private List<T> data;
-	private Long count;
+    private List<T> data;
+    private Long count;
 
-	public ListBean() {
-	}
+    public ListBean() {
+    }
 
-	public ListBean(List<T> data, Long totalCount) {
-		this.data = data;
-		this.count = totalCount;
-	}
+    public ListBean(List<T> data, Long totalCount) {
+        this.data = data;
+        this.count = totalCount;
+    }
 
-	public ListBean(List<T> data) {
-		this(data, (long) data.size());
-	}
+    public ListBean(List<T> data) {
+        this(data, (long) data.size());
+    }
 
-	public List<T> getData() {
-		return data;
-	}
+    public List<T> getData() {
+        return data;
+    }
 
-	public void setData(List<T> data) {
-		this.data = data;
-	}
+    public void setData(List<T> data) {
+        this.data = data;
+    }
 
-	public Long getCount() {
-		return count;
-	}
+    public Long getCount() {
+        return count;
+    }
 
-	public void setCount(Long count) {
-		this.count = count;
-	}
+    public void setCount(Long count) {
+        this.count = count;
+    }
 }

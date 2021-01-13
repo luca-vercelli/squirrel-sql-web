@@ -15,21 +15,21 @@ import net.sourceforge.squirrel_sql.ws.managers.PreferencesManager;
 @Stateless
 public class PreferencesEndpoint {
 
-	@Inject
-	PreferencesManager manager;
+    @Inject
+    PreferencesManager manager;
 
-	@GET
-	@Path("/Preferences")
-	public ValueBean<SquirrelPreferences> getItems() {
-		SquirrelPreferences prefs = manager.get();
-		return new ValueBean<>(prefs);
-	}
+    @GET
+    @Path("/Preferences")
+    public ValueBean<SquirrelPreferences> getItems() {
+        SquirrelPreferences prefs = manager.get();
+        return new ValueBean<>(prefs);
+    }
 
-	@PUT
-	@Path("/Preferences")
-	public ValueBean<SquirrelPreferences> update(SquirrelPreferences prefs) throws ValidationException {
-		prefs = manager.update(prefs);
-		return new ValueBean<>(prefs);
-	}
+    @PUT
+    @Path("/Preferences")
+    public ValueBean<SquirrelPreferences> update(SquirrelPreferences prefs) throws ValidationException {
+        prefs = manager.update(prefs);
+        return new ValueBean<>(prefs);
+    }
 
 }

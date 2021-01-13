@@ -17,16 +17,16 @@ import net.sourceforge.squirrel_sql.fw.id.UidIdentifier;
  */
 public class IIdentifierDeserializer extends JsonDeserializer<IIdentifier> {
 
-	@Override
-	public IIdentifier deserialize(JsonParser jp, DeserializationContext ctxt)
-			throws IOException, JsonProcessingException {
+    @Override
+    public IIdentifier deserialize(JsonParser jp, DeserializationContext ctxt)
+            throws IOException, JsonProcessingException {
 
-		JsonNode node = jp.getCodec().readTree(jp);
-		String stringId = node.asText();
+        JsonNode node = jp.getCodec().readTree(jp);
+        String stringId = node.asText();
 
-		UidIdentifier id = new UidIdentifier();
-		id.setString(stringId);
-		return id;
-	}
+        UidIdentifier id = new UidIdentifier();
+        id.setString(stringId);
+        return id;
+    }
 
 }

@@ -8,20 +8,20 @@ package net.sourceforge.squirrel_sql.dto;
  */
 public class ValueBean<T> {
 
-	private T value;
+    private T value;
 
-	public ValueBean() {
-	}
+    public ValueBean() {
+    }
 
-	public ValueBean(T value) {
-		this.value = value;
-	}
+    public ValueBean(T value) {
+        this.value = value;
+    }
 
-	public T getValue() {
-		return value;
-	}
+    public T getValue() {
+        return value;
+    }
 
-	public void setValue(T value) {
-		this.value = value;
-	}
+    public void setValue(T value) {
+        this.value = value;
+    }
 }

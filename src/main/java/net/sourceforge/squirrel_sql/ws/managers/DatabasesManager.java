@@ -35,77 +35,77 @@ import net.sourceforge.squirrel_sql.fw.sql.MetaDataDecoratorDataSet;
 @Stateless
 public class DatabasesManager {
 
-	Logger logger = Logger.getLogger(DatabasesManager.class);
+    Logger logger = Logger.getLogger(DatabasesManager.class);
 
-	public IDataSet getMetaData(ISession session, String catalog, String schema, String simpleName, String objectType)
-			throws DataSetException {
-		return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new MetaDataTabPublic());
-	}
+    public IDataSet getMetaData(ISession session, String catalog, String schema, String simpleName, String objectType)
+            throws DataSetException {
+        return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new MetaDataTabPublic());
+    }
 
-	public IDataSet getConnectionStatus(ISession session, String catalog, String schema, String simpleName,
-			String objectType) throws DataSetException {
-		return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new ConnectionStatusTabPublic());
-	}
+    public IDataSet getConnectionStatus(ISession session, String catalog, String schema, String simpleName,
+            String objectType) throws DataSetException {
+        return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new ConnectionStatusTabPublic());
+    }
 
-	public IDataSet getCatalogs(ISession session, String catalog, String schema, String simpleName, String objectType)
-			throws DataSetException {
-		return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new CatalogsTabPublic());
-	}
+    public IDataSet getCatalogs(ISession session, String catalog, String schema, String simpleName, String objectType)
+            throws DataSetException {
+        return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new CatalogsTabPublic());
+    }
 
-	public IDataSet getSchemas(ISession session, String catalog, String schema, String simpleName, String objectType)
-			throws DataSetException {
-		return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new SchemasTabPublic());
-	}
+    public IDataSet getSchemas(ISession session, String catalog, String schema, String simpleName, String objectType)
+            throws DataSetException {
+        return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new SchemasTabPublic());
+    }
 
-	public IDataSet getTableTypes(ISession session, String catalog, String schema, String simpleName, String objectType)
-			throws DataSetException {
-		return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new TableTypesTabPublic());
-	}
+    public IDataSet getTableTypes(ISession session, String catalog, String schema, String simpleName, String objectType)
+            throws DataSetException {
+        return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new TableTypesTabPublic());
+    }
 
-	public IDataSet getDataTypes(ISession session, String catalog, String schema, String simpleName, String objectType)
-			throws DataSetException {
-		return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new DataTypesTabPublic());
-	}
+    public IDataSet getDataTypes(ISession session, String catalog, String schema, String simpleName, String objectType)
+            throws DataSetException {
+        return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new DataTypesTabPublic());
+    }
 
-	public IDataSet getNumericFunctions(ISession session, String catalog, String schema, String simpleName,
-			String objectType) throws DataSetException {
-		return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new NumericFunctionsTabPublic());
-	}
+    public IDataSet getNumericFunctions(ISession session, String catalog, String schema, String simpleName,
+            String objectType) throws DataSetException {
+        return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new NumericFunctionsTabPublic());
+    }
 
-	public IDataSet getStringFunctions(ISession session, String catalog, String schema, String simpleName,
-			String objectType) throws DataSetException {
-		return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new StringFunctionsTabPublic());
-	}
+    public IDataSet getStringFunctions(ISession session, String catalog, String schema, String simpleName,
+            String objectType) throws DataSetException {
+        return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new StringFunctionsTabPublic());
+    }
 
-	public IDataSet getSystemFunctions(ISession session, String catalog, String schema, String simpleName,
-			String objectType) throws DataSetException {
-		return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new SystemFunctionsTabPublic());
-	}
+    public IDataSet getSystemFunctions(ISession session, String catalog, String schema, String simpleName,
+            String objectType) throws DataSetException {
+        return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new SystemFunctionsTabPublic());
+    }
 
-	public IDataSet getTimeDateFunctions(ISession session, String catalog, String schema, String simpleName,
-			String objectType) throws DataSetException {
-		return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new TimeDateFunctionsTabPublic());
-	}
+    public IDataSet getTimeDateFunctions(ISession session, String catalog, String schema, String simpleName,
+            String objectType) throws DataSetException {
+        return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new TimeDateFunctionsTabPublic());
+    }
 
-	public IDataSet getKeywords(ISession session, String catalog, String schema, String simpleName, String objectType)
-			throws DataSetException {
-		return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new KeywordsTabPublic());
-	}
+    public IDataSet getKeywords(ISession session, String catalog, String schema, String simpleName, String objectType)
+            throws DataSetException {
+        return commonGetDataSetDb(session, catalog, schema, simpleName, objectType, new KeywordsTabPublic());
+    }
 
-	private IDataSet commonGetDataSetDb(ISession session, String catalog, String schema, String simpleName,
-			String objectType, IBaseDataSetTabPublic tab) throws DataSetException {
+    private IDataSet commonGetDataSetDb(ISession session, String catalog, String schema, String simpleName,
+            String objectType, IBaseDataSetTabPublic tab) throws DataSetException {
 
-		DatabaseObjectInfo info = new DatabaseObjectInfo(catalog, schema, simpleName);
-		tab.setSession(session);
-		tab.setDatabaseObjectInfo(info);
-		IDataSet result = tab.createDataSet();
+        DatabaseObjectInfo info = new DatabaseObjectInfo(catalog, schema, simpleName);
+        tab.setSession(session);
+        tab.setDatabaseObjectInfo(info);
+        IDataSet result = tab.createDataSet();
 
-		if (result instanceof ObjectArrayDataSet || result instanceof MetaDataDecoratorDataSet
-				|| result instanceof JavabeanDataSet || result instanceof DatabaseTypesDataSet) {
-			// Well, more or less every kind of IDataSet but the ResultSetDataSet
-			result = new PlainDataSet(result);
-		}
+        if (result instanceof ObjectArrayDataSet || result instanceof MetaDataDecoratorDataSet
+                || result instanceof JavabeanDataSet || result instanceof DatabaseTypesDataSet) {
+            // Well, more or less every kind of IDataSet but the ResultSetDataSet
+            result = new PlainDataSet(result);
+        }
 
-		return result;
-	}
+        return result;
+    }
 }

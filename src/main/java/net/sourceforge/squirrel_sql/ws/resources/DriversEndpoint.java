@@ -22,49 +22,49 @@ import net.sourceforge.squirrel_sql.ws.managers.DriversManager;
 @Stateless
 public class DriversEndpoint {
 
-	@Inject
-	DriversManager manager;
+    @Inject
+    DriversManager manager;
 
-	@GET
-	@Path("/Drivers")
-	public ListBean<SQLDriver> getItems() {
-		List<SQLDriver> list = manager.getDrivers();
-		// If 0, may raise HTTP 404
-		return new ListBean<>(list);
-	}
+    @GET
+    @Path("/Drivers")
+    public ListBean<SQLDriver> getItems() {
+        List<SQLDriver> list = manager.getDrivers();
+        // If 0, may raise HTTP 404
+        return new ListBean<>(list);
+    }
 
-	@GET
-	@Path("/Drivers({identifier})")
-	public ValueBean<ISQLDriver> getItem(@PathParam("identifier") String stringId) {
-		ISQLDriver item = manager.getDriverById(stringId);
-		// If null, may raise HTTP 404
-		return new ValueBean<>(item);
-	}
+    @GET
+    @Path("/Drivers({identifier})")
+    public ValueBean<ISQLDriver> getItem(@PathParam("identifier") String stringId) {
+        ISQLDriver item = manager.getDriverById(stringId);
+        // If null, may raise HTTP 404
+        return new ValueBean<>(item);
+    }
 
-	@POST
-	@Path("/Drivers")
-	public ValueBean<SQLDriver> createItem(SQLDriver item) throws ValidationException {
-		item = manager.createNewDriver(item);
-		return new ValueBean<>(item);
-	}
+    @POST
+    @Path("/Drivers")
+    public ValueBean<SQLDriver> createItem(SQLDriver item) throws ValidationException {
+        item = manager.createNewDriver(item);
+        return new ValueBean<>(item);
+    }
 
-	@PUT
-	@Path("/Drivers({identifier})")
-	public ValueBean<SQLDriver> updateItem(@PathParam("identifier") String stringId, SQLDriver item)
-			throws ValidationException {
-		item = manager.updateDriver(item, stringId);
-		return new ValueBean<>(item);
-	}
+    @PUT
+    @Path("/Drivers({identifier})")
+    public ValueBean<SQLDriver> updateItem(@PathParam("identifier") String stringId, SQLDriver item)
+            throws ValidationException {
+        item = manager.updateDriver(item, stringId);
+        return new ValueBean<>(item);
+    }
 
-	@DELETE
-	@Path("/Drivers({identifier})")
-	public void deleteItem(@PathParam("identifier") String stringId) {
-		manager.removeDriver(stringId);
-	}
+    @DELETE
+    @Path("/Drivers({identifier})")
+    public void deleteItem(@PathParam("identifier") String stringId) {
+        manager.removeDriver(stringId);
+    }
 
-	@POST
-	@Path("/CheckAllDrivers")
-	public void checkAllDrivers() {
-		manager.searchJDBCDriversInClasspath();
-	}
+    @POST
+    @Path("/CheckAllDrivers")
+    public void checkAllDrivers() {
+        manager.searchJDBCDriversInClasspath();
+    }
 }

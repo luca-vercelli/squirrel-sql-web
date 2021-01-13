@@ -33,120 +33,120 @@ import net.sourceforge.squirrel_sql.ws.model.User;
 @Path("/")
 public class TokenAuthenticationEndPoint {
 
-	Logger logger = Logger.getLogger(SessionsEndpoint.class);
+    Logger logger = Logger.getLogger(SessionsEndpoint.class);
 
-	@Inject
-	UsersManager usersManager;
-	@Inject
-	TokensManager tokensManager;
-	@Context
-	HttpServletResponse response;
+    @Inject
+    UsersManager usersManager;
+    @Inject
+    TokensManager tokensManager;
+    @Context
+    HttpServletResponse response;
 
-	/**
-	 * Plain-test authentication point.
-	 * 
-	 * @param username
-	 * @param password
-	 * @return
-	 */
-	@POST
-	@Path("Authenticate")
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	@Produces(MediaType.TEXT_PLAIN)
-	public String authenticate(@FormParam("username") String username, @FormParam("password") String password) {
+    /**
+     * Plain-test authentication point.
+     * 
+     * @param username
+     * @param password
+     * @return
+     */
+    @POST
+    @Path("Authenticate")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String authenticate(@FormParam("username") String username, @FormParam("password") String password) {
 
-		return internalAuthenticate(username, password);
-	}
+        return internalAuthenticate(username, password);
+    }
 
-	/**
-	 * JSON authentication point.
-	 * 
-	 * @param credentials
-	 * @return
-	 */
-	@POST
-	@Path("Authenticate")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public ValueBean<String> authenticate(Credentials credentials) {
+    /**
+     * JSON authentication point.
+     * 
+     * @param credentials
+     * @return
+     */
+    @POST
+    @Path("Authenticate")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ValueBean<String> authenticate(Credentials credentials) {
 
-		String token = internalAuthenticate(credentials.getUsername(), credentials.getPassword());
-		return new ValueBean<>(token);
-	}
+        String token = internalAuthenticate(credentials.getUsername(), credentials.getPassword());
+        return new ValueBean<>(token);
+    }
 
-	/**
-	 * Return the user that the Authorization token was issued for.
-	 * 
-	 * @param request
-	 * @return
-	 * @throws AuthorizationException if token is invalid (this should not happen,
-	 *                                if filter is cconfigured properly)
-	 */
-	@GET
-	@Path("/CurrentUser")
-	public ValueBean<User> getCurrentUser(@Context HttpServletRequest request) throws AuthorizationException {
-		User user;
-		if (!tokensManager.isDebugMode()) {
-			String token = tokensManager.extractTokenFromRequest(request);
-			user = usersManager.findByUsername(tokensManager.getSubject(token));
-		} else {
-			user = new User();
-			user.setUsername("admin");
-			user.setName("John");
-			user.setSurname("Doe");
-			user.setEmail("johndoe@example.com");
-			user.setRoles(new String[] { "admin" });
-		}
-		return new ValueBean<>(user);
-	}
+    /**
+     * Return the user that the Authorization token was issued for.
+     * 
+     * @param request
+     * @return
+     * @throws AuthorizationException if token is invalid (this should not happen,
+     *                                if filter is cconfigured properly)
+     */
+    @GET
+    @Path("/CurrentUser")
+    public ValueBean<User> getCurrentUser(@Context HttpServletRequest request) throws AuthorizationException {
+        User user;
+        if (!tokensManager.isDebugMode()) {
+            String token = tokensManager.extractTokenFromRequest(request);
+            user = usersManager.findByUsername(tokensManager.getSubject(token));
+        } else {
+            user = new User();
+            user.setUsername("admin");
+            user.setName("John");
+            user.setSurname("Doe");
+            user.setEmail("johndoe@example.com");
+            user.setRoles(new String[] { "admin" });
+        }
+        return new ValueBean<>(user);
+    }
 
-	/**
-	 * Common code
-	 * 
-	 * @param credentials
-	 * @return
-	 */
-	private String internalAuthenticate(String username, String password) {
+    /**
+     * Common code
+     * 
+     * @param credentials
+     * @return
+     */
+    private String internalAuthenticate(String username, String password) {
 
-		if (username == null || username.isEmpty()) {
-			response.setHeader(HttpHeaders.WWW_AUTHENTICATE, TokensManager.AUTHENTICATION_SCHEME);
-			throw new WebApplicationException("Missing credentials", Status.UNAUTHORIZED);
-		}
+        if (username == null || username.isEmpty()) {
+            response.setHeader(HttpHeaders.WWW_AUTHENTICATE, TokensManager.AUTHENTICATION_SCHEME);
+            throw new WebApplicationException("Missing credentials", Status.UNAUTHORIZED);
+        }
 
-		User user = usersManager.findByUsernamePassword(username, password);
+        User user = usersManager.findByUsernamePassword(username, password);
 
-		if (user == null) {
-			response.setHeader(HttpHeaders.WWW_AUTHENTICATE, TokensManager.AUTHENTICATION_SCHEME);
-			throw new WebApplicationException("Invalid credentials", Status.UNAUTHORIZED);
-		}
+        if (user == null) {
+            response.setHeader(HttpHeaders.WWW_AUTHENTICATE, TokensManager.AUTHENTICATION_SCHEME);
+            throw new WebApplicationException("Invalid credentials", Status.UNAUTHORIZED);
+        }
 
-		// At last, user is authenticated
-		logger.info("User authenticated: " + user);
+        // At last, user is authenticated
+        logger.info("User authenticated: " + user);
 
-		return tokensManager.issueToken(user);
-	}
+        return tokensManager.issueToken(user);
+    }
 
-	/**
-	 * This bean can be used from frontend for JSON authentication
-	 */
-	public static class Credentials {
-		private String username;
-		private String password;
+    /**
+     * This bean can be used from frontend for JSON authentication
+     */
+    public static class Credentials {
+        private String username;
+        private String password;
 
-		public String getUsername() {
-			return username;
-		}
+        public String getUsername() {
+            return username;
+        }
 
-		public void setUsername(String username) {
-			this.username = username;
-		}
+        public void setUsername(String username) {
+            this.username = username;
+        }
 
-		public String getPassword() {
-			return password;
-		}
+        public String getPassword() {
+            return password;
+        }
 
-		public void setPassword(String password) {
-			this.password = password;
-		}
-	}
+        public void setPassword(String password) {
+            this.password = password;
+        }
+    }
 }

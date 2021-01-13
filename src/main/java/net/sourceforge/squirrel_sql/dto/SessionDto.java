@@ -13,29 +13,29 @@ import net.sourceforge.squirrel_sql.fw.id.IIdentifier;
  */
 public class SessionDto {
 
-	ISession session;
+    ISession session;
 
-	public SessionDto(ISession session) {
-		this.session = session;
-	}
+    public SessionDto(ISession session) {
+        this.session = session;
+    }
 
-	public IIdentifier getIdentifier() {
-		return session.getIdentifier();
-	}
+    public IIdentifier getIdentifier() {
+        return session.getIdentifier();
+    }
 
-	public String getTitle() {
-		return session.getTitle();
-	}
+    public String getTitle() {
+        return session.getTitle();
+    }
 
-	public IIdentifier getAliasIdentifier() {
-		return session.getAlias().getIdentifier();
-	}
+    public IIdentifier getAliasIdentifier() {
+        return session.getAlias().getIdentifier();
+    }
 
-	public IIdentifier getDriverIdentifier() {
-		return session.getDriver().getIdentifier();
-	}
+    public IIdentifier getDriverIdentifier() {
+        return session.getDriver().getIdentifier();
+    }
 
-	public SessionProperties getProperties() {
-		return session.getProperties();
-	}
+    public SessionProperties getProperties() {
+        return session.getProperties();
+    }
 }
