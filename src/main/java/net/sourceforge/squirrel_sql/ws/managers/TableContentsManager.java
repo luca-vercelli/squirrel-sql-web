@@ -31,7 +31,7 @@ public class TableContentsManager {
 	@Inject
 	DriversManager driversManager;
 
-	private static final ILogger s_log = LoggerController.createLogger(TableContentsManager.class);
+	ILogger s_log = LoggerController.createLogger(TableContentsManager.class);
 
 	/**
 	 * Return SELECT * FROM given table

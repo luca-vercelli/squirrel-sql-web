@@ -20,6 +20,12 @@
 -->
 
 <module name="Checker">
+
+  <!-- We cannot check style for SQuirreL core classes! -->
+  <module name="SuppressionSingleFilter">
+    <property name="files" value="Application.java|DatabaseObjectType.java|ContentsTabPublic.java"/>
+  </module>
+
   <module name="TreeWalker">
     <module name="AvoidStarImport"/>
     <module name="ConstantName"/>
