@@ -349,7 +349,8 @@
                             <goal>check</goal>
                         </goals>
                         <configuration>
-                            <failOnViolation>false</failOnViolation>
+                            <!-- you may exclude a file in src/main/resources/stylecheck.xml --> 
+                            <failOnViolation>true</failOnViolation>
                         </configuration>
                     </execution>
                 </executions>
