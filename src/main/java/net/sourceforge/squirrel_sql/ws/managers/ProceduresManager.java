@@ -63,14 +63,13 @@ public class ProceduresManager {
     public String getSource(ISession session, String catalog, String schema, String procedure, String objectType,
             int procType) throws SQLException {
 
-        // se la procedura è MySQL...
-        // show create procedure|function|trigger simpleproc
-        // e scegli il terzo record
-
+        // These should better be inside Dialect...
         DialectType dialectType = DialectFactory.getDialectType(session.getMetaData());
+        logger.info("DialectType: " + dialectType);
         switch (dialectType) {
         case MYSQL:
         case MYSQL5:
+        case GENERIC: // FIXME !!!
             return getMySQLSource(session, procedure, objectType);
         case ORACLE:
             return getOracleSource(session, procedure, objectType);
@@ -83,7 +82,7 @@ public class ProceduresManager {
         final ISQLConnection conn = session.getSQLConnection();
         final Statement stmt = conn.createStatement();
         final int CREATE_PROCEDURE_COLUMN = 3;
-        try (ResultSet rs = stmt.executeQuery("SHOW " + objectType + " " + procedure)) {
+        try (ResultSet rs = stmt.executeQuery("SHOW CREATE " + objectType + " " + procedure)) {
             rs.next();
             return rs.getString(CREATE_PROCEDURE_COLUMN);
         }
