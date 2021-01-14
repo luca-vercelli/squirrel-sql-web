@@ -73,6 +73,7 @@
             @notify="$emit('notify', $event)"
             @ajax-error="$emit('ajax-error', $event)"
             @close-tab="closeTab(index)"
+            @sql-script="addSqlTab($event)"
           />
           <schema-info-tab
             v-if="item.type=='schemaInfo'"
@@ -81,6 +82,7 @@
             @notify="$emit('notify', $event)"
             @ajax-error="$emit('ajax-error', $event)"
             @close-tab="closeTab(index)"
+            @sql-script="addSqlTab($event)"
           />
         </v-card>
       </v-tab-item>

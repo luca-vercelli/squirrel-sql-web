@@ -20,7 +20,7 @@ import net.sourceforge.squirrel_sql.ws.exceptions.AuthorizationException;
 import net.sourceforge.squirrel_sql.ws.managers.ProceduresManager;
 import net.sourceforge.squirrel_sql.ws.managers.SessionsManager;
 
-@Path("/Session({sessionId})/Procedure({catalog : ([^,/]+)?},{schema : ([^,/]+)?},{procName},{procType})")
+@Path("/Session({sessionId})/Procedure({catalog : ([^,/]+)?},{schema : ([^,/]+)?},{procName},{objectType},{procType})")
 @Stateless
 @Produces(MediaType.APPLICATION_JSON)
 public class ProcedureEndpoints {

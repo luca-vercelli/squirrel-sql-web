@@ -116,8 +116,9 @@
         const catalog = this.node.catalog || ''
         const schema = this.node.schemaName || ''
         const name = this.node.simpleName || ''
-        const type = this.node.procedureType || ''
-        return `ws/Session(${this.sessionIdentifier})/Procedure(${catalog},${schema},${name},${type})/`
+        const type = this.node.objectType || ''
+        const procType = this.node.procedureType || ''
+        return `ws/Session(${this.sessionIdentifier})/Procedure(${catalog},${schema},${name},${type},${procType})/`
       },
     },
 
@@ -150,7 +151,7 @@
         this.editEnabled = false
         var that = this
         $.ajax({
-          url: this.enableMock ? process.env.BASE_URL + 'mock/TableDdl.json' : this.tableEndpoint + endpoint,
+          url: this.enableMock ? process.env.BASE_URL + 'mock/TableDdl.json' : this.procEndpoint + endpoint,
           type: 'GET',
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
