@@ -1,13 +1,16 @@
 package net.sourceforge.squirrel_sql.ws.managers;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.PreDestroy;
+import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
@@ -291,6 +294,24 @@ public class SessionsManager {
     public void checkSession(ISession session) {
         if (session == null) {
             throw new WebApplicationException("Invalid session id", Status.BAD_REQUEST);
+        }
+    }
+
+    /**
+     * Check hourly for expired sessions
+     */
+    @Schedule(hour = "*")
+    public void disconnectExpiredSessions() {
+        List<String> expiredTokens = new ArrayList<>();
+        for (String token : openSessions.keySet()) {
+            try {
+                tokensManager.validateToken(token);
+            } catch (AuthorizationException e) {
+                expiredTokens.add(token);
+            }
+        }
+        for (String token : expiredTokens) {
+            disconnectAll(token);
         }
     }
 
