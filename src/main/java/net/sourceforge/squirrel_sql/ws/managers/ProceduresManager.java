@@ -2,6 +2,7 @@ package net.sourceforge.squirrel_sql.ws.managers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,8 @@ import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.pro
 import net.sourceforge.squirrel_sql.client.session.mainpanel.objecttree.tabs.procedure.ProcedureColumnsTabPublic;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.DataSetException;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.IDataSet;
+import net.sourceforge.squirrel_sql.fw.dialects.DialectFactory;
+import net.sourceforge.squirrel_sql.fw.dialects.DialectType;
 import net.sourceforge.squirrel_sql.fw.sql.ISQLConnection;
 import net.sourceforge.squirrel_sql.fw.sql.ProcedureInfo;
 import net.sourceforge.squirrel_sql.fw.sql.SQLDatabaseMetaData;
@@ -57,8 +60,47 @@ public class ProceduresManager {
         return result;
     }
 
-    public String getSource(ISession session, String catalog, String schema, String procedure, int procType) {
-        return null;
+    public String getSource(ISession session, String catalog, String schema, String procedure, String objectType,
+            int procType) throws SQLException {
+
+        // se la procedura è MySQL...
+        // show create procedure|function|trigger simpleproc
+        // e scegli il terzo record
+
+        DialectType dialectType = DialectFactory.getDialectType(session.getMetaData());
+        switch (dialectType) {
+        case MYSQL:
+        case MYSQL5:
+            return getMySQLSource(session, procedure, objectType);
+        case ORACLE:
+            return getOracleSource(session, procedure, objectType);
+        default:
+            throw new IllegalArgumentException("Unsupported operation for this kind of database");
+        }
+    }
+
+    protected String getMySQLSource(ISession session, String procedure, String objectType) throws SQLException {
+        final ISQLConnection conn = session.getSQLConnection();
+        final Statement stmt = conn.createStatement();
+        final int CREATE_PROCEDURE_COLUMN = 3;
+        try (ResultSet rs = stmt.executeQuery("SHOW " + objectType + " " + procedure)) {
+            rs.next();
+            return rs.getString(CREATE_PROCEDURE_COLUMN);
+        }
+    }
+
+    protected String getOracleSource(ISession session, String procedure, String objectType) throws SQLException {
+        final ISQLConnection conn = session.getSQLConnection();
+        final Statement stmt = conn.createStatement();
+        StringBuffer sb = new StringBuffer();
+        final char NL = '\n';
+        try (ResultSet rs = stmt.executeQuery(
+                "select text from all_source where name='" + procedure + "' and type='" + objectType + "'")) {
+            while (rs.next()) {
+                sb.append(rs.getString(0)).append(NL);
+            }
+            return sb.toString();
+        }
     }
 
     public String getRunCommand(ISession session, String catalog, String schema, String procedure, int procType)

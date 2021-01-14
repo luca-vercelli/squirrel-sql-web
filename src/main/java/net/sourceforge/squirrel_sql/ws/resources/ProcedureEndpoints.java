@@ -50,12 +50,12 @@ public class ProcedureEndpoints {
     @Path("CreateProcedure")
     public ValueBean<String> getDdl(@PathParam("sessionId") String sessionId, @PathParam("catalog") String catalog,
             @PathParam("schema") String schema, @PathParam("procName") String procName,
-            @PathParam("procType") int procType) throws AuthorizationException {
+            @PathParam("objectType") String objectType, @PathParam("procType") int procType)
+            throws AuthorizationException, SQLException {
         ISession session = sessionsManager.getSessionById(sessionId);
         sessionsManager.checkSession(session);
-        String ddl;
-        ddl = manager.getSource(session, catalog, schema, procName, procType);
-        return new ValueBean<>(ddl);
+        String command = manager.getSource(session, catalog, schema, procName, objectType, procType);
+        return new ValueBean<>(command);
     }
 
     @GET
