@@ -102,6 +102,24 @@ public class ProceduresManager {
         }
     }
 
+    protected String getOracleSource(ISession session, String schema, String procedure, String objectType) throws SQLException {
+        // if objectType.equalsIgnoreCase('procedure') ...
+
+        String stmtForRoutines = "SELECT routine_definition FROM information_schema.routines WHERE specific_schema = ? AND routine_name = ?";
+        // similar for triggers and views
+        final ISQLConnection conn = session.getSQLConnection();
+        try(final PreparedStatement stmt = conn.prepareStatement(stmtForRoutines)){
+            stmt.setString(1, schema);
+            stmt.setString(2, procedure);
+            try (ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    return rs.getString(0);
+                }
+                throw new WebApplicationException("Routine not found: " + schema + "." + procedure);
+            }
+        }
+    }
+
     public String getRunCommand(ISession session, String catalog, String schema, String procedure, int procType)
             throws SQLException {
         List<String> columns = getProcedureColumnNames(session, catalog, schema, procedure, procType);
