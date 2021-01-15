@@ -1,5 +1,6 @@
 package net.sourceforge.squirrel_sql.ws.managers;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -8,6 +9,7 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.ws.rs.WebApplicationException;
 
 import org.apache.log4j.Logger;
 
@@ -73,6 +75,8 @@ public class ProceduresManager {
             return getMySQLSource(session, procedure, objectType);
         case ORACLE:
             return getOracleSource(session, procedure, objectType);
+        case POSTGRES:
+            return getPostgresqlSource(session, schema, procedure, objectType);
         default:
             throw new IllegalArgumentException("Unsupported operation for this kind of database");
         }
@@ -102,16 +106,18 @@ public class ProceduresManager {
         }
     }
 
-    protected String getOracleSource(ISession session, String schema, String procedure, String objectType) throws SQLException {
+    protected String getPostgresqlSource(ISession session, String schema, String procedure, String objectType)
+            throws SQLException {
         // if objectType.equalsIgnoreCase('procedure') ...
 
-        String stmtForRoutines = "SELECT routine_definition FROM information_schema.routines WHERE specific_schema = ? AND routine_name = ?";
+        String stmtForRoutines = "SELECT routine_definition FROM information_schema.routines "
+                + "WHERE specific_schema = ? AND routine_name = ?";
         // similar for triggers and views
         final ISQLConnection conn = session.getSQLConnection();
-        try(final PreparedStatement stmt = conn.prepareStatement(stmtForRoutines)){
+        try (final PreparedStatement stmt = conn.prepareStatement(stmtForRoutines)) {
             stmt.setString(1, schema);
             stmt.setString(2, procedure);
-            try (ResultSet rs = stmt.executeQuery();
+            try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return rs.getString(0);
                 }
