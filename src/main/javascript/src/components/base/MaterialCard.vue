@@ -72,6 +72,21 @@
           v-text="title"
         />
       </div>
+      <div
+        v-if="closeable"
+        style="margin-left:auto"
+      >
+        <v-btn
+          color="light"
+          @click="closecard()"
+        >
+          <i
+            aria-hidden="true"
+            class="v-icon notranslate mdi mdi-close-circle theme--dark"
+          />
+          {{ $t('Action.close') }}
+        </v-btn>
+      </div>
     </div>
 
     <slot />
@@ -115,6 +130,10 @@
         type: String,
         default: '',
       },
+      closeable: {
+        type: Boolean,
+        default: false,
+      },
     },
 
     computed: {
@@ -128,6 +147,12 @@
       },
       hasAltHeading () {
         return Boolean(this.$slots.heading || (this.title && this.icon))
+      },
+    },
+
+    methods: {
+      closecard: function () {
+        this.$emit('close-card')
       },
     },
   }

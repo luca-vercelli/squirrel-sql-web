@@ -8,19 +8,9 @@
       icon="mdi-database-search"
       :title="$t('SQLTab.title')"
       class="px-5 py-3"
+      :closeable="true"
+      @close-card="$emit('close-tab')"
     >
-      <v-col class="text-right">
-        <v-btn
-          color="light"
-          @click="$emit('close-tab')"
-        >
-          <i
-            aria-hidden="true"
-            class="v-icon notranslate mdi mdi-close-circle theme--dark"
-          />
-          {{ $t('Action.close') }}
-        </v-btn>
-      </v-col>
       <v-textarea
         v-model="query"
         filled

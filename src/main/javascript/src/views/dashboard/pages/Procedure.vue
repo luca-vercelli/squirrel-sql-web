@@ -8,6 +8,8 @@
       icon="mdi-table"
       :title="$t('Procedure.title', [procName])"
       class="px-5 py-3"
+      :closeable="true"
+      @close-card="$emit('close-tab')"
     >
       <v-row>
         <v-col>
@@ -35,18 +37,6 @@
               </v-list-item>
             </v-list>
           </v-menu>
-        </v-col>
-        <v-col class="text-right">
-          <v-btn
-            color="light"
-            @click="$emit('close-tab')"
-          >
-            <i
-              aria-hidden="true"
-              class="v-icon notranslate mdi mdi-close-circle theme--dark"
-            />
-            {{ $t('Action.close') }}
-          </v-btn>
         </v-col>
       </v-row>
       <template>
