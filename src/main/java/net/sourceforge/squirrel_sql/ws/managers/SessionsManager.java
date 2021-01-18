@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import net.sourceforge.squirrel_sql.client.gui.db.SQLAlias;
 import net.sourceforge.squirrel_sql.client.gui.session.SessionInternalFrame;
 import net.sourceforge.squirrel_sql.client.gui.session.SessionPanel;
+import net.sourceforge.squirrel_sql.client.session.ISQLPanelAPI;
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.client.session.properties.SessionProperties;
 import net.sourceforge.squirrel_sql.fw.id.IIdentifier;
@@ -147,7 +148,10 @@ public class SessionsManager {
         // mock SessionPanel
         SessionInternalFrame sif = mock(SessionInternalFrame.class);
         SessionPanel sp = mock(SessionPanel.class);
+        ISQLPanelAPI spa = mock(ISQLPanelAPI.class);
         when(sif.getSessionPanel()).thenReturn(sp);
+        when(sif.getMainSQLPanelAPI()).thenReturn(spa);
+
         session.setSessionInternalFrame(sif);
 
         // Now, we save ISession in openSessions
