@@ -80,7 +80,7 @@
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>3.6.0</version>
-			<scope>test</scope>
+			<!-- not only for tests -->
 		</dependency>
 
 		<!-- One JDBC Driver, as an example -->
