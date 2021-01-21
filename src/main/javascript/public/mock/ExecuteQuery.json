@@ -1,6 +1,0 @@
-{
-  "value" : {
-    "columnHeaders" : [ "ID", "DESCRIZIONE" ],
-    "rows" : [ [ 1, "goofy" ], [ 2, "daisy" ] ]
-  }
-}

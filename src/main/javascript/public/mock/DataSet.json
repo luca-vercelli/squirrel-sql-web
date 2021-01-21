@@ -331,6 +331,11 @@
       "columnIndices" : [ 4, 6, 18, 9, 7, 13, 12, 5, 8, 10, 11, 14, 15, 16, 17 ]
     },
     "allResultsRead" : true,
-    "allDataForReadOnly" : [ [ "ID", "INTEGER", "YES", 0, 10, null, "", 4, null, 10, 1, null, null, null, 1 ], [ "DESCRIZIONE", "VARCHAR", "YES", null, 50, null, "", 12, null, null, 1, null, null, 100, 2 ] ]
+    "allDataForReadOnly" : [
+[ "ID", "INTEGER", "YES", 0, 10, null, "", 4, null, 10, 1, null, null, null, 1 ], [ "DESCRIZIONE", "VARCHAR", "YES", null, 50, null, "", 12, null, null, 1, null, null, 100, 2 ],
+[ "ID", "INTEGER", "YES", 0, 10, null, "", 4, null, 10, 1, null, null, null, 1 ], [ "DESCRIZIONE", "VARCHAR", "YES", null, 50, null, "", 12, null, null, 1, null, null, 100, 2 ],
+[ "ID", "INTEGER", "YES", 0, 10, null, "", 4, null, 10, 1, null, null, null, 1 ], [ "DESCRIZIONE", "VARCHAR", "YES", null, 50, null, "", 12, null, null, 1, null, null, 100, 2 ],
+[ "ID", "INTEGER", "YES", 0, 10, null, "", 4, null, 10, 1, null, null, null, 1 ], [ "DESCRIZIONE", "VARCHAR", "YES", null, 50, null, "", 12, null, null, 1, null, null, 100, 2 ]
+    ]
   }
 }
