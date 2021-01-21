@@ -74,6 +74,9 @@
 "Tools.title": "Tools",
 "Tools.scanfordrivers": "Scan for Driver Classes",
 
+"Pagination.label": "Page {0} of {1}",
+"Pagination.unknown": "Unknown",
+
 "Scripts.title": "Scripts",
 "Scripts.CreateTable": "DDL",
 "Scripts.Select": "SELECT",

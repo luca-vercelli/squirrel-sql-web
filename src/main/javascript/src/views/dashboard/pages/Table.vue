@@ -47,7 +47,7 @@
           <v-tab
             v-for="tab in tabs"
             :key="tab.endpoint"
-            @click="loadDetails(tab.endpoint, tab.script)"
+            @click="loadDetails(tab)"
           >
             {{ $t(tab.caption) }}
           </v-tab>
@@ -87,7 +87,7 @@
         editEnabled: false,
         results: null,
         tabs: [
-          { caption: 'ContentsTab.title', endpoint: 'Content' },
+          { caption: 'ContentsTab.title', endpoint: 'Content', pagination: true },
           { caption: 'ColumnsTab.title', endpoint: 'Columns' },
           { caption: 'RowCountTab.title', endpoint: 'RowCount' },
           { caption: 'PrimaryKeyTab.title', endpoint: 'Pk' },
@@ -123,16 +123,16 @@
     },
 
     created: function () {
-      this.loadDetails(this.tabs[this.currentTab].endpoint)
+      this.loadDetails(this.tabs[this.currentTab])
     },
 
     methods: {
-      loadDetails: function (endpoint) {
+      loadDetails: function (tab) {
         this.editEnabled = false
         this.results = null
         var that = this
         $.ajax({
-          url: this.enableMock ? process.env.BASE_URL + 'mock/DataSet.json' : this.tableEndpoint + endpoint,
+          url: this.enableMock ? process.env.BASE_URL + 'mock/DataSet.json' : this.tableEndpoint + tab.endpoint,
           type: 'GET',
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),

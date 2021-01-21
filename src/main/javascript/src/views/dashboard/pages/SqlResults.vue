@@ -29,16 +29,31 @@
         </tr>
       </tbody>
     </v-simple-table>
-    <v-row justify="center">
-      <v-pagination
-        v-if="numOfPages > 1"
-        v-model="page"
-        :length="numOfPages"
-        total-visible="6"
-        @next="nextPage()"
-        @previous="previousPage()"
-        @input="gotoPage($event)"
-      />
+    <v-row
+      v-if="pagination"
+      justify="center"
+    >
+      <v-btn
+        :disabled="page <= 0"
+        @click="prevPage()"
+      >
+        <i
+          class="v-icon notranslate mdi mdi-chevron-left theme--light"
+          aria-hidden="true"
+        />
+      </v-btn>
+      <span>
+        {{ $t('Pagination.label', [page+1, numOfPages === null ? $t('Pagination.unknown') : numOfPages ]) }}
+      </span>
+      <v-btn
+        :disabled="page > numOfPages"
+        @click="nextPage()"
+      >
+        <i
+          class="v-icon notranslate mdi mdi-chevron-right theme--light"
+          aria-hidden="true"
+        />
+      </v-btn>
     </v-row>
   </div>
 </template>
@@ -57,14 +72,22 @@
         default: 20,
       },
       numOfPages: {
+        // null means unknown
         type: Number,
-        default: 1,
+        default: null,
+      },
+      pagination: {
+        type: Boolean,
+        default: false,
+      },
+      page: {
+        type: Number,
+        default: 0,
       },
     },
 
     data () {
       return {
-        currentPage: 0,
       }
     },
 
@@ -72,16 +95,28 @@
     },
 
     created () {
+      if ((this.numOfPages === null) || (this.numOfPages !== null && this.numOfPages > 1)) {
+        this.pagination = true
+      }
+      if (this.numOfPages === null && this.dataSet.allDataForReadOnly.length < this.rowsPerPage) {
+        if (this.dataSet.allDataForReadOnly.length > 0) {
+          // this is the last page
+          this.numOfPages = this.page + 1
+        } else {
+          --this.page
+          this.numOfPages = this.page - 1
+        }
+      }
     },
 
     methods: {
       nextPage () {
         // PRE: ++this.currentPage < numOfPages
-        this.gotoPage(++this.currentPage)
+        this.gotoPage(++this.page)
       },
       prevPage () {
         // PRE: --this.currentPage >= 0
-        this.gotoPage(--this.currentPage)
+        this.gotoPage(--this.page)
       },
       gotoPage (pageNumber) {
         // PRE: 0 <= pageNumber < numOfPages
