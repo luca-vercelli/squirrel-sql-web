@@ -49,7 +49,7 @@
         {{ $t('Pagination.label', [page+1, numOfPages === null ? $t('Pagination.unknown') : numOfPages ]) }}
       </div>
       <v-btn
-        :disabled="page > numOfPages"
+        :disabled="page + 2 > numOfPages"
         class="pagination-btn"
         elevation="3"
         style="min-width:0px;width:32px;margin:2px"
