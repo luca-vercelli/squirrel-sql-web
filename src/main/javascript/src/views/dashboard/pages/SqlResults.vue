@@ -35,6 +35,9 @@
     >
       <v-btn
         :disabled="page <= 0"
+        class="pagination-btn"
+        elevation="3"
+        style="min-width:0px;width:32px;margin:2px"
         @click="prevPage()"
       >
         <i
@@ -42,11 +45,14 @@
           aria-hidden="true"
         />
       </v-btn>
-      <span>
+      <div class="pagination-label">
         {{ $t('Pagination.label', [page+1, numOfPages === null ? $t('Pagination.unknown') : numOfPages ]) }}
-      </span>
+      </div>
       <v-btn
         :disabled="page > numOfPages"
+        class="pagination-btn"
+        elevation="3"
+        style="min-width:0px;width:32px;margin:2px"
         @click="nextPage()"
       >
         <i
@@ -125,3 +131,12 @@
     },
   }
 </script>
+
+<style>
+.pagination-label {
+  padding: 5px;
+}
+.pagination-btn {
+  /* this does not work */
+}
+</style>
