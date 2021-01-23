@@ -45,16 +45,20 @@
           center-active
         >
           <v-tab
-            v-for="tab in tabs"
+            v-for="(tab, idx) in tabs"
             :key="tab.endpoint"
-            @click="loadDetails(tab)"
+            @click="loadDetails(tab, idx)"
           >
             {{ $t(tab.caption) }}
           </v-tab>
         </v-tabs>
         <sql-results
-          v-if="results"
-          :data-set="results"
+          v-for="(tab, idx) in tabs"
+          :key="idx"
+          :visible="currentTab === idx"
+          :data-set="tab.results"
+          :pagination="tab.pagination"
+          @load-more="loadMore(tab, idx, $event)"
         />
       </template>
     </base-material-card>
@@ -85,18 +89,17 @@
       return {
         enableMock: process.env.VUE_APP_MOCK === 'true',
         editEnabled: false,
-        results: null,
         tabs: [
-          { caption: 'ContentsTab.title', endpoint: 'Content', pagination: true },
-          { caption: 'ColumnsTab.title', endpoint: 'Columns' },
-          { caption: 'RowCountTab.title', endpoint: 'RowCount' },
-          { caption: 'PrimaryKeyTab.title', endpoint: 'Pk' },
-          { caption: 'IndexesTab.title', endpoint: 'Indexes' },
-          { caption: 'ColumnPriviligesTab.title', endpoint: 'Privileges' },
-          { caption: 'ImportedKeysTab.title', endpoint: 'ImportedFk' },
-          { caption: 'ExportedKeysTab.title', endpoint: 'ExportedFk' },
-          { caption: 'RowIDTab.title', endpoint: 'RowId' },
-          { caption: 'VersionColumnsTab.title', endpoint: 'VersionColumns' },
+          { caption: 'ContentsTab.title', endpoint: 'Content', results: null, pagination: true },
+          { caption: 'ColumnsTab.title', endpoint: 'Columns', results: null },
+          { caption: 'RowCountTab.title', endpoint: 'RowCount', results: null },
+          { caption: 'PrimaryKeyTab.title', endpoint: 'Pk', results: null },
+          { caption: 'IndexesTab.title', endpoint: 'Indexes', results: null },
+          { caption: 'ColumnPriviligesTab.title', endpoint: 'Privileges', results: null },
+          { caption: 'ImportedKeysTab.title', endpoint: 'ImportedFk', results: null },
+          { caption: 'ExportedKeysTab.title', endpoint: 'ExportedFk', results: null },
+          { caption: 'RowIDTab.title', endpoint: 'RowId', results: null },
+          { caption: 'VersionColumnsTab.title', endpoint: 'VersionColumns', results: null },
         ],
         scriptMenuVoices: [
           { title: 'Scripts.CreateTable', endpoint: 'Ddl' },
@@ -123,13 +126,13 @@
     },
 
     created: function () {
-      this.loadDetails(this.tabs[this.currentTab])
+      this.loadDetails(this.tabs[this.currentTab], this.currentTab)
     },
 
     methods: {
-      loadDetails: function (tab) {
+      loadDetails: function (tab, index) {
+        console.log('tab was:', tab)
         this.editEnabled = false
-        this.results = null
         var that = this
         $.ajax({
           url: this.enableMock ? process.env.BASE_URL + 'mock/DataSet.json' : this.tableEndpoint + tab.endpoint,
@@ -138,7 +141,30 @@
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (data) {
-            that.results = data.value
+            console.log('tab is now:', tab)
+            tab.results = data.value
+            that.editEnabled = true
+          },
+          error: function (response) {
+            that.$emit('ajax-error', response)
+            that.editEnabled = true
+          },
+        })
+      },
+      loadMore: function (tab, index, dataSet) {
+        console.log('tab was:', tab)
+        this.editEnabled = false
+        var that = this
+        $.ajax({
+          url: this.enableMock ? process.env.BASE_URL + 'mock/DataSet.json' : this.tableEndpoint + tab.endpoint,
+          type: 'GET',
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+          },
+          success: function (data) {
+            console.log('tab is now:', tab)
+            // merge dataSet
+            tab.results = data.value
             that.editEnabled = true
           },
           error: function (response) {

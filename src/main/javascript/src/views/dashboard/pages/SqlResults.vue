@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div
+    v-if="dataSet && dataSet.dataSetDefinition"
+    :class="{ 'd-none': !visible }"
+  >
     <v-simple-table dense>
       <!-- TODO right-align numbers -->
       <thead>
@@ -31,35 +34,23 @@
     </v-simple-table>
     <v-row
       v-if="pagination"
-      justify="center"
     >
-      <v-btn
-        :disabled="page <= 0"
-        class="pagination-btn"
-        elevation="3"
-        style="min-width:0px;width:32px;margin:2px"
-        @click="prevPage()"
+      <v-col
+        style="text-align:right"
       >
-        <i
-          class="v-icon notranslate mdi mdi-chevron-left theme--light"
-          aria-hidden="true"
-        />
-      </v-btn>
-      <div class="pagination-label">
-        {{ $t('Pagination.label', [page+1, numOfPages === null ? $t('Pagination.unknown') : numOfPages ]) }}
-      </div>
-      <v-btn
-        :disabled="page + 2 > numOfPages"
-        class="pagination-btn"
-        elevation="3"
-        style="min-width:0px;width:32px;margin:2px"
-        @click="nextPage()"
-      >
-        <i
-          class="v-icon notranslate mdi mdi-chevron-right theme--light"
-          aria-hidden="true"
-        />
-      </v-btn>
+        <v-btn
+          :disabled="noMoreItems"
+          class="pagination-btn"
+          elevation="3"
+          @click="loadMore()"
+        >
+          <i
+            class="v-icon notranslate mdi mdi-chevron-down theme--light"
+            aria-hidden="true"
+          />
+          {{ noMoreItems ? $t('Pagination.noMore') : $t('Pagination.loadMore') }}
+        </v-btn>
+      </v-col>
     </v-row>
   </div>
 </template>
@@ -71,62 +62,40 @@
     props: {
       dataSet: {
         type: Object,
-        default: Object,
-      },
-      rowsPerPage: {
-        type: Number,
-        default: 20,
-      },
-      numOfPages: {
-        // null means unknown
-        type: Number,
         default: null,
       },
       pagination: {
         type: Boolean,
         default: false,
       },
-      page: {
-        type: Number,
-        default: 0,
+      visible: {
+        type: Boolean,
+        default: false,
+      },
+      noMoreItems: {
+        type: Boolean,
+        default: false,
       },
     },
 
     data () {
       return {
+        internalDataSet: null,
       }
     },
 
     computed: {
     },
 
+    watch: {
+    },
+
     created () {
-      if ((this.numOfPages === null) || (this.numOfPages !== null && this.numOfPages > 1)) {
-        this.pagination = true
-      }
-      if (this.numOfPages === null && this.dataSet.allDataForReadOnly.length < this.rowsPerPage) {
-        if (this.dataSet.allDataForReadOnly.length > 0) {
-          // this is the last page
-          this.numOfPages = this.page + 1
-        } else {
-          --this.page
-          this.numOfPages = this.page - 1
-        }
-      }
     },
 
     methods: {
-      nextPage () {
-        // PRE: ++this.currentPage < numOfPages
-        this.gotoPage(++this.page)
-      },
-      prevPage () {
-        // PRE: --this.currentPage >= 0
-        this.gotoPage(--this.page)
-      },
-      gotoPage (pageNumber) {
-        // PRE: 0 <= pageNumber < numOfPages
-        this.$emit('goto-page', pageNumber)
+      loadMore () {
+        this.$emit('load-more', this.dataSet)
       },
     },
   }
