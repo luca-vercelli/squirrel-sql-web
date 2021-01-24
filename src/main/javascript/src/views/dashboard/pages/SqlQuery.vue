@@ -58,6 +58,9 @@
     <sql-results
       v-if="results"
       :data-set="results"
+      :pagination="true"
+      :no-more-items="noMoreItems"
+      @load-more="loadMore()"
     />
   </v-container>
 </template>
@@ -90,6 +93,7 @@
         results: null,
         historySelected: null,
         history: [],
+        noMoreItems: false,
       }
     },
 
@@ -126,11 +130,22 @@
         })
       },
       executeQuery: function () {
-        this.editEnabled = false
         this.results = null
+        this.loadMore()
+      },
+      loadMore: function () {
+        this.editEnabled = false
+        var url = this.enableMock ? process.env.BASE_URL + 'mock/DataSet.json' : process.env.BASE_URL + 'ws/ExecuteQuery'
+
+        if (this.session.properties.sqllimitRows) {
+          var skip = (this.results && this.results.allDataForReadOnly) ? this.results.allDataForReadOnly.length : 0
+          url += `?$skip=${skip}&$top=${this.session.properties.sqlnbrRowsToShow}`
+        } else {
+          this.noMoreItems = true
+        }
         var that = this
         $.ajax({
-          url: this.enableMock ? process.env.BASE_URL + 'mock/DataSet.json' : process.env.BASE_URL + 'ws/ExecuteQuery',
+          url: url,
           type: this.enableMock ? 'GET' : 'POST',
           data: {
             sessionId: this.session.identifier,
@@ -145,7 +160,14 @@
               // not a SELECT
               that.$emit('notify', { message: 'Success.', type: 'success' })
             } else {
-              that.results = data.value
+              if (that.session.properties.sqllimitRows) {
+                that.noMoreItems = that.isShort(data.value)
+              }
+              if (that.results === null) {
+                that.results = data.value
+              } else {
+                that.mergeDataSet(that.results, data.value)
+              }
             }
             that.editEnabled = true
           },
@@ -154,6 +176,18 @@
             that.$emit('ajax-error', response)
           },
         })
+      },
+      /**
+      Add data from dataSet2 into dataSet1
+      */
+      mergeDataSet (dataSet1, dataSet2) {
+        dataSet1.allDataForReadOnly = dataSet1.allDataForReadOnly.concat(dataSet2.allDataForReadOnly)
+      },
+      /**
+      check if dataSet is not as long es expected
+      */
+      isShort (dataSet) {
+        return !dataSet || !dataSet.allDataForReadOnly || dataSet.allDataForReadOnly.length < this.session.properties.sqlnbrRowsToShow
       },
       saveProperties: function () {
         this.editEnabled = false

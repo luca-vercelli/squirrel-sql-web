@@ -70,7 +70,7 @@
       },
       visible: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       noMoreItems: {
         type: Boolean,
