@@ -95,7 +95,7 @@
 
     methods: {
       loadMore () {
-        this.$emit('load-more', this.dataSet)
+        this.$emit('load-more')
       },
     },
   }

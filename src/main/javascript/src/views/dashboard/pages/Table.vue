@@ -47,7 +47,7 @@
           <v-tab
             v-for="(tab, idx) in tabs"
             :key="tab.endpoint"
-            @click="loadDetails(tab, idx)"
+            @click="activateTab(tab, idx)"
           >
             {{ $t(tab.caption) }}
           </v-tab>
@@ -58,7 +58,8 @@
           :visible="currentTab === idx"
           :data-set="tab.results"
           :pagination="tab.pagination"
-          @load-more="loadMore(tab, idx, $event)"
+          :no-more-items="tab.noMoreItems"
+          @load-more="loadMore(tab, idx)"
         />
       </template>
     </base-material-card>
@@ -89,6 +90,7 @@
       return {
         enableMock: process.env.VUE_APP_MOCK === 'true',
         editEnabled: false,
+        rowsPerPage: 25, // FIXME
         tabs: [
           { caption: 'ContentsTab.title', endpoint: 'Content', results: null, pagination: true },
           { caption: 'ColumnsTab.title', endpoint: 'Columns', results: null },
@@ -126,23 +128,37 @@
     },
 
     created: function () {
-      this.loadDetails(this.tabs[this.currentTab], this.currentTab)
+      this.activateTab(this.tabs[this.currentTab], this.currentTab)
     },
 
     methods: {
-      loadDetails: function (tab, index) {
-        console.log('tab was:', tab)
+      activateTab: function (tab, index) {
+        if (tab.results === null) {
+          this.loadMore(tab, index)
+        }
+      },
+      loadMore: function (tab, index) {
+        console.log('DEBUG: loadMore', tab, index)
         this.editEnabled = false
         var that = this
+        var url = this.enableMock ? process.env.BASE_URL + 'mock/DataSet.json' : this.tableEndpoint + tab.endpoint
+        if (tab.pagination) {
+          var skip = (tab.results && tab.results.allDataForReadOnly) ? tab.results.allDataForReadOnly.length : 0
+          url += `?$skip=${skip}&$top=${this.rowsPerPage}`
+        }
         $.ajax({
-          url: this.enableMock ? process.env.BASE_URL + 'mock/DataSet.json' : this.tableEndpoint + tab.endpoint,
+          url: url,
           type: 'GET',
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (data) {
-            console.log('tab is now:', tab)
-            tab.results = data.value
+            tab.noMoreItems = that.isShort(data.value)
+            if (tab.results === null) {
+              tab.results = data.value
+            } else {
+              that.mergeDataSet(tab.results, data.value)
+            }
             that.editEnabled = true
           },
           error: function (response) {
@@ -151,27 +167,17 @@
           },
         })
       },
-      loadMore: function (tab, index, dataSet) {
-        console.log('tab was:', tab)
-        this.editEnabled = false
-        var that = this
-        $.ajax({
-          url: this.enableMock ? process.env.BASE_URL + 'mock/DataSet.json' : this.tableEndpoint + tab.endpoint,
-          type: 'GET',
-          headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('authToken'),
-          },
-          success: function (data) {
-            console.log('tab is now:', tab)
-            // merge dataSet
-            tab.results = data.value
-            that.editEnabled = true
-          },
-          error: function (response) {
-            that.$emit('ajax-error', response)
-            that.editEnabled = true
-          },
-        })
+      /**
+      Add data from dataSet2 into dataSet1
+      */
+      mergeDataSet (dataSet1, dataSet2) {
+        dataSet1.allDataForReadOnly = dataSet1.allDataForReadOnly.concat(dataSet2.allDataForReadOnly)
+      },
+      /**
+      check if dataSet is not as long es expected
+      */
+      isShort (dataSet) {
+        return !dataSet || !dataSet.allDataForReadOnly || dataSet.allDataForReadOnly.length < this.rowsPerPage
       },
       loadScript: function (endpoint) {
         this.editEnabled = false
