@@ -164,14 +164,14 @@
         this.editedIndex = -1
       },
       addJar () {
-        if (!this.jarFileNames) {
-          this.jarFileNames = []
-        }
+        console.log('GIOING TO SAVE:', this.editedIndex, this.editedItem, this.jarFileNames)
+        const newlist = this.jarFileNames ? [...this.jarFileNames] : []
         if (this.editedIndex > -1) {
-          this.jarFileNames[this.editedIndex] = this.editedItem.name
+          newlist[this.editedIndex] = this.editedItem.name
         } else {
-          this.jarFileNames.push(this.editedItem.name)
+          newlist.push(this.editedItem.name)
         }
+        this.$emit('update', newlist)
         this.closeJarDialog()
       },
       deleteItem (item) {
