@@ -8,6 +8,6 @@
     "url" : "jdbc:luciddb:http://<server>[:<8034>]",
     "webSiteUrl" : "http://www.luciddb.org",
     "jarFileName" : "",
-    "jarFileNames" : [ ]
+    "jarFileNames" : [ "/some/path/glassfish4.1.2/javadb/lib/derby.jar" ]
   }
 }

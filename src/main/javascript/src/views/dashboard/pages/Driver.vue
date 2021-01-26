@@ -41,6 +41,12 @@
           required
           :disabled="!editEnabled"
         />
+
+        <driver-jar-table
+          :jar-file-names="driver.jarFileNames"
+          :edit-enabled="editEnabled"
+          @update="updateJarFileNames($event)"
+        />
       </v-form>
 
       <v-btn
@@ -102,6 +108,10 @@
   export default {
     name: 'Driver',
 
+    components: {
+      DriverJarTable: () => import('./DriverJarTable'),
+    },
+
     props: {
       identifier: {
         type: String,
@@ -120,11 +130,27 @@
         valid: true,
         editEnabled: false,
         creating: true,
+        jarTableHeaders: [
+          {
+            text: this.$t('JAR File name'),
+            align: 'start',
+            sortable: true,
+            value: 'name',
+          },
+          {
+            text: 'Actions',
+            value: 'actions',
+            sortable: false,
+          },
+        ],
+        editedIndex: -1,
+        editedItem: {},
+        jarDialog: false,
       }
     },
 
     computed: {
-      wsUrl: function () {
+      wsUrl () {
         return this.enableMock ? process.env.BASE_URL + 'mock/SingleDriver.json' : process.env.BASE_URL + 'ws/Drivers(' + this.identifier + ')'
       },
     },
@@ -150,7 +176,6 @@
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (response) {
-            console.log('response:', response)
             that.driver = response.value
             if (boolClone) {
               that.driver.identifier = null
@@ -192,7 +217,7 @@
           },
         })
       },
-      saveDriver: function () {
+      saveDriver () {
         this.validate()
         this.editEnabled = false
         var url = this.enableMock ? process.env.BASE_URL + 'mock/SingleDriver.json' : process.env.BASE_URL + `ws/Drivers(${this.driver.identifier})`
@@ -216,8 +241,12 @@
           },
         })
       },
-      back: function () {
+      back () {
         this.$router.push('/drivers')
+      },
+      updateJarFileNames (jarFileNames) {
+        jarFileNames = [...new Set(jarFileNames)].sort()
+        this.driver.jarFileNames = jarFileNames
       },
     },
   }
