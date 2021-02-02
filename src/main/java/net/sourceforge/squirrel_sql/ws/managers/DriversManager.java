@@ -3,6 +3,7 @@ package net.sourceforge.squirrel_sql.ws.managers;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -60,6 +61,7 @@ public class DriversManager {
         SQLDriver itemOld = getDriverById(id);
 
         logger.info("itemOld: " + itemOld);
+        logger.info("itemOld.getJarFileNames(): " + Arrays.asList(itemOld.getJarFileNames()));
 
         // Replace old values with new ones
         // This may raise ValidationException if required attribute are missing
@@ -68,7 +70,11 @@ public class DriversManager {
         itemOld.setUrl(item.getUrl());
         itemOld.setWebSiteUrl(item.getWebSiteUrl());
 
-        searchJDBCDriverInClasspath(itemOld);
+        if (item.getJarFileNames() == null || item.getJarFileNames().length == 0) {
+            searchJDBCDriverInClasspath(itemOld);
+        } else {
+            itemOld.setJarFileNames(item.getJarFileNames());
+        }
 
         saveAllDrivers();
 
@@ -87,6 +93,12 @@ public class DriversManager {
         itemNew.setDriverClassName(item.getDriverClassName());
         itemNew.setUrl(item.getUrl());
         itemNew.setWebSiteUrl(item.getWebSiteUrl());
+
+        if (item.getJarFileNames() == null || item.getJarFileNames().length == 0) {
+            searchJDBCDriverInClasspath(itemNew);
+        } else {
+            itemNew.setJarFileNames(item.getJarFileNames());
+        }
 
         searchJDBCDriverInClasspath(itemNew);
 
