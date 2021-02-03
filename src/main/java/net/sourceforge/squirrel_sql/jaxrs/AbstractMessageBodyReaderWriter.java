@@ -69,11 +69,13 @@ public abstract class AbstractMessageBodyReaderWriter<T> implements MessageBodyW
      * @return
      */
     public ObjectMapper createObjectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
 
         SimpleModule module = new SimpleModule();
         module.addSerializer(IIdentifier.class, new IIdentifierSerializer());
         module.addDeserializer(IIdentifier.class, new IIdentifierDeserializer());
+        module.addDeserializer(String[].class, new StringArrayDeserializer());
+
+        ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(module);
 
         // Pretty print
