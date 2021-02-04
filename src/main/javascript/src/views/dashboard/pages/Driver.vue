@@ -214,6 +214,7 @@
           },
           error: function (response) {
             that.$emit('ajax-error', response)
+            that.editEnabled = true
           },
         })
       },
@@ -238,6 +239,7 @@
           },
           error: function (response) {
             that.$emit('ajax-error', response)
+            that.editEnabled = true
           },
         })
       },
