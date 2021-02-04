@@ -117,19 +117,6 @@ public class ObjectsTabManager {
     }
 
     /**
-     * Convert a list of ObjectTreeNode into a list of ObjectTreeNodeDto.
-     * Recursively with all children.
-     */
-    public List<ObjectTreeNodeDto> node2Dto(List<ObjectTreeNode> list) {
-        initialize();
-        List<ObjectTreeNodeDto> listDto = new ArrayList<>();
-        for (ObjectTreeNode obj : list) {
-            listDto.add(node2Dto(obj));
-        }
-        return listDto;
-    }
-
-    /**
      * Convert a ObjectTreeNodeDto into a ObjectTreeNode. Recursively with all
      * children.
      */

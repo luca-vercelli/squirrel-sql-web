@@ -3,6 +3,7 @@ package net.sourceforge.squirrel_sql.ws.resources;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -82,7 +83,8 @@ public class ObjectsTabEndpoint {
         sessionsManager.checkSession(session);
         ObjectTreeNode node = manager.dto2Node(parentNodeDto, session);
         List<ObjectTreeNode> list = manager.expandNode(node);
-        return new ListBean<>(manager.node2Dto(list));
+        List<ObjectTreeNodeDto> listDto = list.stream().map(x -> manager.node2Dto(x)).collect(Collectors.toList());
+        return new ListBean<>(listDto);
     }
 
 }
