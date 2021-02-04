@@ -174,9 +174,9 @@
             that.loadDrivers()
             that.deletingDriver = null
           },
-          error: function (data, status) {
-            console.log('Data:', data, 'Status:', status)
+          error: function (response) {
             that.deletingDriver = null
+            that.$emit('ajax-error', response)
           },
         })
       },

@@ -233,11 +233,10 @@
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
           success: function (data, status) {
-            console.log('Data:', data, 'Status:', status)
             that.$router.push('/session/' + data.value.identifier)
           },
-          error: function (data, status) {
-            console.log('Data:', data, 'Status:', status)
+          error: function (response) {
+            that.$emit('ajax-error', response)
           },
         })
       },
@@ -258,9 +257,9 @@
             that.loadAliases()
             that.deletingAlias = null
           },
-          error: function (data, status) {
-            console.log('Data:', data, 'Status:', status)
+          error: function (response) {
             that.deletingAlias = null
+            that.$emit('ajax-error', response)
           },
         })
       },
