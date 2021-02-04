@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
 
@@ -113,6 +115,9 @@ public class DriversManager {
 
     public SQLDriver removeDriver(String id) {
         SQLDriver item = getDriverById(id);
+        if (item == null) {
+            throw new WebApplicationException("Item does not exists", Status.NOT_FOUND);
+        }
         webapp.getAliasesAndDriversManager().removeDriver(item);
         saveAllDrivers();
         return item;

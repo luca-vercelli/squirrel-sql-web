@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response.Status;
 
 import net.sourceforge.squirrel_sql.client.gui.db.SQLAlias;
 import net.sourceforge.squirrel_sql.client.preferences.PreferenceType;
@@ -100,6 +102,9 @@ public class AliasesManager {
 
     public SQLAlias removeAlias(String id) {
         SQLAlias item = getAliasById(id);
+        if (item == null) {
+            throw new WebApplicationException("Item does not exists", Status.NOT_FOUND);
+        }
         webapp.getAliasesAndDriversManager().removeAlias(item);
         saveAllAliases();
         return item;
