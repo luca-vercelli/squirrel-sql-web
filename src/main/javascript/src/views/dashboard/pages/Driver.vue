@@ -183,6 +183,11 @@
             } else {
               that.creating = false
             }
+
+            // these should not be serialized
+            that.jarFileName = undefined
+            that.jarFileNameWrappers = undefined
+
             that.editEnabled = true
           },
           error: function (response) {
