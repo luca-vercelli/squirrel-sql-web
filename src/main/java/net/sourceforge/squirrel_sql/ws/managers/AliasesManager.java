@@ -103,7 +103,7 @@ public class AliasesManager {
     public SQLAlias removeAlias(String id) {
         SQLAlias item = getAliasById(id);
         if (item == null) {
-            throw new WebApplicationException("Item does not exists", Status.NOT_FOUND);
+            throw new WebApplicationException("No item with id: " + id, Status.NOT_FOUND);
         }
         webapp.getAliasesAndDriversManager().removeAlias(item);
         saveAllAliases();
