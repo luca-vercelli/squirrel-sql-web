@@ -73,7 +73,6 @@ public abstract class AbstractMessageBodyReaderWriter<T> implements MessageBodyW
         SimpleModule module = new SimpleModule();
         module.addSerializer(IIdentifier.class, new IIdentifierSerializer());
         module.addDeserializer(IIdentifier.class, new IIdentifierDeserializer());
-        module.addDeserializer(String[].class, new StringArrayDeserializer());
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(module);
