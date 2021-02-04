@@ -4,14 +4,20 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import net.sourceforge.squirrel_sql.fw.id.UidIdentifier;
 import net.sourceforge.squirrel_sql.fw.persist.ValidationException;
 import net.sourceforge.squirrel_sql.fw.sql.ISQLDriver;
+import net.sourceforge.squirrel_sql.fw.sql.SQLDriver;
 
 public class SQLDriverDto {
 
-    private ISQLDriver driver;
+    private SQLDriver driver;
 
-    public SQLDriverDto(ISQLDriver driver) {
+    public SQLDriverDto() {
+        this(new SQLDriver());
+    }
+
+    public SQLDriverDto(SQLDriver driver) {
         this.driver = driver;
     }
 
@@ -47,6 +53,12 @@ public class SQLDriverDto {
 
     public boolean isJDBCDriverClassLoaded() {
         return driver.isJDBCDriverClassLoaded();
+    }
+
+    public void setIdentifier(String stringId) {
+        UidIdentifier id = new UidIdentifier();
+        id.setString(stringId);
+        driver.setIdentifier(id);
     }
 
     public void setDriverClassName(String clazz) throws ValidationException {

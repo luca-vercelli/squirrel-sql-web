@@ -16,7 +16,6 @@ import net.sourceforge.squirrel_sql.dto.ListBean;
 import net.sourceforge.squirrel_sql.dto.SQLDriverDto;
 import net.sourceforge.squirrel_sql.dto.ValueBean;
 import net.sourceforge.squirrel_sql.fw.persist.ValidationException;
-import net.sourceforge.squirrel_sql.fw.sql.ISQLDriver;
 import net.sourceforge.squirrel_sql.fw.sql.SQLDriver;
 import net.sourceforge.squirrel_sql.ws.managers.DriversManager;
 
@@ -40,7 +39,7 @@ public class DriversEndpoint {
     @GET
     @Path("/Drivers({identifier})")
     public ValueBean<SQLDriverDto> getItem(@PathParam("identifier") String stringId) {
-        ISQLDriver item = manager.getDriverById(stringId);
+        SQLDriver item = manager.getDriverById(stringId);
         // If null, may raise HTTP 404
         return new ValueBean<>(new SQLDriverDto(item));
     }
