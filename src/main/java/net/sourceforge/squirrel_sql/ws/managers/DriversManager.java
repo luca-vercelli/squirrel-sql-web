@@ -116,7 +116,7 @@ public class DriversManager {
     public SQLDriver removeDriver(String id) {
         SQLDriver item = getDriverById(id);
         if (item == null) {
-            throw new WebApplicationException("No item with id: "+ id, Status.NOT_FOUND);
+            throw new WebApplicationException("No item with id: " + id, Status.NOT_FOUND);
         }
         webapp.getAliasesAndDriversManager().removeDriver(item);
         saveAllDrivers();
