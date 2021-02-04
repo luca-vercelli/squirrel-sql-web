@@ -1,6 +1,7 @@
 package net.sourceforge.squirrel_sql.ws.resources;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -13,6 +14,7 @@ import javax.ws.rs.PathParam;
 
 import net.sourceforge.squirrel_sql.client.gui.db.SQLAlias;
 import net.sourceforge.squirrel_sql.dto.ListBean;
+import net.sourceforge.squirrel_sql.dto.SQLAliasDto;
 import net.sourceforge.squirrel_sql.dto.ValueBean;
 import net.sourceforge.squirrel_sql.fw.persist.ValidationException;
 import net.sourceforge.squirrel_sql.ws.managers.AliasesManager;
@@ -26,33 +28,39 @@ public class AliasesEndpoint {
 
     @GET
     @Path("/Aliases")
-    public ListBean<SQLAlias> getItems() {
+    public ListBean<SQLAliasDto> getItems() {
         List<SQLAlias> list = manager.getAliases();
         // If 0, may raise HTTP 404
-        return new ListBean<>(list);
+
+        List<SQLAliasDto> listDto = list.stream().map(x -> new SQLAliasDto(x)).collect(Collectors.toList());
+        return new ListBean<>(listDto);
     }
 
     @GET
     @Path("/Aliases({identifier})")
-    public ValueBean<SQLAlias> getItem(@PathParam("identifier") String stringId) {
+    public ValueBean<SQLAliasDto> getItem(@PathParam("identifier") String stringId) {
         SQLAlias item = manager.getAliasById(stringId);
         // If null, may raise HTTP 404
-        return new ValueBean<>(item);
+
+        SQLAliasDto dto = new SQLAliasDto(item);
+        return new ValueBean<>(dto);
     }
 
     @POST
     @Path("/Aliases")
-    public ValueBean<SQLAlias> createItem(SQLAlias item) throws ValidationException {
-        item = manager.createNewAlias(item);
-        return new ValueBean<>(item);
+    public ValueBean<SQLAliasDto> createItem(SQLAliasDto dto) throws ValidationException {
+        SQLAlias item = manager.createNewAlias(dto.getAlias());
+        dto = new SQLAliasDto(item);
+        return new ValueBean<>(dto);
     }
 
     @PUT
     @Path("/Aliases({identifier})")
-    public ValueBean<SQLAlias> updateItem(@PathParam("identifier") String stringId, SQLAlias item)
+    public ValueBean<SQLAliasDto> updateItem(@PathParam("identifier") String stringId, SQLAliasDto dto)
             throws ValidationException {
-        item = manager.updateAlias(item, stringId);
-        return new ValueBean<>(item);
+        SQLAlias item = manager.updateAlias(dto.getAlias(), stringId);
+        dto = new SQLAliasDto(item);
+        return new ValueBean<>(dto);
     }
 
     @DELETE

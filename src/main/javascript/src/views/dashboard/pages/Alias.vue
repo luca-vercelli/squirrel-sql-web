@@ -189,7 +189,6 @@
           },
           success: function (response) {
             that.alias = response.value
-            that.removeUnwantedProperties()
             if (boolClone) {
               that.alias.identifier = null
               that.creating = true
@@ -224,7 +223,6 @@
           success: function (data, status) {
             that.$emit('notify', { message: 'Success.', type: 'success' })
             that.alias = data.value
-            that.removeUnwantedProperties()
             that.editEnabled = true
             that.creating = false
           },
@@ -251,7 +249,6 @@
           success: function (data, status) {
             that.$emit('notify', { message: 'Success.', type: 'success' })
             that.alias = data.value
-            that.removeUnwantedProperties()
             that.editEnabled = true
             that.creating = false
           },
@@ -272,11 +269,6 @@
             this.alias.url = selectedDrivers[0].url
           }
         }
-      },
-      removeUnwantedProperties: function () {
-        // FIXME these should be removed server-side
-        this.alias.driverPropertiesClone = undefined
-        this.alias.valid = undefined
       },
       back: function () {
         this.$router.push('/')
