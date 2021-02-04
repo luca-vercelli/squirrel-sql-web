@@ -15,6 +15,7 @@ import net.sourceforge.squirrel_sql.client.preferences.PreferenceType;
 import net.sourceforge.squirrel_sql.fw.id.IIdentifier;
 import net.sourceforge.squirrel_sql.fw.id.UidIdentifier;
 import net.sourceforge.squirrel_sql.fw.persist.ValidationException;
+import net.sourceforge.squirrel_sql.fw.sql.ISQLDriver;
 import net.sourceforge.squirrel_sql.fw.sql.SQLDriver;
 import net.sourceforge.squirrel_sql.fw.util.NullMessageHandler;
 
@@ -54,7 +55,7 @@ public class DriversManager {
         webapp.savePreferences(PreferenceType.DRIVER_DEFINITIONS);
     }
 
-    public SQLDriver updateDriver(final SQLDriver item, String id) throws ValidationException {
+    public SQLDriver updateDriver(final ISQLDriver item, String id) throws ValidationException {
 
         logger.info("updateSQLDriver: " + item + ";" + id);
         // Load old values
@@ -81,7 +82,7 @@ public class DriversManager {
         return itemOld;
     }
 
-    public SQLDriver createNewDriver(final SQLDriver item) throws ValidationException {
+    public SQLDriver createNewDriver(final ISQLDriver item) throws ValidationException {
 
         logger.info("createNewDriver: " + item);
         SQLDriver itemNew = new SQLDriver(new UidIdentifier());
