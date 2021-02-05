@@ -8,8 +8,9 @@ import net.sourceforge.squirrel_sql.fw.id.UidIdentifier;
 import net.sourceforge.squirrel_sql.fw.persist.ValidationException;
 import net.sourceforge.squirrel_sql.fw.sql.ISQLDriver;
 import net.sourceforge.squirrel_sql.fw.sql.SQLDriver;
+import net.sourceforge.squirrel_sql.jaxrs.JsonSerializable;
 
-public class SQLDriverDto {
+public class SQLDriverDto implements JsonSerializable {
 
     private SQLDriver driver;
 

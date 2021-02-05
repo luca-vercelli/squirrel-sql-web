@@ -2,6 +2,8 @@ package net.sourceforge.squirrel_sql.dto;
 
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.apache.log4j.Logger;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import net.sourceforge.squirrel_sql.client.gui.db.SQLAlias;
@@ -10,9 +12,12 @@ import net.sourceforge.squirrel_sql.client.gui.db.SQLAliasConnectionProperties;
 import net.sourceforge.squirrel_sql.client.gui.db.SQLAliasSchemaProperties;
 import net.sourceforge.squirrel_sql.fw.id.UidIdentifier;
 import net.sourceforge.squirrel_sql.fw.persist.ValidationException;
+import net.sourceforge.squirrel_sql.jaxrs.JsonSerializable;
 
-public class SQLAliasDto {
+public class SQLAliasDto implements JsonSerializable {
     private SQLAlias alias;
+
+    Logger logger = Logger.getLogger(SQLAliasDto.class);
 
     public SQLAliasDto(SQLAlias alias) {
         this.alias = alias;
@@ -127,6 +132,13 @@ public class SQLAliasDto {
     }
 
     public void setSchemaProperties(SQLAliasSchemaProperties value) {
+        logger.info("=======> value==null?" + (value == null));
+        if (value != null) {
+            logger.info("=======> value.details==null?" + (value.getSchemaDetails() == null));
+            if (value.getSchemaDetails() != null) {
+                logger.info("=======> value.details.len?" + (value.getSchemaDetails().length));
+            }
+        }
         alias.setSchemaProperties(value);
     }
 
