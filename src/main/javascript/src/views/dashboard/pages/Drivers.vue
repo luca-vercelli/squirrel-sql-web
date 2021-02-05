@@ -166,7 +166,7 @@
         var that = this
         $.ajax({
           type: this.enableMock ? 'GET' : 'DELETE',
-          url: this.enableMock ? process.env.BASE_URL + 'mock/JustGetOk' : process.env.BASE_URL + `ws/Drivers(${this.deletingDriver.dentifier})`,
+          url: this.enableMock ? process.env.BASE_URL + 'mock/JustGetOk' : process.env.BASE_URL + `ws/Drivers(${this.deletingDriver.identifier})`,
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('authToken'),
           },
