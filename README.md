@@ -2,7 +2,7 @@
 SQuirreL SQL Client - Web version
 
 ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg)
-[![Build Status](https://travis-ci.org/luca-vercelli/squirrel-sql-web.svg?branch=master)](https://travis-ci.org/luca-vercelli/squirrel-sql-web)
+[![Build Status](https://travis-ci.org/luca-vercelli/squirrel-sql-web.svg?branch=main)](https://travis-ci.org/luca-vercelli/squirrel-sql-web)
 
 This is a web version of the famous web client.
 
