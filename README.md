@@ -25,13 +25,20 @@ Screenshots
 
 Build
 -----
-You need at least Java (>=8), Maven, nodejs. Compile all with
+You need at least Java (>=8), Maven, nodejs. Compile frontend:
 
+    cd src/main/javascript
+    npm install
+    npm run build
+
+Then package backend and frontend togheter:
+
+    cd ../../..
     mvn package
 
 Run
 ---
-The application is intended to be run in a real EE container (Glassfish, TomEE, JBoss, ...) not Tomcat.
+The application is intended to run in a real EE container (Glassfish, TomEE, JBoss, ...), not Tomcat.
 
 In Glassfish, with default configuration, the app will run at address http://localhost:8080/squirrel-sql-web/
 
@@ -66,12 +73,12 @@ Project roadmap
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Web security: authorizations
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Users CRUD
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) i18n
-- ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Github CI (continuous integration)
+- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Github CI (continuous integration)
 
 
 Authentication
 --------------
-Default username is `admin` with password `admin`. Users can be configured inside `~/.squirrel-sql/Users.xml`.
+Default username is `admin` with password `admin`. Users can be configured inside `~/.squirrel-sql/Users.xml`. Passwords are not encrypted, so far.
 
 Run mock
 --------
