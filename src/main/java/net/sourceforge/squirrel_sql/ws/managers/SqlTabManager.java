@@ -1,5 +1,7 @@
 package net.sourceforge.squirrel_sql.ws.managers;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -22,6 +24,10 @@ import net.sourceforge.squirrel_sql.fw.datasetviewer.IDataSet;
 import net.sourceforge.squirrel_sql.fw.datasetviewer.ResultSetDataSet;
 import net.sourceforge.squirrel_sql.fw.dialects.DialectFactory;
 import net.sourceforge.squirrel_sql.fw.dialects.DialectType;
+import net.sourceforge.squirrel_sql.fw.gui.action.ExportFileWriter;
+import net.sourceforge.squirrel_sql.fw.gui.action.TableExportPreferences;
+import net.sourceforge.squirrel_sql.fw.gui.action.TableExportPreferencesDAO;
+import net.sourceforge.squirrel_sql.fw.gui.action.exportData.ResultSetExportData;
 import net.sourceforge.squirrel_sql.fw.sql.ISQLConnection;
 import net.sourceforge.squirrel_sql.fw.util.StringUtilities;
 
@@ -169,5 +175,64 @@ public class SqlTabManager {
         String aliasName = session.getAlias().getName();
         return list.stream().filter(x -> x.getAliasName() == null || x.getAliasName().equals(aliasName))
                 .collect(Collectors.toList());
+    }
+
+    public File exportExecuteSqlCommand(String query, ISession session) throws SQLException, IOException {
+
+        // cfr. ResultSetExportController, AbstractExportCommand, ExportFileWriter,
+        // SquirrelCli
+
+        File outputFile = File.createTempFile("export-", ".xlsx");
+
+        final ISQLConnection sqlConnection = session.getSQLConnection();
+        final Statement stat = sqlConnection.getConnection().createStatement();
+        final DialectType dialectType = DialectFactory.getDialectType(sqlConnection.getSQLMetaData());
+
+        TableExportPreferences exportPrefs = createExportPreferencesForFile(outputFile.getAbsolutePath());
+
+        ExportFileWriter.writeFile(exportPrefs, new ResultSetExportData(stat.executeQuery(query), dialectType), null);
+        return outputFile;
+    }
+
+    // This method is from some recent SQuirreL core, not present in 4.1.0
+    public static TableExportPreferences createExportPreferencesForFile(String fileName) {
+        TableExportPreferences prefs = TableExportPreferencesDAO.loadPreferences();
+
+        prefs.setFile(fileName);
+
+        if (fileName.toUpperCase().endsWith("CSV")) {
+            prefs.setFormatCSV(true);
+            prefs.setFormatXLSOld(false);
+            prefs.setFormatXLS(false);
+            prefs.setFormatXML(false);
+            prefs.setFormatJSON(false);
+        } else if (fileName.toUpperCase().endsWith("XLS")) {
+            prefs.setFormatCSV(false);
+            prefs.setFormatXLSOld(true);
+            prefs.setFormatXLS(false);
+            prefs.setFormatXML(false);
+            prefs.setFormatJSON(false);
+        } else if (fileName.toUpperCase().endsWith("XLSX")) {
+            prefs.setFormatCSV(false);
+            prefs.setFormatXLSOld(false);
+            prefs.setFormatXLS(true);
+            prefs.setFormatXML(false);
+            prefs.setFormatJSON(false);
+        } else if (fileName.toUpperCase().endsWith("XML")) {
+            prefs.setFormatCSV(false);
+            prefs.setFormatXLSOld(false);
+            prefs.setFormatXLS(false);
+            prefs.setFormatXML(true);
+            prefs.setFormatJSON(false);
+        } else if (fileName.toUpperCase().endsWith("JSON")) {
+            prefs.setFormatCSV(false);
+            prefs.setFormatXLSOld(false);
+            prefs.setFormatXLS(false);
+            prefs.setFormatXML(false);
+            prefs.setFormatJSON(true);
+        }
+        // else use the prefs predefined format
+
+        return prefs;
     }
 }

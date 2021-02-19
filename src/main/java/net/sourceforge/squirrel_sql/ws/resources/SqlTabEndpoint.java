@@ -1,5 +1,9 @@
 package net.sourceforge.squirrel_sql.ws.resources;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -8,6 +12,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -52,6 +57,22 @@ public class SqlTabEndpoint {
             return new ValueBean<>(manager.executeSqlCommand(query, session, skip, top));
         } catch (DataSetException e) {
             throw webAppException(e);
+        }
+    }
+
+    @GET
+    @Path("/ExportExecuteQuery")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    public File exportExecuteQuery(@FormParam("sessionId") String sessionId, @FormParam("query") String query)
+            throws AuthorizationException, IOException {
+
+        ISession session = sessionsManager.getSessionById(sessionId);
+        sessionsManager.checkSession(session);
+        try {
+            return manager.exportExecuteSqlCommand(query, session);
+        } catch (SQLException e) {
+            throw new WebApplicationException(e.getMessage(), Status.BAD_REQUEST);
         }
     }
 
