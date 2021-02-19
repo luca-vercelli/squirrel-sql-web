@@ -2,6 +2,7 @@
 SQuirreL SQL Client - Web version
 
 ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg)
+[![Build Status](https://travis-ci.org/luca-vercelli/squirrel-sql-web.svg?branch=main)](https://travis-ci.org/luca-vercelli/squirrel-sql-web)
 
 This is a web version of the famous web client.
 
@@ -24,13 +25,20 @@ Screenshots
 
 Build
 -----
-You need at least Java (>=8), Maven, nodejs. Compile all with
+You need at least Java (>=8), Maven, nodejs. Compile frontend:
 
+    cd src/main/javascript
+    npm install
+    npm run build
+
+Then package backend and frontend togheter:
+
+    cd ../../..
     mvn package
 
 Run
 ---
-The application is intended to be run in a real EE container (Glassfish, TomEE, JBoss, ...) not Tomcat.
+The application is intended to run in a real EE container (Glassfish, TomEE, JBoss, ...), not Tomcat.
 
 In Glassfish, with default configuration, the app will run at address http://localhost:8080/squirrel-sql-web/
 
@@ -42,7 +50,7 @@ Project roadmap
 - ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Project structure
 - ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Vue.js frontend
 - ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Drivers CRUD
-- ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Driver JAR's selection box
+- ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Driver JAR's selection box
 - ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Aliases CRUD
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Alias properties window
 - ![DONE](https://img.shields.io/badge/Status-Done-green.svg) SQL tab
@@ -55,7 +63,7 @@ Project roadmap
 - ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Handling with large tables
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Editing table contents
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Table import/export
-- ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Table DDL, Script SQL
+- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Table DDL, Script SQL
 - ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Procedure source code: Mysql, Oracle, PostGreSQL, ...
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) New session properties window
 - ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Global preferences window
@@ -63,14 +71,14 @@ Project roadmap
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Highlight syntax
 - ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Web security: authentication (well, we still need to encrypt passwords)
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Web security: authorizations
-- ![WIP](https://img.shields.io/badge/Status-WorkInProgress-yellow.svg) Users CRUD
+- ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Users CRUD
 - ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) i18n
-- ![TODO](https://img.shields.io/badge/Status-ToDo-red.svg) Github CI (continuous integration)
+- ![DONE](https://img.shields.io/badge/Status-Done-green.svg) Github CI (continuous integration)
 
 
 Authentication
 --------------
-Default username is `admin` with password `admin`. Users can be configured inside `~/.squirrel-sql/Users.xml`.
+Default username is `admin` with password `admin`. Users can be configured inside `~/.squirrel-sql/Users.xml`. Passwords are not encrypted, so far.
 
 Run mock
 --------
