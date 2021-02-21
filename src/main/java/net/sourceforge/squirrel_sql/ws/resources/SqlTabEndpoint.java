@@ -1,7 +1,10 @@
 package net.sourceforge.squirrel_sql.ws.resources;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.SQLException;
 
 import javax.ejb.Stateless;
@@ -16,7 +19,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.StreamingOutput;
 
 import net.sourceforge.squirrel_sql.client.session.ISession;
 import net.sourceforge.squirrel_sql.client.session.mainpanel.SQLHistoryItem;
@@ -36,6 +41,8 @@ public class SqlTabEndpoint {
     SqlTabManager manager;
     @Inject
     SessionsManager sessionsManager;
+
+    public static final String APPLICATION_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
     @GET
     @Path("/Session({sessionId})/History")
@@ -63,16 +70,37 @@ public class SqlTabEndpoint {
     @GET
     @Path("/ExportExecuteQuery")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-    public File exportExecuteQuery(@FormParam("sessionId") String sessionId, @FormParam("query") String query)
+    @Produces(APPLICATION_XLSX)
+    public Response exportExecuteQuery(@FormParam("sessionId") String sessionId, @FormParam("query") String query)
             throws AuthorizationException, IOException {
 
         ISession session = sessionsManager.getSessionById(sessionId);
         sessionsManager.checkSession(session);
+        File tmpFile;
         try {
-            return manager.exportExecuteSqlCommand(query, session);
+            tmpFile = manager.exportExecuteSqlCommand(query, session);
         } catch (SQLException e) {
             throw new WebApplicationException(e.getMessage(), Status.BAD_REQUEST);
+        }
+
+        StreamingOutput fileStream = new StreamingOutput() {
+            @Override
+            public void write(OutputStream output) throws IOException, WebApplicationException {
+                FileInputStream fis = new FileInputStream(tmpFile);
+                copyStream(fis, output);
+                output.flush();
+            }
+        };
+        return Response.ok(fileStream, APPLICATION_XLSX)
+                .header("content-disposition", "attachment; filename = export.xlsx").build();
+    }
+
+    public void copyStream(InputStream source, OutputStream target) throws IOException {
+        final int BUFSIZE = 8192;
+        byte[] buf = new byte[BUFSIZE];
+        int length;
+        while ((length = source.read(buf)) > 0) {
+            target.write(buf, 0, length);
         }
     }
 
